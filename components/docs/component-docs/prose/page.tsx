@@ -1,14 +1,3 @@
-/**
- * Documentation page for `prose`.
- *
- * Authored, not generated. Web-only — no Flutter equivalent registry entry.
- * `Prose` is deliberately thin: every heading it renders shares its
- * declaration block with the matching `.type-*` role via a second
- * `:where(.prose)` selector in `styles/typeset.css`, rather than a second,
- * independently-tuned scale. Read the doc comment on `components/ui/prose.tsx`
- * for why `@apply type-h2` inside `.prose h2` fails the build outright.
- */
-
 import { Code, Meta, Panel } from "@/components/ds/kit";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

@@ -1,14 +1,3 @@
-/**
- * Authored documentation page for `command`.
- *
- * Replaces the generated baseline. Migrated from the old `base/selects`
- * category page. "Command Palette" is not a separate registry item — it is
- * `CommandDialog`, the same `Command` primitive wrapped in a `Dialog` — so it
- * is documented here, in the Examples section, rather than getting its own
- * route. Every specimen renders the real `Command` / `CommandDialog` from
- * `components/ui/command.tsx`, which wraps cmdk.
- */
-
 import { Search } from "lucide-react";
 
 import { Icon } from "@/components/ui/icon";

@@ -1,17 +1,5 @@
 "use client";
 
-/**
- * The fourteen, each on the piece of UI it actually animates — a dialog on
- * its scrim, a list of rows, a skeleton, the OTP caret, a button being
- * pressed — with a Replay per card and one for all of them.
- *
- * A keyframe plays once on mount, so a card's `run` counter is the stage's
- * `key`: bumping it remounts the subject and the animation runs again. The
- * three transitions have nothing to remount — they answer a state change —
- * so their Replay flips the same attribute the real component flips
- * (`[data-pressed]`, the pill's target, `--swap-offset`) for a beat and back.
- */
-
 import * as React from "react";
 import { Heart, RotateCcw, Star } from "lucide-react";
 
@@ -22,8 +10,6 @@ import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
-
-/* ── subjects ──────────────────────────────────────────────────────────── */
 
 function Frame({ children }: { children: React.ReactNode }) {
   return (
@@ -67,12 +53,9 @@ function Rows({ leaving, still }: { leaving?: number; still?: boolean }) {
   );
 }
 
-/* ── the cards ─────────────────────────────────────────────────────────── */
-
 type Card = {
   name: string;
   what: string;
-  /** Rendered fresh on every replay; `on` is true for the beat after Replay on a transition. */
   stage: (run: number, on: boolean) => React.ReactNode;
   transition?: boolean;
 };
@@ -239,7 +222,6 @@ const CARDS: Card[] = [
   },
 ];
 
-/** Flip a transition on for a beat, then back — what Replay means for a state change. */
 function useBeat(): [boolean, () => void] {
   const [on, setOn] = React.useState(false);
   const timer = React.useRef<number | undefined>(undefined);

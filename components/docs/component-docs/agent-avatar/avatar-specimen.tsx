@@ -5,7 +5,6 @@ import { useState } from "react";
 import { AGENT_STATES, AGENT_STATE_LABEL, AgentAvatar, type AgentState } from "@/components/agent";
 import { Button } from "@/components/ui/button";
 
-/** Every state in the machine, drawn at once. */
 export function AvatarMatrix({ accent }: { accent?: string }) {
   return (
     <div className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-4 lg:grid-cols-5">
@@ -19,7 +18,6 @@ export function AvatarMatrix({ accent }: { accent?: string }) {
   );
 }
 
-/** The face plus its state named in words, cycling under the reader's control. */
 export function AvatarPlayground() {
   const [state, setState] = useState<AgentState>("thinking");
 

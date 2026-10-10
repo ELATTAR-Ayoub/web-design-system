@@ -1,31 +1,3 @@
-/**
- * Authored documentation page for `toaster`.
- *
- * Replaces the generated baseline. Migrated from the old `base/feedback`
- * category page (`app/design-system/components/base/feedback/page.tsx`, since deleted).
- *
- * `sonner` is the underlying toast library — `Toaster` in
- * `components/ui/toaster.tsx` wraps it and is this system's public name for
- * the capability. The registry item is `toaster`; nothing on this page calls
- * it "sonner" as if that were the component. The imperative trigger,
- * `toast()`, genuinely is imported straight from `sonner` (there is no
- * wrapper around it, only around the panel that renders it), so the Usage
- * snippet imports it from `"sonner"` — that is the real, current call site,
- * not an invented shortcut.
- *
- * A spec module is plain data rendered by a server component, and Toast is
- * imperative — there is no element to place, only a function to call. The
- * Preview section renders `ToasterShowcase` (`./toaster-showcase.tsx`), a
- * client companion (per `references/traps.md` #29) whose buttons call the
- * real `toast()` against the `<Toaster />` this app's root layout already
- * mounts — press one and the genuine toast fires, in the corner, for real.
- * The Variants and Examples sections below still render `ToastPreview`
- * (`components/ds/toast-preview.tsx`), which reproduces the exact markup
- * `sonner` renders without the fixed-position wrapper — the right tool for
- * showing every type side by side and at rest, which four-seconds-and-gone
- * toasts cannot do.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 

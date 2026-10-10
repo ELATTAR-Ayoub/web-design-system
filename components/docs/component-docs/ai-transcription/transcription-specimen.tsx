@@ -1,11 +1,5 @@
 "use client";
 
-/**
- * Live specimens for the `ai-transcription` page. There is no audio: the
- * playback time is a number the buttons move, which is all `Transcription`
- * reads. Nothing runs on a timer.
- */
-
 import * as React from "react";
 import { RewindIcon, SkipBackIcon, SkipForwardIcon } from "lucide-react";
 

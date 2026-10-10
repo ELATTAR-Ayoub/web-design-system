@@ -1,22 +1,3 @@
-/**
- * Documentation page for `validation-rule`.
- *
- * Authored, not generated. This is deliberately NOT a component and must
- * never become one. Flutter models validation as a registry item — a
- * `ValidationRule` object attached to a field widget. On the web, validation
- * is Zod 4 (a schema library) composed with React Hook Form's `resolver`,
- * both already dependencies of this project (`package.json`: `zod` ^4.4.3,
- * `react-hook-form` ^7.84.0, `@hookform/resolvers` ^5.7.1) and already in
- * real use in `app/design-system/components/base/forms/page.tsx`, since deleted. Wrapping
- * either in a React component to make the two catalogues the same length
- * would ship a file with no behaviour in it — exactly what
- * `lib/ds/platform-contract.ts`'s `package-native` doc comment warns against.
- *
- * See `form` (`/design-system/components/form`) for the accessible-wiring
- * layer — `FormField` / `FieldError` / `aria-describedby` — that consumes
- * whatever a schema like the one below produces.
- */
-
 import { Code, Meta, Note } from "@/components/ds/kit";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

@@ -1,19 +1,5 @@
 "use client"
 
-/**
- * Companion client file for the `content-change` Preview — plain data per
- * trap 29 (`components/docs/component-docs/<name>/page.tsx` is a
- * server-read spec module and cannot carry `"use client"` itself), so the
- * one piece of this page that needs state lives here instead.
- *
- * The brief asks for a "Next message" button, not a tab switch: this is the
- * real shape of the production case `ContentChange` exists for — one
- * persistent element whose `contentKey` changes as new messages arrive,
- * never a remount. `ContentChange` itself removes, reflows and re-adds the
- * element on every key change, replaying its entrance animation each time —
- * see `components/ui/content-change.tsx` for the mechanism.
- */
-
 import * as React from "react"
 
 import { Button } from "@/components/ui/button"

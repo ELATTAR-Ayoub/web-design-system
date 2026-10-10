@@ -1,10 +1,3 @@
-/**
- * Authored documentation page for `ai-mic-selector`.
- *
- * `MicSelector` reads the browser's audio devices and keeps a value, so every
- * live render goes through `mic-selector-specimen.tsx`.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Meta, Note, Panel, StateCell, StateGrid } from "@/components/ds/kit";

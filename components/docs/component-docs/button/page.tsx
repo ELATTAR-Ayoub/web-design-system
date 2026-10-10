@@ -1,12 +1,3 @@
-/**
- * Authored documentation page for `button`.
- *
- * Replaces the generated baseline. Every specimen below renders the real
- * `Button` from `components/ui/button.tsx` — nothing here is a styled div.
- * Prop rows in API Reference are read from that file's `buttonVariants` cva
- * config and its own component signature; nothing is invented.
- */
-
 import { Heart, PackageOpen, Search, Share2, Trash2, Wallet } from "lucide-react";
 
 import { SourceMeta } from "@/components/docs/component-page/sections";

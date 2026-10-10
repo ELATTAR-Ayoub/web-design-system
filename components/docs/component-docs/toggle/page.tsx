@@ -1,11 +1,3 @@
-/**
- * Authored documentation page for `toggle`.
- *
- * Migrated from the old `base/buttons` category page (the "Toggle & Toggle
- * Group" section, Toggle half). Every specimen renders the real `Toggle`
- * from `components/ui/toggle.tsx`.
- */
-
 import { Heart } from "lucide-react";
 
 import { SourceMeta } from "@/components/docs/component-page/sections";

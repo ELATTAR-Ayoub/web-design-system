@@ -4,21 +4,8 @@ import { useSyncExternalStore } from "react";
 
 import { cn } from "@/lib/utils";
 
-/**
- * Reads design tokens out of the live stylesheet instead of restating them.
- *
- * The colours page used to carry its own copy of every hex, which meant the
- * documentation could silently disagree with `globals.css` — the same drift
- * class the derived shadcn tokens were fixed for. Nothing here is written by
- * hand: the swatch paints with `var(--token)`, the printed value is whatever
- * the browser resolved, and the contrast ratio is computed from that value
- * rather than typed in. If a token changes, this page changes with it, and a
- * wrong contrast claim becomes impossible.
- */
-
 type Rgba = { r: number; g: number; b: number; a: number };
 
-/** Resolve any CSS colour (hex, rgb, rgba, colour-mix) to concrete channels. */
 function resolve(value: string): Rgba | null {
   if (typeof document === "undefined") return null;
   const probe = document.createElement("div");
@@ -34,7 +21,6 @@ function resolve(value: string): Rgba | null {
   return { r, g, b, a };
 }
 
-/** Flatten a translucent colour onto an opaque backdrop. */
 function composite(fg: Rgba, bg: Rgba): Rgba {
   return {
     r: fg.r * fg.a + bg.r * (1 - fg.a),
@@ -59,38 +45,6 @@ function contrast(fg: Rgba, bg: Rgba): number {
   return (hi + 0.05) / (lo + 0.05);
 }
 
-/**
- * Both hooks read a browser-only value. `useSyncExternalStore` is the right
- * tool: it gives a defined server snapshot (null) and reads on the client
- * without setting state inside an effect.
- *
- * Snapshots must be referentially stable between notifications, and resolving a
- * colour touches the DOM, so results are memoised.
- *
- * THE CACHE IS INVALIDATED ON THEME CHANGE, and it has to be. This memo used to
- * be justified with "the product is dark-only and these tokens never change at
- * runtime" — which stopped being true the moment there were two themes, and
- * failed in the most embarrassing possible way: the swatches repainted (they
- * are `var(--token)`, so the browser handles them) while the printed hex and
- * the measured ratio stayed frozen at whatever the first render happened to
- * see. A page whose entire premise is "measured, not asserted" was asserting
- * that the light-mode ink measured 10.6:1 on a black background.
- *
- * next-themes flips the theme by rewriting the `class` attribute on <html>, so
- * that is what we watch. One observer for the whole page, started with the
- * first subscriber and stopped with the last.
- *
- * `style` is watched for the same reason, and it used to be missing. A token can
- * also change under a mounted page by being overridden inline on `:root` — which
- * is how anyone retuning the scale tries a value before editing `globals.css`,
- * and is exactly the probe `/design-system/components/chart` invites. With
- * `class` alone the caches never cleared, so on that page `animationDuration`
- * (whose store in `components/ds/chart-motion.ts` watches both attributes)
- * followed a runtime `--duration-slow` override while the `--duration-slow` row
- * printed beside it stayed frozen. Two readouts of one token, disagreeing, on a
- * page whose premise is measured-not-asserted: trap 6 again, one attribute
- * further along.
- */
 const valueCache = new Map<string, string | null>();
 const ratioCache = new Map<string, number | null>();
 
@@ -142,7 +96,6 @@ function readRatio(token: string, against: string): number | null {
   return ratioCache.get(key) ?? null;
 }
 
-/** The token's value exactly as the browser resolved it, in the current theme. */
 export function useTokenValue(token: string) {
   return useSyncExternalStore(
     subscribe,
@@ -151,7 +104,6 @@ export function useTokenValue(token: string) {
   );
 }
 
-/** Contrast of `token` against `against`, computed live in the current theme. */
 export function useContrast(token: string, against = "--background") {
   return useSyncExternalStore(
     subscribe,
@@ -160,18 +112,6 @@ export function useContrast(token: string, against = "--background") {
   );
 }
 
-/**
- * A rung of the spacing ladder, in pixels, DERIVED from the base unit.
- *
- * `gap-6` is `calc(var(--spacing) * 6)`, so 24px is a product rather than a
- * value anyone chose — and the spacing page was printing it as a literal beside
- * a bar that was already drawn from the token. Two spellings of the same
- * number, only one of which follows if the base is ever retuned.
- *
- * Falls back to nothing rather than to a guess: `useTokenValue` returns null on
- * the server, and Tailwind's default `--spacing` is not redeclared here, so on
- * the server there is genuinely no value to print.
- */
 export function SpacingStep({
   steps,
   className,
@@ -203,7 +143,6 @@ export function TokenValue({
   );
 }
 
-/** Ratio plus its WCAG verdict, derived — never asserted. */
 export function ContrastBadge({
   token,
   against = "--background",
@@ -234,7 +173,6 @@ export function ContrastBadge({
   );
 }
 
-/** One documented token: painted, named, valued and measured. */
 export function TokenSwatch({
   token,
   name,
@@ -244,7 +182,6 @@ export function TokenSwatch({
   token: string;
   name: string;
   use: string;
-  /** Off for tints and fills that are never used as text. */
   measure?: boolean;
 }) {
   return (

@@ -7,11 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { IconSwap } from "@/components/ui/icon-swap";
 
-/**
- * Live IconSwap demos for the design system. Click each control and watch the
- * strip roll — the direction tells you which way through the set you moved.
- */
-
 export function ViewSwitchDemo() {
   const [view, setView] = useState<"grid" | "list">("grid");
   return (

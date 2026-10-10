@@ -1,17 +1,5 @@
 "use client";
 
-/**
- * The live Preview specimen for the `input-otp` documentation page.
- *
- * `components/docs/component-docs/input-otp/page.tsx` is a plain data module
- * rendered by a SERVER component — it cannot hold the `value`/`onChange`
- * state a real verification flow needs (trap 29). This companion is that
- * scene: type a six-digit code and it verifies itself on completion, using
- * nothing but `InputOTP`'s own `onComplete` and a timer standing in for the
- * network round trip. "408291" is the one code that verifies; anything else
- * is rejected — type it to see both paths.
- */
-
 import { useState } from "react";
 import { CheckCircle2, XCircle } from "lucide-react";
 

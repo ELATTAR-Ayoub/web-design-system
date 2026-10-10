@@ -1,18 +1,3 @@
-/**
- * Documentation page for `press`.
- *
- * Authored, not generated. The one click feel in the system — instant
- * squish in, springy overshoot back out — is a single utility,
- * `@utility press` in `styles/motion.css`, the one press utility that
- * replaced five press/hover variants on 2026-09-22. `Button` carries it built
- * in, and anything else clickable — a badge, a row, a card — takes it as an
- * explicit class. What it does NOT provide — keyboard operation, a
- * real button/link role, a focus ring, the 44px minimum target — is the
- * consumer's job, same as it would be for any div wearing an onClick; that
- * half is stated here so it is not mistaken for something the class
- * supplies for free.
- */
-
 import { Code, Meta, Note, Row } from "@/components/ds/kit";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

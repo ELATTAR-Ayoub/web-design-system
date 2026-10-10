@@ -1,15 +1,3 @@
-/**
- * Documentation page for `icon-swap`.
- *
- * Authored, not generated, and the one page in this batch that documents a
- * real React component rather than a CSS capability: `IconSwap`. The rule it
- * exists to enforce — "every control that alternates between icons swaps them
- * through this, no crossfades, no instant swaps" — only holds if the four
- * demos that used to live on the old base/selection category page are visible
- * somewhere; they were dropped in the docs migration and are restored here
- * from `components/ds/icon-swap-demo.tsx`.
- */
-
 import { Pause, Play } from "lucide-react";
 
 import {

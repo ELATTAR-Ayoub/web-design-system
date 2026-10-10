@@ -1,10 +1,3 @@
-/**
- * Authored documentation page for `ai-shimmer`.
- *
- * Every live specimen renders the real `Shimmer` from
- * `components/ai-elements/shimmer.tsx` in `shimmer-specimen.tsx`.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Meta, Note } from "@/components/ds/kit";

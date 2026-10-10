@@ -45,8 +45,7 @@ const useWebPreview = () => {
 export type WebPreviewProps = ComponentProps<"div"> & {
   defaultUrl?: string;
   onUrlChange?: (url: string) => void;
-  // Vendored change: seeds the console's open state, which lives here in the
-  // root's context — upstream offered no way to start with it open.
+  // Vendored change: seeds the console's open state, which lives here in the root's context — upstream offered no way to start with it open.
   defaultConsoleOpen?: boolean;
 };
 
@@ -113,11 +112,7 @@ export type WebPreviewNavigationButtonProps = ComponentProps<typeof Button> & {
   tooltip?: string;
 };
 
-/**
- * Vendored change: the upstream `h-8 w-8 p-0` override is routed onto the real
- * `icon-sm` size (32px). These sit in a header toolbar beside other small
- * controls, which RULES §7 allows at 32px, so there is no 44px minimum here.
- */
+/** Vendored change: the upstream `h-8 w-8 p-0` override is routed onto the real `icon-sm` size (32px). */
 export const WebPreviewNavigationButton = ({
   onClick,
   disabled,
@@ -158,7 +153,6 @@ export const WebPreviewUrl = ({
   const [prevUrl, setPrevUrl] = useState(url);
   const [inputValue, setInputValue] = useState(url);
 
-  // Sync input value with context URL when it changes externally (derived state pattern)
   if (url !== prevUrl) {
     setPrevUrl(url);
     setInputValue(url);
@@ -192,9 +186,7 @@ export const WebPreviewUrl = ({
   );
 };
 
-// Vendored change: Omit the iframe's own `loading` ("eager" | "lazy") before
-// redefining it — upstream intersected the two, so a JSX loading view did not
-// type-check.
+// Vendored change: Omit the iframe's own `loading` ("eager" | "lazy") before redefining it — upstream intersected the two, so a JSX loading view did not type-check.
 export type WebPreviewBodyProps = Omit<ComponentProps<"iframe">, "loading"> & {
   loading?: ReactNode;
 };
@@ -250,14 +242,9 @@ export const WebPreviewConsole = ({
           className="flex min-h-(--size-target-min) w-full items-center justify-between p-4 text-left hover:bg-muted/50"
           variant="ghost"
         >
-          {/* Vendored change: the role sits on a span, because Button's own
-              `text-sm` (utilities layer) beats `type-nav` (components layer)
-              when both are on the button itself. */}
+          {/* Vendored change: the role sits on a span, because Button's own `text-sm` (utilities layer) beats `type-nav` (components layer) when both are on the button itself. */}
           <span className="type-nav">Console</span>
-          {/* Vendored change: raw chevron + a numeric duration (untokenised
-              literal) replaced with `<Icon>` on `duration-normal`/
-              `ease-emphasized`, matching every other disclosure chevron in
-              the system. */}
+          {/* Vendored change: raw chevron + a numeric duration (untokenised literal) replaced with `<Icon>` on `duration-normal`/ `ease-emphasized`, matching every other disclosure chevron in the system. */}
           <Icon
             icon={ChevronDownIcon}
             size="md"

@@ -1,5 +1,3 @@
-/** The gallery and reference index share the authored chart specimens. */
-
 import type { Metadata } from "next";
 import Link from "next/link";
 

@@ -1,18 +1,3 @@
-/**
- * Authored documentation page for `agent-workspace` — the full catalog page
- * at `/design-system/components/agent-workspace` (design spec §8, Task 19).
- *
- * Two live sections precede the usual reference material:
- *  - "preview" renders `WorkspaceLiveSpecimen` — a conversation picker driving
- *    a keyed, remounted `AgentWorkspace` across the 7 `CONVERSATIONS`.
- *  - "state-atlas" renders `WorkspaceAtlas` — frozen `StateGrid`s for every
- *    run status and avatar state, all static props with no transport
- *    behind them.
- *
- * Both are client components (trap 29: a server spec module cannot hold
- * `useState`), so both live in their own files beside this one.
- */
-
 import Link from "next/link";
 
 import { SourceMeta } from "@/components/docs/component-page/sections";
@@ -22,7 +7,6 @@ import { docRoute } from "@/lib/ds/docs/catalog";
 
 import { meta } from "./meta";
 
-/** A link to another catalog page, for the anatomy table. */
 const Part = ({ name, children }: { name: string; children: React.ReactNode }) => (
   <Link className="text-action-ink underline underline-offset-2" href={docRoute(name)}>
     {children}
@@ -33,8 +17,7 @@ import { WorkspaceAtlas } from "./workspace-atlas";
 
 export const spec: ComponentDocSpec = {
   name: "agent-workspace",
-  // The workspace needs 64rem for its third column; the table-of-contents
-  // rail would leave the article about 790px. See `ComponentDocSpec.wide`.
+  // Needs 64rem for the third column.
   wide: true,
   sections: [
     {

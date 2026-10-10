@@ -1,15 +1,3 @@
-/**
- * Authored documentation page for `checkbox`.
- *
- * Replaces the generated baseline. Migrated from the old `base/selection`
- * category page (`app/design-system/components/base/selection/page.tsx`, since deleted),
- * which held every selection control's real documentation on one page. Every
- * specimen below renders the real `Checkbox` from `components/ui/checkbox.tsx`
- * — nothing here is a styled div. Prop rows in API Reference come from that
- * file's own signature plus the underlying `CheckboxPrimitive.Root` (Radix)
- * it forwards props to; nothing is invented.
- */
-
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Field,

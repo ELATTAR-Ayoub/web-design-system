@@ -1,17 +1,5 @@
 "use client";
 
-/**
- * The live Preview specimen for the `button` documentation page.
- *
- * `components/docs/component-docs/button/page.tsx` is a plain data module
- * rendered by a SERVER component — it cannot hold the `useState` a real
- * "press it and watch it work" scene needs (trap 29). This companion is that
- * scene: press Open Pack, the button goes into its own `loading` state, and
- * a result card reveals underneath it — the same shape a real pack-opening
- * action would take, using nothing but Button's own `loading` prop and a
- * timer standing in for the network round trip.
- */
-
 import { useState } from "react";
 import { PackageOpen, Sparkles as SparklesIcon } from "lucide-react";
 import { toast } from "sonner";
@@ -20,9 +8,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 
-// Never Lucide's Sparkles as a decorative glyph — RULES forbids it. Here it
-// is the literal icon for the pulled card's own rarity mark, not decoration,
-// so it is aliased away from the name to make that reading unambiguous.
 const RarityGlyph = SparklesIcon;
 
 type Pull = { name: string; rarity: string; value: string };

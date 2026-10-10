@@ -1,18 +1,5 @@
 "use client";
 
-/**
- * The live Preview specimen for the `spinner` documentation page.
- *
- * `components/docs/component-docs/spinner/page.tsx` is a plain data module
- * rendered by a SERVER component (per `references/traps.md` #29) — it cannot
- * hold the request state a real pending action needs. This client companion
- * owns it: pressing "Withdraw $480.00" disables the row's button, shows the
- * real `Spinner` beside "Requesting…" for 1.8s (a genuine unknown-length wait
- * — Progress would be the wrong component here precisely because there is no
- * total to report), then resolves into a success line. Press it again to
- * watch the whole cycle again from rest.
- */
-
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";

@@ -1,12 +1,5 @@
 "use client";
 
-/**
- * Live specimens for the `ai-prompt-input` page. A spec module is plain data,
- * so the composition — which needs a `TooltipProvider`, a controlled draft and
- * a submit handler — lives here. Nothing touches the network: the submit
- * handler only prints what it was handed.
- */
-
 import * as React from "react";
 import { GlobeIcon } from "lucide-react";
 
@@ -44,7 +37,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 
 type Status = "ready" | "submitted" | "streaming" | "error";
 
-/** The staged files, as inline chips in the header — what the workspace composer does. */
 function StagedFiles() {
   const attachments = usePromptInputAttachments();
   if (attachments.files.length === 0) return null;
@@ -129,7 +121,6 @@ export function PromptInputSpecimen({
   );
 }
 
-/** A grid of the submit button in each chat status. */
 export function SubmitStatuses() {
   return (
     <TooltipProvider>

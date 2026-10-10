@@ -1,11 +1,3 @@
-/**
- * Authored documentation page for `ai-audio-player`.
- *
- * Every live specimen renders the real component from `components/ai-elements/audio-player.tsx`.
- * Anything interactive lives in the companion client file
- * `audio-player-specimen.tsx` (a spec module cannot carry "use client").
- */
-
 import { AudioPlayerPreview, AudioPlayerStateGrid } from "./audio-player-specimen";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

@@ -82,17 +82,11 @@ export const ConversationScrollButton = ({
     scrollToBottom();
   }, [scrollToBottom]);
 
-  // Vendored change: `left-[50%] translate-x-[-50%]` is the same centring as
-  // the token utility `left-1/2 -translate-x-1/2` already used elsewhere in
-  // this repo, just spelled as an arbitrary value; `rounded-full` and the
-  // `dark:` background overrides were redundant with Button's own
-  // `rounded-pill` and the `outline` variant's already-themed
-  // `bg-card`/`hover:bg-muted` (components/ui/button.tsx).
+  // Vendored change: `left-[50%] translate-x-[-50%]` is the same centring as the token utility `left-1/2 -translate-x-1/2` already used elsewhere in this repo, just spelled as an arbitrary value.
   return (
     !isAtBottom && (
       <Button
-        // Vendored change: an icon-only button needs a name; a caller's own
-        // aria-label (spread after) still wins.
+        // Vendored change: an icon-only button needs a name; a caller's own aria-label (spread after) still wins.
         aria-label="Scroll to the latest message"
         className={cn("absolute bottom-4 left-1/2 -translate-x-1/2", className)}
         onClick={handleScrollToBottom}
@@ -157,12 +151,10 @@ export const ConversationDownload = ({
     URL.revokeObjectURL(url);
   }, [messages, filename, formatMessage]);
 
-  // Vendored change: same redundant `rounded-full`/`dark:` overrides as
-  // ConversationScrollButton, dropped for the same reason.
+  // Vendored change: same redundant `rounded-full`/`dark:` overrides as ConversationScrollButton, dropped for the same reason.
   return (
     <Button
-      // Vendored change: an icon-only button needs a name; a caller's own
-      // aria-label (spread after) still wins.
+      // Vendored change: an icon-only button needs a name; a caller's own aria-label (spread after) still wins.
       aria-label="Download conversation"
       className={cn("absolute top-4 right-4", className)}
       onClick={handleDownload}

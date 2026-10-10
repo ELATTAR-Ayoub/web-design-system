@@ -1,11 +1,3 @@
-/**
- * Authored documentation page for `ai-schema-display`.
- *
- * Every live specimen renders the real component from `components/ai-elements/schema-display.tsx`.
- * Anything interactive lives in the companion client file
- * `schema-display-specimen.tsx` (a spec module cannot carry "use client").
- */
-
 import { SchemaDisplayPreview, SchemaDisplayStateGrid } from "./schema-display-specimen";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

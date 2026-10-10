@@ -55,11 +55,7 @@ const statusLabels: Record<ToolPart["state"], string> = {
   "output-error": "Error",
 };
 
-// Vendored change: stock palette (`yellow-600`, `blue-600`, `green-600`,
-// `orange-600`, `red-600`) replaced with the four state-colour `-ink` roles
-// (RULES §1.3 — only `-ink` may carry text/glyphs). "Responded" is a neutral
-// acknowledgement rather than a success or failure outcome, so it takes
-// `info`, distinct from the real "Completed" success and "Error" failure.
+// Vendored change: stock palette (`yellow-600`, `blue-600`, `green-600`, `orange-600`, `red-600`) replaced with the four state-colour `-ink` roles.
 const statusIcons: Record<ToolPart["state"], ReactNode> = {
   "approval-requested": <Icon icon={ClockIcon} tone="warning" />,
   "approval-responded": <Icon icon={CheckCircleIcon} tone="info" />,
@@ -70,9 +66,7 @@ const statusIcons: Record<ToolPart["state"], ReactNode> = {
   "output-error": <Icon icon={XCircleIcon} tone="error" />,
 };
 
-// Vendored change: dropped `rounded-full`/`text-xs` — Badge already ships
-// `rounded-pill` and `type-badge` (components/ui/badge.tsx), so both were
-// redundant, off-scale overrides.
+// Vendored change: dropped `rounded-full`/`text-xs` — Badge already ships `rounded-pill` and `type-badge`, so both were redundant, off-scale overrides.
 export const getStatusBadge = (status: ToolPart["state"]) => (
   <Badge className="gap-1.5" variant="secondary">
     {statusIcons[status]}
@@ -115,9 +109,7 @@ export const ToolHeader = ({
 
 export type ToolContentProps = ComponentProps<typeof CollapsibleContent>;
 
-// Vendored change: dropped the hand-rolled tw-animate enter/exit
-// classes — `CollapsibleContent` already plays `anim-expand`/`anim-collapse`
-// off the measured Radix height (components/ui/collapsible.tsx).
+// Vendored change: dropped the hand-rolled tw-animate enter/exit classes — `CollapsibleContent` already plays `anim-expand`/`anim-collapse` off the measured Radix height.
 export const ToolContent = ({ className, ...props }: ToolContentProps) => (
   <CollapsibleContent
     className={cn(

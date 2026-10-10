@@ -1,11 +1,5 @@
 "use client";
 
-/**
- * Live specimens for the `ai-suggestion` page, rendering the real `Suggestions`
- * and `Suggestion` from `components/ai-elements/suggestion.tsx`. `onClick` is a
- * function prop, which a server spec module cannot pass, so they live here.
- */
-
 import { useState } from "react";
 
 import { Suggestion, Suggestions } from "@/components/ai-elements/suggestion";
@@ -13,7 +7,6 @@ import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 
 const ITEMS = ["Summarise this", "Draft a reply", "Find the risk", "Compare with last year", "List the open questions"];
 
-/** The Preview: pick a chip and the picked text shows in the panel note. */
 export function SuggestionPlayground() {
   const [picked, setPicked] = useState<string | null>(null);
   return (
@@ -27,7 +20,6 @@ export function SuggestionPlayground() {
   );
 }
 
-/** Other configurations: wrapped and centred, as the empty thread uses it. */
 export function SuggestionExamples() {
   return (
     <Panel label="Wrapped and centred" note="className on Suggestions">
@@ -40,7 +32,6 @@ export function SuggestionExamples() {
   );
 }
 
-/** The States grid. */
 export function SuggestionStateGrid() {
   return (
     <StateGrid cols={3}>

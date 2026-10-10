@@ -1,20 +1,3 @@
-/**
- * Documentation page for `reveal-bloom`.
- *
- * Authored, not generated. Two utilities — `bloom-action` and `bloom-value`
- * in `styles/utilities.css` — a static radial glow mixed from the brand's
- * action or value ramp, meant to sit behind a surface for a reveal stage or
- * an opening moment. Distinct from the two-layer, animated bloom a toast or
- * alert wears (that one is `feedback-surface`, `@utility bloom-cosmic`).
- * There is no component: this is a class on a host.
- *
- * THIS PAGE USED TO BE CALLED `background-effect`. That is Flutter's name for
- * the PAGE ATMOSPHERE — the `body` radial gradient reading `--page-glow` — and
- * the per-capability audit found the two platforms documenting two unrelated
- * things under one slug. The atmosphere keeps Flutter's name; these glows,
- * which Flutter does not have, are web-only and get their own.
- */
-
 import { Meta, Note, Row } from "@/components/ds/kit";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

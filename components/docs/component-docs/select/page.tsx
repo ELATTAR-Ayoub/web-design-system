@@ -1,15 +1,3 @@
-/**
- * Authored documentation page for `select`.
- *
- * Replaces the generated baseline. Migrated from the old `base/selects`
- * category page (`app/design-system/components/base/selects/page.tsx`, since deleted), which
- * held every "choosing from a known set" control's real documentation on one
- * page. Every specimen below renders the real `Select` from
- * `components/ui/select.tsx` — nothing here is a styled div. Prop rows in API
- * Reference come from that file's own signature plus the underlying Radix
- * `Select` primitive it forwards props to; nothing is invented.
- */
-
 import {
   Field,
   FieldDescription,

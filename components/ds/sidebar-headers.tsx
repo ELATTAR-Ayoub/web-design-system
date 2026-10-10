@@ -1,15 +1,5 @@
 "use client";
 
-/**
- * The three header patterns shadcn actually ships, built from this system's own
- * components rather than from bespoke markup.
- *
- * They live here rather than in `ui/` because a team switcher's contents are
- * entirely app-specific — these are worked examples to copy and adapt, which is
- * exactly how shadcn ships them too. What is reusable about them is the shape,
- * and the shape is visible from the source.
- */
-
 import { useState } from "react";
 import {
   Check,
@@ -45,7 +35,6 @@ const TEAMS = [
 
 const VERSIONS = ["1.4.0-beta", "1.3.2", "1.2.9"];
 
-/** The tile that stands in for a workspace logo. */
 function Tile() {
   return (
     <span className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
@@ -54,7 +43,6 @@ function Tile() {
   );
 }
 
-/** The pattern from shadcn's sidebar-07 and sidebar-10. */
 export function TeamSwitcherHeader() {
   const [team, setTeam] = useState(TEAMS[0]);
 
@@ -110,7 +98,6 @@ export function TeamSwitcherHeader() {
   );
 }
 
-/** The pattern from shadcn's sidebar-01 and sidebar-02. */
 export function VersionSwitcherHeader() {
   const [version, setVersion] = useState(VERSIONS[0]);
 
@@ -160,12 +147,6 @@ export function VersionSwitcherHeader() {
   );
 }
 
-/**
- * The pattern from shadcn's sidebar-01, sidebar-02, sidebar-05 and sidebar-16.
- *
- * What makes it a search *form* rather than a naked input is the label: the
- * field has an accessible name even though nothing visible says "search".
- */
 export function SearchFormHeader() {
   return (
     <SidebarHeader>

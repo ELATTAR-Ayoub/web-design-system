@@ -62,24 +62,13 @@ type SpeechInputMode = "speech-recognition" | "media-recorder" | "none";
 
 export type SpeechInputProps = ComponentProps<typeof Button> & {
   onTranscriptionChange?: (text: string) => void;
-  /**
-   * Callback for when audio is recorded using MediaRecorder fallback.
-   * This is called in browsers that don't support the Web Speech API (Firefox, Safari).
-   * The callback receives an audio Blob that should be sent to a transcription service.
-   * Return the transcribed text, which will be passed to onTranscriptionChange.
-   */
   onAudioRecorded?: (audioBlob: Blob) => Promise<string>;
   lang?: string;
-  // Vendored change: an input device for the MediaRecorder path, so a
-  // microphone picker (MicSelector) can take effect. The Web Speech API has no
-  // device selection, so this applies only to recording.
+  // Vendored change: an input device for the MediaRecorder path, so a microphone picker (MicSelector) can take effect.
   deviceId?: string;
-  // Vendored change: reports every listening start/stop on both paths, because
-  // the button's listening state is otherwise private to this component.
+  // Vendored change: reports every listening start/stop on both paths, because the button's listening state is otherwise private to this component.
   onListeningChange?: (listening: boolean) => void;
-  // Vendored change: record and hand the audio to `onAudioRecorded` even where
-  // SpeechRecognition exists. Without it the Web Speech path always wins, and
-  // `deviceId` could never be honoured.
+  // Vendored change: record and hand the audio to `onAudioRecorded` even where SpeechRecognition exists.
   preferMediaRecorder?: boolean;
 };
 
@@ -133,11 +122,7 @@ export const SpeechInput = ({
   const onListeningChangeRef = useRef(onListeningChange);
   const lastListeningRef = useRef(false);
 
-  // Vendored change: these were plain assignments in the render body, which
-  // is reading/writing a ref during render (react-hooks/refs). Moved into an
-  // effect that runs after every render instead — same "always latest
-  // callback" behaviour, since nothing reads these refs synchronously during
-  // render.
+  // Vendored change: these were plain assignments in the render body, which is reading/writing a ref during render (react-hooks/refs).
   useEffect(() => {
     onTranscriptionChangeRef.current = onTranscriptionChange;
     onAudioRecordedRef.current = onAudioRecorded;
@@ -154,7 +139,6 @@ export const SpeechInput = ({
     onListeningChangeRef.current?.(isListening);
   }, [isListening]);
 
-  // Initialize Speech Recognition when mode is speech-recognition
   useEffect(() => {
     if (mode !== "speech-recognition") {
       return;
@@ -206,10 +190,7 @@ export const SpeechInput = ({
     speechRecognition.addEventListener("error", handleError);
 
     recognitionRef.current = speechRecognition;
-    // Vendored change: setState was called synchronously in the same tick as
-    // the effect body (react-hooks/set-state-in-effect). Deferred to a
-    // microtask so React finishes this commit first; the ready flag still
-    // flips immediately after, imperceptibly to a user.
+    // Vendored change: setState was called synchronously in the same tick as the effect body (react-hooks/set-state-in-effect).
     queueMicrotask(() => setIsRecognitionReady(true));
 
     return () => {
@@ -223,7 +204,6 @@ export const SpeechInput = ({
     };
   }, [mode, lang]);
 
-  // Cleanup MediaRecorder and stream on unmount
   useEffect(
     () => () => {
       if (mediaRecorderRef.current?.state === "recording") {
@@ -238,7 +218,6 @@ export const SpeechInput = ({
     []
   );
 
-  // Start MediaRecorder recording
   const startMediaRecorder = useCallback(async () => {
     if (!onAudioRecordedRef.current) {
       return;
@@ -278,7 +257,6 @@ export const SpeechInput = ({
               onTranscriptionChangeRef.current?.(transcript);
             }
           } catch {
-            // Error handling delegated to the onAudioRecorded caller
           } finally {
             setIsProcessing(false);
           }
@@ -305,7 +283,6 @@ export const SpeechInput = ({
     }
   }, []);
 
-  // Stop MediaRecorder recording
   const stopMediaRecorder = useCallback(() => {
     if (mediaRecorderRef.current?.state === "recording") {
       mediaRecorderRef.current.stop();
@@ -329,7 +306,6 @@ export const SpeechInput = ({
     }
   }, [mode, isListening, startMediaRecorder, stopMediaRecorder]);
 
-  // Determine if button should be disabled
   const isDisabled =
     mode === "none" ||
     (mode === "speech-recognition" && !isRecognitionReady) ||
@@ -338,16 +314,9 @@ export const SpeechInput = ({
 
   return (
     <div className="relative inline-flex items-center justify-center">
-      {/* Vendored change: upstream pinged three rings around the button while
-          listening. The system has no ring motion (its pulse is the green
-          live-dot glow, wrong on a destructive button), so recording is carried
-          by the destructive variant, the stop icon and the accessible label. */}
+      {/* Vendored change: upstream pinged three rings around the button while listening. */}
 
-      {/* Main record button. Vendored change: swapped hand-rolled
-          bg-primary / bg-destructive plus hover opacity overrides for the
-          button's own `variant`, so recording state rides the same -ink-safe,
-          machine-shadow treatment every other button gets instead of a
-          bespoke colour pairing. */}
+      {/* Vendored change: swapped hand-rolled bg-primary / bg-destructive and hover opacity overrides for the button's own `variant`. */}
       <Button
         aria-label={
           isProcessing
@@ -356,8 +325,7 @@ export const SpeechInput = ({
               ? "Stop dictation"
               : "Start dictation"
         }
-        // Vendored change: no aria-pressed — the label already names the next action,
-        // and a pressed state on a label that changes reads twice.
+        // Vendored change: no aria-pressed — the label already names the next action, and a pressed state on a label that changes reads twice.
         className={cn("relative z-10", className)}
         disabled={isDisabled}
         onClick={toggleListening}
@@ -365,8 +333,6 @@ export const SpeechInput = ({
         size="icon"
         {...props}
         // Vendored change: a caller's `variant` styles the button at rest only.
-        // Recording always shows as destructive — the composer passes "ghost",
-        // and upstream spread it after this, leaving a live microphone looking idle.
         variant={isListening ? "destructive" : variant}
       >
         {isProcessing && <Spinner />}

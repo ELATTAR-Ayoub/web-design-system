@@ -17,12 +17,6 @@ import {
 } from "@/components/ai-elements/code-block";
 import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 
-/**
- * Live specimens for the `ai-code-block` page. They render the real
- * `CodeBlock`, which highlights with Shiki in the browser — nothing here
- * touches the network.
- */
-
 const TS = `type Plan = { seats: number; tier: "team" | "business" };
 
 // Price per seat per month

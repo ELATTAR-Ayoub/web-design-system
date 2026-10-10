@@ -1,15 +1,3 @@
-/**
- * Authored documentation page for `context-menu`.
- *
- * Replaces the generated baseline. Migrated from the old `base/menus` category
- * page (`app/design-system/components/base/menus/page.tsx`, since deleted). Every specimen
- * renders the real `ContextMenu` composition from
- * `components/ui/context-menu.tsx` — nothing here is a styled div.
- *
- * See `components/docs/component-docs/menu/page.tsx` for why there is no
- * shared "menu" module between this, DropdownMenu and Menubar.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Code, Meta, Panel } from "@/components/ds/kit";

@@ -195,14 +195,9 @@ because the relationship is the point.
 | App sidebar, collapsed rail | `--width-sidebar-icon` | `LayoutWidths.sidebarCollapsed` | 48 |
 | Sticky site header | `--height-site-header` | `LayoutHeights.siteHeader` | 64 |
 
-**Differs because — and this is the largest genuine divergence in the file.**
-The web carries measures Flutter does not, and vice versa:
+**Differs because.** Flutter carries measures the web does not:
 
-- **Web-only:** `--height-cta` (`60vh`), `--width-showcase` (1440),
-  `--height-showcase` / `--height-showcase-lg`, `--blur-showcase`. Several of those are viewport-relative or
-  belong to a marketing surface that has no Flutter counterpart; a `vh` measure
-  has no meaning in a widget tree, where the equivalent is a `LayoutBuilder`
-  fraction rather than a constant.
+- **Web-only:** none of the layout measures today.
 - **Flutter-only:** `LayoutWidths.article` (640) — the documentation article
   column, a measure this repository has never had a token for; `Containers.*`
   and `Blurs.*`, which transcribe Tailwind's stock `--container-*` and

@@ -52,8 +52,7 @@ export const PackageInfoName = ({
   );
 };
 
-// Vendored change: replaced the vendor's hardcoded palette classes with the
-// system's semantic Badge variants, keeping the same severity mapping.
+// Vendored change: replaced the vendor's hardcoded palette classes with the system's semantic Badge variants, keeping the same severity mapping.
 const changeTypeVariants: Record<
   ChangeType,
   "destructive" | "warning" | "success" | "info" | "secondary"
@@ -207,8 +206,7 @@ export const PackageInfoDependencies = ({
   ...props
 }: PackageInfoDependenciesProps) => (
   <div className={cn("space-y-2", className)} {...props}>
-    {/* Vendored change: dropped `font-medium`/`tracking-wide`/uppercase. This is
-        a row heading, not a badge, so it reads as quiet `type-small` text. */}
+    {/* Vendored change: dropped `font-medium`/`tracking-wide`/uppercase. */}
     <span className="type-small text-muted-foreground">Dependencies</span>
     <div className="space-y-1">{children}</div>
   </div>

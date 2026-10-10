@@ -30,53 +30,6 @@ import {
   PLOT,
 } from "./data";
 
-/**
- * The ten `chart-area-*` registry blocks, vendored onto this system's tokens.
- *
- * Every function here renders the bare chart only — no `Card`, no `Panel`, no
- * title, no "Trending up by 5.2%" footer. `ChartStates` (state.tsx) supplies
- * the frame; the page task mounts these inside it.
- *
- * Three sweeps apply to all ten and are not repeated per-function:
- *
- * 1. **`hsl(var(--chart-N))` → `var(--color-chart-N)`.** The registry's
- *    pre-v4 spelling. `--chart-N` here holds a whole colour, so `hsl()`
- *    around it is invalid and the series paints nothing.
- * 2. **`var(--color-desktop)` / `var(--color-mobile)` / … → `var(--color-
- *    chart-1..5)` directly.** shadcn's `ChartStyle` mints `--color-<seriesKey>`
- *    into a `<style>` tag at runtime; the property exists in the browser and
- *    nowhere in source, so `check:refs` fails it. The chart tokens are already
- *    declared once per theme in `globals.css`.
- * 3. **Every animated element takes `{...useChartMotion()}`.** Never a raw
- *    `animationDuration` / `animationEasing`.
- *
- * `AreaDefault`, `AreaStacked` and `AreaGradient` already existed, swept, in
- * `chart-demos.tsx`, built against a bespoke "trade" dataset. They are
- * re-homed here with the *sweep discipline* carried over (no `Card`, the same
- * token names, the same motion wiring) but rebased onto `data.ts`'s shared
- * `MONTHS_DESKTOP` / `MONTHS_DESKTOP_MOBILE` fixtures rather than that
- * bespoke data — `data.ts` is explicit that variants must use its fixtures
- * rather than restate an array, and it pre-allocates these three names against
- * its own dataset counts. See the report for the full reasoning.
- *
- * **`AreaInteractive` is mounted differently from the other nine.** Its range
- * `Select` is a second export, `AreaInteractiveControls`, and goes in
- * `ChartStates`' `controls` slot so it renders in all three states rather than
- * only in `ready`:
- *
- * ```tsx
- * <ChartStates title="Interactive" note="chart-area-interactive" skeleton="area"
- *              controls={AreaInteractiveControls}>
- *   <AreaInteractive />
- * </ChartStates>
- * ```
- *
- * Inline, the strip made the panel 60px taller in `ready` than in the other
- * two states. The reasoning is on `AreaInteractiveControls` itself.
- */
-
-/* ── default · linear · step ─────────────────────────────────────────────── */
-
 export function AreaDefault() {
   const motion = useChartMotion();
   return (
@@ -84,7 +37,6 @@ export function AreaDefault() {
       <AreaChart
         accessibilityLayer
         data={MONTHS_DESKTOP}
-        // Plot maths, not the 8-point scale — recharts' own margin box.
         margin={{ left: 12, right: 12 }}
       >
         <CartesianGrid vertical={false} />
@@ -144,16 +96,6 @@ export function AreaLinear() {
   );
 }
 
-/**
- * The registry's `chartConfig.desktop.icon` is `Activity`, unused by this
- * variant's own JSX but read by `ChartTooltipContent` (`components/ui/chart.tsx`
- * renders `<itemConfig.icon />` in the indicator slot whenever a config entry
- * carries one). That render happens inside a foundation file this task does
- * not own, so it bypasses `Icon` (`components/ui/icon.tsx`) — the config's
- * `icon` field is typed `React.ComponentType`, a bare Lucide component, not
- * something `Icon`'s props-based wrapper can be dropped into that slot. Kept
- * faithful to the registry rather than worked around.
- */
 const AREA_STEP_CONFIG = {
   desktop: { ...DESKTOP_CONFIG.desktop, icon: Activity },
 } satisfies ChartConfig;
@@ -184,8 +126,6 @@ export function AreaStep() {
     </ChartContainer>
   );
 }
-
-/* ── stacked · stacked-expand · legend · icons ───────────────────────────── */
 
 export function AreaStacked() {
   const motion = useChartMotion();
@@ -228,12 +168,6 @@ export function AreaStacked() {
   );
 }
 
-/**
- * `data.ts` deliberately does not carry this shape — `MONTHS_DESKTOP_MOBILE`
- * plus an `other` series exists for exactly one variant, so it stays local
- * rather than becoming a ninth shared export. Values are the registry's,
- * unchanged.
- */
 const AREA_STACKED_EXPAND_DATA = [
   { month: "January", desktop: 186, mobile: 80, other: 45 },
   { month: "February", desktop: 305, mobile: 200, other: 100 },
@@ -345,12 +279,6 @@ export function AreaLegend() {
   );
 }
 
-/**
- * `TrendingDown` on `desktop` and `TrendingUp` on `mobile` is the registry's
- * own pairing, not a claim these charts render onto that shape — see the note
- * on `AreaStep` for why the icon renders through `ui/chart.tsx` directly
- * rather than through `Icon`.
- */
 const AREA_ICONS_CONFIG = {
   desktop: { ...DESKTOP_MOBILE_CONFIG.desktop, icon: TrendingDown },
   mobile: { ...DESKTOP_MOBILE_CONFIG.mobile, icon: TrendingUp },
@@ -397,8 +325,6 @@ export function AreaIcons() {
     </ChartContainer>
   );
 }
-
-/* ── gradient · axes ──────────────────────────────────────────────────────── */
 
 export function AreaGradient() {
   const motion = useChartMotion();
@@ -493,8 +419,6 @@ export function AreaAxes() {
   );
 }
 
-/* ── interactive ──────────────────────────────────────────────────────────── */
-
 const AREA_INTERACTIVE_CONFIG = {
   visitors: { label: "Visitors" },
   ...DESKTOP_MOBILE_CONFIG,
@@ -504,32 +428,8 @@ const AREA_INTERACTIVE_REFERENCE_DATE = new Date("2024-06-30");
 
 type AreaInteractiveRange = "90d" | "30d" | "7d";
 
-/**
- * The range the plot draws. Defaulted, not nullable, so `<AreaInteractive />`
- * still renders a real 90-day chart if it is ever mounted without its strip.
- */
 const AreaInteractiveRangeContext = createContext<AreaInteractiveRange>("90d");
 
-/**
- * The one non-chart control this variant is built to demonstrate, as a
- * `ChartStates` `controls` frame.
- *
- * The registry sits this `Select` in a `CardHeader`. Stripped of `Card` it
- * used to render inline above the plot, inside the component — which put it
- * inside `ChartStates`' swapped slot, where it exists only in `ready`. The
- * panel therefore grew 60px the moment you left Loading or Empty: 393.39 →
- * 453.39, measured. §5 calls that out by name — a layout jump is worse than
- * the spinner it was meant to avoid.
- *
- * Hoisting the strip into `controls` renders it in all three states and
- * leaves the slot at exactly `PLOT`, so the box cannot move. The state has to
- * come with it (the strip and the plot must agree on the range), and a
- * context is how it reaches back down through the keyed slot.
- *
- * `useState` here is user-driven — the click sets it directly — not a
- * mount-flag mirroring something external, so `react-hooks/set-state-in-
- * effect` has nothing to flag.
- */
 export function AreaInteractiveControls({ children }: { children: React.ReactNode }) {
   const [range, setRange] = useState<AreaInteractiveRange>("90d");
 
@@ -552,11 +452,6 @@ export function AreaInteractiveControls({ children }: { children: React.ReactNod
   );
 }
 
-/**
- * The plot only — no wrapper `div`, nothing above the `ChartContainer`, so its
- * footprint is `PLOT` exactly like the other nine. Mount it with
- * `controls={AreaInteractiveControls}` on the `ChartStates` around it.
- */
 export function AreaInteractive() {
   const motion = useChartMotion();
   const range = useContext(AreaInteractiveRangeContext);

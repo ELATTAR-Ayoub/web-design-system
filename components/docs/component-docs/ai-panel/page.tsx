@@ -1,11 +1,3 @@
-/**
- * Authored documentation page for `ai-panel`.
- *
- * Live specimens render the real `Panel` inside a real `Canvas`
- * (`panel-specimen.tsx`). The page's own furniture panel is imported from the
- * kit under another name only in the specimen file, never here.
- */
-
 import { PanelPreview, PanelStateGrid } from "./panel-specimen";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

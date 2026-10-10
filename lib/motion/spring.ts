@@ -1,26 +1,5 @@
 "use client";
 
-/**
- * The spring half of the motion scale, read off the live stylesheet.
- *
- * `motion` takes a spring as numbers — `{ type: "spring", duration, bounce }` —
- * and a number is invisible to `check:tokens`. So, exactly as
- * `components/ds/chart-motion.ts` does for recharts, the numbers are READ from
- * `styles/motion.css` rather than written here. A `duration: 0.3` typed into a
- * component passes every guard and is still a violation of RULES §0.
- *
- * Four roles, named for what they do (RULES §4):
- *   control · travel · content · settle
- *
- * Durations and cubic-bezier curves already in the scale are readable too, for
- * a tween that has to run in JavaScript (a morph that a keyframe cannot hold,
- * because it must start from wherever the previous one was interrupted).
- *
- * Motion tokens do not change with the theme, so each read is cached for the
- * life of the page. Server-side there is no stylesheet; every function here is
- * only called from an effect or an event handler, never during render.
- */
-
 export type SpringRole = "control" | "travel" | "content" | "settle";
 
 export type DurationToken =
@@ -48,7 +27,6 @@ export type EaseToken =
 
 export type Spring = {
   type: "spring";
-  /** Seconds — motion's unit. */
   duration: number;
   bounce: number;
   velocity?: number;
@@ -62,29 +40,25 @@ function read(name: string): string {
   if (hit !== undefined) return hit;
   if (typeof document === "undefined") return "";
   const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-  // Only cache a real answer: before the stylesheet lands the read is empty.
+  // Only cache a real answer: the read is empty until the stylesheet loads.
   if (value) cache.set(name, value);
   return value;
 }
 
-/** A CSS time (`250ms`, `0.4s`) in seconds. Empty or unparseable reads as 0. */
 function seconds(raw: string): number {
   const n = parseFloat(raw);
   if (Number.isNaN(n)) return 0;
   return raw.endsWith("ms") ? n / 1000 : n;
 }
 
-/** A duration token, in seconds. */
 export function duration(token: DurationToken): number {
   return seconds(read(`--duration-${token}`));
 }
 
-/** A duration token, in milliseconds — for timers and stopwatches. */
 export function durationMs(token: DurationToken): number {
   return duration(token) * 1000;
 }
 
-/** A spring role, ready to hand to `animate()` or a `transition` prop. */
 export function spring(role: SpringRole, extra?: { velocity?: number; delay?: number }): Spring {
   const bounce = parseFloat(read(`--spring-${role}-bounce`));
   return {
@@ -95,13 +69,7 @@ export function spring(role: SpringRole, extra?: { velocity?: number; delay?: nu
   };
 }
 
-/**
- * An easing token as motion's four-number bezier.
- *
- * Follows `var()` one level, because `--ease-out` and friends are aliases of
- * the named curves. Anything that is not a cubic-bezier falls back to motion's
- * `"easeOut"` keyword rather than inventing control points.
- */
+// Follows one var() level because some eases alias the named curves.
 export function ease(token: EaseToken): [number, number, number, number] | "easeOut" {
   let raw = read(`--ease-${token}`);
   const alias = raw.match(/^var\((--[\w-]+)\)$/);
@@ -114,9 +82,4 @@ export function ease(token: EaseToken): [number, number, number, number] | "ease
     : "easeOut";
 }
 
-/**
- * Instant transition, for reduced motion. A JS-driven animation is not
- * covered by the global reduced-motion CSS rule, so a component asks
- * `usePrefersReducedMotion()` and passes this instead of a spring.
- */
 export const INSTANT = { duration: 0 } as const;

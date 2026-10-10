@@ -1,34 +1,3 @@
-/**
- * A live specimen for `useLatest`: the stale closure, beside the fresh read.
- *
- * Two identical `setInterval` loops start on mount and never restart. One
- * closes over `count` directly; the other reads it through a `useLatest` ref.
- * Type in the field and the left column keeps reporting whatever the value was
- * when the interval was created — usually the empty string — while the right
- * column follows what you typed.
- *
- * **That is the whole argument for the hook, and it cannot be made in prose.**
- * A reader who has not hit this bug reads "the closure goes stale" as a
- * theoretical caution; watching one column freeze while the other moves is the
- * same sentence with evidence attached.
- *
- * The interval is deliberately NOT in the dependency array. Adding `value`
- * there would fix the staleness by tearing the loop down and rebuilding it on
- * every keystroke, which is the cost `useLatest` exists to avoid — and it would
- * also delete the specimen.
- *
- * It lives beside `page.tsx` rather than inside it because a spec module must
- * stay plain data: `scripts/validate-docs.mjs` fails any
- * `component-docs/<name>/page.tsx` carrying a `"use client"` directive, since the
- * route imports the spec on the server.
- *
- * State model:
- * rest — both readouts ticking. hover · focus-visible — the input's own.
- * pressed — N/A. loading · success · error — N/A, nothing asynchronous.
- * disabled — N/A. empty — the initial state, and the one that makes the point:
- * the stale column stays empty forever.
- */
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -45,17 +14,12 @@ export function StaleClosureSpecimen() {
   const latest = useLatest(value);
 
   useEffect(() => {
-    // Mounted once, with an empty dependency array, exactly as a long-lived
-    // loop is written. `value` here is the one captured on mount; `latest` is
-    // a ref, so reading `.current` inside the tick sees the committed value.
     const id = window.setInterval(() => {
       setStale(value);
       setFresh(latest.current);
     }, 250);
     return () => window.clearInterval(id);
-    // The missing dependency IS the specimen: adding `value` restarts the
-    // interval on every keystroke, which is the cost this hook exists to
-    // avoid — and it would also delete the thing being demonstrated.
+    // Omits `value` on purpose: restarting the interval would hide the stale capture.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

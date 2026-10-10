@@ -22,7 +22,6 @@ interface EnvironmentVariablesContextType {
   setShowValues: (show: boolean) => void;
 }
 
-// Default noop for context default value
 // oxlint-disable-next-line eslint(no-empty-function)
 const noop = () => {};
 
@@ -305,8 +304,7 @@ export const EnvironmentVariableCopyButton = ({
 
   return (
     <Button
-      // Vendored change: an icon-only button needs a name; a caller's own
-      // aria-label (spread after) still wins.
+      // Vendored change: an icon-only button needs a name; a caller's own aria-label (spread after) still wins.
       aria-label={isCopied ? `${name} copied` : `Copy ${name}`}
       className={cn("shrink-0", className)}
       onClick={copyToClipboard}

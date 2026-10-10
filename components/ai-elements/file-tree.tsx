@@ -29,7 +29,6 @@ interface FileTreeContextType {
   onSelect?: (path: string) => void;
 }
 
-// Default noop for context default value
 // oxlint-disable-next-line eslint(no-empty-function)
 const noop = () => {};
 
@@ -39,22 +38,12 @@ const FileTreeContext = createContext<FileTreeContextType>({
   togglePath: noop,
 });
 
-/*
- * Vendored change: the WAI-ARIA tree pattern, which upstream only named.
- * Folders carry aria-expanded and wrap their children in role="group"; the
- * row (the treeitem) owns the keys, so the chevron and the name button inside
- * it leave the tab order. Up / Down / Home / End move between the rows on
- * screen (closed folders render no children, so every treeitem in the DOM is
- * visible); Right opens a folder or steps into it, Left closes it or steps
- * out to the parent; Enter and Space select.
- */
+/* Vendored change: implements the WAI-ARIA tree pattern (aria-expanded, role="group", arrow/Home/End keys), which upstream only named. */
 const ROW = '[role="treeitem"]';
 
-/** The treeitem that holds `row` — its parent folder. */
 const parentRow = (row: HTMLElement) =>
   row.parentElement?.closest<HTMLElement>(ROW) ?? null;
 
-/** Up / Down / Home / End across the visible rows of the tree. */
 const moveInTree = (event: React.KeyboardEvent<HTMLElement>) => {
   const rows = Array.from(event.currentTarget.querySelectorAll<HTMLElement>(ROW));
   const at = rows.indexOf(document.activeElement as HTMLElement);
@@ -343,7 +332,6 @@ export const FileTreeFile = ({
       >
         {children ?? (
           <>
-            {/* Spacer for alignment */}
             <span className="size-4 shrink-0" />
             <FileTreeIcon>
               {icon ?? <Icon icon={FileIcon} size="sm" tone="muted" />}

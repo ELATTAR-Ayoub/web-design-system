@@ -1,10 +1,3 @@
-/**
- * Authored documentation page for `ai-prompt-input`.
- *
- * Every live render goes through `prompt-input-specimen.tsx`: the composition
- * needs state and a tooltip provider, which a plain-data spec module cannot hold.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Meta, Note, Panel, StateCell, StateGrid } from "@/components/ds/kit";

@@ -1,27 +1,3 @@
-/**
- * Authored documentation page for `calendar`.
- *
- * Replaces the generated baseline. Migrated from the old `base/selects`
- * category page. "Date Range" and "Date Picker" are Calendar modes and
- * compositions, not separate registry items — react-day-picker's mode prop
- * and this system's own Popover — so both are documented here rather than
- * getting their own routes.
- *
- * Calendar is the heaviest specimen in the suite to render and to run axe
- * against, so this page keeps live calendars to three: one in Preview
- * (mode="single"), one under Date Range (mode="range"), and one inside the
- * Popover under Date Picker. Variants below documents mode="multiple" in
- * prose rather than a fourth live grid, since a third selection shape adds
- * render cost without teaching anything single and range have not already
- * shown.
- *
- * Every specimen is uncontrolled — selected without onSelect, which
- * react-day-picker's own types allow (see API Reference) — because a spec
- * module is a Server Component and cannot pass a function prop into
- * Calendar, a Client Component. The controlled pattern (useState +
- * onSelect) is shown as code in Usage instead.
- */
-
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 

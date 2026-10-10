@@ -20,15 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    /**
-     * `suppressHydrationWarning` is required, not defensive. next-themes writes
-     * the resolved theme onto <html> from an inline script before React
-     * hydrates — that is the whole mechanism that prevents a flash of the wrong
-     * palette — so the server's markup and the client's first read of this one
-     * element genuinely differ, by design. Without this, React logs a hydration
-     * error on every page load. It suppresses the warning for this element
-     * only, not for the tree.
-     */
+    // next-themes writes the theme onto <html> before hydration.
     <html
       lang="en"
       suppressHydrationWarning

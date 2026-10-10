@@ -1,15 +1,3 @@
-/**
- * Authored documentation page for `carousel`.
- *
- * Replaces the generated baseline. Migrated from the old `base/layout`
- * category page (`app/design-system/components/base/layout/page.tsx`, since deleted), which
- * held every layout primitive's real documentation on one page. Every
- * specimen below renders the real `Carousel` family from
- * `components/ui/carousel.tsx` — built on Embla, with arrow-key and button
- * navigation that disables itself at either end of the track. Nothing here
- * is a styled div standing in for it.
- */
-
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
 import {

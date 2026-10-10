@@ -1,18 +1,3 @@
-/**
- * Documentation page for `selection-control`.
- *
- * Authored, not generated: this page exists to explain a DECISION, and the
- * decision needs stating in prose rather than derived from metadata.
- *
- * Flutter 0.0.3 ships `SelectionControl` to centralise a selection row — the
- * control, its label, its description, its error, its target size. The web
- * system already centralises exactly that in `Field`, and Checkbox, Radio and
- * Switch are 65 to 77 lines each precisely because they render only the
- * control and leave the row to it. Building a second thing here would give the
- * system two ways to compose a selection row, which is the failure the plan
- * calls out by name.
- */
-
 import { Code, Note } from "@/components/ds/kit";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
@@ -28,7 +13,6 @@ import { Switch } from "@/components/ui/switch";
 
 import { meta } from "./meta";
 
-/** The composition this page documents, rendered with the real components. */
 function SelectionRows() {
   return (
     <div className="flex max-w-md flex-col gap-6">

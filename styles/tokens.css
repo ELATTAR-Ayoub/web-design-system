@@ -347,39 +347,6 @@
      that one is the app shell's navigation panel and collapses to an icon
      rail, which a rail beside prose never does. */
   --width-rail: 15rem;
-  /* The call-to-action banner's floor.
-     A CTA is the one panel on a secondary page that is allowed to take a
-     screenful: it is the thing the page is for, and a 200px strip at the foot
-     of a long document reads as a footnote. Viewport-relative rather than a
-     spacing step because what it is claiming is a proportion of the screen,
-     not a distance — and it is a token rather than a `min-h-[60vh]` because §0
-     does not care how reasonable an arbitrary value looks. */
-  --height-cta: 60vh;
-  /* The landing showcase — the product surface a hero shows off.
-
-     Wider than `--width-shell` on purpose, and that is the entire effect. The
-     panel is meant to be BIGGER THAN THE PAGE it sits on: it runs past the
-     right gutter and gets clipped, which reads as a window onto something that
-     continues rather than as a screenshot that happens to be large. Cap it at
-     the shell width and the illusion is gone — you get a picture of an app
-     instead of a piece of one.
-
-     The two heights are a floor for the same reason a CTA has one: a product
-     surface showing three rows of a list demonstrates nothing. `rem` rather
-     than a spacing step because these are the size of an object, not the
-     distance between two, and `--spacing * 160` is a number pretending to be a
-     rhythm. */
-  --width-showcase: 1440px;
-  --height-showcase: 40rem;
-  --height-showcase-lg: 50rem;
-  /* The showcase's backdrop blur, on the `--blur-*` scale so it is reachable as
-     `backdrop-blur-showcase`. It exists as a token because §3's rule is that
-     this blur MUST go through `@apply backdrop-blur-*` — a hand-written
-     `backdrop-filter: blur(…)` is dropped from the compiled stylesheet without
-     an error, which has happened before and was caught by reading the served
-     CSS. Tailwind's own
-     ladder has 16px and 24px and nothing between, so 20px needs a name. */
-  --blur-showcase: 20px;
   /* The site header's own height, so an anchor can be scrolled clear of it.
      `scroll-padding-top` on `html` reads this (see @layer base), which is why
      it is a token rather than a number repeated in a sticky header, a sticky
@@ -970,6 +937,18 @@
   --code-punctuation: var(--foreground); /* structural marks, operators     */
   --code-type: var(--warning-ink); /* class-name, builtin, tag, CSS selector */
   --code-variable: var(--destructive-ink); /* property, parameter, variable, attr-name */
+}
+
+/* ── The voice orb's obsidian ──────────────────────────────────────────────
+   A dark glass sphere. It is an object rather than a surface, so it is the
+   same in both themes; only its reflection is tinted by --agent. */
+:root {
+  --orb-light: hsl(210 25% 97%);
+  --orb-sheen: hsl(216 12% 64%);
+  --orb-body: hsl(222 14% 23%);
+  --orb-deep: hsl(228 22% 6%);
+  --orb-glint: hsl(210 30% 88% / 0.5);
+  --orb-flow: hsl(214 20% 82% / 0.32);
 }
 
 /* ── Shiki's CSS-variables theme, on the code roles ──────────────────────

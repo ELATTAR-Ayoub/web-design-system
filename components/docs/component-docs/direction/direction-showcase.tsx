@@ -1,14 +1,5 @@
 "use client";
 
-/**
- * Live companion for the `direction` Preview — see traps.md #29. A switch
- * flips a real row of controls between ltr and rtl: DirectionProvider feeds
- * Radix's own direction context, and a real `dir` attribute on the wrapping
- * element (see the page's Accessibility note — the provider writes no DOM
- * attribute of its own) carries the document-level mirroring the labels and
- * the Panel border rely on.
- */
-
 import { useId, useState } from "react";
 
 import { Button } from "@/components/ui/button";

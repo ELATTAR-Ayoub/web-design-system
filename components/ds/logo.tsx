@@ -1,14 +1,5 @@
 import { cn } from "@/lib/utils";
 
-/**
- * The wordmark.
- *
- * The mark is typographic on purpose — no illustrated logo to license or
- * re-draw. The chevron glyph doubles as the favicon-scale mark. The value
- * colour is reserved for the `.DS` suffix, so the wordmark carries the brand's
- * 10% value allowance on its own and demonstrates the ratio at the smallest
- * scale it ever appears in.
- */
 export function LogoMark({ className }: { className?: string }) {
   return (
     <span

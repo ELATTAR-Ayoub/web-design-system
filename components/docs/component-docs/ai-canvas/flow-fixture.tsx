@@ -9,27 +9,12 @@ import { Toolbar } from "@/components/ai-elements/toolbar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-/**
- * Shared fixtures for the seven workflow-graph documentation pages
- * (`ai-canvas`, `ai-node`, `ai-edge`, `ai-connection`, `ai-controls`,
- * `ai-panel`, `ai-toolbar`). They all render the same small plan the
- * AgentWorkspace's "View as workflow" dialog draws, with fixed data: no
- * network, no timers.
- *
- * React Flow lays out into its parent's box, so every specimen sits in
- * `FlowFrame` — a container with a definite height. Without one the graph
- * renders at zero height and nothing shows.
- */
-
 export type StepData = {
   title: string;
   detail: string;
   status: string;
-  /** Draw the left (target) handle. */
   target: boolean;
-  /** Draw the right (source) handle. */
   source: boolean;
-  /** Show the node toolbar even when the node is not selected. */
   toolbar?: boolean;
   [key: string]: unknown;
 };
@@ -65,7 +50,6 @@ function StepNode({ data }: FlowNodeProps<StepFlowNode>) {
   );
 }
 
-/** A title-only node, small enough to show one edge per cell of a state grid. */
 function MiniNode({ data }: FlowNodeProps<StepFlowNode>) {
   return (
     <Node className="w-28" handles={{ target: data.target, source: data.source }}>
@@ -99,7 +83,6 @@ const step = (
   measured: NODE_SIZE,
 });
 
-/** Three steps: one done, one running, one skipped. */
 export function planNodes(extra: Partial<StepData> = {}): StepFlowNode[] {
   return [
     step("fetch", 0, "Fetch the report", "Step 1 of 3", "Done", false, extra),
@@ -108,13 +91,11 @@ export function planNodes(extra: Partial<StepData> = {}): StepFlowNode[] {
   ];
 }
 
-/** The edge into the running step travels; the edge into the skipped one is dashed. */
 export const planEdges: FlowEdge[] = [
   { id: "fetch->summarise", source: "fetch", target: "summarise", type: "animated" },
   { id: "summarise->publish", source: "summarise", target: "publish", type: "temporary" },
 ];
 
-/** Two small nodes joined by one edge of the given type. */
 export function pairNodes(): StepFlowNode[] {
   const mini = { width: 112, height: 40 } as const;
   return [
@@ -127,7 +108,6 @@ export function pairEdges(type: "default" | "animated" | "temporary"): FlowEdge[
   return [{ id: `a->b-${type}`, source: "a", target: "b", type }];
 }
 
-/** A fixed-height box for React Flow to lay out into. */
 export function FlowFrame({
   children,
   className,
@@ -135,7 +115,6 @@ export function FlowFrame({
 }: {
   children: ReactNode;
   className?: string;
-  /** Names the graph for assistive tech. */
   label?: string;
 }) {
   return (

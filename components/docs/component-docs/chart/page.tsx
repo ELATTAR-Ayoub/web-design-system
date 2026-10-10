@@ -1,26 +1,3 @@
-/**
- * Authored documentation page for `chart`.
- *
- * Replaces the generated baseline. Migrated from the old `base/charts`
- * category page (`app/design-system/components/base/charts/page.tsx`, since deleted), which
- * held the whole family's documentation on one page. `chart` is the
- * accessible wrapper itself — `ChartContainer`, `ChartTooltip(Content)`,
- * `ChartLegend(Content)` from `components/ui/chart.tsx` — plus the five chart
- * tokens and Recharts' animation story, which is read off the live
- * stylesheet rather than written as a class (`components/ds/chart-motion.ts`).
- * The three concrete plot families live on their own pages:
- * `chart-cartesian` (Area, Bar, Line), `chart-polar` (Pie, Radar, Radial) and
- * `chart-geometry` (the two hand-drawn, non-Recharts primitives). All four
- * resolve through the registry as `dependency` items — see Installation.
- *
- * Every specimen below renders the real `ChartContainer` and the real
- * Recharts primitives; nothing here is a styled div. The contrast figures in
- * Accessibility were measured by rasterising the rendered page in both
- * themes, not asserted — they are carried over unrounded from that
- * measurement.
- */
-
-
 import {
   TooltipAdvanced,
   TooltipDefault,
@@ -487,12 +464,6 @@ const iconConfig = {
         {
           label: "Usage",
           body: (
-            /* `CodeBlock`, not a hand-rolled `<pre><code>`. The hand-rolled
-               one had no `overflow-x`, so its longest line — 446px of it —
-               pushed this whole page to 487px inside a 375px viewport. Every
-               other documentation page passed the reflow check; this was the
-               one that composed its own code block instead of the kit's, and
-               it was the one that failed. */
             <CodeBlock
               code={`const motion = useChartMotion();
 <Bar dataKey="sealed" {...motion} />

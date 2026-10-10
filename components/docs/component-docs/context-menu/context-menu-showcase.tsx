@@ -1,15 +1,5 @@
 "use client";
 
-/**
- * The card's right-click menu, fully interactive.
- *
- * `page.tsx` must stay a plain spec module (trap 29). The state this Preview
- * needs — "Track price" (checkbox) and the shipping-speed choice inside the
- * Shipping submenu (radio) — lives here, alongside the rest of the menu so
- * the whole thing reads as one real specimen rather than a static card with
- * a stateful fragment bolted on.
- */
-
 import { useState } from "react";
 
 import { Heart, Share2, Trash2, Truck } from "lucide-react";

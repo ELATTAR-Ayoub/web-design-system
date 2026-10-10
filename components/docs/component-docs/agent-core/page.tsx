@@ -1,22 +1,3 @@
-/**
- * Authored documentation page for `agent-core`.
- *
- * `components/agent/core/types.ts` imports nothing — not React, not an SDK,
- * not a component. That is what lets the transcript vocabulary be shared by a
- * transport that has never heard of `AgentWorkspace`. This item has no UI of its
- * own — it is the transport-agnostic contract every agent surface renders
- * from — so its opener cannot place a component the way every other page
- * does. What it CAN show is the reducer itself running: `reduceEvent` folding
- * a real event stream into turns, and `resolveState` deriving a real
- * `AgentState` from the result at every step, drawn through the same
- * `AgentAvatar` and a status line, as the workspace header does.
- *
- * The stepper itself lives in `./reducer-walkthrough.tsx`, not here —
- * `scripts/validate-docs.mjs` requires every spec module to stay plain data,
- * so the one file in this pair allowed a `"use client"` directive is the
- * sibling, the same shape as `form/account-form-specimen.tsx`.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Meta, Note, Panel } from "@/components/ds/kit";

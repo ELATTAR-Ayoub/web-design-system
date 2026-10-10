@@ -1,11 +1,3 @@
-/**
- * Authored documentation page for `ai-tool`.
- *
- * The live specimens render the real `Tool` from
- * `components/ai-elements/tool.tsx`; they live in `tool-specimen.tsx`
- * because a spec module cannot carry `"use client"`.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Meta, Note } from "@/components/ds/kit";

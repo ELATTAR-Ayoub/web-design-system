@@ -50,60 +50,34 @@ const LANGUAGE_ALIASES: Record<string, string> = {
   typescript: "typescript",
 };
 
-/**
- * Every Prism token class `code-highlight` (`styles/utilities.css`) has a
- * colour rule for.
- *
- * The ten registered grammars above between them emit far more than
- * `keyword`/`string`/`comment`/`function`/`number`/`punctuation` — real
- * JS/TS/JSX emits `class-name`, `tag`, `attr-name`, `regex`, `boolean`…, and
- * real CSS emits `selector`/`atrule`/`important`. Any of those left
- * unstyled falls back to plain `--foreground`, which is how a first pass at
- * this file shipped real code rendering mostly monochrome — six classes
- * styled, twenty-odd others invisible. Kept here, once, so the CSS and this
- * repo's own tests are written from the same list rather than two that can
- * drift apart; `test/components/ds/code-block.test.tsx` renders a real
- * TSX sample and asserts every token class it emits is in this set.
- */
 export const STYLED_PRISM_TOKEN_CLASSES = [
-  // keyword-like — control flow, declarations, meta directives, decorators
   "keyword",
   "atrule",
   "important",
   "decorator",
-  // string-like — literal text, quoted attribute values, URLs, CDATA, and a
-  // JSX tag's literal text content ("plain-text" — Prism/refractor's JSX
-  // grammar wraps a tag's children in this even when they are plain prose,
-  // not markup)
   "string",
   "attr-value",
   "url",
   "cdata",
   "plain-text",
-  // comment-like — prose the engine ignores
   "comment",
   "prolog",
   "doctype",
-  // calls and declarations
   "function",
-  // number-like — literal values
   "number",
   "boolean",
   "constant",
   "regex",
   "unit", // CSS: the "px" in "768px"
   "color", // CSS: a literal colour keyword, e.g. "red"
-  // punctuation-like — structural marks with no meaning of their own
   "punctuation",
   "operator",
   "entity",
-  // type-like — names of a KIND of thing
   "class-name",
   "builtin",
   "tag",
   "selector",
   "maybe-class-name", // Prism's own heuristic guess at a type identifier
-  // identifier-like — names of a SPECIFIC thing
   "property",
   "parameter",
   "variable",
@@ -111,29 +85,10 @@ export const STYLED_PRISM_TOKEN_CLASSES = [
   "imports", // the binding an `import … from` names
 ] as const;
 
-/**
- * Copies `code` to the clipboard.
- *
- * A seam rather than a hardcoded `navigator.clipboard.writeText` call, for two
- * reasons that both matter here: jsdom has no clipboard, so the unit suite has
- * nothing to drive without one, and `navigator.clipboard` genuinely rejects on
- * an insecure origin or a denied permission — RULES §5 requires the failure
- * path ship, not only the happy one, and a seam is what lets a specimen force
- * it on demand rather than only when a browser happens to refuse.
- */
 export type CopyFn = (text: string) => Promise<void>;
 
 const defaultCopy: CopyFn = (text) => navigator.clipboard.writeText(text);
 
-/**
- * The copy control every fenced block carries.
- *
- * Two signals, per RULES §5: the glyph rolls from a clipboard to a check
- * through `IconSwap` — the control confirming it heard the click — and a toast
- * reports the outcome, including the failure `navigator.clipboard` can
- * genuinely produce. `Button` already carries the press feel, so nothing here
- * adds a second one.
- */
 function CopyButton({ code, copy = defaultCopy }: { code: string; copy?: CopyFn }) {
   const [copied, setCopied] = useState(false);
 
@@ -179,7 +134,6 @@ export function CodeBlock({
 }: {
   code: string;
   language?: string;
-  /** Overrides the clipboard write. Exposed so a specimen can force the failure path. */
   copy?: CopyFn;
   className?: string;
 }) {

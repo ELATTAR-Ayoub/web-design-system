@@ -1,10 +1,3 @@
-/**
- * Authored documentation page for `ai-suggestion`.
- *
- * Every live specimen renders the real parts from
- * `components/ai-elements/suggestion.tsx` in `suggestion-specimen.tsx`.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Meta, Note } from "@/components/ds/kit";

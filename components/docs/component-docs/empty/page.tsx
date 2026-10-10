@@ -1,14 +1,3 @@
-/**
- * Authored documentation page for `empty`.
- *
- * Replaces the generated baseline. Migrated from the old `base/feedback`
- * category page (`app/design-system/components/base/feedback/page.tsx`, since deleted).
- * Every specimen below renders the real `Empty` family from
- * `components/ui/empty.tsx` — nothing here is a styled div. Prop rows in
- * API Reference come from that file's own component signatures and the
- * `emptyMediaVariants` cva config; nothing is invented.
- */
-
 import { PackageOpen, Search } from "lucide-react";
 
 import { SourceMeta } from "@/components/docs/component-page/sections";
@@ -311,10 +300,3 @@ export function EmptyStash() {
     },
   ],
 };
-
-/* Sizes has no fixed id in the required-sections list and is genuinely N/A
- * here: none of the six Empty parts expose a size prop — EmptyMedia's icon
- * square is a fixed 8-unit box and every other part is unsized markup that
- * takes its dimensions from its content and its container. Keyboard and
- * Responsive are declared as omissions on `spec.omitted` above, not here.
- */

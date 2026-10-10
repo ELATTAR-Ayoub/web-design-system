@@ -1,13 +1,3 @@
-/**
- * Documentation page for `premium-surface`.
- *
- * Authored, not generated. The premium button's metal: `@utility foil-value`
- * in `styles/utilities.css`, a three-part ramp/foil/glint built to read as
- * real foil rather than a coloured rectangle. `components/ui/button.tsx`'s
- * `premium` variant is its one real consumer. Glow is a rationed resource in
- * this system (RULES §3) — this is the one surface that gets to use it.
- */
-
 import { Code, Meta, Note, Row } from "@/components/ds/kit";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

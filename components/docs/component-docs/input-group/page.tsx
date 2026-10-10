@@ -1,14 +1,3 @@
-/**
- * Authored documentation page for `input-group`.
- *
- * Replaces the generated baseline. Migrated from the old `base/inputs`
- * category page (`app/design-system/components/base/inputs/page.tsx`, since deleted), which
- * used InputGroup throughout its "Input types" section for every leading
- * icon, addon, and trailing action. Every specimen below renders the real
- * InputGroup family from `components/ui/input-group.tsx` — nothing here is a
- * styled div standing in for a bordered control.
- */
-
 import { AtSign, Percent, Ticket } from "lucide-react";
 
 import { SourceMeta } from "@/components/docs/component-page/sections";

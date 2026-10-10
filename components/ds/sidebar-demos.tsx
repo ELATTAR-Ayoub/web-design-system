@@ -1,13 +1,5 @@
 "use client";
 
-/**
- * The three sidebar specimens that need state. Everything else on the page is
- * declarative and lives in `sidebar-specimens.tsx`.
- *
- * Sidebar examples use the same `Icon` composition as every other surface;
- * shell geometry must not create a second icon source of truth.
- */
-
 import { useState } from "react";
 import { PanelLeft } from "lucide-react";
 
@@ -28,8 +20,6 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { NAV, ShellStage } from "@/components/ds/sidebar-specimens";
-
-/* ── Shared body ──────────────────────────────────────────────────────────── */
 
 function DemoNav() {
   return (
@@ -61,9 +51,6 @@ function InsetHeader({ label }: { label: string }) {
   );
 }
 
-/* ── Provider & state ─────────────────────────────────────────────────────── */
-
-/** `useSidebar` has no data-slot, so this readout is the only proof it works. */
 function Readout() {
   const { state, open, openMobile, isMobile, toggleSidebar } = useSidebar();
   const rows: [string, string][] = [
@@ -117,8 +104,6 @@ export function StateReadoutDemo() {
   );
 }
 
-/* ── Rail & inset ─────────────────────────────────────────────────────────── */
-
 export function RailInsetDemo() {
   return (
     <ShellStage>
@@ -146,8 +131,6 @@ export function RailInsetDemo() {
     </ShellStage>
   );
 }
-
-/* ── Shell matrix ─────────────────────────────────────────────────────────── */
 
 const SIDES = ["left", "right"] as const;
 const VARIANTS = ["sidebar", "floating", "inset"] as const;
@@ -183,15 +166,6 @@ function Knob<T extends string>({
   );
 }
 
-/**
- * The one control panel on this page, and the only place one is right.
- *
- * Every part-level property is shown all at once, the way the buttons page
- * shows seven variants side by side. These three cannot be: `side`, `variant`
- * and `collapsible` change the shell's *structure*, and three structures do not
- * fit in one frame. The panel is remounted on every change via `key`, so it is
- * rebuilt with the new behaviour rather than animating between two of them.
- */
 export function ShellMatrixDemo() {
   const [side, setSide] = useState<(typeof SIDES)[number]>("left");
   const [variant, setVariant] = useState<(typeof VARIANTS)[number]>("sidebar");

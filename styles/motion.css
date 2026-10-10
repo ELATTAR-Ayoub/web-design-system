@@ -617,6 +617,8 @@
      random-looking partial fill. Stopped in place at the start of the channel
      instead: still visibly a sliver rather than a reading, so the information
      ("busy, amount unknown") survives.
+   reduced-motion: orb-ripple HANDLED .voice-orb — the listening ring is the one
+     cue that tells listening from rest, so it is pinned visible as a still ring.
    ------------------------------------------------------------------------- */
 
 /* Accessibility: honour the OS setting. Required by the brief. */
@@ -647,6 +649,14 @@
      progress bar stopped at an arbitrary percentage, i.e. a value claim the
      component is specifically avoiding. Parked at the start of the channel
      instead: visibly a sliver, visibly not a reading. */
+  .voice-orb[data-state="listening"] [data-part="halo"] {
+    animation: none !important;
+    transform: scale(1.12) !important;
+    opacity: 0.5 !important;
+  }
+  .voice-orb[data-state="speaking"] [data-part="body"] {
+    transform: scale(1.05);
+  }
   .anim-progress-indeterminate {
     animation: none !important;
     transform: none !important;
@@ -656,6 +666,28 @@
        than inherited. */
     opacity: 1 !important;
   }
+}
+
+/* The voice orb (components/agent/parts/voice-orb.tsx): the body breathes at
+   rest and while listening, pulses unevenly while speaking, and a ring ripples
+   out while listening. Its reflections turn on ds-spin. */
+@keyframes orb-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.035); }
+}
+
+@keyframes orb-speak {
+  0%, 100% { transform: scale(1); }
+  18% { transform: scale(1.07); }
+  32% { transform: scale(0.99); }
+  50% { transform: scale(1.05); }
+  68% { transform: scale(1); }
+  84% { transform: scale(1.08); }
+}
+
+@keyframes orb-ripple {
+  from { transform: scale(0.94); opacity: 0.55; }
+  to { transform: scale(1.45); opacity: 0; }
 }
 
 @keyframes star-sway {

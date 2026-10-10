@@ -1,13 +1,3 @@
-/**
- * Authored documentation page for `input`.
- *
- * Replaces the generated baseline. Every specimen renders the real `Input`
- * from `components/ui/input.tsx`. Field/FieldLabel/FieldDescription compose
- * around it for realistic context (a field needs a label to be usable) but
- * are documented on their own `field` page — the API Reference below covers
- * only Input's own props, which is this item's actual export surface.
- */
-
 import { AtSign, Lock, Percent, Search, Ticket } from "lucide-react";
 
 import { SourceMeta } from "@/components/docs/component-page/sections";

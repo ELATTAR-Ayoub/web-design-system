@@ -1,15 +1,5 @@
 "use client";
 
-/**
- * The live Preview specimen for the `radio` documentation page.
- *
- * `components/docs/component-docs/radio/page.tsx` is a plain data module
- * rendered by a SERVER component — it cannot hold the `useState` a real
- * choice needs (trap 29). This companion is that scene: pick a withdrawal
- * method and the summary line beneath it — fee and arrival time — actually
- * changes, using nothing but `RadioGroup`'s own `onValueChange`.
- */
-
 import { useState } from "react";
 
 import { Label } from "@/components/ui/label";

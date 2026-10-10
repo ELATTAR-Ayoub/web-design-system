@@ -12,11 +12,6 @@ import {
 } from "@/components/ui/breadcrumb";
 import { categoryHref, DS_GROUPS, DS_ROOT } from "@/lib/ds/nav";
 
-/**
- * Design system root > group > category, derived from `lib/ds/nav.ts` rather
- * than typed per page — a page cannot show a breadcrumb that disagrees with
- * where the sidebar says it lives.
- */
 export function DsBreadcrumb() {
   const pathname = usePathname();
   if (pathname === DS_ROOT) return null;

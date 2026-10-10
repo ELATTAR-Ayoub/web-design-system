@@ -1,13 +1,3 @@
-/**
- * Authored documentation page for `item`.
- *
- * Replaces the generated baseline. Migrated from the old `base/data` category
- * page (`app/design-system/components/base/data/page.tsx`, since deleted), which held every
- * data-display component's real documentation on one page. Every specimen
- * below renders the real `Item` family from `components/ui/item.tsx` —
- * nothing here is a styled div.
- */
-
 import { ArrowUpRight } from "lucide-react";
 
 import { SourceMeta } from "@/components/docs/component-page/sections";

@@ -38,7 +38,6 @@ function SamplePlan({ streaming = false, defaultOpen = true }: { streaming?: boo
   );
 }
 
-/** The Preview: an open plan whose trigger collapses the steps. */
 export function PlanShowcase() {
   return (
     <Panel label="Plan">
@@ -65,7 +64,6 @@ export function PlanShowcase() {
   );
 }
 
-/** The States grid. */
 export function PlanStateGrid() {
   return (
     <StateGrid cols={3}>
@@ -88,7 +86,6 @@ export function PlanStateGrid() {
   );
 }
 
-/** The Examples: a plan with no footer, collapsed by default. */
 export function PlanExamples() {
   return (
     <Panel label="Collapsed, no footer">

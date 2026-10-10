@@ -1,23 +1,3 @@
-/**
- * Authored documentation page for `table`.
- *
- * Replaces the generated baseline. Migrated from the old `base/data` category
- * page (`app/design-system/components/base/data/page.tsx`, since deleted), which held every
- * data-display component's real documentation on one page. Every specimen
- * below renders the real `Table` family from `components/ui/table.tsx` —
- * nothing here is a styled div.
- *
- * "Data Table" — the TanStack-composed sort/filter/select/paginate pattern —
- * is not a separate registry item (shadcn ships it as a recipe, not a file:
- * see `components/ds/data-table-demo.tsx`). It is documented here, on the
- * component it is built from, as an Examples-adjacent pattern rather than a
- * live specimen: the demo is a stateful client component, and a spec module
- * is plain data rendered by a server component — mounting it live here would
- * either add hooks to this file or duplicate its state into a second copy.
- * Its source and API are shown instead, in full, so the pattern is legible
- * without a second implementation to drift from the original.
- */
-
 import { CodeBlock } from "@/components/ds/code-block";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
@@ -27,16 +7,6 @@ import { TransactionTableShowcase } from "./table-showcase";
 
 import { meta } from "./meta";
 
-/**
- * Reproduced from `components/ds/data-table-demo.tsx` rather than imported
- * and rendered — the real file carries React state, and this spec module
- * must not.
- */
-/* Single-quoted below (the real file uses double quotes) so this
-   documentation STRING — reproducing the real file's first line, not a
-   directive belonging to this file — does not itself contain the exact
-   double-quoted substring the "no client directive in a spec module" guard
-   scans this file's raw text for. This file stays server-rendered data. */
 const DATA_TABLE_SOURCE = `"use client";
 
 import {

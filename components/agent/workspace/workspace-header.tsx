@@ -1,27 +1,5 @@
 "use client";
 
-/**
- * WorkspaceHeader — thin, Claude-style: leading slot · agent avatar · name / title ·
- * voice orb (only while voice is active) · settings gear. No activity toggle, no
- * New-chat icon, no status text — those live where they belong (the history
- * sidebar, the run inline in the thread).
- *
- * The face is the agent's own avatar (`CubeAvatar` by default — the set of
- * twenty-six animated scenes, one per agent state), drawn for the agent's
- * current `state`, so the header shows at a glance that it is thinking,
- * running a tool or waiting. A caller that brings its own face passes
- * `avatar` (an `AvatarRenderer`).
- *
- * `VoiceOrb` is the voice-mode face. It mounts through `usePresence` when
- * `voiceState` leaves "idle" and plays its exit before it unmounts, keeping the
- * last active state on screen while it leaves rather than flickering to
- * "idle". `VoiceState` is the composer's: listening / thinking / speaking are
- * the orb's own states, unchanged.
- *
- * The gear opens the settings `Sheet` only when `showSettings` is true, i.e. when
- * the transport advertises `capabilities.settings`.
- */
-
 import * as React from "react";
 import { SettingsIcon } from "lucide-react";
 
@@ -40,20 +18,13 @@ import type { VoiceState } from "./workspace-composer";
 import { WorkspaceSettings, type WorkspaceSettingsProps } from "./workspace-settings";
 
 export type WorkspaceHeaderProps = {
-  /** The agent's display name, beside the logo. Default "Agent". */
   name?: string;
-  /** The conversation's own title. Absent renders nothing — no placeholder. */
   title?: string;
-  /** The agent's face, drawn for `state`. Defaults to `CubeAvatar`. */
   avatar?: AvatarRenderer;
-  /** The agent's state, for `avatar`. */
   state?: AgentState;
-  /** Leading slot — the controller puts the history SidebarTrigger here. */
   leading?: React.ReactNode;
-  /** The voice orb shows only while voice is active (state !== "idle"); the avatar stays the face. */
   voiceState: VoiceState;
   settings: WorkspaceSettingsProps;
-  /** Whether `transport.capabilities.settings` is true — gates the gear and its sheet. */
   showSettings?: boolean;
   settingsOpen?: boolean;
   onSettingsOpenChange?: (open: boolean) => void;

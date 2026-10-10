@@ -1,32 +1,5 @@
 "use client";
 
-/**
- * The full-viewport live workspace — "Open full screen" from the
- * `agent-workspace` docs page's own Preview section.
- *
- * Renders ONLY the conversation picker and `AgentWorkspace` itself (plus a
- * minimal Back link — not part of the docs chrome, just wayfinding), at the
- * full viewport height and width, so every one of `AgentWorkspace`'s own
- * container-query layouts (thread-only, +activity, three-column) can
- * actually be tried at real desktop width — something even the docs page's
- * own `wide` preview stage cannot fully give it once the shell's rails and
- * `--width-content` cap are accounted for.
- *
- * `app/design-system/layout.tsx` still wraps every route under
- * `app/design-system/**` in its header/rail/`max-w-(--width-content)`
- * shell — this route does not get its own layout. Rather than forking that
- * shared shell (used by every other documentation page), this component
- * breaks out of it visually with `fixed inset-0`, the same technique
- * `components/ui/dialog.tsx`/`sheet.tsx` already use for their own overlays
- * (`z-50`), so it covers the full viewport regardless of the ancestor
- * layout's own width and padding.
- *
- * Reuses `useConversationPicker`/`ConversationPickerRow`/`LiveWorkspace` from the
- * docs page's own specimen file rather than a second implementation of any
- * of them — the only thing this file adds is the full-viewport frame around
- * them.
- */
-
 import * as React from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";

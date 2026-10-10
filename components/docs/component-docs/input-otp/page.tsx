@@ -1,20 +1,3 @@
-/**
- * Authored documentation page for `input-otp`.
- *
- * Replaces the generated baseline. Migrated from the old `base/inputs`
- * category page (`app/design-system/components/base/inputs/page.tsx`, since deleted) under
- * its "Verification code" section. Every specimen below renders the real
- * `InputOTP` family from `components/ui/input-otp.tsx`, itself a thin
- * wrapper around the `input-otp` package's `OTPInput` — nothing here is a
- * styled div standing in for a slot.
- *
- * A spec module is plain data rendered by a server component, so it cannot
- * hold the `value`/`onChange` state a real verification flow needs.
- * `InputOTP` manages an internal value when left uncontrolled (no `value`
- * prop), which is what every specimen below relies on; the controlled
- * pattern is shown as a snippet in Usage instead.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 

@@ -1,10 +1,3 @@
-/**
- * Authored documentation page for `ai-edge`.
- *
- * Live specimens render the real `Edge.Animated` and `Edge.Temporary` from
- * `components/ai-elements/edge.tsx` and live in `edge-specimen.tsx`.
- */
-
 import { EdgePreview, EdgeStateGrid } from "./edge-specimen";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

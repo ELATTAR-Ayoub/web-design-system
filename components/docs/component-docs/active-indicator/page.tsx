@@ -1,28 +1,3 @@
-/**
- * Authored documentation page for `active-indicator`.
- *
- * Replaces the generated baseline. Renamed from `sliding-indicator` — the
- * export is `ActiveIndicator` / `useActiveIndicator`, not `SlidingIndicator`.
- * It lives in the Effects family in the platform contract, but unlike most of
- * that family (`glass`, `press`, `premium-surface`) it is not a CSS class
- * applied to a host: it is a real, measurement-driven React hook plus the
- * absolutely-positioned pill it drives, so this page uses `showcase` sections
- * rather than `effect` sections — there is a component to place, not a class
- * to demonstrate on a neutral host.
- *
- * System rule (RULES §4, referenced from `components/ui/sidebar.tsx`): a group
- * with an active option owns ONE pill that travels between selections — the
- * options never paint their own selected background. `Tabs`, `ToggleGroup` and
- * `SidebarMenu` all compose this hook rather than each hand-rolling the same
- * measurement code three times.
- *
- * The specimens below use `Tabs` (`components/ui/tabs.tsx`) as the host,
- * because `Tabs` is the composition this hook was built for and it needs no
- * bespoke fixture. Every claim about what the hook measures and when it
- * re-measures is read from `components/ui/active-indicator.tsx` itself, not
- * asserted from memory.
- */
-
 import {
   Code,
   Meta,

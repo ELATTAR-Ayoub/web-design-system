@@ -1,13 +1,5 @@
 "use client";
 
-/**
- * Live specimens for the `ai-speech-input` page. `SpeechInput` is the real
- * component and listens through the reader's own browser: the Web Speech
- * recogniser where it exists, or a recorder otherwise. The recorder path hands
- * its audio to `onAudioRecorded`, which here returns a fixed sentence instead
- * of calling a service, so nothing leaves the page.
- */
-
 import * as React from "react";
 
 import { SpeechInput } from "@/components/ai-elements/speech-input";

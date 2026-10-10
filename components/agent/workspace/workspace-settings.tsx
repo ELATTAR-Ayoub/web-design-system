@@ -1,29 +1,5 @@
 "use client";
 
-/**
- * WorkspaceSettings — the settings `Sheet` content for `AgentWorkspace`.
- *
- *   Autonomy      ask / plan first / act — chosen here now (it used to sit in the
- *                 prompt bar's toolbar; the composer is an AI Elements
- *                 `PromptInput` and carries no mode control)
- *   Response      length and temperature
- *   Voice         the read-aloud voice, chosen in AI Elements' `VoiceSelector`
- *   About         the connected agent in AI Elements' `Agent` — only when the
- *                 transport describes one (`transport.agent`)
- *
- * Every setting is an explicit value / onChange pair, lifted into
- * `AgentWorkspace` so it can also build `SendOptions.settings` from them
- * (`{ autonomy, temperature, length }`, sent only when
- * `transport.capabilities.settings` is true). The voice is not part of
- * `SendOptions` — it is how replies are READ, not how they are written — and
- * `voices` is whatever the speech adapter reports (`useBrowserSpeech().voices`),
- * so the picker lists the real voices of this machine, never an invented
- * catalogue (and so has no preview audio: the browser gives none).
- *
- * The two sliders: "Response length" is `settings.length` (0-100, a verbosity
- * dial); "Temperature" is `settings.temperature` (0-2, step 0.1, default 0.7).
- */
-
 import * as React from "react";
 import { ListChecksIcon, MessageCircleIcon, ZapIcon } from "lucide-react";
 import type { Tool } from "ai";
@@ -80,14 +56,9 @@ const AUTONOMY_DETAIL: Record<AutonomyMode, { description: string; icon: typeof 
 
 const AUTONOMY_MODES: AutonomyMode[] = ["ask", "plan", "act"];
 
-/** The defaults `AgentWorkspace` itself initialises these to — "Reset to defaults" restores exactly these. */
 export const DEFAULT_RESPONSE_LENGTH = 50;
 export const DEFAULT_TEMPERATURE = 0.7;
 
-/**
- * Both sliders read as a raw number beside a word — a bare 0-100 or 0-2 figure
- * means nothing to someone who has never seen the scale. Three bands each.
- */
 function lengthLabel(value: number): string {
   if (value <= 33) return "Short";
   if (value <= 66) return "Medium";
@@ -101,25 +72,17 @@ function temperatureLabel(value: number): string {
 }
 
 export type WorkspaceSettingsProps = {
-  /** Forwarded as `SendOptions.settings.autonomy`. */
   autonomy: AutonomyMode;
   onAutonomyChange: (autonomy: AutonomyMode) => void;
-  /** 0-100 — forwarded as `SendOptions.settings.length`. */
   length: number;
   onLengthChange: (length: number) => void;
-  /** 0-2, step 0.1 — forwarded as `SendOptions.settings.temperature`. */
   temperature: number;
   onTemperatureChange: (temperature: number) => void;
-  /** The read-aloud voice's id, or null for the system default. */
   voice?: string | null;
   onVoiceChange?: (id: string) => void;
-  /** The voices the speech adapter offers. The Voice section renders only when there are some. */
   voices?: SpeechVoice[];
-  /** What the connected agent is — the "About this agent" section renders only when present. */
   agent?: AgentProfile;
-  /** Restores autonomy, length and temperature to their defaults. */
   onReset?: () => void;
-  /** True while the transport is not ready to receive a message yet. */
   disabled?: boolean;
   className?: string;
 };

@@ -1,22 +1,3 @@
-/**
- * Authored documentation page for `spinner`.
- *
- * Replaces the generated baseline. Migrated from the old `base/feedback`
- * category page (`app/design-system/components/base/feedback/page.tsx`, since deleted),
- * where it was documented together with Progress under one "Progress &
- * Spinner" heading. Progress now has its own page — see `progress`; this
- * page covers only the unmeasurable case. Every specimen below renders the
- * real `Spinner` from `components/ui/spinner.tsx` — nothing here is a styled
- * div. Prop rows in API Reference come from that file's own signature;
- * nothing is invented.
- *
- * The Preview section renders `SpinnerShowcase` (`./spinner-showcase.tsx`), a
- * client companion (per `references/traps.md` #29) that runs a real pending
- * action from a press: the request state, the timeout and the resulting
- * success line all live there, so the reader starts the wait themselves
- * instead of looking at a spinner that was simply always spinning.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 
@@ -247,9 +228,3 @@ export function RequestingWithdrawal() {
   ],
 };
 
-/* Variants is omitted for this item (see the `omitted` map above for
- * Keyboard and Responsive, which are required sections):
- *
- * - Variants: Spinner has no variant prop — one glyph, one behaviour. Sizes
- *   above is the only shape axis the source exposes.
- */

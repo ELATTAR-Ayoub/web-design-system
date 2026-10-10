@@ -1,12 +1,3 @@
-/**
- * Authored documentation page for `popover`.
- *
- * Replaces the generated baseline. Migrated from the old `base/dialogs`
- * category page (`app/design-system/components/base/dialogs/page.tsx`, since deleted).
- * Every specimen below renders the real `Popover` from
- * `components/ui/popover.tsx` — nothing here is a styled div.
- */
-
 import { Info } from "lucide-react";
 
 import { SourceMeta } from "@/components/docs/component-page/sections";

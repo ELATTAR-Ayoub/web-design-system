@@ -1,18 +1,5 @@
 "use client";
 
-/**
- * The live Preview specimen for the `disabled` documentation page.
- *
- * `components/docs/component-docs/disabled/page.tsx` is a plain data module
- * rendered by a SERVER component (per `references/traps.md` #29) — it cannot
- * hold the condition that flips the wrapped control. This client companion
- * owns it: checking "I've added a payment method" enables the real
- * `Checkout` button for real — `Disabled`'s own `disabled` prop and the
- * child's native `disabled` attribute both toggle together, exactly as
- * `disabled.tsx` documents them wired. Leave it unchecked and the reason
- * trigger beside the button stays reachable, on keyboard and on touch.
- */
-
 import { useState } from "react";
 
 import { Checkbox } from "@/components/ui/checkbox";

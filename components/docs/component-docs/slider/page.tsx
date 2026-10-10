@@ -1,23 +1,3 @@
-/**
- * Authored documentation page for `slider`.
- *
- * Replaces the generated baseline. Migrated from the old `base/selection`
- * category page. "Range Slider" is not a separate registry item or
- * component — it is Slider configured with a two-entry value array — so it
- * appears here as the Examples specimen rather than its own page, per the
- * category page it came from (`value as an array. Two entries makes it a
- * range.`). Every specimen renders the real `Slider` from
- * `components/ui/slider.tsx`. Prop rows come from that file's own signature
- * (including its non-Radix `thumbLabels` prop) plus the underlying Radix
- * `SliderPrimitive.Root` it forwards props to.
- *
- * Specimens below are uncontrolled (`defaultValue`), matching every other
- * authored spec in this directory — the `ComponentDocPage` shell that renders
- * `spec` is a server component, and a spec module stays plain data rather than
- * becoming its own client boundary. The readout beside each track is real
- * markup, not a live binding, and says so.
- */
-
 import { Slider } from "@/components/ui/slider";
 
 import { SourceMeta } from "@/components/docs/component-page/sections";

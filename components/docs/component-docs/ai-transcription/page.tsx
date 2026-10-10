@@ -1,10 +1,3 @@
-/**
- * Authored documentation page for `ai-transcription`.
- *
- * The playback time is state, so every live render goes through
- * `transcription-specimen.tsx`.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Meta, Note, Panel, StateCell, StateGrid } from "@/components/ds/kit";

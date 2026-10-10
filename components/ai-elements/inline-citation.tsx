@@ -59,11 +59,8 @@ export type InlineCitationCardTriggerProps = ComponentProps<typeof Badge> & {
   sources: string[];
 };
 
-// Vendored change: dropped `rounded-full` — Badge already ships
-// `rounded-pill` (components/ui/badge.tsx).
-/** A source's host for the badge. Vendored change: upstream called
- *  `new URL()` bare, so one malformed source threw and took the whole reply
- *  down; a URL that does not parse shows as itself. */
+// Vendored change: dropped `rounded-full` — Badge already ships `rounded-pill`.
+/** Vendored change: upstream called `new URL()` bare, so one malformed source threw and took the whole reply down; a URL that does not parse shows as itself. */
 const hostOf = (url: string) => {
   try {
     return new URL(url).hostname;
@@ -78,8 +75,7 @@ export const InlineCitationCardTrigger = ({
   ...props
 }: InlineCitationCardTriggerProps) => (
   <HoverCardTrigger asChild>
-    {/* Vendored change: focusable by default — a hover card the keyboard
-        cannot reach hides its sources from keyboard users. */}
+    {/* Vendored change: focusable by default — a hover card the keyboard cannot reach hides its sources from keyboard users. */}
     <Badge className={cn("ml-1", className)} tabIndex={0} variant="secondary" {...props}>
       {sources[0] ? (
         <>
@@ -184,8 +180,7 @@ export const InlineCitationCarouselIndex = ({
       return;
     }
 
-    // Vendored change: deferred to a microtask so setState is not called
-    // synchronously in the effect body (react-hooks/set-state-in-effect).
+    // Vendored change: deferred to a microtask so setState is not called synchronously in the effect body (react-hooks/set-state-in-effect).
     queueMicrotask(syncState);
 
     api.on("select", syncState);
@@ -222,10 +217,7 @@ export const InlineCitationCarouselPrev = ({
     }
   }, [api]);
 
-  // Vendored change: the raw `<button>` had no hit target at all beyond its
-  // 16px icon — replaced with `Button` (`icon-sm`, matching
-  // components/ui/carousel.tsx's own CarouselPrevious/Next) so it has a real
-  // interactive target.
+  // Vendored change: the raw `<button>` had no hit target at all beyond its 16px icon — replaced with `Button` so it has a real interactive target.
   return (
     <Button
       aria-label="Previous"
@@ -255,8 +247,7 @@ export const InlineCitationCarouselNext = ({
     }
   }, [api]);
 
-  // Vendored change: same as InlineCitationCarouselPrev — a real Button
-  // target instead of a bare icon-sized `<button>`.
+  // Vendored change: same as InlineCitationCarouselPrev — a real Button target instead of a bare icon-sized `<button>`.
   return (
     <Button
       aria-label="Next"

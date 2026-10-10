@@ -1,14 +1,3 @@
-/**
- * Authored documentation page for `resizable`.
- *
- * Replaces the generated baseline. Migrated from the old `base/layout`
- * category page (`app/design-system/components/base/layout/page.tsx`, since deleted), which
- * held every layout primitive's real documentation on one page. Every
- * specimen below renders the real `ResizablePanelGroup` family from
- * `components/ui/resizable.tsx` — a thin, token-styled wrap around
- * react-resizable-panels. Nothing here is a styled div standing in for it.
- */
-
 import {
   ResizableHandle,
   ResizablePanel,

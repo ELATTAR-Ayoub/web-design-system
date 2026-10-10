@@ -8,7 +8,6 @@ import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 
 import { edgeTypes, FlowFrame, miniNodeTypes, pairEdges, pairNodes, planEdges, planNodes, stepNodeTypes } from "../ai-canvas/flow-fixture";
 
-/** The Preview: zoom in, zoom out and fit view, in the workspace's configuration (no lock button). */
 export function ControlsPreview() {
   return (
     <Panel label="Controls" note="the workflow dialog's configuration: showInteractive={false}">
@@ -33,7 +32,6 @@ function Cell({ label, note, controls }: { label: string; note: string; controls
   );
 }
 
-/** The configurations the props allow. */
 export function ControlsStateGrid() {
   return (
     <StateGrid cols={3}>

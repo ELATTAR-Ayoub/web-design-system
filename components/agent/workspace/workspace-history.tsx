@@ -1,18 +1,5 @@
 "use client";
 
-/**
- * Conversation history, in the Claude pattern, on our shadcn Sidebar.
- *
- * AI Elements has no history component, so this is `components/ui/sidebar.tsx`
- * composed: a "New chat" button on top, one `SidebarGroup` per age bucket
- * (Today / Yesterday / Previous 7 days / Older), rows that are the title only,
- * and a `⋯` menu per row (Archive, Delete). Delete is undoable from its toast.
- *
- * It renders the Sidebar's *content*. The host places it inside
- * `SidebarProvider` + `Sidebar` and puts the `SidebarTrigger` in its header;
- * on mobile the Sidebar's own Sheet carries it.
- */
-
 import * as React from "react";
 import { ArchiveIcon, MoreHorizontalIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import { toast } from "sonner";
@@ -45,9 +32,7 @@ export type WorkspaceHistoryProps = {
   onNew?: () => void;
   onArchive?: (id: string) => void;
   onDelete?: (id: string) => void;
-  /** Undo for Delete's toast — puts the row back. */
   onRestore?: (item: ConversationSummary) => void;
-  /** "Now" for the date grouping (tests). Defaults to Date.now(). */
   now?: number;
 };
 
@@ -61,7 +46,6 @@ function startOfDay(ms: number): number {
   return d.getTime();
 }
 
-/** Which age bucket a timestamp falls in, by calendar day relative to `now`. */
 export function historyBucket(updatedAt: string, now: number): HistoryBucket {
   const t = new Date(updatedAt).getTime();
   const today = startOfDay(now);
@@ -72,7 +56,6 @@ export function historyBucket(updatedAt: string, now: number): HistoryBucket {
   return "Older";
 }
 
-/** Items grouped into non-empty buckets, newest first within each. */
 export function groupHistory(items: ConversationSummary[], now: number) {
   const sorted = [...items].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
   return BUCKETS.map((label) => ({

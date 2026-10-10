@@ -1,20 +1,9 @@
-/**
- * Documentation page for `glass`.
- *
- * Authored, not generated. Three related classes in `styles/utilities.css` —
- * `glass-panel`, `glass-panel-deep` and `glass-control` — for a surface that
- * sits in front of the page rather than cut out of it. All three mix from
- * `--foreground` and `--card` alone, so neither knows which theme it is in.
- * There is no component: each is a class a host wears directly.
- */
-
 import { Meta, Note } from "@/components/ds/kit";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 
 import { meta } from "./meta";
 
-/** A row of the scene scrolling behind the glass — a pack pull, not a placeholder. */
 function PullRow({ name, rarity }: { name: string; rarity: string }) {
   return (
     <div className="flex items-center justify-between rounded-lg bg-background/40 px-4 py-3">

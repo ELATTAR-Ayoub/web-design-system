@@ -39,10 +39,7 @@ export const CommitHeader = ({
   ...props
 }: CommitHeaderProps) => (
   <CollapsibleTrigger asChild {...props}>
-        {/* Vendored change: the header holds its own buttons (copy), so it cannot
-            be a <button>; upstream left a bare div that the keyboard could not
-            reach. It is a focusable role="button" that toggles on Enter/Space —
-            keys from the buttons inside it are theirs, not the header's. */}
+        {/* Vendored change: the header holds its own buttons (copy), so it cannot be a <button>; upstream left a bare div that the keyboard could not reach. */}
     <div
       className={cn(
         "press group flex min-h-(--size-target-min) cursor-pointer items-center justify-between gap-4 p-3 text-left outline-none hover:opacity-80 focus-visible:ring-3 focus-visible:ring-ring/50",
@@ -184,10 +181,7 @@ export const CommitTimestamp = ({
   children,
   ...props
 }: CommitTimestampProps) => {
-  // Vendored change: the vendor set state inside an effect to avoid an
-  // SSR/client mismatch (react-hooks/set-state-in-effect). A server snapshot
-  // of "" with a client snapshot of the relative string gives the same
-  // hydrate-then-fill behaviour without the effect.
+  // Vendored change: the vendor set state inside an effect to avoid an SSR/client mismatch (react-hooks/set-state-in-effect).
   const formatted = useSyncExternalStore(
     subscribeNever,
     () => formatRelativeDate(date),
@@ -277,8 +271,7 @@ export const CommitCopyButton = ({
 
   return (
     <Button
-      // Vendored change: an icon-only button needs a name; a caller's own
-      // aria-label (spread after) still wins.
+      // Vendored change: an icon-only button needs a name; a caller's own aria-label (spread after) still wins.
       aria-label={isCopied ? "Commit hash copied" : "Copy commit hash"}
       className={cn("shrink-0", className)}
       onClick={copyToClipboard}

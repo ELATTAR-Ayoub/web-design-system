@@ -11,7 +11,6 @@ const NOTES = {
   temporary: "Edge.Temporary: a dashed stroke in the ring colour",
 } as const;
 
-/** The Preview: the travelling edge into the running step, the dashed one into the skipped step. */
 export function EdgePreview() {
   return (
     <Panel label="Edge" note="Edge.Animated into the running step · Edge.Temporary into the skipped one">
@@ -22,7 +21,6 @@ export function EdgePreview() {
   );
 }
 
-/** One cell per edge type, so the three can be compared at rest. */
 export function EdgeStateGrid() {
   return (
     <StateGrid cols={3}>

@@ -1,22 +1,5 @@
 "use client";
 
-/**
- * The live sidebar — and the one design-system page that is not under
- * `/design-system`.
- *
- * A real `Sidebar` is `fixed inset-y-0 h-svh`, an app shell rather than a
- * widget. That rules out a `Panel`, and it also rules out any route under
- * `app/design-system/layout.tsx`: that layout supplies the docs chrome,
- * including `DsSidebar` and a 1080px reading column, and a nested route in Next
- * cannot opt out of a parent layout. Rendering there would drop a fixed sidebar
- * on top of the documentation's own one.
- *
- * So it lives at the root, where the only layout is theme + tooltips + toaster.
- * The anatomy specimen on the Layout page uses `collapsible="none"` and carries
- * the same tokens; this route is the only place the four things that genuinely
- * need a viewport can be shown — collapsing, the rail, the mobile sheet, ⌘B.
- */
-
 import Link from "next/link";
 import { useState } from "react";
 import {
@@ -116,8 +99,7 @@ export default function SidebarDemoPage() {
 
   return (
     <SidebarProvider
-      /* Structural shell settings remount the provider so state from one
-         geometry cannot leak into the next. */
+      // Structural settings remount the provider so state does not leak between geometries.
       key={`${side}-${variant}-${collapsible}`}
       className="min-h-svh"
     >

@@ -1,35 +1,5 @@
 "use client";
 
-/**
- * The live "Section 1" specimen for the `agent-workspace` documentation page:
- * a conversation picker above a real `AgentWorkspace`, pointed at
- * `useMockTransport({ conversation })`.
- *
- * The picker lists the 7 scripted conversations (Chat, Tools, Planning,
- * Approvals, Run control, Recovery, Long session). Every send — typed or a
- * Suggestion — advances the current conversation one beat. The history column
- * has one demo row per conversation: opening a row switches to it, New chat
- * starts the current one fresh, and Archive / Delete work on the demo list
- * (Delete offers Undo). Replay stays.
- *
- * Picking a conversation remounts `AgentWorkspace` with a React `key` — a run
- * model, a pending approval and a queue are all state the mock transport owns
- * internally, with no clean "reset" seam short of unmounting.
- *
- * `AgentWorkspace` lays out by ITS OWN width (`@container/workspace`), and
- * the page's "preview" section opts into `wide: true` so the stage is not
- * capped at `max-w-3xl`. The picker is one `Select` plus a Replay button,
- * with the hint on its own line below, so it fits at 375px.
- *
- * `useConversationPicker` and `ConversationPickerRow` are exported so the
- * "Open full screen" route reuses the exact same picker and state machine.
- *
- * `speed` is read from `?speed=` via `useSearchParams` so
- * `e2e/agent-workspace.spec.ts` can run every conversation's timers fast.
- * A component that calls `useSearchParams` needs a `<Suspense>` boundary above
- * it, so the hook lives in a small inner component and the export wraps it.
- */
-
 import * as React from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -55,11 +25,6 @@ import { Icon } from "@/components/ui/icon";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 
-/**
- * The one-line "what to do" hint per conversation, in plain words. The
- * workspace already wires each control to the right transport method, so this
- * page re-implements none of that.
- */
 export const HINTS: Record<ConversationId, string> = {
   chat: "Press the suggestion under each answer. Edit your message or press Regenerate to flip between versions, and attach an image and a PDF at the end.",
   tools: "Press the suggestion under each answer. Watch a search, a test run, a terminal, a failing deploy that retries, a crash you Retry, then an image, a document, previews and a sandbox.",
@@ -70,21 +35,18 @@ export const HINTS: Record<ConversationId, string> = {
   "long-session": "Press the suggested prompt until the context ring nears its limit, then press Summarise. Try dictation, About this agent and the voice picker.",
 };
 
-/** The model picker's options. */
 const MODELS: ModelOption[] = [
   { value: "swift", label: "Swift", description: "Fast answers" },
   { value: "steady", label: "Steady", description: "Balanced" },
   { value: "deep", label: "Deep", description: "Slow, thorough reasoning" },
 ];
 
-/** What `@` offers in the composer. */
 const SOURCES: PromptSource[] = [
   { id: "docs", label: "Documents", description: "Specs, notes, briefs", icon: FileTextIcon },
   { id: "mail", label: "Mail", description: "Read and draft mail", icon: MailIcon },
   { id: "calendar", label: "Calendar", description: "Events and availability", icon: CalendarIcon },
 ];
 
-/** What `/` offers; the skills are in the + menu as well. */
 const COMMANDS: AgentCommand[] = [
   {
     id: "explain",
@@ -113,10 +75,8 @@ const COMMANDS: AgentCommand[] = [
 ];
 
 const DAY_MS = 24 * 60 * 60 * 1000;
-/** Frozen once at module load — a demo history's "how long ago" only has to look plausible. */
 const NOW = Date.now();
 
-/** Spread so the history shows all four groups: Today, Yesterday, Previous 7 days, Older. */
 const AGE_DAYS: Record<ConversationId, number> = {
   chat: 0,
   tools: 0,
@@ -127,7 +87,6 @@ const AGE_DAYS: Record<ConversationId, number> = {
   "long-session": 20,
 };
 
-/** One demo history row per conversation; opening a row switches to it. */
 export const DEMO_CONVERSATIONS: ConversationSummary[] = CONVERSATIONS.map((c, i) => ({
   id: `demo-${c.id}`,
   title: c.starter,
@@ -138,10 +97,6 @@ export const DEMO_CONVERSATIONS: ConversationSummary[] = CONVERSATIONS.map((c, i
 const conversationOfRow = (rowId: string): ConversationId | undefined =>
   CONVERSATIONS.find((c) => `demo-${c.id}` === rowId)?.id;
 
-/**
- * Which conversation is picked, the demo history list (archive / delete with
- * Undo), and a replay counter that forces `AgentWorkspace` to remount.
- */
 export function useConversationPicker() {
   const [conversation, setConversation] = React.useState<ConversationId>("chat");
   const [replayCount, setReplayCount] = React.useState(0);
@@ -156,7 +111,6 @@ export function useConversationPicker() {
 
   const replay = React.useCallback(() => setReplayCount((n) => n + 1), []);
 
-  /** `onOpen` — switches to the conversation that row stands for. */
   const openConversation = React.useCallback((id: string) => {
     const mapped = conversationOfRow(id);
     if (!mapped) return;
@@ -165,11 +119,9 @@ export function useConversationPicker() {
     setReplayCount(0);
   }, []);
 
-  /** `onNew` — starts the current conversation fresh. */
   const newConversation = React.useCallback(() => setReplayCount((n) => n + 1), []);
 
   const removeItem = React.useCallback((id: string) => setItems((prev) => prev.filter((i) => i.id !== id)), []);
-  /** Undo for Delete — puts the row back; the history's own sort restores its place. */
   const restoreItem = React.useCallback(
     (item: ConversationSummary) => setItems((prev) => (prev.some((i) => i.id === item.id) ? prev : [...prev, item])),
     [],
@@ -190,12 +142,10 @@ export function useConversationPicker() {
   };
 }
 
-/** `?speed=` clamped to a range a human can watch: below 0.25 takes minutes, above 8 is illegible. */
 export function clampSpeed(value: number): number {
   return Math.min(8, Math.max(0.25, value));
 }
 
-/** One compact control row: the conversation picker, Replay, and the hint on its own line below. */
 export function ConversationPickerRow({
   conversation,
   onSelect,
@@ -206,7 +156,6 @@ export function ConversationPickerRow({
   conversation: ConversationId;
   onSelect: (id: ConversationId) => void;
   onReplay: () => void;
-  /** When given, an "Open full screen" link sits beside Replay. */
   fullScreenHref?: string;
   className?: string;
 }) {
@@ -258,9 +207,7 @@ export function LiveWorkspace({
 }: {
   conversation: ConversationId;
   speed: number;
-  /** The demo history rows. Defaults to all seven. */
   items?: ConversationSummary[];
-  /** The demo history row to show selected, or `null` for none. */
   activeId: string | null;
   onOpenConversation: (id: string) => void;
   onNewConversation: () => void;
@@ -282,7 +229,6 @@ export function LiveWorkspace({
     onRestore: onRestoreConversation,
   };
 
-  // One command runs in the browser rather than writing text: it calls the transport.
   const summarise = transport.summarise;
   const commands = React.useMemo<AgentCommand[]>(
     () =>

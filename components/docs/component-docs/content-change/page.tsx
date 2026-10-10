@@ -1,26 +1,3 @@
-/**
- * Documentation page for `content-change`.
- *
- * Authored, not generated. `ContentChange` replays a one-shot entrance
- * animation on `children` whenever a `contentKey` prop changes, without
- * remounting `children` — read `components/ui/content-change.tsx`'s doc
- * comment for the remove/reflow/re-add mechanism and the reduced-motion
- * guarantee `animationClassName`'s restricted type exists to hold.
- *
- * An entrance that already played on mount is invisible in a still
- * screenshot, and just as invisible to a reader who arrives after it
- * finished — so the opening specimen needs a way to see it again. The
- * Preview section's trigger is a "Next message" button in the companion
- * client file `next-message-specimen.tsx` (a spec module must stay plain
- * server-rendered data, per trap 29) — it holds one `useState` index and
- * advances `contentKey` on the same persistent element, which is exactly the
- * production shape: no remount, ever, only the key changing under an
- * inbound message. The Examples section below keeps a second demonstration
- * built on `Tabs` (`components/ui/tabs.tsx`, already client), because a tab
- * switch is the real-world case for that same entrance (anim-enter, a panel
- * swap) rather than an arriving message.
- */
-
 import { Code, Meta, Panel } from "@/components/ds/kit";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SourceMeta } from "@/components/docs/component-page/sections";

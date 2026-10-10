@@ -1,12 +1,3 @@
-/**
- * Authored documentation page for `ai-canvas`.
- *
- * Live specimens render the real `Canvas` from
- * `components/ai-elements/canvas.tsx` and live in `canvas-specimen.tsx` (a spec
- * module cannot carry `"use client"`). React Flow needs a parent with a fixed
- * height, so every specimen sits in `FlowFrame` (`flow-fixture.tsx`).
- */
-
 import { CanvasPreview, CanvasStateGrid } from "./canvas-specimen";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

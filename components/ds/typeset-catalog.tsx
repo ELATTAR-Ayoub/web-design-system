@@ -1,16 +1,3 @@
-/**
- * The one list of the 17 public typography roles.
- *
- * `/design-system/typography` renders this component rather than maintaining
- * a second role list. The old `/design-system/docs/typeset` URL redirects to
- * that full page. A role added, renamed, or retired here changes the one
- * public catalog in place.
- *
- * `test/docs/typeset-catalog.test.tsx` asserts the contract: the continuous
- * preview renders all 17 roles, in canonical order, before the grouped
- * Words / Code / Numerics detail sections — exact membership, nothing extra.
- */
-
 import { Code, Meta, Panel } from "@/components/ds/kit";
 import { TYPOGRAPHY } from "@/lib/ds/platform-contract";
 
@@ -21,18 +8,6 @@ export type TypesetRole = {
   group: "words" | "code" | "numerics";
 };
 
-/**
- * Every role's three steps, read from the contract rather than retyped.
- *
- * This used to be a `steps: "44/48 · 52/56 · 64/68 · 600 · Inter"` string on
- * each entry below — seventeen hand-written copies of a table that also lives
- * in `styles/tokens.css`, in `RULES.md`, and in the test that checks them. When
- * the shared scale moved, the strings did not, and a documentation page that
- * states a size is worse than one that states nothing: a reader trusts it.
- *
- * `lib/ds/platform-contract.ts` is the one owner. Eight of the seventeen roles
- * used to read "at every width" here; none does now, because none is.
- */
 function stepsFor(cls: string): string {
   const spec = TYPOGRAPHY.find((role) => role.role === cls);
   if (!spec) return "";
@@ -47,7 +22,6 @@ function stepsFor(cls: string): string {
   ].join(" · ");
 }
 
-/** Canonical order. This array IS the contract — do not resort it. */
 export const TYPESET_ROLES: TypesetRole[] = [
   {
     cls: "display",
@@ -192,10 +166,6 @@ function DetailGroup({ group }: { group: TypesetRole["group"] }) {
   );
 }
 
-/**
- * The continuous preview, then the three grouped detail sections. Order is
- * the contract — see `test/docs/typeset-catalog.test.tsx`.
- */
 export function TypesetCatalog() {
   return (
     <>

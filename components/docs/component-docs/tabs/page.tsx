@@ -1,12 +1,3 @@
-/**
- * Authored documentation page for `tabs`.
- *
- * Replaces the generated baseline. Every specimen renders the real `Tabs`
- * composition from `components/ui/tabs.tsx`, including the travelling
- * indicator from `active-indicator`. Tabs has no size prop — see the Sizes
- * omission recorded in the handoff — so this page has no Sizes section.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 

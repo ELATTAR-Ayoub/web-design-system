@@ -1,10 +1,5 @@
 "use client";
 
-/**
- * Live specimens for the `ai-attachments` page. Removal needs state, so the
- * set of chips lives here rather than in the plain-data spec module.
- */
-
 import * as React from "react";
 
 import { Button } from "@/components/ui/button";
@@ -32,7 +27,6 @@ export const SAMPLE_ATTACHMENTS: AttachmentData[] = [
   { id: "page", type: "source-document", mediaType: "text/html", title: "Pricing page", sourceId: "pricing" },
 ];
 
-/** A removable set of attachments in one variant. */
 export function AttachmentsSpecimen({
   variant = "inline",
   items = SAMPLE_ATTACHMENTS,
@@ -72,7 +66,6 @@ export function AttachmentsSpecimen({
   );
 }
 
-/** Inline chips with a hover card that shows the full image, as the workspace composer does. */
 export function AttachmentHoverSpecimen() {
   const photo = SAMPLE_ATTACHMENTS[0];
   return (
@@ -97,7 +90,6 @@ export function AttachmentHoverSpecimen() {
   );
 }
 
-/** Nothing staged. */
 export function AttachmentsEmptySpecimen() {
   return <AttachmentEmpty />;
 }

@@ -1,29 +1,3 @@
-/**
- * Authored documentation page for `sidebar`.
- *
- * Replaces the generated baseline. Migrated from
- * `app/design-system/components/base/sidebar/page.tsx`, since deleted, which held the whole
- * sidebar system's real documentation on one category page. `sidebar` is one
- * registry item with ~23 exports (Sidebar itself, SidebarProvider, every
- * `Sidebar*` region and row part, and `useSidebar`) — they are documented here
- * as one component's API surface and composition, not as parts with pages of
- * their own. `user-menu` and `active-indicator` are separate registry items
- * and have their own pages; this page composes them (the footer specimens use
- * the real `UserMenu`, and `SidebarMenu` uses `active-indicator` internally
- * for its travelling pill) without redocumenting them.
- *
- * Every specimen renders the real components from `components/ui/sidebar.tsx`.
- * The interactive specimens (`ShellMatrixDemo`, `StateReadoutDemo`,
- * `RailInsetDemo`, the three header patterns) are pre-existing client
- * components under `components/ds/sidebar-demos.tsx` and
- * `components/ds/sidebar-headers.tsx` — read-only fixtures this task may not
- * edit, composed here rather than duplicated. `PartStage`, `NAV`, `ACCOUNT`
- * and `FOOT_NAV` are the same read-only fixtures the category page used.
- *
- * Prop rows in API Reference come straight from `components/ui/sidebar.tsx`;
- * nothing is invented.
- */
-
 import { BadgeCheck, Bell, CreditCard, LogOut, Plus } from "lucide-react";
 
 import {
@@ -100,13 +74,6 @@ const BUTTON_VARIANTS = [
   "destructive",
   "link",
 ] as const;
-
-/* ── Shared fixtures, local to this page ──────────────────────────────────
- *
- * No hooks are called directly here — every function below only composes
- * client components this module imports, which a server component (this
- * spec module) is free to do.
- */
 
 function FixtureHeader() {
   return (

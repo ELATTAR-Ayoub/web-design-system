@@ -1,27 +1,3 @@
-/**
- * Documentation page for `use-mobile`.
- *
- * Authored, not generated. A hook, not a component — no States,
- * Accessibility or Keyboard section applies, because a boolean read has none
- * of those.
- *
- * A true live reading of `useIsMobile()` needs a client component holding no
- * state of its own beyond the hook — genuinely possible, but not from this
- * file. `scripts/validate-docs.mjs` enforces every `component-docs/<name>/page.tsx`
- * as plain data with a hard rule: no `"use client"` directive on the spec
- * module. The sanctioned shape for a stateful specimen is a companion file
- * beside it (see `form/account-form-specimen.tsx`, imported into
- * `form/page.tsx`), which is a file this task is scoped not to create — the
- * brief restricts this page to editing `page.tsx` only. So instead of a
- * client-only, unenforced "use client" directive here (which would fail
- * `docs:validate`), the Preview below is a pure-CSS proxy: two labelled
- * panels toggled by the exact same breakpoint the hook checks
- * (`(max-width: 767px)`, via Tailwind's standard `md:` variant, itself 768px)
- * — genuinely live on resize, with no JavaScript, but reporting the
- * viewport's CSS classification rather than literally calling
- * `useIsMobile()`. The Usage section below shows the real hook call.
- */
-
 import { Code, Meta, Note } from "@/components/ds/kit";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

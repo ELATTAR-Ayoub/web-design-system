@@ -17,12 +17,6 @@ import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 
 import { SAMPLE_AUDIO_SRC } from "./audio-sample";
 
-/**
- * Live specimens for the `ai-audio-player` documentation page. The source is a
- * one-second inline WAV, so nothing is fetched and nothing autoplays.
- */
-
-/** The Preview: every control the part set offers. */
 export function AudioPlayerPreview() {
   return (
     <Panel label="AudioPlayer" note="inline one-second tone">
@@ -45,7 +39,6 @@ export function AudioPlayerPreview() {
   );
 }
 
-/** The States grid: the compact composition the workspace uses for read-aloud. */
 export function AudioPlayerStateGrid() {
   return (
     <StateGrid cols={2}>

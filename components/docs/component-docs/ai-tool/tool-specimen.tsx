@@ -3,12 +3,6 @@
 import { Tool, ToolContent, ToolHeader, ToolInput, ToolOutput } from "@/components/ai-elements/tool";
 import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 
-/**
- * Live specimens for the `ai-tool` page. They render the real `Tool` with
- * fixed data and no transport — the same shapes the AgentWorkspace feeds it
- * from a tool turn (components/agent/workspace/workspace-reply.tsx).
- */
-
 const params = { query: "overdue invoices", limit: 3 };
 const result = { rows: 3, total: "EUR 4,210.00", currency: "EUR" };
 

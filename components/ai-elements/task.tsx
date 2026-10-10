@@ -58,8 +58,7 @@ export const TaskTrigger = ({
 }: TaskTriggerProps) => (
   <CollapsibleTrigger asChild className={cn("group", className)} {...props}>
     {children ?? (
-      // Vendored change: upstream renders a div here, which the keyboard cannot
-      // reach; a button can. `after:` restores a 44px target on a line of small text.
+      // Vendored change: the trigger is a button, not a div, so the keyboard can reach it; `after:` restores a 44px target.
       <button
         className="relative after:absolute after:inset-x-0 after:-inset-y-3 flex w-full cursor-pointer items-center gap-2 text-left type-small text-muted-foreground transition-colors hover:text-foreground"
         type="button"
@@ -79,10 +78,7 @@ export const TaskTrigger = ({
 
 export type TaskContentProps = ComponentProps<typeof CollapsibleContent>;
 
-// Vendored change: dropped the hand-rolled tw-animate enter/exit classes
-// — `CollapsibleContent` already plays `anim-expand`/`anim-collapse` off the
-// measured Radix height (components/ui/collapsible.tsx), so the extra classes
-// were a second, conflicting animation.
+// Vendored change: dropped the hand-rolled tw-animate enter/exit classes; `CollapsibleContent` plays its own.
 export const TaskContent = ({
   children,
   className,

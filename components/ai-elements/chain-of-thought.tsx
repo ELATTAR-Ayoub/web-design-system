@@ -81,7 +81,7 @@ export const ChainOfThoughtHeader = memo(
       <Collapsible onOpenChange={setIsOpen} open={isOpen}>
         <CollapsibleTrigger
           className={cn(
-            // Vendored change: a line of small text is a ~20px target; `after:` restores 44px without moving the layout (RULES hit targets).
+            // Vendored change: a line of small text is a ~20px target; `after:` restores 44px without moving the layout.
             "relative after:absolute after:inset-x-0 after:-inset-y-3 flex w-full items-center gap-2 type-small text-muted-foreground transition-colors hover:text-foreground",
             className
           )}
@@ -118,9 +118,7 @@ const stepStatusStyles = {
   pending: "text-muted-foreground/50",
 };
 
-// Vendored change: the tw-animate fade/slide-in entrance classes are replaced
-// with the system's shared arrival animation, anim-enter (RULES §4, "the one
-// shared arrival").
+// Vendored change: the tw-animate fade/slide-in entrance classes are replaced with the system's shared arrival animation, anim-enter.
 export const ChainOfThoughtStep = memo(
   ({
     className,
@@ -167,10 +165,7 @@ export const ChainOfThoughtSearchResults = memo(
 
 export type ChainOfThoughtSearchResultProps = ComponentProps<typeof Badge>;
 
-// Vendored change: dropped `gap-1 px-2 py-0.5 font-normal text-xs` — every
-// value duplicated Badge's own defaults (components/ui/badge.tsx), and
-// `font-normal`/`text-xs` fought `type-badge`'s own weight (RULES §2.1, a
-// role owns its own weight).
+// Vendored change: dropped `gap-1 px-2 py-0.5 font-normal text-xs` — every value duplicated Badge's own defaults, and `font-normal`/`text-xs` fought `type-badge`'s own weight.
 export const ChainOfThoughtSearchResult = memo(
   ({ className, children, ...props }: ChainOfThoughtSearchResultProps) => (
     <Badge className={cn(className)} variant="secondary" {...props}>
@@ -189,9 +184,7 @@ export const ChainOfThoughtContent = memo(
 
     return (
       <Collapsible open={isOpen}>
-        {/* Vendored change: dropped the hand-rolled tw-animate enter/exit
-            classes — CollapsibleContent already plays anim-expand/anim-collapse
-            off the measured Radix height (components/ui/collapsible.tsx). */}
+        {/* Vendored change: dropped the hand-rolled tw-animate enter/exit classes — CollapsibleContent already plays anim-expand/anim-collapse off the measured Radix height. */}
         <CollapsibleContent
           className={cn("mt-2 space-y-3 text-popover-foreground outline-none", className)}
           {...props}
@@ -210,8 +203,7 @@ export type ChainOfThoughtImageProps = ComponentProps<"div"> & {
 export const ChainOfThoughtImage = memo(
   ({ className, children, caption, ...props }: ChainOfThoughtImageProps) => (
     <div className={cn("mt-2 space-y-2", className)} {...props}>
-      {/* Vendored change: the original 22rem cap was an arbitrary bracket value;
-          max-h-88 is the same 22rem expressed on the spacing scale. */}
+      {/* Vendored change: the original 22rem cap was an arbitrary bracket value; max-h-88 is the same 22rem expressed on the spacing scale. */}
       <div className="relative flex max-h-88 items-center justify-center overflow-hidden rounded-lg bg-muted p-3">
         {children}
       </div>

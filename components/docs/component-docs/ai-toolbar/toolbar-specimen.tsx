@@ -5,11 +5,6 @@ import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 
 import { edgeTypes, FlowFrame, planEdges, planNodes, stepNodeTypes } from "../ai-canvas/flow-fixture";
 
-/**
- * The Preview: the toolbar forced visible (`isVisible`) on every node so it
- * can be seen without selecting one. In the product it shows for the selected
- * node only.
- */
 export function ToolbarPreview() {
   return (
     <Panel label="Toolbar" note="forced visible here; the workflow dialog shows it for the selected node only">
@@ -20,7 +15,6 @@ export function ToolbarPreview() {
   );
 }
 
-/** Hidden versus shown. */
 export function ToolbarStateGrid() {
   return (
     <StateGrid cols={2}>

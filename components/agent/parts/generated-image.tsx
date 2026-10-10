@@ -1,23 +1,5 @@
 "use client";
 
-/**
- * GeneratedImage — the frame a tool-generated image appears in.
- *
- * It holds the image's place in the reply at a square, then shows progress as
- * clarity: the child (the `<img>`, once there is one) is heavily blurred and a
- * little desaturated while the tool is `queued` or `generating`, lightly
- * blurred while `refining`, and sharp at `complete`. The change between levels
- * is a `filter` transition on the system's normal duration and easing, so
- * reduced motion is handled by the global rule and no keyframe is added.
- * Until a child exists the surface is `anim-shimmer`, so it reads as loading.
- *
- * A small pill in the bottom-left names the stage. It is hidden from assistive
- * tech; a visually hidden `role="status"` carries the same label so a change
- * is announced once. At `complete` the pill leaves through `usePresence`
- * (`anim-exit`). At `error` the child dims, the pill turns to the alert icon
- * and `text-destructive-ink`, and `onRetry` adds a Retry button.
- */
-
 import * as React from "react";
 import { AlertCircleIcon } from "lucide-react";
 
@@ -36,7 +18,6 @@ const LABELS: Record<ImageStage, string> = {
   error: "Couldn't generate",
 };
 
-/** How clear the child is at each stage. The blur is the progress. */
 const CLARITY: Record<ImageStage, string> = {
   queued: "blur-xl saturate-50",
   generating: "blur-xl saturate-50",

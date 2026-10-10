@@ -1,12 +1,5 @@
 "use client";
 
-/**
- * Live companion for the `marker` Preview — see traps.md #29. "Pause" stops
- * the activity list and a real `Marker` appears between the rows to say so;
- * "Resume" removes it and appends a fresh row, the same shape the agent
- * console's stopped-stream example (in Examples, below) documents statically.
- */
-
 import { useState } from "react";
 import { PauseIcon, PlayIcon, SquareIcon } from "lucide-react";
 

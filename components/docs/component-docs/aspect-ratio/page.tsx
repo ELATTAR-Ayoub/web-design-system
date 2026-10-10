@@ -1,15 +1,3 @@
-/**
- * Authored documentation page for `aspect-ratio`.
- *
- * Replaces the generated baseline. Migrated from the old `base/layout`
- * category page (`app/design-system/components/base/layout/page.tsx`, since deleted), which
- * held every layout primitive's real documentation on one page. Every
- * specimen below renders the real `AspectRatio` from
- * `components/ui/aspect-ratio.tsx` — a thin wrapper around Radix's
- * `AspectRatio.Root` that forwards every prop, styles nothing, and has no
- * export beyond itself. Nothing here is a styled div standing in for it.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 

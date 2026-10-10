@@ -1,11 +1,5 @@
 "use client";
 
-/**
- * Live specimens for the `agent-generated-image` page. The frame is driven by
- * its `stage` prop, so the switcher lives here and drives the real component.
- * The picture is the mock agent's own generated SVG: no network, no asset.
- */
-
 import * as React from "react";
 
 import { GeneratedImage } from "@/components/agent/parts/generated-image";
@@ -22,15 +16,12 @@ const STAGE_NAMES: Record<ImageStage, string> = {
   error: "Error",
 };
 
-/** The picture a specimen frame holds. */
 function Picture() {
   const src = React.useMemo(() => heroImageUrl(), []);
-  // A data: url the specimen builds itself — next/image has nothing to optimise.
   // eslint-disable-next-line @next/next/no-img-element
   return <img src={src} alt="A dusk landscape with three ranges of hills" />;
 }
 
-/** One frame at one stage: what the why page and the States grid show. */
 export function GeneratedImageStill({ stage, withImage = true }: { stage: ImageStage; withImage?: boolean }) {
   return (
     <div className="mx-auto w-full max-w-64">

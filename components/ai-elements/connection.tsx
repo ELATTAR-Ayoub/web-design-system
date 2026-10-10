@@ -16,11 +16,7 @@ export const Connection: ConnectionLineComponent = ({
       stroke="var(--color-ring)"
       strokeWidth={1}
     />
-    {/* Vendored change: the hardcoded `#fff` endpoint fill is banned by §0
-        (no hex outside styles/*.css). Swapped for `var(--color-action-ink)`
-        — same reasoning as `Edge.Animated`'s travelling dot: a mark with no
-        foreground of its own is judged on contrast with `--muted`, per RULES
-        §1.3, and this is the same in-progress-connection indicator. */}
+    {/* Vendored change: the hardcoded `#fff` endpoint fill is replaced with `var(--color-action-ink)`. */}
     <circle
       cx={toX}
       cy={toY}

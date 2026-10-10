@@ -1,11 +1,3 @@
-/**
- * Authored documentation page for `badge`.
- *
- * Replaces the generated baseline. Every specimen renders the real `Badge`
- * from `components/ui/badge.tsx`. Badge has no size prop — see the Sizes
- * omission recorded in the handoff — so this page has no Sizes section.
- */
-
 import { Check, Link as LinkIcon, Sparkle } from "lucide-react";
 
 import { SourceMeta } from "@/components/docs/component-page/sections";

@@ -26,7 +26,6 @@ const USAGE = {
   outputTokenDetails: { textTokens: undefined, reasoningTokens: 2_400 },
 } as LanguageModelUsage;
 
-/** The popup's contents laid out in place, so the figures can be read without hovering. */
 function PopupBody() {
   return (
     <div className="w-60 divide-y overflow-hidden rounded-md border bg-popover">
@@ -42,7 +41,6 @@ function PopupBody() {
   );
 }
 
-/** The Preview: the meter as the composer wears it. Hover or focus the trigger for the real popup. */
 export function ContextShowcase() {
   return (
     <Panel label="Context" note="hover or focus the trigger">
@@ -68,7 +66,6 @@ export function ContextShowcase() {
   );
 }
 
-/** The States grid. */
 export function ContextStateGrid() {
   return (
     <StateGrid cols={3}>
@@ -101,7 +98,6 @@ export function ContextStateGrid() {
   );
 }
 
-/** The Examples: a custom body replacing the default rows. */
 export function ContextExamples() {
   return (
     <Panel label="Custom rows">

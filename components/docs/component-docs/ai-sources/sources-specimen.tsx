@@ -1,12 +1,5 @@
 "use client";
 
-/**
- * Live specimens for the `ai-sources` page, rendering the real parts from
- * `components/ai-elements/sources.tsx`. The links point at example.com; the
- * page never fetches them.
- */
-
-
 import { Source, Sources, SourcesContent, SourcesTrigger } from "@/components/ai-elements/sources";
 import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 
@@ -29,7 +22,6 @@ function List({ open }: { open?: boolean }) {
   );
 }
 
-/** The Preview: a trigger that discloses the list. */
 export function SourcesPreview() {
   return (
     <Panel label="Sources" note="3 sources">
@@ -38,7 +30,6 @@ export function SourcesPreview() {
   );
 }
 
-/** Other configurations: a custom trigger label and custom source content. */
 export function SourcesExamples() {
   return (
     <Panel label="Custom trigger and rows">
@@ -58,7 +49,6 @@ export function SourcesExamples() {
   );
 }
 
-/** The States grid. */
 export function SourcesStateGrid() {
   return (
     <StateGrid cols={2}>

@@ -96,7 +96,6 @@ function MessageRows({ messages, onChange }: { messages: QueueMessage[]; onChang
   );
 }
 
-/** The Preview: the docked queue — reorder, send now, remove; removing the last row empties it. */
 export function QueueShowcase() {
   const [messages, setMessages] = React.useState(MESSAGES);
   return (
@@ -121,7 +120,6 @@ export function QueueShowcase() {
   );
 }
 
-/** The States grid. */
 export function QueueStateGrid() {
   return (
     <StateGrid cols={3}>
@@ -172,7 +170,6 @@ export function QueueStateGrid() {
   );
 }
 
-/** The Examples: a todo list in a scroll-capped QueueList. */
 export function QueueExamples() {
   return (
     <Panel label="Todos in a QueueList">

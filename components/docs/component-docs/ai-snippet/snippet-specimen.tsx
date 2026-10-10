@@ -5,11 +5,6 @@ import * as React from "react";
 import { Snippet, SnippetAddon, SnippetCopyButton, SnippetInput, SnippetText } from "@/components/ai-elements/snippet";
 import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 
-/**
- * Live specimens for the `ai-snippet` page. The copy button writes to the
- * real clipboard.
- */
-
 const COMMAND = "npm run check:tokens";
 
 export function SnippetPreview() {

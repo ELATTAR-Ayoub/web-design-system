@@ -1,11 +1,3 @@
-/**
- * Authored documentation page for `ai-jsx-preview`.
- *
- * Every live specimen renders the real component from `components/ai-elements/jsx-preview.tsx`.
- * Anything interactive lives in the companion client file
- * `jsx-preview-specimen.tsx` (a spec module cannot carry "use client").
- */
-
 import { JsxPreviewPlayground, JsxPreviewStateGrid } from "./jsx-preview-specimen";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

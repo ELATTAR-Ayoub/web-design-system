@@ -9,7 +9,7 @@
   "files": [
     {
       "path": "hooks/use-mobile.ts",
-      "content": "import * as React from \"react\"\r\n\r\nconst MOBILE_BREAKPOINT = 768\r\nconst QUERY = `(max-width: ${MOBILE_BREAKPOINT - 1}px)`\r\n\r\nfunction subscribe(onStoreChange: () => void) {\r\n  const mql = window.matchMedia(QUERY)\r\n  mql.addEventListener(\"change\", onStoreChange)\r\n  return () => mql.removeEventListener(\"change\", onStoreChange)\r\n}\r\n\r\n/**\r\n * Rewritten from the shadcn original, which set state inside an effect body and\r\n * therefore triggered a cascading render on mount (and tripped\r\n * react-hooks/set-state-in-effect). useSyncExternalStore is the intended tool\r\n * for reading from a browser API like matchMedia: it subscribes, reads the\r\n * current value, and returns a defined server snapshot so SSR renders desktop\r\n * rather than undefined.\r\n */\r\nexport function useIsMobile() {\r\n  return React.useSyncExternalStore(\r\n    subscribe,\r\n    () => window.matchMedia(QUERY).matches,\r\n    () => false,\r\n  )\r\n}\r\n",
+      "content": "import * as React from \"react\"\r\n\r\nconst MOBILE_BREAKPOINT = 768\r\nconst QUERY = `(max-width: ${MOBILE_BREAKPOINT - 1}px)`\r\n\r\nfunction subscribe(onStoreChange: () => void) {\r\n  const mql = window.matchMedia(QUERY)\r\n  mql.addEventListener(\"change\", onStoreChange)\r\n  return () => mql.removeEventListener(\"change\", onStoreChange)\r\n}\r\n\r\nexport function useIsMobile() {\r\n  return React.useSyncExternalStore(\r\n    subscribe,\r\n    () => window.matchMedia(QUERY).matches,\r\n    () => false,\r\n  )\r\n}\r\n",
       "type": "registry:hook"
     }
   ],

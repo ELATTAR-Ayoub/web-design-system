@@ -67,10 +67,7 @@ export const Message = ({ className, from, ...props }: MessageProps) => (
 
 export type MessageContentProps = HTMLAttributes<HTMLDivElement>;
 
-// Vendored change: `is-user:dark` used an unregistered Tailwind variant
-// (`is-user`) — this repo's only custom variant is `dark` itself
-// (styles/tokens.css), so the class never compiled to anything and was dead.
-// `text-sm` is now the explicit `type-body` role.
+// Vendored change: `is-user:dark` used an unregistered Tailwind variant (`is-user`) — this repo's only custom variant is `dark` itself, so the class never compiled to anything and was dead.
 export const MessageContent = ({
   children,
   className,
@@ -232,7 +229,6 @@ export const MessageBranchContent = ({
     [children]
   );
 
-  // Use useEffect to update branches when they change
   useEffect(() => {
     if (branches.length !== childrenArray.length) {
       setBranches(childrenArray);
@@ -261,7 +257,6 @@ export const MessageBranchSelector = ({
 }: MessageBranchSelectorProps) => {
   const { totalBranches } = useMessageBranch();
 
-  // Don't render if there's only one branch
   if (totalBranches <= 1) {
     return null;
   }
@@ -349,23 +344,7 @@ export type MessageResponseProps = ComponentProps<typeof Streamdown>;
 
 const streamdownPlugins = { cjk, code, math, mermaid };
 
-/*
- * Vendored change: the reply speaks the system's type, colour and code roles.
- *
- * Streamdown draws markdown with its own Tailwind classes (`text-3xl
- * font-semibold` headings, `text-sm` cells, …). Those are utilities, so they
- * beat `.prose`'s components-layer rules wherever both apply, and Tailwind
- * does not scan node_modules, so some of them never compiled at all — a mix of
- * Streamdown's type and none. Three changes put the reply on the system:
- *
- *  1. Plain text elements render without Streamdown's classes (`plain`
- *     below), so `.prose` (styles/typeset.css) sets them on the type roles.
- *  2. The elements that carry behaviour — links (the safety check), code
- *     blocks (copy, download), tables (copy, fullscreen) — keep Streamdown's
- *     own component; `streamdown-chrome` (styles/utilities.css) restyles them.
- *  3. Code is highlighted with the system theme (lib/code-theme.ts); the link
- *     check is an AlertDialog and a failed diagram an Alert.
- */
+/* Vendored change: the reply speaks the system's type, colour and code roles. */
 const PLAIN_TAGS = [
   "h1",
   "h2",
@@ -387,7 +366,6 @@ const PLAIN_TAGS = [
 
 type PlainTag = (typeof PLAIN_TAGS)[number] | "code";
 
-/** The element as-is, minus Streamdown's className and its `node` prop. */
 const plain = (tag: PlainTag) => {
   const Plain = (all: HTMLAttributes<HTMLElement> & ExtraProps) => {
     const props: Record<string, unknown> = { ...all };

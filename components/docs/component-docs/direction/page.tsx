@@ -1,13 +1,3 @@
-/**
- * Documentation page for `direction`.
- *
- * Authored, not generated. Web-only — Flutter has no equivalent registry
- * entry (see `flutterName: null` in `lib/ds/platform-contract.ts`). This is
- * a wrapper around Radix's own `Direction.DirectionProvider` and
- * `useDirection`: read `components/ui/direction.tsx`, which is nine lines of
- * actual logic plus a `dir`/`direction` prop alias.
- */
-
 import { Code, Meta } from "@/components/ds/kit";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

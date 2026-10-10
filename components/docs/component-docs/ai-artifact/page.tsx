@@ -1,11 +1,3 @@
-/**
- * Authored documentation page for `ai-artifact`.
- *
- * Every live specimen renders the real component from `components/ai-elements/artifact.tsx`.
- * Anything interactive lives in the companion client file
- * `artifact-specimen.tsx` (a spec module cannot carry "use client").
- */
-
 import { ArtifactPreview, ArtifactStateGrid } from "./artifact-specimen";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

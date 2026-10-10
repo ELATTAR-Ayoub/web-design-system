@@ -1,48 +1,19 @@
-/**
- * Single source of truth for the design-system tree.
- *
- * The sidebar, every index page and every page header read from this file, so a
- * category can never appear in the nav without a page, or drift out of sync with
- * the components it claims to hold.
- *
- * THE COMPONENT ENTRIES ARE DERIVED, NOT TYPED. The `catalog` group below is
- * built from `lib/ds/docs/catalog.ts` — the same list the per-item routes,
- * search and the family views read. Component names used to be typed here a
- * second time, in each category's `contents`, and a second hand-maintained copy
- * of a list is the failure this file's own header has warned about since it was
- * written. Foundations and the documentation pages stay authored: they are
- * pages with prose, not catalog items.
- */
-
 import { catalogEntries } from "@/lib/ds/docs/catalog";
 import { plainDescription } from "@/lib/ds/docs/description";
 import { FAMILY_LANDING, FAMILY_ORDER } from "@/lib/ds/families";
 import type { DocFamily } from "@/lib/ds/platform-contract";
 
 export type DsCategory = {
-  /**
-   * Which of the four documentation families this entry belongs to.
-   *
-   * Only catalog-derived entries carry one; the authored foundation and docs
-   * categories leave it undefined. `components/ds/ds-nav.tsx` reads it to break
-   * the catalog into the same four groups Flutter's rail uses — without it the
-   * rail is one flat list of a hundred-odd links, which measured 5264px tall in
-   * a 900px viewport and is not navigation, it is a directory listing.
-   */
   family?: DocFamily;
-  /** Final URL segment. */
   slug: string;
   title: string;
-  /** One line describing what the page is for. */
   blurb: string;
-  /** The component sets shown on that page, in display order. */
   contents: string[];
 };
 
 export type DsGroup = {
   id: "foundations" | "catalog" | "docs";
   title: string;
-  /** Index route for the group. */
   href: string;
   blurb: string;
   categories: DsCategory[];
@@ -50,18 +21,12 @@ export type DsGroup = {
 
 export const DS_ROOT = "/design-system";
 
-/* ── Foundations ──────────────────────────────────────────────────────────── */
-
 const foundations: DsCategory[] = [
   {
     slug: "colors",
     title: "Theming",
     blurb:
       "Zinc for everything structural, the action and value ramps, four state hues and the text-safe end of each — with every contrast ratio measured live in whichever theme you are in, rather than claimed.",
-    // These are the page's own sections, in order. The list drifted while the
-    // page was rewritten — it named "Text", "Borders" and a balance section
-    // that no longer exist and missed the state inks entirely — which is the
-    // quiet half of a documentation site: a table of contents nothing checks.
     contents: [
       "Monochrome",
       "Action ramp",
@@ -75,18 +40,11 @@ const foundations: DsCategory[] = [
   {
     slug: "typography",
     title: "Typeset",
-    // A blurb that names the wrong typeface is the same class of drift as a
-    // rules file restating a token value. This one has been stale twice — it
-    // said Geist for words, then Space Grotesk. `--font-sans` is Inter.
     blurb:
       "Two faces only: Inter for every word, Geist Mono for code, identifiers and figures. Seventeen roles, live at the size they render, plus the prose block that reaches the same scale without a class.",
     contents: [
       "Faces",
       "The seventeen roles",
-      // The one entry that is not a `.type-*` class. `.prose` is the same
-      // scale reached a second way — for content nobody writes the elements
-      // of — so it is documented beside the classes it shares its declaration
-      // blocks with rather than on a page of its own.
       "Prose",
       "Rules",
     ],
@@ -148,28 +106,6 @@ const foundations: DsCategory[] = [
   },
 ];
 
-/* ── Site pages ───────────────────────────────────────────────────────────────
- *
- * The fourth family, for the pages a product has to have and nobody designs:
- * FAQ, about, contact, help, terms, privacy. Base is a chassis of controls;
- * this is a chassis of *pages* — a measure, a rhythm, a surface, a reading
- * column — composing base rather than adding to it.
- *
- * It grows one category at a time, and that is not caution. `contents` renders
- * as a page's chip list and the sidebar renders a link per category, so an
- * entry here is a promise that the route exists; the `data` page carried a
- * "Chart" chip for months with no specimen behind it. Registering the whole
- * plan up front would ship five links to nothing.
- */
-
-
-/* ── Docs ─────────────────────────────────────────────────────────────────
- *
- * The fifth family: concise, shadcn-style entry documents rather than
- * component specimens. What it is, how to use it, exact commands, platform
- * differences, necessary caveats — no history, no debugging narrative. That
- * belongs in `docs/references/rules-rationale.md`, not a public route.
- */
 
 const docs: DsCategory[] = [
   {
@@ -222,21 +158,7 @@ const docs: DsCategory[] = [
   },
 ];
 
-/**
- * One entry per documented capability, at its own route.
- *
- * Ordered by title, the same order `/design-system/components` lists them in,
- * because the rail and the index read this one list. The `base` and `agent`
- * groups above are still real: their pages survive as INDEXES and galleries
- * over these items, which is why a component appears in both a category index
- * and here without either being the other's duplicate — the index links, this
- * owns the route.
- */
 const catalog: DsCategory[] = [
-  // The two family landings, registered here so exactly one file knows the
-  // route exists. `test/docs/docs-navigation.test.ts` fails on a route under
-  // `app/design-system/` with no nav entry, which is what caught these when
-  // they replaced the deleted `base/**` and `agent/**` category galleries.
   ...FAMILY_ORDER.flatMap((family) => {
     const landing = FAMILY_LANDING[family];
     return landing
@@ -249,21 +171,9 @@ const catalog: DsCategory[] = [
   slug: meta.name,
   title: contract.title,
   family: contract.family,
-  // Plain text: a rail row and an index card are prose, and the seven
-  // descriptions that name an identifier carry backticks the hero renders as
-  // code spans. Only the hero can.
   blurb: plainDescription(meta.description),
-  // The page's own sections are its table of contents, derived from its spec by
-  // `tocFor`. Repeating them here would be the second anchor list this system
-  // deleted.
   contents: [],
   })),
-  // The workspace explainer: an authored route, not a catalog item — it has
-  // no component of its own, just a card per component the workspace already
-  // uses. `slug` carries the extra segment rather than living in its own
-  // `DsGroup`, because `categoryHref` already builds `group.href + "/" +
-  // slug` and a second group for one page would be the thing this file's own
-  // header warns against — a second place a route could be registered.
   {
     family: "agent",
     slug: "agent-workspace/why",
@@ -272,10 +182,6 @@ const catalog: DsCategory[] = [
       "One card per workspace component: what it is, where it sits, why it beats the part beside it, and what changed from its source — plus what was left out.",
     contents: [],
   },
-  // The full-screen live workspace — an authored route, same reasoning as
-  // "Why these components" above: it has no component of its own, just the
-  // same conversation picker and AgentWorkspace the "Preview" section already
-  // renders, at the full viewport instead of the article's own width.
   {
     family: "agent",
     slug: "agent-workspace/live",
@@ -311,11 +217,6 @@ export const DS_GROUPS: DsGroup[] = [
   },
 ];
 
-/**
- * The documentation shell has one Sections run. Foundation pages keep their
- * established URLs, but no longer sit in a second rail group beside duplicate
- * Theming and Typeset primers. The old primer routes remain as redirects.
- */
 export const DOC_SECTIONS = [
   { title: "Components", href: `${DS_ROOT}/components`, blurb: "Browse every component and effect." },
   ...docs.flatMap((category) => {
@@ -335,14 +236,12 @@ export const DOC_SECTIONS = [
   }),
 ];
 
-/** Absolute href for a category page. */
 export function categoryHref(group: DsGroup, category: DsCategory): string {
   return group.id === "foundations"
     ? `${DS_ROOT}/${category.slug}`
     : `${group.href}/${category.slug}`;
 }
 
-/** Look up a group + category from a group id and slug. Used by page headers. */
 export function findCategory(
   groupId: DsGroup["id"],
   slug: string,
@@ -355,7 +254,6 @@ export function findCategory(
   return { group, category };
 }
 
-/** Previous / next category within a group, for page-foot navigation. */
 export function siblings(groupId: DsGroup["id"], slug: string) {
   const group = DS_GROUPS.find((g) => g.id === groupId);
   if (!group) return { prev: null, next: null };

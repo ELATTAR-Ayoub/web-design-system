@@ -1,20 +1,3 @@
-/**
- * The checked-in Flutter <-> web parity contract.
- *
- * This module is a SPECIFICATION, not a presentation source. Nothing here is
- * read at render time: components consume tokens from `styles/*.css`, and the
- * numbers below exist so `scripts/check-platform-parity.mjs` and the tests
- * under `test/parity/` can assert what the stylesheets and the registry
- * actually produce. A number in this file is an assertion target; the same
- * number written into a component is a hardcoded design value, and
- * `npm run check:tokens` rejects it there.
- *
- * Supervisor-owned. See the migration plan's section 10.3.
- *
- * @see docs/audits/2026-09-10-flutter-web-convergence-audit.md
- */
-
-/** The pinned Flutter authority. Every value below was read at this commit. */
 export const FLUTTER_SNAPSHOT = {
   version: "0.0.3",
   registryVersion: "0.0.3",
@@ -22,43 +5,10 @@ export const FLUTTER_SNAPSHOT = {
   repository: "elattar_design_system",
 } as const;
 
-/** Which of Flutter's four documentation families an item is filed under. */
 export type DocFamily = "components" | "effects" | "agent" | "charts";
 
-/**
- * Registry ownership, mirrored from Flutter's `component_inventory.json`.
- *
- * - `installable` — an advertised direct-install target.
- * - `dependency` — resolver-visible, pulled in by an owner or the block. It is
- *   documented, but its page must never advertise a direct install command.
- * - `block` — the one complete composition (`agent-workspace`).
- * - `foundation` — the shared source/style delivery (`source-foundation`).
- */
 export type Ownership = "installable" | "dependency" | "block" | "foundation";
 
-/**
- * How the capability actually reaches a consumer on the web.
- *
- * `css-native`, `package-native` and `browser-native` entries have no `.tsx`
- * file and never will: a zero-runtime CSS capability is first class here, and
- * wrapping Zod or the Web Speech API in a React component to equalise a count
- * against Flutter would be a fake component. Their pages document the real
- * delivery path instead of inventing an install command.
- *
- * `composition` is the fifth answer, and the one that took evidence to reach: a
- * Flutter capability whose web equivalent is ALREADY HERE, spread across
- * components that compose. Flutter's `SelectionControl` centralises a
- * selection row's label, description, error and target size — on web `Field`
- * already owns exactly that, and Checkbox, Radio and Switch are 65 to 77 lines
- * each because they render only the control. Flutter's `menu` is the shared
- * body of its menu widgets — on web DropdownMenu, ContextMenu and Menubar share
- * no byte-identical body at all; each is tuned differently, and hoisting one
- * would mean changing three working components to share something they do not.
- *
- * Building either would add a second way to do a thing this system already
- * does once. They are documented under their shared names, and their pages say
- * which web components to compose.
- */
 export type Delivery =
   | "react"
   | "css-native"
@@ -66,33 +16,19 @@ export type Delivery =
   | "browser-native"
   | "composition";
 
-/** Whether the capability is shared with Flutter or a web-only platform extra. */
 export type Origin = "shared" | "web-only";
 
 export type ContractEntry = {
-  /** Canonical kebab-case name: registry item, docs slug, and route segment. */
   readonly name: string;
   readonly title: string;
   readonly family: DocFamily;
   readonly ownership: Ownership;
   readonly delivery: Delivery;
   readonly origin: Origin;
-  /** The Flutter registry item this mirrors, or `null` for a web-only extra. */
   readonly flutterName: string | null;
-  /** Flutter's own classification, kept so ownership drift stays visible. */
   readonly flutterOwnership: Ownership | null;
 };
 
-/**
- * Every capability the web system publishes after the migration.
- *
- * 128 entries: Flutter's 100 registry items plus 7 web-only platform
- * capabilities plus 21 web-only agent workspace components (Task 17,
- * 2026-09-29 — the agent workspace family; ownership "dependency", delivery
- * "react", origin "web-only", no Flutter counterpart yet). Each one gets
- * exactly one documentation route at `/design-system/components/<name>`, one
- * metadata file, and one page.
- */
 export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
   {
     name: "accordion",
@@ -849,14 +785,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     title: "Chart Geometry",
     family: "charts",
     ownership: "dependency",
-    // `package-native`, not `react`. Flutter's `chart_geometry.dart` is the
-    // shared scale / nice-tick / curve / polar-arc maths under every chart. On
-    // the web that maths is recharts' own — `scale`, `tickCount`, `domain`,
-    // `type="monotone"`, `PolarGrid` — and there is no module of ours to point
-    // at. The audit found this row wired to `components/ui/chart.tsx`, which
-    // is the CONTAINER, and its page showing two hand-drawn specimens from
-    // `components/ds/charts/` as if they were the capability: the same slug
-    // meaning two different things on the two platforms.
     delivery: "package-native",
     origin: "shared",
     flutterName: "chart-geometry",
@@ -1303,12 +1231,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     flutterOwnership: "installable",
   },
   {
-    // Web-only. `bloom-action` and `bloom-value` — the radial brand glows for
-    // reveal stages and opening moments — had been documented under
-    // `background-effect`, which is Flutter's name for the PAGE ATMOSPHERE
-    // (the `body` radial gradient reading `--page-glow`). Two different
-    // capabilities sharing one slug, in opposite directions; the audit caught
-    // it. The atmosphere keeps Flutter's name; these get their own.
     name: "reveal-bloom",
     title: "Reveal Bloom",
     family: "effects",
@@ -1600,12 +1522,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
   },
 ] as const;
 
-/**
- * The clean renames, applied atomically with no aliases or deprecated exports.
- *
- * An old name must not resolve after the migration — not as a file, an export,
- * a registry item, a route, or an install command.
- */
 export const RENAMES: readonly {
   readonly from: string;
   readonly to: string;
@@ -1620,12 +1536,6 @@ export const RENAMES: readonly {
   { from: "foundation", to: "source-foundation", kind: "item" },
 ] as const;
 
-/**
- * Registry items removed outright, with nothing taking their name.
- *
- * The four `site-*` blocks were product composition rather than reusable
- * vocabulary; `use-replay-on-state-change` becomes private to ContentChange.
- */
 export const REMOVED_ITEMS: readonly string[] = [
   "site-chrome",
   "site-layout",
@@ -1635,16 +1545,12 @@ export const REMOVED_ITEMS: readonly string[] = [
   "use-replay-on-state-change",
 ] as const;
 
-/** One responsive step of a type role. Logical pixels, as Flutter states them. */
 export type TypeStep = { readonly sizePx: number; readonly linePx: number };
 
 export type TypeRoleContract = {
   readonly role: string;
-  /** Below 768px. */
   readonly phone: TypeStep;
-  /** 768px through 1023px. */
   readonly tablet: TypeStep;
-  /** 1024px and wider. */
   readonly desktop: TypeStep;
   readonly weight: number;
   readonly tracking: string;
@@ -1652,14 +1558,6 @@ export type TypeRoleContract = {
   readonly tabularFigures: boolean;
 };
 
-/**
- * The seventeen type roles, at Flutter 0.0.3's values.
- *
- * Web writes these as `rem` so text zoom keeps working; the pixel numbers here
- * are the contract those `rem` values must resolve to at a 16px root. Every
- * role changes at BOTH boundaries — that is the difference from the previous
- * web scale, where nine roles were responsive and eight were flat.
- */
 export const TYPOGRAPHY: readonly TypeRoleContract[] = [
   {
     role: "display",
@@ -1833,10 +1731,8 @@ export const TYPOGRAPHY: readonly TypeRoleContract[] = [
   },
 ] as const;
 
-/** The two breakpoints. There is no third. */
 export const TYPE_BREAKPOINTS = { tablet: 768, desktop: 1024 } as const;
 
-/** Flutter 0.0.3's shared disabled fade. Web had both 0.45 and 0.50 in use. */
 export const DISABLED_OPACITY = 0.5;
 
 const byName = new Map(PLATFORM_CONTRACT.map((e) => [e.name, e]));
@@ -1849,13 +1745,6 @@ export function contractEntriesIn(family: DocFamily): readonly ContractEntry[] {
   return PLATFORM_CONTRACT.filter((e) => e.family === family);
 }
 
-/**
- * Whether this item may print an `npx shadcn add` command.
- *
- * Only a real, directly-installable web registry item may. A dependency page
- * explains that its owner delivers it; a CSS, package or browser-native page
- * explains its real delivery path. Neither invents a command.
- */
 export function isAdvertised(entry: ContractEntry): boolean {
   return (
     (entry.ownership === "installable" ||

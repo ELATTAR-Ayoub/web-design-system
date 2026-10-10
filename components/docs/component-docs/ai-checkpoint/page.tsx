@@ -1,11 +1,3 @@
-/**
- * Authored documentation page for `ai-checkpoint`.
- *
- * Live specimens render the real `Checkpoint` from
- * `components/ai-elements/checkpoint.tsx`; they live in
- * `checkpoint-specimen.tsx` (a spec module cannot carry `"use client"`).
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Meta, Note } from "@/components/ds/kit";

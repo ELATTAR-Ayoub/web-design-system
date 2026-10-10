@@ -1,26 +1,3 @@
-/**
- * Authored documentation page for `questionnaire`.
- *
- * Replaces the generated baseline. Migrated from the old `base/forms`
- * category page (`app/design-system/components/base/forms/page.tsx`, since deleted), whose
- * "Questionnaire" section demonstrated one question at a time with its own
- * progress, keyboard shortcuts, per-question validation and navigation.
- *
- * `Questionnaire.Root` (`@shadcn/react/questionnaire`) renders a real
- * `<form>`, and item navigation (current question, answered/skipped status,
- * required-field gating on Next) is uncontrolled by default — none of that
- * needs a hook to work, so Variants, Examples and States below stay live as
- * plain data. What does not: `onSubmit`. Passing a function prop from this
- * spec module (a server component) into the Root client component crashes
- * the build ("Event handlers cannot be passed to Client Component props"),
- * and a form with no onSubmit and no action triggers a real, page-reloading
- * GET navigation when QuestionnaireSubmit is clicked. Preview needs exactly
- * that click to show a result, so it composes `BuyerSurveySpecimen` — a
- * client companion (trap 29) at `./questionnaire-survey-specimen.tsx` that
- * owns the `useState` for the submitted result and renders a recommendation
- * screen once both questions are answered.
- */
-
 import {
   Questionnaire,
   QuestionnaireChoice,

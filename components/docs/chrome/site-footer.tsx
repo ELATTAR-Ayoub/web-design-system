@@ -5,36 +5,6 @@ import { PageContainer } from "@/components/docs/layout/page-container";
 import { cn } from "@/lib/utils";
 import type { SiteNavGroup, SiteNavItem } from "@/lib/docs/nav";
 
-/**
- * The foot of every page: grouped links, then the legal row.
- *
- * **Each column is its own `<nav>` with its own accessible name**, taken from
- * the column heading via `aria-labelledby`. A single `<nav>` wrapping four
- * columns announces as one undifferentiated list of twenty links; four named
- * ones let a screen-reader user skip straight to "Company". The heading is a
- * real `<h2>` for the same reason — it is how the landmark gets its name and
- * how heading navigation finds it.
- *
- * **The legal row is separate from the columns, structurally and not just
- * visually.** A reader looking for a privacy policy is not browsing; they are
- * looking for one specific thing, in the one place every site puts it. Folding
- * it into a "Company" column makes it something you have to hunt for.
- *
- * **`legalNote` takes a node, not a year.** A component that computes
- * `new Date().getFullYear()` renders a different string on the server and on
- * the client either side of midnight on 31 December, and prerendered output
- * would be stale from the first of January regardless. That is trap 16's
- * family — locale-and-time-sensitive markup that passes every source guard and
- * fails where two runtimes meet. The caller owns the string.
- *
- * State model:
- * rest · hover — links lift their foreground. focus-visible — the global ring,
- * untouched. pressed — N/A; navigation is the feedback. loading · success ·
- * error · disabled — N/A. empty — handled by omission at every level: no
- * groups renders no columns, no legal links renders no legal row, and an
- * absent `legalNote` renders nothing rather than an empty line.
- */
-
 function FooterLink({ item }: { item: SiteNavItem }) {
   return (
     <li>
@@ -59,7 +29,6 @@ function SiteFooter({
   brand?: React.ReactNode;
   groups?: SiteNavGroup[];
   legal?: SiteNavItem[];
-  /** A copyright line or registration detail. A node, never a computed year. */
   legalNote?: React.ReactNode;
 }) {
   return (

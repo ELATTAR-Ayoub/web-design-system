@@ -1,15 +1,8 @@
 "use client";
 
-/**
- * Live specimens for the `ai-shimmer` page, rendering the real `Shimmer` from
- * `components/ai-elements/shimmer.tsx`. The sweep is a CSS animation that the
- * system's reduced-motion rule already collapses.
- */
-
 import { Shimmer } from "@/components/ai-elements/shimmer";
 import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 
-/** The Preview: the label the workspace shows while the agent works. */
 export function ShimmerPreview() {
   return (
     <Panel label="Shimmer" note="as p, the default">
@@ -18,7 +11,6 @@ export function ShimmerPreview() {
   );
 }
 
-/** Other configurations: another element, and inside a line of text. */
 export function ShimmerExamples() {
   return (
     <div className="flex flex-col gap-4">
@@ -36,7 +28,6 @@ export function ShimmerExamples() {
   );
 }
 
-/** The States grid. */
 export function ShimmerStateGrid() {
   return (
     <StateGrid cols={2}>

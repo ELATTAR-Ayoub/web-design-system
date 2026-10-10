@@ -1,26 +1,5 @@
 "use client";
 
-/**
- * The `chart` item page's own scene: the reader can change what the chart
- * shows in three different ways, all of them real.
- *
- * - **Range switch** — the same 7d / 30d / 90d cut `AreaInteractive`
- *   (`components/ds/charts/area.tsx`) demonstrates, filtering the real
- *   dataset rather than swapping a picture.
- * - **Legend toggle** — a click hides a series by setting Recharts' own
- *   `hide` prop on its `Area`. `ChartLegendContent` (documented under
- *   Tooltips & legends below) is Recharts' `Legend` re-exported unchanged
- *   and carries no click handling of its own, so a legend that TOGGLES a
- *   series is composed here from the same `ChartConfig` every other
- *   specimen on this page reads — real buttons, not a decorative row.
- * - **Tooltip on hover** — `ChartTooltip`/`ChartTooltipContent`, unchanged
- *   from every other specimen in the family.
- *
- * `"use client"`, per trap 29: the range and the hidden-series set are
- * reader-driven state, and `page.tsx` is a spec module a server component
- * reads.
- */
-
 import { useMemo, useState } from "react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 

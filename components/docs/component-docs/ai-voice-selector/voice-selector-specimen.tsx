@@ -1,12 +1,5 @@
 "use client";
 
-/**
- * Live specimens for the `ai-voice-selector` page. The voices are a fixed
- * list and the preview button only toggles its own state: no audio plays,
- * because `VoiceSelectorPreview` draws a play / pause / loading control and
- * leaves the sound to the caller.
- */
-
 import * as React from "react";
 
 import {
@@ -93,7 +86,6 @@ export function VoiceSelectorSpecimen({ withPreview = true }: { withPreview?: bo
   );
 }
 
-/** The preview button in its three visual states, side by side. */
 export function VoicePreviewStates() {
   return (
     <div className="flex items-center gap-4">

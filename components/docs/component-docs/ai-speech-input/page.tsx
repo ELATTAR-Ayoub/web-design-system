@@ -1,10 +1,3 @@
-/**
- * Authored documentation page for `ai-speech-input`.
- *
- * Every live render goes through `speech-input-specimen.tsx`: the component
- * listens through the reader's browser and the result needs state to show.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Meta, Note, Panel, StateCell, StateGrid } from "@/components/ds/kit";

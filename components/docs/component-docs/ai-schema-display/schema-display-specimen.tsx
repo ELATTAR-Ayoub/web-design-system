@@ -3,8 +3,6 @@
 import { SchemaDisplay } from "@/components/ai-elements/schema-display";
 import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 
-/** Live specimens for the `ai-schema-display` documentation page. */
-
 const PARAMETERS = [
   { description: "The order to update", location: "path" as const, name: "orderId", required: true, type: "string" },
   { description: "Send the customer an email", location: "query" as const, name: "notify", type: "boolean" },
@@ -28,7 +26,6 @@ const RESPONSE_BODY = [
   { name: "updatedAt", type: "string", description: "ISO 8601 timestamp" },
 ];
 
-/** The Preview: a full endpoint with parameters, a nested request body and a response. */
 export function SchemaDisplayPreview() {
   return (
     <Panel flush label="SchemaDisplay" note="PATCH with parameters, nested body, response">
@@ -45,7 +42,6 @@ export function SchemaDisplayPreview() {
   );
 }
 
-/** The States grid: the five methods and the badge variant each one takes. */
 export function SchemaDisplayStateGrid() {
   return (
     <StateGrid cols={3}>

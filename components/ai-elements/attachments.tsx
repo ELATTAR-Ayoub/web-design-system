@@ -21,10 +21,6 @@ import {
 import type { ComponentProps, HTMLAttributes, ReactNode } from "react";
 import { createContext, useCallback, useContext, useMemo } from "react";
 
-// ============================================================================
-// Types
-// ============================================================================
-
 export type AttachmentData =
   | (FileUIPart & { id: string })
   | (SourceDocumentUIPart & { id: string });
@@ -47,10 +43,6 @@ const mediaCategoryIcons: Record<AttachmentMediaCategory, typeof ImageIcon> = {
   unknown: PaperclipIcon,
   video: VideoIcon,
 };
-
-// ============================================================================
-// Utility Functions
-// ============================================================================
 
 export const getMediaCategory = (
   data: AttachmentData
@@ -111,10 +103,6 @@ const renderAttachmentImage = (
     />
   );
 
-// ============================================================================
-// Contexts
-// ============================================================================
-
 interface AttachmentsContextValue {
   variant: AttachmentVariant;
 }
@@ -130,10 +118,6 @@ interface AttachmentContextValue {
 
 const AttachmentContext = createContext<AttachmentContextValue | null>(null);
 
-// ============================================================================
-// Hooks
-// ============================================================================
-
 export const useAttachmentsContext = () =>
   useContext(AttachmentsContext) ?? { variant: "grid" as const };
 
@@ -144,10 +128,6 @@ export const useAttachmentContext = () => {
   }
   return ctx;
 };
-
-// ============================================================================
-// Attachments - Container
-// ============================================================================
 
 export type AttachmentsProps = HTMLAttributes<HTMLDivElement> & {
   variant?: AttachmentVariant;
@@ -178,10 +158,6 @@ export const Attachments = ({
   );
 };
 
-// ============================================================================
-// Attachment - Item
-// ============================================================================
-
 export type AttachmentProps = HTMLAttributes<HTMLDivElement> & {
   data: AttachmentData;
   onRemove?: () => void;
@@ -210,8 +186,7 @@ export const Attachment = ({
           variant === "grid" && "size-24 overflow-hidden rounded-lg",
           variant === "inline" && [
             "flex h-8 cursor-pointer select-none items-center gap-1.5",
-            // Vendored change: a filled chip, so it reads as a thing in the message
-            // box rather than an outline drawn on the box's own surface.
+            // Vendored change: a filled chip, so it reads as a thing in the message box rather than an outline drawn on the box's own surface.
             "rounded-md border border-border bg-secondary px-1.5 text-secondary-foreground",
             "type-nav transition-colors",
             "hover:bg-accent hover:text-accent-foreground",
@@ -229,10 +204,6 @@ export const Attachment = ({
     </AttachmentContext.Provider>
   );
 };
-
-// ============================================================================
-// AttachmentPreview - Media preview
-// ============================================================================
 
 export type AttachmentPreviewProps = HTMLAttributes<HTMLDivElement> & {
   fallbackIcon?: ReactNode;
@@ -280,10 +251,6 @@ export const AttachmentPreview = ({
   );
 };
 
-// ============================================================================
-// AttachmentInfo - Name and type display
-// ============================================================================
-
 export type AttachmentInfoProps = HTMLAttributes<HTMLDivElement> & {
   showMediaType?: boolean;
 };
@@ -312,10 +279,6 @@ export const AttachmentInfo = ({
   );
 };
 
-// ============================================================================
-// AttachmentRemove - Remove button
-// ============================================================================
-
 export type AttachmentRemoveProps = ComponentProps<typeof Button> & {
   label?: string;
 };
@@ -340,13 +303,7 @@ export const AttachmentRemove = ({
     return null;
   }
 
-  // Vendored change: dropped `rounded-full`/`rounded` — Button already ships
-  // `rounded-pill`. The `[&>svg]:size-*` selector hack is replaced by sizing
-  // `Icon` directly. Grid and inline remove are nested controls (RULES §7):
-  // small visual (the 24px / 20px pill inside), 40px hit area from the button
-  // itself — grid pins it to the corner so the pill keeps its old position,
-  // inline pulls it back with `-m-2.5` so the chip does not grow. List remove
-  // is a standalone icon control, so it is the 40px `icon` size.
+  // Vendored change: dropped `rounded-full`/`rounded` — Button already ships `rounded-pill`.
   const isList = variant === "list";
   const iconSize: IconSize = isList ? "md" : "xs";
 
@@ -391,10 +348,6 @@ export const AttachmentRemove = ({
   );
 };
 
-// ============================================================================
-// AttachmentHoverCard - Hover preview
-// ============================================================================
-
 export type AttachmentHoverCardProps = ComponentProps<typeof HoverCard>;
 
 export const AttachmentHoverCard = ({
@@ -428,10 +381,6 @@ export const AttachmentHoverCardContent = ({
     {...props}
   />
 );
-
-// ============================================================================
-// AttachmentEmpty - Empty state
-// ============================================================================
 
 export type AttachmentEmptyProps = HTMLAttributes<HTMLDivElement>;
 

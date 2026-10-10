@@ -1,28 +1,3 @@
-/**
- * The shell every component documentation page renders through.
- *
- * A page supplies a `ComponentDocSpec` — a name and a list of sections — and
- * nothing else. The breadcrumb, the eyebrow, the title, the hero sentence and
- * the outline are all DERIVED: the breadcrumb and eyebrow from the contract's
- * family, the title from the contract, the description from the item's
- * `meta.ts`, the outline from the declared sections. That is the whole point of
- * the pair. Ninety-nine pages used to type their own eyebrow, and between them
- * they claimed eight different taxonomies for four actual families; a reader
- * who reached Chart from the Charts group was told the page was
- * "COMPONENTS / BASE".
- *
- * **The order is fixed: breadcrumb, eyebrow, title, description.** A page
- * cannot reorder it, omit a piece or add one, because none of the four is
- * passed in. The breadcrumb is the shell's — `app/design-system/layout.tsx`
- * renders it above this component for every route, from the same nav data.
- *
- * **The right rail is a layout column, not something the article contains.** At
- * `xl` the grid gives it its own track so it can be sticky against the
- * viewport; below `xl` that track collapses and `AnchorStrip` takes over above
- * the article. Both are always in the tree — CSS chooses, not JavaScript, so
- * the server and the client cannot draw different trees.
- */
-
 import { notFound } from "next/navigation";
 
 import { DsSection } from "@/components/ds/kit";
@@ -42,9 +17,6 @@ export function ComponentDocPage({ spec }: { spec: ComponentDocSpec }) {
   const meta = docMeta(spec.name);
   const contract = contractEntry(spec.name);
 
-  // A spec whose name is in neither the catalog nor the contract is a route
-  // with nothing behind it. `test/docs/catalog-wiring.test.ts` fails on that
-  // before it can ship; this is the runtime half of the same claim.
   if (!meta || !contract) notFound();
 
   return (

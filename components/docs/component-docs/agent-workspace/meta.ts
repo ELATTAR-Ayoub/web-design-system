@@ -1,10 +1,3 @@
-/**
- * Documentation metadata for `agent-workspace`.
- *
- * Paired with `page.tsx` in this directory. Family, ownership and delivery
- * are NOT repeated here — they come from `lib/ds/platform-contract.ts`.
- */
-
 import type { ComponentDocMeta } from "@/lib/ds/docs/types";
 
 export const meta: ComponentDocMeta = {

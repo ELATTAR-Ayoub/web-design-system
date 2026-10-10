@@ -45,9 +45,7 @@ const SchemaDisplayContext = createContext<SchemaDisplayContextType>({
   path: "",
 });
 
-// Vendored change: mapped the vendor's per-method palette classes onto the
-// system's semantic Badge variants. PUT and PATCH both land on `warning` —
-// the system has one amber, where the vendor had two (orange/yellow).
+// Vendored change: mapped the vendor's per-method palette classes onto the system's semantic Badge variants.
 const methodVariants: Record<
   HttpMethod,
   "destructive" | "success" | "warning" | "info"
@@ -103,9 +101,7 @@ export const SchemaDisplayPath = ({
 }: SchemaDisplayPathProps) => {
   const { path } = useContext(SchemaDisplayContext);
 
-  // Highlight path parameters. Vendored change: mapped the embedded
-  // `text-blue-*` palette class in this HTML string onto `text-info-ink` — a
-  // path parameter is a neutral callout, not an interactive/brand element.
+  // Vendored change: mapped the embedded `text-blue-*` palette class in this HTML string onto `text-info-ink` — a path parameter is a neutral callout, not an interactive/brand element.
   const highlightedPath = path.replaceAll(
     /\{([^}]+)\}/g,
     '<span class="text-info-ink">{$1}</span>'
@@ -242,12 +238,7 @@ export const SchemaDisplayProperty = ({
   ...props
 }: SchemaDisplayPropertyProps) => {
   const hasChildren = properties || items;
-  // Vendored change: the vendor computed a raw pixel `paddingLeft` per nesting
-  // depth (`40 + depth * 16`). `--spacing` is this system's 4px unit, so the
-  // same geometry now reads as steps on the token scale (10 and 4 steps)
-  // rather than an invented number — the arbitrary-value guard's own escape
-  // hatch ("computed from a token... passes") applies to a `calc()` inline
-  // style exactly as it does to an arbitrary Tailwind bracket value.
+  // Vendored change: the vendor computed a raw pixel `paddingLeft` per nesting depth (`40 + depth * 16`).
   const paddingLeft = `calc(var(--spacing) * ${10 + depth * 4})`;
 
   if (hasChildren) {
@@ -307,7 +298,6 @@ export const SchemaDisplayProperty = ({
       {...props}
     >
       <div className="flex items-center gap-2">
-        {/* Spacer for alignment */}
         <span className="size-4" />
         <span className="type-identifier">{name}</span>
         <Badge variant="outline">{type}</Badge>

@@ -1,11 +1,3 @@
-/**
- * Authored documentation page for `ai-context`.
- *
- * Live specimens render the real `Context` from
- * `components/ai-elements/context.tsx`; they live in `context-specimen.tsx`
- * (a spec module cannot carry `"use client"`).
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Meta, Note } from "@/components/ds/kit";

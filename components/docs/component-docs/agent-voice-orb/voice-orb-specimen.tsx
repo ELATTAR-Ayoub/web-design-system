@@ -1,20 +1,17 @@
 "use client";
 
-/**
- * Live specimen for the `agent-voice-orb` page. The orb is driven by its
- * `state` prop, so the switcher lives here and drives the real component.
- */
-
 import * as React from "react";
 
 import { VoiceOrb, type VoiceOrbState } from "@/components/agent/parts/voice-orb";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
-export const VOICE_ORB_STATES: VoiceOrbState[] = ["listening", "thinking", "speaking"];
+export const VOICE_ORB_STATES: VoiceOrbState[] = ["idle", "listening", "thinking", "speaking", "asleep"];
 const STATE_NAMES: Record<VoiceOrbState, string> = {
+  idle: "Idle",
   listening: "Listening",
   thinking: "Thinking",
   speaking: "Speaking",
+  asleep: "Asleep",
 };
 
 export function VoiceOrbSpecimen({ initialState = "listening" }: { initialState?: VoiceOrbState }) {

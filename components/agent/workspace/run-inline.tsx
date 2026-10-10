@@ -1,16 +1,5 @@
 "use client";
 
-/**
- * Run control and planning, inline in the reply that started the run.
- *
- * `RunInline` tells the run's whole story by `run.status`: the proposed Plan
- * (edit a step, View as workflow, Run plan), then the Task with its steps and
- * Pause / Resume / Cancel, a low-confidence step asking through a
- * Confirmation, "Undo changes" once there is something reversible, and the
- * handoff form when a person has to take over. `RunQueue` is the Queue docked
- * above the composer.
- */
-
 import { useState } from "react";
 import {
   ArrowDownIcon,
@@ -99,14 +88,6 @@ const HANDOFF_OWNERS = ["Me", "Support team", "On-call engineer"] as const;
 const CANCELLABLE: ReadonlySet<RunStatus> = new Set(["running", "paused", "waiting_for_approval", "queued"]);
 const ERROR_STATUSES: ReadonlySet<RunStatus> = new Set(["partially_failed", "handoff_required", "cancelled"]);
 
-/* ── Plan approval notices (conversation 4) ─────────────────────────────── */
-
-/**
- * Why the plan on offer was not simply approved: an approval that expired, or
- * one for an older version that the newer plan replaced. Read from the
- * structured `reason` on the latest approval entry of the run's timeline; a
- * later "Plan edited" entry carries none and clears it.
- */
 export function planNotice(timeline: ActivityEntry[] | undefined): { kind: "expired" | "stale"; text: string } | null {
   const last = [...(timeline ?? [])].reverse().find((e) => e.kind === "approval");
   if (last?.reason === "approval_expired") return { kind: "expired", text: last.text };
@@ -114,10 +95,8 @@ export function planNotice(timeline: ActivityEntry[] | undefined): { kind: "expi
   return null;
 }
 
-/* ── Plan ───────────────────────────────────────────────────────────────── */
-
 function ProposedPlan({ transport, run, className }: RunInlineProps) {
-  // Local until the plan runs; reset by keying this component on the version.
+  // Local until the plan runs; reset by keying on the version.
   const [edits, setEdits] = useState<Record<string, string>>({});
   const [editing, setEditing] = useState<string | null>(null);
   const [draft, setDraft] = useState("");
@@ -263,8 +242,6 @@ function ProposedPlan({ transport, run, className }: RunInlineProps) {
   );
 }
 
-/* ── Task ───────────────────────────────────────────────────────────────── */
-
 type Answer = "verified" | "skipped";
 
 function StepRow({
@@ -282,7 +259,6 @@ function StepRow({
   effects: Effect[];
   answer?: Answer;
   onAnswer: (id: string, answer: Answer) => void;
-  /** True only for the first unsettled low-confidence step: one question at a time. */
   askFirst: boolean;
 }) {
   const unsettled = step.status === "running" || step.status === "pending";
@@ -410,7 +386,6 @@ function RunTask({ transport, run, className }: RunInlineProps) {
   return (
     <Task className={cn("flex flex-col gap-3", className)} defaultOpen>
       <div className="flex flex-wrap items-center justify-between gap-2">
-        {/* Task's default glyph is a magnifier (research steps); a run's steps are a checklist. */}
         <TaskTrigger className="min-w-0 flex-1" title={`${run.goal} · ${done} of ${run.plan.length}`}>
           <button
             type="button"
@@ -509,8 +484,6 @@ function RunTask({ transport, run, className }: RunInlineProps) {
   );
 }
 
-/* ── Handoff and error ──────────────────────────────────────────────────── */
-
 function HandoffForm({ transport, run }: { transport: AgentTransport; run: Run }) {
   const [sent, setSent] = useState(false);
   const handed = run.handoff?.owner || run.handoff?.note || sent;
@@ -594,11 +567,6 @@ function RunErrorNotice({ error }: { error: NonNullable<Run["error"]> }) {
   );
 }
 
-/**
- * Everything the run shows inside its owning reply, in order: the proposed
- * Plan while `proposed`; the Task once approved; the handoff when a person
- * has to take over; the error in plain words.
- */
 export function RunInline({ transport, run, className }: RunInlineProps) {
   const proposed = run.status === "proposed";
   const needsHandoff = run.status === "handoff_required" || Boolean(run.error?.fatal && run.handoff === undefined && transport.handoff);
@@ -626,20 +594,13 @@ export function RunInline({ transport, run, className }: RunInlineProps) {
           <RunTask run={run} transport={transport} />
         </>
       )}
-      {/* The reducer keeps the last error after a recovery; show it only while it still describes the run. */}
+      {/* The reducer keeps the last error after recovery; show it only while it still applies. */}
       {run.error && ERROR_STATUSES.has(run.status) && <RunErrorNotice error={run.error} />}
       {(needsHandoff || run.handoff) && <HandoffForm run={run} transport={transport} />}
     </div>
   );
 }
 
-/* ── Queue ──────────────────────────────────────────────────────────────── */
-
-/**
- * Messages held while the agent works — the Queue attached above the composer
- * (reorder, remove, send now). Renders nothing when the queue is empty. The
- * plan is not repeated here: it already lives in the reply that owns the run.
- */
 export function RunQueue({ transport, run, className }: RunInlineProps) {
   const queued = transport.capabilities.queue ? queueMessages(run.queue) : [];
   if (queued.length === 0) return null;

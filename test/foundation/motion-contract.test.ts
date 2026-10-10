@@ -181,8 +181,8 @@ describe("reduced motion", () => {
   }
 
   it("finds the keyframes at all", () => {
-    // 11 system + 7 surface. A 19th is a new animation nobody agreed to.
-    expect((MOTION.match(/@keyframes/g) ?? []).length).toBe(18);
+    // 11 system + 10 surface. A 22nd is a new animation nobody agreed to.
+    expect((MOTION.match(/@keyframes/g) ?? []).length).toBe(21);
   });
 
   /**

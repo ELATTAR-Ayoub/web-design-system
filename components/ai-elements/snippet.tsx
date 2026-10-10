@@ -84,8 +84,7 @@ export const SnippetInput = ({ className, ...props }: SnippetInputProps) => {
   );
 };
 
-// Vendored change: Omit the button's DOM `onError` before redefining it —
-// upstream intersected the two, so `onError={(e) => …}` did not type-check.
+// Vendored change: Omit the button's DOM `onError` before redefining it — upstream intersected the two, so `onError={(e) => …}` did not type-check.
 export type SnippetCopyButtonProps = Omit<ComponentProps<typeof InputGroupButton>, "onError"> & {
   onCopy?: () => void;
   onError?: (error: Error) => void;

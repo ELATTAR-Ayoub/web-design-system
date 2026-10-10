@@ -1,16 +1,5 @@
 "use client";
 
-/**
- * The live Preview specimen for the `slider` documentation page.
- *
- * `components/docs/component-docs/slider/page.tsx` is a plain data module
- * rendered by a SERVER component — it cannot hold the `useState` a real
- * threshold needs (trap 29). This companion is that scene: drag the auto-sell
- * floor and the readout renders as money, while a badge names which rarity
- * band the floor currently sits in — both driven by nothing but Slider's own
- * `onValueChange`.
- */
-
 import { useMemo, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";

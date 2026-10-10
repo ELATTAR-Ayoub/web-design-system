@@ -1,12 +1,5 @@
 "use client";
 
-/**
- * Live companion for the `resizable` Preview — see traps.md #29. Drag the
- * handle (or tab to it and use the arrow keys) and each pane prints its own
- * live width, read from react-resizable-panels' own `onLayoutChanged`
- * callback rather than measured after the fact.
- */
-
 import { useState } from "react";
 import type { Layout } from "react-resizable-panels";
 

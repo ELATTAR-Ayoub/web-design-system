@@ -1,47 +1,5 @@
 "use client";
 
-/**
- * WorkspaceComposer — the AgentWorkspace's input, built from AI Elements'
- * `PromptInput` the way `chatbot.tsx` / `queue-prompt-input.tsx` build it:
- *
- *   dock (the Queue, glued to the top edge)
- *   PromptInput
- *     PromptInputHeader   attachments (inline chips, hover preview) + the live transcript
- *     PromptInputBody     PromptInputTextarea
- *     PromptInputFooter
- *       PromptInputTools  + menu (files · sources · skills) · Search · ModelSelector · Effort
- *       trailing          Summarise (≥ 90 % full) · Context · SpeechInput + MicSelector · PromptInputSubmit
- *   palette (a Popover anchored on the composer: `@` sources or `/` commands)
- *
- *   Narrow (a phone, or a composer under COMPACT_BELOW wide) keeps only what a
- *   message needs inside the box — +, the mic, Send — and moves Search, the
- *   model, Effort, Summarise and the context meter to a row under it.
- *
- * What the component owns and what it does not:
- *  - The text, web-search flag and model are CONTROLLED by the caller — the
- *    controller also builds `SendOptions.settings` (autonomy, length,
- *    temperature) from the settings sheet, so this file never sees them.
- *  - Attachments are PromptInput's own (`FileUIPart`s); on submit they are read
- *    back into our `Attachment` through `readAttachment` and folded into the
- *    message with `serialiseAttachments`, so
- *    `SendOptions.attachments` / `wireText` keep their meaning.
- *  - Dictation has two paths. With `transport.transcribe` the composer records
- *    from the input device chosen in `MicSelector` (SpeechInput's MediaRecorder
- *    path) and sends the audio to the transport; without it the browser's own
- *    recogniser is used, which cannot pick a device, so `MicSelector` is hidden.
- *    Either way `SpeechInput.onListeningChange` is lifted as a `VoiceState` for
- *    the header's voice orb: "listening" while recording, "thinking" only once a
- *    dictated message has been sent and until `status` returns to "ready".
- *  - `@` and `/` are palettes: typing either at the start of a
- *    word opens a `PromptInputCommand` list above the composer and takes the
- *    trigger character back out of the text. The + menu is one
- *    panel: files, then the sources (checkable), then the skills. Picked
- *    sources ride the send as `SendOptions.sources` (ids) and show as chips;
- *    a command either runs in the browser or writes its directive into the text.
- *  - Effort is a chip that opens a slider (`EffortSlider`); at the last level,
- *    while the message is focused, the box runs the shared `SparkField`.
- */
-
 import * as React from "react";
 import { GaugeIcon, GlobeIcon, ListCollapseIcon, SquareSlashIcon } from "lucide-react";
 import { toast } from "sonner";
@@ -142,41 +100,28 @@ export type WorkspaceComposerProps = {
   transport: AgentTransport;
   value: string;
   onValueChange: (value: string) => void;
-  /** Send (the controller queues it instead while busy with a queue-capable transport). */
   onSubmit: (text: string, options: SendOptions) => void;
   onStop: () => void;
-  /** AI SDK ChatStatus for PromptInputSubmit. */
   status: "ready" | "submitted" | "streaming" | "error";
   models?: { id: string; name: string; provider?: string }[];
   model?: string;
   onModelChange?: (id: string) => void;
   webSearch: boolean;
   onWebSearchChange: (on: boolean) => void;
-  /** What `@` offers. Shown only when `transport.capabilities.sources` is true. */
   sources?: PromptSource[];
-  /** What `/` offers; the `skill` ones are also in the + menu. */
   commands?: AgentCommand[];
-  /** Effort levels, low to high. Empty or absent renders no Effort control. */
   efforts?: string[];
   effort?: string;
   onEffortChange?: (effort: string) => void;
-  /** Rendered attached above the input (the Queue — RunQueue). */
   dock?: React.ReactNode;
-  /** Dictation state, lifted so the header's voice orb can show it. */
   onVoiceStateChange?: (state: VoiceState) => void;
   disabled?: boolean;
   disabledReason?: string;
   className?: string;
 };
 
-/**
- * Below this width the composer is "compact": only +, the mic and Send stay in
- * the box. 448px is Tailwind's `@md` container step, so the composer turns
- * compact at the same width its `@md/composer` styles would.
- */
 const COMPACT_BELOW = 448;
 
-/** The meter offers Summarise from here up — the same point the Context hover card turns urgent. */
 const SUMMARISE_AT = 0.9;
 
 const subscribeNever = () => () => {};
@@ -186,7 +131,6 @@ const canRecord = () => typeof window !== "undefined" && "MediaRecorder" in wind
 
 const isBusy = (status: WorkspaceComposerProps["status"]) => status === "submitted" || status === "streaming";
 
-/** A `FileUIPart` (data: or blob: url) back to the `File` it came from, then to our `Attachment`. */
 async function toAttachment(part: PromptInputMessage["files"][number]): Promise<AgentAttachment> {
   const name = part.filename ?? "attachment";
   const type = part.mediaType ?? "";
@@ -195,13 +139,11 @@ async function toAttachment(part: PromptInputMessage["files"][number]): Promise<
     const blob = await (await fetch(part.url)).blob();
     file = new File([blob], name, { type: type || blob.type });
   } catch {
-    // The bytes could not be read back — still send what the user picked, by name.
     file = new File([], name, { type });
   }
   return readAttachment(file);
 }
 
-/** One chip in the header: preview swaps for remove on hover, a hover card shows the full image. */
 function ComposerAttachment({
   attachment,
   onRemove,
@@ -230,7 +172,6 @@ function ComposerAttachment({
         <div className="space-y-3">
           {category === "image" && attachment.type === "file" && attachment.url ? (
             <div className="flex max-h-96 w-80 items-center justify-center overflow-hidden rounded-md border">
-              {/* A local object/data url — not an optimisable remote asset. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 alt={label}
@@ -265,7 +206,6 @@ function ComposerAttachments() {
   );
 }
 
-/** A picked source as the `Attachment` chip AI Elements draws for a source document. */
 const sourceChip = (s: PromptSource) => ({
   type: "source-document" as const,
   id: s.id,
@@ -275,7 +215,6 @@ const sourceChip = (s: PromptSource) => ({
   mediaType: "text/plain",
 });
 
-/** `@` or `/` typed at the start of a word — the character a palette opens on, or null. */
 function paletteTrigger(previous: string, next: string, caret: number): "@" | "/" | null {
   if (next.length !== previous.length + 1 || caret < 1) return null;
   const typed = next[caret - 1];
@@ -283,7 +222,6 @@ function paletteTrigger(previous: string, next: string, caret: number): "@" | "/
   return caret === 1 || /\s/.test(next[caret - 2]) ? typed : null;
 }
 
-/** Submit: Stop while a reply is on its way, otherwise disabled until there is something to send. */
 function ComposerSubmit({
   status,
   onStop,
@@ -331,9 +269,6 @@ export function WorkspaceComposer({
   const [micId, setMicId] = React.useState<string | undefined>();
   const [summarising, setSummarising] = React.useState(false);
 
-  /* ── Dictation ───────────────────────────────────────────────────────── */
-
-  // With `transcribe` we record and send the audio; otherwise the browser recognises.
   const recording = Boolean(transport.transcribe);
   const dictation = React.useSyncExternalStore(subscribeNever, recording ? canRecord : canRecognise, () => false);
   const valueRef = React.useRef(value);
@@ -352,18 +287,15 @@ export function WorkspaceComposer({
     if (next) setSegments([]);
   }, []);
 
-  // Dictated text that is emptied again was never going to be sent.
   if (dictated && !value.trim()) setDictated(false);
 
-  // Thinking lasts until the send that followed it settles (busy → ready). Adjusting
-  // state while rendering is the supported way to react to a prop change.
+  // Thinking lasts until the send settles; adjusting state during render is the supported idiom.
   const [prevStatus, setPrevStatus] = React.useState(status);
   if (prevStatus !== status) {
     setPrevStatus(status);
     if (isBusy(prevStatus) && status === "ready" && thinking) setThinking(false);
   }
 
-  // Transcribing a recording is the agent working on what was said — the orb thinks.
   const voiceState: VoiceState = listening ? "listening" : thinking || transcribing ? "thinking" : "idle";
   const reported = React.useRef<VoiceState>("idle");
   const onVoiceStateChangeRef = React.useRef(onVoiceStateChange);
@@ -375,7 +307,7 @@ export function WorkspaceComposer({
     reported.current = voiceState;
     onVoiceStateChangeRef.current?.(voiceState);
   }, [voiceState]);
-  // Leaving while the voice is active must not strand the header's voice orb.
+  // Leaving while the voice is active must not strand the header's orb.
   React.useEffect(
     () => () => {
       if (reported.current !== "idle") {
@@ -400,7 +332,6 @@ export function WorkspaceComposer({
     [onValueChange],
   );
 
-  /** SpeechInput's recorder path: audio in, text out. Failure is a toast, never silence. */
   const transcribe = transport.transcribe;
   const handleAudio = React.useCallback(
     async (audio: Blob) => {
@@ -418,13 +349,10 @@ export function WorkspaceComposer({
     [transcribe],
   );
 
-  /* ── @ sources and / commands ────────────────────────────────────────── */
-
   const showSources = Boolean(capabilities.sources && sources?.length);
   const [chosen, setChosen] = React.useState<PromptSource[]>([]);
   const [palette, setPalette] = React.useState<"@" | "/" | null>(null);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
-  // Where the trigger was typed, so a command's directive goes back in that spot.
   const insertAt = React.useRef<number | null>(null);
   const skills = (commands ?? []).filter((c) => c.group === "skill");
 
@@ -459,7 +387,6 @@ export function WorkspaceComposer({
     const caret = event.currentTarget.selectionStart ?? next.length;
     const trigger = paletteTrigger(valueRef.current, next, caret);
     if ((trigger === "@" && showSources) || (trigger === "/" && commands?.length)) {
-      // The palette takes the keystroke: the trigger does not stay in the message.
       const without = next.slice(0, caret - 1) + next.slice(caret);
       valueRef.current = without;
       onValueChange(without);
@@ -480,8 +407,7 @@ export function WorkspaceComposer({
   const sparks = React.useRef<SparkFieldHandle>(null);
   const sparking = maxed && focused && !reduce;
 
-  /* Compact is measured, not a media query: the composer is embedded at any
-     width. A layout effect so the first painted frame already has it right. */
+  /* Measured, not a media query; a layout effect so the first frame is right. */
   const rootRef = React.useRef<HTMLDivElement>(null);
   const [compact, setCompact] = React.useState(false);
   React.useLayoutEffect(() => {
@@ -496,8 +422,6 @@ export function WorkspaceComposer({
     ro.observe(root);
     return () => ro.disconnect();
   }, []);
-
-  /* ── Send ────────────────────────────────────────────────────────────── */
 
   const handleSubmit = async (message: PromptInputMessage) => {
     const text = message.text.trim();
@@ -537,7 +461,6 @@ export function WorkspaceComposer({
   const usedFraction = usage && usage.maxTokens > 0 ? usage.usedTokens / usage.maxTokens : 0;
   const offerSummarise = Boolean(summarise) && usedFraction >= SUMMARISE_AT;
 
-  /* + — one panel: files, then sources (checkable), then skills. */
   const showFiles = capabilities.attachments !== "none";
   const plusMenu =
     showFiles || showSources || skills.length ? (
@@ -554,7 +477,7 @@ export function WorkspaceComposer({
                   checked={chosen.some((c) => c.id === source.id)}
                   key={source.id}
                   onCheckedChange={(on) => toggleSource(source, on === true)}
-                  // Several sources are picked in one visit: the panel stays open.
+                  // Several sources can be picked in one visit: keep the panel open.
                   onSelect={(event) => event.preventDefault()}
                 >
                   {source.icon ? <Icon icon={source.icon} size="md" tone="inherit" /> : null}
@@ -579,7 +502,6 @@ export function WorkspaceComposer({
       </PromptInputActionMenu>
     ) : null;
 
-  /* Dictation and its microphone choice are one split control, beside Send. */
   const dictationControl = dictation ? (
     <div className="flex shrink-0 items-center" data-slot="composer-dictation">
       <SpeechInput
@@ -616,7 +538,6 @@ export function WorkspaceComposer({
     </div>
   ) : null;
 
-  /* Search · model · Effort — in the box when there is room, under it when compact. */
   const secondary = (
     <div className="flex min-w-0 items-center gap-1" data-slot="composer-options">
       <PromptInputButton
@@ -685,7 +606,6 @@ export function WorkspaceComposer({
             aria-label="Effort"
             className="w-64 p-3.5"
             onCloseAutoFocus={(event) => {
-              // Back to the message, so the sparks it just armed are seen.
               event.preventDefault();
               textareaRef.current?.focus();
             }}
@@ -703,14 +623,12 @@ export function WorkspaceComposer({
     </div>
   );
 
-  /* Summarise · the context meter. */
   const meters =
     offerSummarise || usage ? (
       <div className="flex shrink-0 items-center gap-1" data-slot="composer-meters">
         {offerSummarise ? (
           <PromptInputButton
             aria-label="Summarise"
-            // Not while a reply is being written: the summary would land inside it.
             disabled={summarising || status !== "ready"}
             onClick={handleSummarise}
             tooltip="Condense this conversation to free up context"
@@ -755,11 +673,9 @@ export function WorkspaceComposer({
           </div>
         ) : null}
 
-        {/* `@` and `/` open their palette above the whole composer. */}
         <Popover onOpenChange={(open) => (open ? undefined : closePalette())} open={palette !== null}>
           <PopoverAnchor asChild>
             <div>
-        {/* A tall composer as a pill clips its own placeholder on a phone; Claude's is a rounded rectangle. */}
         <PromptInput
           className="[&_[data-slot=input-group]]:isolate [&_[data-slot=input-group]]:rounded-3xl"
           globalDrop
@@ -838,7 +754,6 @@ export function WorkspaceComposer({
             aria-label={palette === "@" ? "Sources" : "Commands"}
             className="p-0"
             onCloseAutoFocus={(event) => {
-              // Back to the message, not to whatever opened the palette.
               event.preventDefault();
               textareaRef.current?.focus();
             }}
@@ -882,7 +797,6 @@ export function WorkspaceComposer({
                         <Icon icon={command.icon ?? SquareSlashIcon} size="md" tone="inherit" />
                         <span className="flex min-w-0 flex-col">
                           <span className="type-nav truncate">
-                            {/* A command is typed as /name; a skill keeps its own name. */}
                           {command.group === "skill" || command.label.startsWith("/") ? command.label : `/${command.label}`}
                           </span>
                           {command.hint ? (

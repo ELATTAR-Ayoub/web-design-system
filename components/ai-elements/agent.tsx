@@ -43,8 +43,6 @@ export const AgentHeader = memo(
         <Icon icon={BotIcon} size="md" tone="muted" />
         <span className="type-nav">{name}</span>
         {model && (
-          // A model id is a code people read back: type-identifier is declared
-          // after type-badge in typeset.css, so it wins on the shared properties.
           <Badge className="type-identifier" variant="secondary">
             {model}
           </Badge>

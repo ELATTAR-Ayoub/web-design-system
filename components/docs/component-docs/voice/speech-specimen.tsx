@@ -9,10 +9,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 const SAMPLE = "**Three sealed boxes** match. Want me to put the strongest one on hold?";
 
-/**
- * `useBrowserSpeech` driving a voice list and a speak button. It reads the
- * speakable form of a markdown sentence, so the asterisks are not said aloud.
- */
 export function SpeechSpecimen() {
   const speech = useBrowserSpeech();
 

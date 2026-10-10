@@ -1,15 +1,3 @@
-/**
- * Authored documentation page for `alert`.
- *
- * Replaces the generated baseline. Migrated from the old `base/feedback`
- * category page (`app/design-system/components/base/feedback/page.tsx`, since deleted),
- * which held every feedback component's real documentation on one page.
- * Every specimen below renders the real `Alert` from
- * `components/ui/alert.tsx` — nothing here is a styled div. Prop rows in
- * API Reference are read from that file's own `alertVariants` cva config and
- * component signatures; nothing is invented.
- */
-
 import {
   AlertTriangle,
   CheckCircle2,

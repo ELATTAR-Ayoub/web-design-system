@@ -31,9 +31,7 @@ export const Checkpoint = ({
   </div>
 );
 
-// Vendored change: raw `LucideProps` is replaced by `Icon`'s props — tone/size
-// come from the ladder (size is an `IconSize` word, not a pixel number), and
-// every other SVG prop (e.g. strokeWidth) still forwards through `Icon`.
+// Vendored change: raw `LucideProps` is replaced by `Icon`'s props — tone/size come from the ladder (size is an `IconSize` word, not a pixel number).
 export type CheckpointIconProps = Omit<ComponentProps<typeof Icon>, "icon"> & {
   children?: ReactNode;
 };

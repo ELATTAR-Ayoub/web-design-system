@@ -1,11 +1,3 @@
-/**
- * Authored documentation page for `ai-connection`.
- *
- * `Connection` is a render function React Flow calls during a live drag, so
- * the specimens freeze it into a bare svg and also mount a live graph
- * (`connection-specimen.tsx`).
- */
-
 import { ConnectionPreview, ConnectionStateGrid } from "./connection-specimen";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

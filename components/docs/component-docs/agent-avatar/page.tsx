@@ -1,17 +1,3 @@
-/**
- * Authored documentation page for `agent-avatar`.
- *
- * Migrated from `app/design-system/components/agent/avatar/page.tsx`, since deleted, which
- * held the avatar's full documentation on the category page. Every specimen
- * renders the real `AgentAvatar` — the public name `components/agent/index.ts`
- * exports for the `CubeAvatar` renderer. `CubeAvatar` and `CubeScene` are
- * private implementation names and do not appear anywhere below; only the
- * public vocabulary (`AgentAvatar`, `AvatarRenderer`) is used in prose and
- * usage code. The Source section still names the file's own export —
- * `CubeAvatar` — because that is what `components/agent/avatar/cube-avatar.tsx`
- * actually declares before the barrel renames it.
- */
-
 import { AvatarMatrix, AvatarPlayground } from "./avatar-specimen";
 import { AgentAvatar } from "@/components/agent";
 import { SourceMeta } from "@/components/docs/component-page/sections";

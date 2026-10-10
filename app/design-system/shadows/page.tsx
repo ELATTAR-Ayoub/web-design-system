@@ -13,13 +13,6 @@ import { findCategory } from "@/lib/ds/nav";
 
 const { category } = findCategory("foundations", "shadows");
 
-/**
- * The shadow system.
- *
- * Every specimen here is the real token — nothing is redrawn for the page — so
- * changing a shadow in globals.css changes this page with it.
- */
-
 const ambient = [
   { token: "--shadow-e1", cls: "shadow-e1", use: "Resting rows, chips, table headers. Barely there." },
   { token: "--shadow-e2", cls: "shadow-e2", use: "Cards and pack cards at rest." },

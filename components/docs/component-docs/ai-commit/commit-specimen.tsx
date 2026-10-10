@@ -28,11 +28,6 @@ import {
 } from "@/components/ai-elements/commit";
 import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 
-/**
- * Live specimens for the `ai-commit` page — one fixed commit, the same
- * composition the AgentWorkspace draws for a commit result.
- */
-
 const HASH = "9fceb02d0ae598e95dc970b74767f19372d61af8";
 const FILES = [
   { path: "src/invoices.ts", status: "modified", additions: 14, deletions: 3 },

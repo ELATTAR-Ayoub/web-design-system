@@ -1,19 +1,3 @@
-/**
- * Authored documentation page for `pagination`.
- *
- * Replaces the generated baseline. Migrated from the old `base/navigation`
- * category page (`app/design-system/components/base/navigation/page.tsx`, since deleted).
- * Every specimen renders the real `Pagination` composition from
- * `components/ui/pagination.tsx` — nothing here is a styled div.
- *
- * `components/ui/pagination.tsx` carries the client directive precisely
- * because `PaginationLink`'s disabled branch attaches an inline `onClick` —
- * without it a Server Component render of the disabled case crashes a
- * production build with "Event handlers cannot be passed to Client Component
- * props". Already fixed in the source; noted here since this page's specimens
- * exercise the disabled branch directly and would have caught it otherwise.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Code, Meta, Note, Panel, Row } from "@/components/ds/kit";

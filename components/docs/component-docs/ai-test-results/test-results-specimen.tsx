@@ -21,14 +21,8 @@ import {
 } from "@/components/ai-elements/test-results";
 import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 
-/**
- * Live specimens for the `ai-test-results` page — fixed data, the same
- * composition the AgentWorkspace draws for a test run (workspace-outputs.tsx).
- */
-
 const SUMMARY = { passed: 5, failed: 1, skipped: 1, total: 7, duration: 1840 };
 
-/* Children replace the default row, so a failed row recomposes status, name and duration and adds its error. */
 function FailedRow() {
   return (
     <Test className="flex-wrap" duration={31} name="applies the tax rate" status="failed">

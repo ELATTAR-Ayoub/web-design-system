@@ -31,10 +31,7 @@ const Temporary = ({
       className="stroke-1 stroke-ring"
       id={id}
       path={edgePath}
-      // Vendored change: the stroke colour is set inline. `stroke-ring` lives in
-      // @layer utilities and loses to xyflow's unlayered
-      // `.react-flow__edge-path { stroke: var(--xy-edge-stroke…) }`, which
-      // painted xyflow's hardcoded grey. Incoming `style` is merged, last.
+      // Vendored change: the stroke colour is set inline so it beats xyflow's unlayered edge-path rule.
       style={{
         stroke: "var(--color-ring)",
         strokeDasharray: "5, 5",
@@ -48,7 +45,6 @@ const getHandleCoordsByPosition = (
   node: InternalNode<Node>,
   handlePosition: Position
 ) => {
-  // Choose the handle type based on position - Left is for target, Right is for source
   const handleType = handlePosition === Position.Left ? "target" : "source";
 
   const handle = node.internals.handleBounds?.[handleType]?.find(
@@ -62,9 +58,6 @@ const getHandleCoordsByPosition = (
   let offsetX = handle.width / 2;
   let offsetY = handle.height / 2;
 
-  // this is a tiny detail to make the markerEnd of an edge visible.
-  // The handle position that gets calculated has the origin top-left, so depending which side we are using, we add a little offset
-  // when the handlePosition is Position.Right for example, we need to add an offset as big as the handle itself in order to get the correct position
   switch (handlePosition) {
     case Position.Left: {
       offsetX = 0;
@@ -137,11 +130,7 @@ const Animated = ({ id, source, target, markerEnd, style }: EdgeProps) => {
   return (
     <>
       <BaseEdge id={id} markerEnd={markerEnd} path={edgePath} style={style} />
-      {/* Vendored change: `var(--primary)` swapped for `var(--color-action-ink)`
-          — a travelling dot carries no foreground of its own, so RULES §1.3's
-          "a mark with no foreground of its own is on the same contract as
-          text" applies (the same reasoning `Tabs`' sliding indicator and
-          `Progress`' fill are on). */}
+      {/* Vendored change: `var(--primary)` swapped for `var(--color-action-ink)` — a travelling dot carries no foreground of its own. */}
       <circle fill="var(--color-action-ink)" r="4">
         <animateMotion dur="2s" path={edgePath} repeatCount="indefinite" />
       </circle>

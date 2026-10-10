@@ -1,14 +1,3 @@
-/**
- * Authored documentation page for `message`.
- *
- * Replaces the generated baseline. Migrated from the old `base/chat` category
- * page (`app/design-system/components/base/chat/page.tsx`, since deleted), which held every
- * conversation primitive's real documentation on one page. Every specimen
- * below renders the real `Message` family from `components/ui/message.tsx` —
- * nothing here is a styled div. Prop rows in API Reference come from that
- * file's own component signatures; nothing is invented.
- */
-
 import { BotIcon, UserIcon } from "lucide-react";
 
 import { SourceMeta } from "@/components/docs/component-page/sections";

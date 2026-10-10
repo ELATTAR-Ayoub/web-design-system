@@ -97,8 +97,6 @@ export type ArtifactActionProps = ComponentProps<typeof Button> & {
 export const ArtifactAction = ({
   tooltip,
   label,
-  // Renamed from the vendored `icon: Icon` — the shadowed name collided with
-  // this file's own `Icon` import once raw glyphs were routed through it.
   icon: Glyph,
   children,
   className,

@@ -16,11 +16,6 @@ import {
 } from "@/components/ai-elements/stack-trace";
 import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 
-/**
- * Live specimens for the `ai-stack-trace` page — a fixed trace string, the
- * same composition the AgentWorkspace draws for a crashed step.
- */
-
 const TRACE = `TypeError: Cannot read properties of undefined (reading 'total')
     at taxFor (/app/src/invoices.ts:42:11)
     at buildInvoice (/app/src/invoices.ts:17:9)

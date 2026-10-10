@@ -1,15 +1,3 @@
-/**
- * Authored documentation page for `attachment`.
- *
- * Replaces the generated baseline. Migrated from the old `base/chat` category
- * page (`app/design-system/components/base/chat/page.tsx`, since deleted), which held every
- * conversation primitive's real documentation on one page. Every specimen
- * below renders the real `Attachment` family from `components/ui/attachment.tsx`
- * — nothing here is a styled div. Prop rows in API Reference come from that
- * file's own `attachmentVariants` / `attachmentMediaVariants` cva configs and
- * component signatures; nothing is invented.
- */
-
 import {
   CircleAlertIcon,
   FileTextIcon,
@@ -375,10 +363,6 @@ export function PickedFile() {
                   <Attachment state={s.state} orientation="vertical" size="sm">
                     <AttachmentMedia>
                       {s.state === "uploading" || s.state === "processing" ? (
-                        /* Two static demonstration cells, whose own labels
-                           already read "uploading" and "processing". An
-                           announcing spinner here is the state said twice —
-                           and this grid renders both at once. */
                         <Spinner aria-hidden />
                       ) : s.state === "error" ? (
                         <Icon icon={CircleAlertIcon} size="md" tone="inherit" />

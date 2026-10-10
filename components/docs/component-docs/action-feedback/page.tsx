@@ -1,15 +1,3 @@
-/**
- * Documentation page for `action-feedback`.
- *
- * Authored, not generated. This is the default button's surface: a moulded
- * action-ramp fill with a static texture and a hover/press "beat" — an
- * ellipse that thumps outward from the centre. It is `@utility sheen-action`
- * in `styles/utilities.css`, and `components/ui/button.tsx` is its one real
- * consumer today (the `default` variant). The class is documented here in
- * its own right because it is a CSS capability, not a component: there is no
- * `<ActionFeedback>` to render, only a class a host element wears.
- */
-
 import { Code, Meta, Note, Row } from "@/components/ds/kit";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

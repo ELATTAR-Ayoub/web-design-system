@@ -1,10 +1,5 @@
 "use client";
 
-/**
- * Live specimens for the `ai-chain-of-thought` page, rendering the real parts
- * from `components/ai-elements/chain-of-thought.tsx` with fixed steps.
- */
-
 import { useState } from "react";
 import { FileTextIcon, SearchIcon } from "lucide-react";
 
@@ -41,7 +36,6 @@ function Steps() {
   );
 }
 
-/** The Preview: a header you can open, with steps of every status. */
 export function ChainOfThoughtPreview() {
   return (
     <Panel label="ChainOfThought" note="4 steps">
@@ -53,7 +47,6 @@ export function ChainOfThoughtPreview() {
   );
 }
 
-/** Controlled, with a shimmering header while work is in flight, and an image step. */
 export function ChainOfThoughtExamples() {
   const [open, setOpen] = useState(true);
   return (
@@ -84,7 +77,6 @@ export function ChainOfThoughtExamples() {
   );
 }
 
-/** The States grid. */
 export function ChainOfThoughtStateGrid() {
   return (
     <StateGrid cols={3}>

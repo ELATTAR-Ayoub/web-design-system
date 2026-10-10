@@ -1,11 +1,5 @@
 "use client";
 
-/**
- * Live specimens for the `ai-model-selector` page. The dialog's open state and
- * the picked model need state, so they live here. The rows carry no provider
- * logo: `ModelSelectorLogo` is covered by its own props table; the specimen stays focused on search and selection.
- */
-
 import * as React from "react";
 
 import {

@@ -1,12 +1,3 @@
-/**
- * Authored documentation page for `hover-card`.
- *
- * Replaces the generated baseline. Migrated from the old `base/dialogs`
- * category page (`app/design-system/components/base/dialogs/page.tsx`, since deleted).
- * Every specimen below renders the real `HoverCard` from
- * `components/ui/hover-card.tsx` — nothing here is a styled div.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 

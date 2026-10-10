@@ -1,10 +1,3 @@
-/**
- * Authored documentation page for `agent-spark-field`.
- *
- * Arming the field needs focus, effort and motion state, so every live render
- * goes through `spark-field-specimen.tsx`.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Meta, Note, Panel, StateCell, StateGrid } from "@/components/ds/kit";

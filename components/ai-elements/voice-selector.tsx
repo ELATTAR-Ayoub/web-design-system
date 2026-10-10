@@ -113,8 +113,7 @@ export const VoiceSelectorContent = ({
   className,
   children,
   title = "Voice Selector",
-  // Vendored change: a search dialog has no corner ✕ — it sat on top of the
-  // search field. Escape and a press outside close it, as our CommandDialog.
+  // Vendored change: a search dialog has no corner ✕ — it sat on top of the search field.
   showCloseButton = false,
   ...props
 }: VoiceSelectorContentProps) => (

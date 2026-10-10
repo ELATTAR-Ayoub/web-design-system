@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 
 import { edgeTypes, FlowFrame, planEdges, planNodes, stepNodeTypes } from "../ai-canvas/flow-fixture";
 
-/** The Preview: the same node used three times in a graph, with handles only where an edge needs one. */
 export function NodePreview() {
   return (
     <Panel label="Node" note="first step: no target handle · last step: no source handle">
@@ -18,10 +17,6 @@ export function NodePreview() {
   );
 }
 
-/**
- * Nodes standalone: with both handles off a Node is a plain card, so it needs
- * no React Flow context to render.
- */
 export function NodeStateGrid() {
   return (
     <StateGrid cols={3}>

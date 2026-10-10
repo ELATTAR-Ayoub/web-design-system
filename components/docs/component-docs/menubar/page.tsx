@@ -1,16 +1,3 @@
-/**
- * Authored documentation page for `menubar`.
- *
- * Replaces the generated baseline. Migrated from the old `base/menus` category
- * page (`app/design-system/components/base/menus/page.tsx`, since deleted). Not used in the
- * collector-facing product — it is here because the admin surface needs it:
- * pack management, card management and audit logs. Every specimen renders the
- * real `Menubar` composition from `components/ui/menubar.tsx`.
- *
- * See `components/docs/component-docs/menu/page.tsx` for why there is no
- * shared "menu" module between this, DropdownMenu and ContextMenu.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Code, Meta, Panel } from "@/components/ds/kit";

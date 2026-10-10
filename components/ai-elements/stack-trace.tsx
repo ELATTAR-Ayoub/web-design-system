@@ -28,7 +28,6 @@ import {
   useState,
 } from "react";
 
-// Regex patterns for parsing stack traces
 const STACK_FRAME_WITH_PARENS_REGEX = /^at\s+(.+?)\s+\((.+):(\d+):(\d+)\)$/;
 const STACK_FRAME_WITHOUT_FN_REGEX = /^at\s+(.+):(\d+):(\d+)$/;
 const ERROR_TYPE_REGEX = /^(\w+Error|Error):\s*(.*)$/;
@@ -71,7 +70,6 @@ const useStackTrace = () => {
 const parseStackFrame = (line: string): StackFrame => {
   const trimmed = line.trim();
 
-  // Pattern: at functionName (filePath:line:column)
   const withParensMatch = trimmed.match(STACK_FRAME_WITH_PARENS_REGEX);
   if (withParensMatch) {
     const [, functionName, filePath, lineNum, colNum] = withParensMatch;
@@ -89,7 +87,6 @@ const parseStackFrame = (line: string): StackFrame => {
     };
   }
 
-  // Pattern: at filePath:line:column (no function name)
   const withoutFnMatch = trimmed.match(STACK_FRAME_WITHOUT_FN_REGEX);
   if (withoutFnMatch) {
     const [, filePath, lineNum, colNum] = withoutFnMatch;
@@ -107,7 +104,6 @@ const parseStackFrame = (line: string): StackFrame => {
     };
   }
 
-  // Fallback: unparseable line
   return {
     columnNumber: null,
     filePath: null,
@@ -134,7 +130,6 @@ const parseStackTrace = (trace: string): ParsedStackTrace => {
   let errorType: string | null = null;
   let errorMessage = firstLine;
 
-  // Try to extract error type from "ErrorType: message" format
   const errorMatch = firstLine.match(ERROR_TYPE_REGEX);
   if (errorMatch) {
     const [, type, msg] = errorMatch;
@@ -142,7 +137,6 @@ const parseStackTrace = (trace: string): ParsedStackTrace => {
     errorMessage = msg || "";
   }
 
-  // Parse stack frames (lines starting with "at")
   const frames = lines
     .slice(1)
     .filter((line) => line.trim().startsWith("at "))
@@ -219,10 +213,7 @@ export const StackTraceHeader = memo(
     return (
       <Collapsible onOpenChange={setIsOpen} open={isOpen}>
         <CollapsibleTrigger asChild {...props}>
-          {/* Vendored change: the header holds its own buttons (copy), so it cannot
-              be a <button>; upstream left a bare div that the keyboard could not
-              reach. It is a focusable role="button" that toggles on Enter/Space —
-              keys from the buttons inside it are theirs, not the header's. */}
+          {/* Vendored change: the header holds its own buttons (copy), so it cannot be a <button>; upstream left a bare div that the keyboard could not reach. */}
           <div
             className={cn(
               "flex min-h-(--size-target-min) w-full cursor-pointer items-center gap-3 p-3 text-left transition-colors outline-none hover:bg-muted/50 focus-visible:ring-3 focus-visible:ring-ring/50",
@@ -270,10 +261,7 @@ export const StackTraceErrorType = memo(
     const { trace } = useStackTrace();
 
     return (
-      // Vendored change: dropped `font-semibold` — the root already carries
-      // `type-code`, and a role's weight is not a call site's to override
-      // (RULES §2 rule 1). `text-destructive-ink` alone still separates the
-      // error type from the message beside it.
+      // Vendored change: dropped `font-semibold` — the root already carries `type-code`, and a role's weight is not a call site's to override.
       <span
         className={cn("shrink-0 text-destructive-ink", className)}
         {...props}
@@ -429,14 +417,7 @@ export const StackTraceContent = memo(
 
     return (
       <Collapsible open={isOpen}>
-        {/* Vendored change: dropped the vendored fade-on-open/fade-on-close
-            utility pair from the third-party enter/exit animation library —
-            those bypass the motion scale (the foreign-animation guard) and
-            fade the panel in place, while `ui/collapsible.tsx`'s own
-            CollapsibleContent already animates this exact panel on height
-            via the expand/collapse utilities (RULES §4, "Disclosure
-            animates its height"), so the disclosure plays correctly with no
-            extra classes here. */}
+        {/* Vendored change: dropped the vendored fade-on-open/fade-on-close utility pair from the third-party enter/exit animation library — those bypass the motion scale (the foreign-animation guard) and fade the panel in place. */}
         <CollapsibleContent
           className={cn("overflow-auto border-t bg-muted/30", className)}
           style={{ maxHeight }}
@@ -477,11 +458,7 @@ const FilePathButton = memo(
     return (
       <button
         className={cn(
-          /* Vendored change: `--color-action` (`--primary`) is a fill, not a
-             text-safe shade (RULES §1 rule 3 / trap 2) — legible on one theme,
-             not the other. `text-action-ink` is the role built for exactly
-             this: a link-like hover colour that resolves correctly in both
-             themes. */
+          /* Vendored change: `text-action-ink` replaces the fill shade `--color-action` as the hover text colour. */
           "underline decoration-dotted hover:text-action-ink",
           onFilePathClick && "cursor-pointer"
         )}

@@ -74,14 +74,12 @@ const matchJsxTag = (code: string) => {
 };
 
 const stripIncompleteTag = (text: string) => {
-  // Find the last '<' that isn't part of a complete tag
   const lastOpen = text.lastIndexOf("<");
   if (lastOpen === -1) {
     return text;
   }
 
   const afterOpen = text.slice(lastOpen);
-  // If there's no closing '>' after the last '<', it's an incomplete tag
   if (!afterOpen.includes(">")) {
     return text.slice(0, lastOpen);
   }
@@ -97,13 +95,11 @@ const completeJsxTag = (code: string) => {
   while (currentPosition < code.length) {
     const match = matchJsxTag(code.slice(currentPosition));
     if (!match) {
-      // No more tags found, strip any trailing incomplete tag
       result += stripIncompleteTag(code.slice(currentPosition));
       break;
     }
     const { tagName, type, endIndex } = match;
 
-    // Include any text content before this tag
     result += code.slice(currentPosition, currentPosition + endIndex);
 
     if (type === "opening") {
@@ -147,7 +143,6 @@ export const JSXPreview = memo(
     const [error, setError] = useState<Error | null>(null);
     const [, setLastGoodJsx] = useState("");
 
-    // Clear error when jsx changes (derived state pattern)
     if (jsx !== prevJsx) {
       setPrevJsx(jsx);
       setError(null);
@@ -209,30 +204,23 @@ export const JSXPreviewContent = memo(
     } = useJSXPreview();
     const errorReportedRef = useRef<string | null>(null);
     const lastGoodJsxRef = useRef("");
-    // Vendored change: `hadError` boolean + reset-in-effect (react-hooks/
-    // set-state-in-effect) and a render-time read of `lastGoodJsxRef`
-    // (react-hooks/refs) replaced by one state value keyed to the jsx that
-    // errored. It is stale — and so ignored — the moment `processedJsx`
-    // changes, which is exactly what the reset effect did.
+    // Vendored change: `hadError` boolean + reset-in-effect (react-hooks/ set-state-in-effect) and a render-time read of `lastGoodJsxRef` (react-hooks/refs) replaced by one state value keyed to the jsx that errored.
     const [fallback, setFallback] = useState<{
       forJsx: string;
       jsx: string;
     } | null>(null);
 
-    // Reset duplicate-report tracking when jsx changes
     useEffect(() => {
       errorReportedRef.current = null;
     }, [processedJsx]);
 
     const handleError = useCallback(
       (err: Error) => {
-        // Prevent duplicate error reports for the same jsx
         if (errorReportedRef.current === processedJsx) {
           return;
         }
         errorReportedRef.current = processedJsx;
 
-        // During streaming, suppress errors and fall back to last good JSX
         if (isStreaming) {
           setFallback({ forJsx: processedJsx, jsx: lastGoodJsxRef.current });
           return;
@@ -244,7 +232,6 @@ export const JSXPreviewContent = memo(
       [processedJsx, isStreaming, onErrorProp, setError]
     );
 
-    // Track the last JSX that rendered without error
     useEffect(() => {
       if (!errorReportedRef.current) {
         lastGoodJsxRef.current = processedJsx;
@@ -252,7 +239,6 @@ export const JSXPreviewContent = memo(
       }
     }, [processedJsx, setLastGoodJsx]);
 
-    // During streaming, if the current JSX errored, re-render with last good version
     const displayJsx =
       isStreaming && fallback?.forJsx === processedJsx
         ? fallback.jsx

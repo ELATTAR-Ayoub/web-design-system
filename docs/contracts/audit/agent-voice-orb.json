@@ -7,42 +7,42 @@
     "components/docs/component-docs/agent-voice-orb/page.tsx",
     "components/docs/component-docs/agent-voice-orb/voice-orb-specimen.tsx"
   ],
-  "auditedAt": "2026-10-10",
+  "auditedAt": "2026-10-11",
   "dimensions": {
     "anatomy": {
       "verdict": "n/a",
       "flutter": "No Dart source exists at the pinned snapshot for Agent Voice Orb — origin: web-only, flutterSources is [].",
-      "web": "voice-orb.tsx renders a div (data-slot=voice-orb, data-state, role=img, aria-label Voice: <state>, size-8 and clipped to a circle) holding aria-hidden layers that depend on the state: a disc (data-part=disc; bg-agent when listening, bg-agent/15 otherwise), a dot (bg-background when listening, bg-agent when thinking), an arc (thinking only; border-agent/25 with a border-t-agent leading edge) and three bars (speaking only; bg-agent).",
+      "web": "voice-orb.tsx renders a div (data-slot=voice-orb, data-state, role=img, aria-label=\"Voice: <state>\", the voice-orb utility, size-8 by default) holding an aria-hidden halo ring and a clipped body; the body holds two reflection layers (flow, flow-alt) and the shine (highlight, rim light, edge shade).",
       "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
     },
     "api": {
       "verdict": "n/a",
       "flutter": "No Dart source exists at the pinned snapshot for Agent Voice Orb — origin: web-only, flutterSources is [].",
-      "web": "VoiceOrb takes state (VoiceOrbState; required), className (on the root) and the rest of the div props. VoiceOrbState is exported as a type: the composer's VoiceState without idle.",
+      "web": "VoiceOrb takes state (\"idle\" default, \"listening\", \"thinking\", \"speaking\", \"asleep\"), className and div props. VoiceOrbState is the exported union.",
       "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
     },
     "states": {
       "verdict": "n/a",
       "flutter": "No Dart source exists at the pinned snapshot for Agent Voice Orb — origin: web-only, flutterSources is [].",
-      "web": "listening: a solid bg-agent disc fades to 75% and back (anim-pulse) around a bg-background dot. thinking: a faint disc, a bg-agent dot and an arc that turns (anim-spin). speaking: a faint disc and three bg-agent bars of different heights that blink on and off (anim-caret), each started a third of a cycle after the last. idle is the orb not being rendered, which the workspace header does through usePresence.",
+      "web": "idle: the body breathes (orb-breathe) and the reflections turn slowly on ds-spin. listening: a faster breath and a ring rippling out (orb-ripple). thinking: the body is still and the reflections spin fast, the agent-tinted one fully visible. speaking: the body pulses unevenly (orb-speak). asleep: dimmed (brightness and saturation down) and barely turning. Under reduced motion the listening ring stays as a still ring, speaking stays slightly enlarged and asleep stays dimmed.",
       "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
     },
     "disabled": {
       "verdict": "n/a",
       "flutter": "No Dart source exists at the pinned snapshot for Agent Voice Orb — origin: web-only, flutterSources is [].",
-      "web": "There is no disabled state: the orb is a picture, not a control, and the header unmounts it when voice is idle after playing its exit.",
+      "web": "No disabled state: the orb is a picture, not a control.",
       "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
     },
     "interaction": {
       "verdict": "n/a",
       "flutter": "No Dart source exists at the pinned snapshot for Agent Voice Orb — origin: web-only, flutterSources is [].",
-      "web": "There is no pointer or keyboard interaction and no focus target. The only motion is CSS: the system's pulse, spin and caret utilities. The root is clipped to a circle so the green ring that the pulse keyframe also paints never shows.",
+      "web": "Not interactive: no focus, hover or press. Motion comes from the voice-orb utility and the orb-breathe, orb-speak, orb-ripple and ds-spin keyframes; colours are the --orb-* tokens and --agent for the tinted reflection.",
       "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
     },
     "semantics": {
       "verdict": "n/a",
       "flutter": "No Dart source exists at the pinned snapshot for Agent Voice Orb — origin: web-only, flutterSources is [].",
-      "web": "The root is role=img with the name Voice: listening, Voice: thinking or Voice: speaking, and the three layers are aria-hidden. Colour comes from the agent token (bg-agent, border-agent), so it follows the theme; nothing is fetched.",
+      "web": "One img named \"Voice: <state>\"; the layers are aria-hidden.",
       "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
     }
   }

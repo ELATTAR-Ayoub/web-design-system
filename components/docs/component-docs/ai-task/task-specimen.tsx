@@ -21,7 +21,6 @@ function SampleTask({ defaultOpen = true }: { defaultOpen?: boolean }) {
   );
 }
 
-/** The Preview: an open task whose trigger folds the narration. */
 export function TaskShowcase() {
   return (
     <Panel label="Task">
@@ -32,7 +31,6 @@ export function TaskShowcase() {
   );
 }
 
-/** The States grid. */
 export function TaskStateGrid() {
   return (
     <StateGrid cols={2}>
@@ -50,7 +48,6 @@ export function TaskStateGrid() {
   );
 }
 
-/** The Examples: a custom trigger replaces the default magnifier row. */
 export function TaskExamples() {
   return (
     <Panel label="Custom trigger">

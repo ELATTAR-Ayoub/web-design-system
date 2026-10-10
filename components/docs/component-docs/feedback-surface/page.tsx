@@ -1,15 +1,3 @@
-/**
- * Documentation page for `feedback-surface`.
- *
- * Authored, not generated. The iridescent bloom a toast or an Alert wears:
- * two drifting radial fields (`@utility bloom-cosmic` in `styles/utilities.css`)
- * plus a `.starfield` sparkle overlay, both defined there and timed from
- * `styles/motion.css`. Distinct from `background-effect`'s single static
- * glow — this one is two layers, animated, and per-type-coloured through
- * `--bloom-1` / `--bloom-2`. There is no component: `.cn-toast` (sonner) and
- * `Alert` are its two real hosts.
- */
-
 import { Meta, Note, Row } from "@/components/ds/kit";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

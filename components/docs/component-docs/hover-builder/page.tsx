@@ -1,17 +1,3 @@
-/**
- * Documentation page for `hover-builder`.
- *
- * Authored, not generated, and the odd one among the ten effects pages: there
- * is no bespoke `@utility` for this because there does not need to be one.
- * Flutter's `HoverBuilder` widget exists to give a JavaScript-driven UI a
- * pointer-hover callback to rebuild from. On the web, `:hover` and
- * `group-hover:` are native CSS — Tailwind compiles them straight into the
- * foundation stylesheet with zero runtime cost, which is a better answer than
- * a React hook tracking pointer position would be. This page documents that
- * pattern and points at real call sites rather than inventing a wrapper class
- * that would only reimplement what the browser already does for free.
- */
-
 import { Code, Meta, Note } from "@/components/ds/kit";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

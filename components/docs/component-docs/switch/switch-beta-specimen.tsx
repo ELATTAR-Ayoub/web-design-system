@@ -1,17 +1,5 @@
 "use client";
 
-/**
- * The live Preview specimen for the `switch` documentation page.
- *
- * `components/docs/component-docs/switch/page.tsx` is a plain data module
- * rendered by a SERVER component — it cannot hold the `useState` a real
- * setting needs (trap 29). This companion is that scene: flipping Beta
- * features on reveals a real chunk of UI beneath it, and flipping it off
- * hides it again — the setting takes effect the instant it is toggled, with
- * no Save button anywhere in sight, which is the whole reason Switch (and
- * not Checkbox) is the right control here.
- */
-
 import { useState } from "react";
 import { FlaskConical } from "lucide-react";
 

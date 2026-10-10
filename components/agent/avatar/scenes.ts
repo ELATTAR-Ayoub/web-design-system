@@ -1,25 +1,9 @@
-/**
- * The twenty-six state recipes.
- *
- * Each is a function from a speed multiplier to a list of cubes. That is the
- * whole extent of what a state *is* here — geometry and timing, no component, no
- * branching, no per-state file. Editing a motion signature means editing one
- * generator, and adding a state means adding one entry.
- *
- * Transcribed from the design handoff. Grid coordinates, delays and durations
- * are its numbers exactly; the widths are its per-scene overrides.
- *
- * `idle` is the one exception and has no entry: it is a real CSS 3D cube rather
- * than an isometric projection, so it is drawn directly in `CubeAvatar`.
- */
-
 import { anim, appear, drop, type Cube, type Timing } from "./cube";
 import type { AgentState } from "../core/states";
 
 export type Scene = { cubes: Cube[]; width: number };
 type Generator = (timing: Timing) => Scene;
 
-/** The eight perimeter cells of a 3×3, in ring order. Used by two scenes. */
 const RING: [number, number][] = [
   [0, 0],
   [1, 0],
@@ -31,11 +15,9 @@ const RING: [number, number][] = [
   [0, 1],
 ];
 
-/** Default scene width. Overridden per scene where the geometry is wider or narrower. */
 const W = 168;
 
 const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
-  /** Five cubes waiting their turn, bobbing in sequence. */
   queued: (t) => ({
     width: 190,
     cubes: Array.from({ length: 5 }, (_, x) => ({
@@ -46,7 +28,6 @@ const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
     })),
   }),
 
-  /** A staircase assembling itself — each column one step taller than the last. */
   planning: (t) => {
     const cubes: Cube[] = [];
     for (let x = 0; x < 4; x += 1) {
@@ -59,7 +40,6 @@ const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
     return { width: 160, cubes };
   },
 
-  /** One cube pulled up out of the middle of a stack, over and over. */
   retrieving: (t) => {
     const cubes: Cube[] = [];
     for (let x = 0; x < 3; x += 1) {
@@ -74,7 +54,6 @@ const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
     return { width: W, cubes };
   },
 
-  /** Cubes falling onto a platform, one after another. */
   ingesting: (t) => {
     const cubes: Cube[] = [];
     for (let x = 0; x < 2; x += 1) {
@@ -86,7 +65,6 @@ const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
     return { width: 120, cubes };
   },
 
-  /** A diagonal ripple across a 4×4 — deliberately no opacity change. */
   running: (t) => {
     const cubes: Cube[] = [];
     for (let x = 0; x < 4; x += 1) {
@@ -102,7 +80,6 @@ const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
     return { width: W, cubes };
   },
 
-  /** Two islands, and a courier gliding from one to the other. */
   delegating: (t) => {
     const cubes: Cube[] = [];
     for (const base of [0, 4]) {
@@ -112,8 +89,6 @@ const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
         }
       }
     }
-    // No bob on the courier: it travels in a straight line, which is what makes
-    // it read as carrying something rather than wandering.
     cubes.push({
       x: 1,
       y: 0,
@@ -125,7 +100,6 @@ const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
     return { width: 190, cubes };
   },
 
-  /** A slot at the near corner, blinking to be filled. */
   awaiting_approval: (t) => {
     const cubes: Cube[] = [];
     for (let x = 0; x < 3; x += 1) {
@@ -140,7 +114,6 @@ const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
     return { width: W, cubes };
   },
 
-  /** A pulse chasing the perimeter, checking each cell in turn. */
   validating: (t) => {
     const cubes: Cube[] = [{ x: 1, y: 1 }];
     RING.forEach(([x, y], i) => {
@@ -149,7 +122,6 @@ const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
     return { width: W, cubes };
   },
 
-  /** One cube bouncing off the stack and landing again. */
   retrying: (t) => {
     const cubes: Cube[] = [];
     for (let x = 0; x < 2; x += 1) {
@@ -159,7 +131,6 @@ const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
     return { width: 120, cubes };
   },
 
-  /** The centre cube shaking, in red. The only scene that leaves the accent. */
   error: (t) => {
     const cubes: Cube[] = [];
     for (let x = 0; x < 3; x += 1) {
@@ -172,14 +143,12 @@ const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
     return { width: W, cubes };
   },
 
-  /** The perimeter assembling first, then the conclusion in the middle. */
   summarizing: (t) => {
     const cubes: Cube[] = RING.map(([x, y], i) => ({ x, y, style: appear(4, i * 0.26, t) }));
     cubes.push({ x: 1, y: 1, accent: true, style: appear(4, 2.1, t) });
     return { width: W, cubes };
   },
 
-  /** A diagonal wave of consideration across a 3×3. */
   thinking: (t) => {
     const cubes: Cube[] = [];
     for (let x = 0; x < 3; x += 1) {
@@ -195,7 +164,6 @@ const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
     return { width: W, cubes };
   },
 
-  /** Scattered cells rising in sequence — work happening in several places. */
   processing: (t) => {
     const raised: Record<string, number> = {
       "0,1": 0,
@@ -219,7 +187,6 @@ const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
     return { width: W, cubes };
   },
 
-  /** Two blocks, and a bridge being built between them. */
   calling_tools: (t) => {
     const cubes: Cube[] = [];
     for (const base of [0, 4]) {
@@ -238,7 +205,6 @@ const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
     return { width: 196, cubes };
   },
 
-  /** A scanner hunting over a platform with holes in it. */
   searching: (t) => {
     const holes: Record<string, "dashed" | "gone"> = {
       "2,1": "dashed",
@@ -253,7 +219,6 @@ const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
         cubes.push(hole === "dashed" ? { x, y, dashed: true } : { x, y });
       }
     }
-    // Two motions composed: the outer glides across, the inner bobs in place.
     cubes.push({
       x: 0,
       y: 1,
@@ -266,7 +231,6 @@ const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
     return { width: W, cubes };
   },
 
-  /** Three layers lifting apart, like pages coming off a stack. */
   reading: (t) => {
     const cubes: Cube[] = [];
     for (let z = 0; z < 3; z += 1) {
@@ -277,8 +241,7 @@ const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
             y,
             z,
             accent: z === 2,
-            // Same duration and phase on both lifted layers, so they travel
-            // together and never intersect.
+            // Same duration and phase on both lifted layers, so they never intersect.
             ...(z === 0 ? {} : { style: anim(z === 1 ? "lift" : "lift2", 2.2, t) }),
           });
         }
@@ -287,7 +250,6 @@ const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
     return { width: 150, cubes };
   },
 
-  /** Rows surfacing from the back — older context coming forward. */
   recalling: (t) => {
     const cubes: Cube[] = [];
     for (let row = 0; row < 3; row += 1) {
@@ -303,7 +265,6 @@ const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
     return { width: W, cubes };
   },
 
-  /** A grid filling in cube by cube, left to right, like typing. */
   writing: (t) => {
     const cubes: Cube[] = [];
     for (let y = 0; y < 3; y += 1) {
@@ -319,7 +280,6 @@ const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
     return { width: W, cubes };
   },
 
-  /** A solid, finished block, breathing in phase. */
   done: (t) => {
     const cubes: Cube[] = [];
     for (let x = 0; x < 2; x += 1) {
@@ -332,7 +292,6 @@ const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
     return { width: 110, cubes };
   },
 
-  /** A pause glyph — two upright columns, holding still rather than working. */
   paused: (t) => {
     const cubes: Cube[] = [];
     for (const x of [0, 2]) {
@@ -343,8 +302,6 @@ const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
     return { width: 90, cubes };
   },
 
-  /** A 2×2 block coming apart — each cube fades in reverse order, so the block
-   *  reads as dissolving from the far corner back toward the viewer. */
   cancelling: (t) => {
     const cells: [number, number][] = [
       [0, 0],
@@ -361,8 +318,6 @@ const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
     return { width: 90, cubes };
   },
 
-  /** The `writing` grid, mirrored: it fills right to left, like a record being
-   *  taken back rather than typed. */
   undoing: (t) => {
     const cubes: Cube[] = [];
     for (let y = 0; y < 3; y += 1) {
@@ -378,14 +333,12 @@ const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
     return { width: W, cubes };
   },
 
-  /** A 2×2×2 block missing its far top corner, the cube beneath the gap
-   *  accented — most of the work landed, one piece did not. */
   partial: (t) => {
     const cubes: Cube[] = [];
     for (let x = 0; x < 2; x += 1) {
       for (let y = 0; y < 2; y += 1) {
         for (let z = 0; z < 2; z += 1) {
-          if (x === 1 && y === 1 && z === 1) continue; // the missing corner
+          if (x === 1 && y === 1 && z === 1) continue;
           cubes.push({
             x,
             y,
@@ -399,9 +352,6 @@ const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
     return { width: 110, cubes };
   },
 
-  /** Two stacks, three grid steps apart — the same distance `delegating`'s
-   *  courier travels — with one cube handed from the left stack to an open
-   *  slot at the right. */
   handoff: (t) => {
     const cubes: Cube[] = [
       { x: 0, y: 0, style: anim("settle", 3, t) },
@@ -418,8 +368,6 @@ const scenes: Record<Exclude<AgentState, "idle">, Generator> = {
     return { width: 160, cubes };
   },
 
-  /** One cube, dimmed and alone, settling slowly — nothing to show because
-   *  nothing can be heard from. */
   offline: (t) => ({
     width: 60,
     cubes: [{ x: 0, y: 0, style: { ...anim("settle", 5, t), opacity: 0.55 } }],

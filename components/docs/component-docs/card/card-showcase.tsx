@@ -1,12 +1,5 @@
 "use client";
 
-/**
- * Live companion for the `card` Preview — see traps.md #29. A pack card the
- * reader actually opens: "Open pack" pulls a real (random-from-a-fixed-pool)
- * card, the badge flips from "Sealed" to "Opened", and the footer swaps to a
- * summary of what landed. Every element is the real `Card` family.
- */
-
 import { useState } from "react";
 import { PackageOpenIcon } from "lucide-react";
 

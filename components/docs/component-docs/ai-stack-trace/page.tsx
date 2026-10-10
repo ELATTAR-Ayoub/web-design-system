@@ -1,10 +1,3 @@
-/**
- * Authored documentation page for `ai-stack-trace`.
- *
- * Specimens live in `stack-trace-specimen.tsx` (a spec module cannot carry
- * `"use client"`, and the preview holds state).
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Meta, Note } from "@/components/ds/kit";

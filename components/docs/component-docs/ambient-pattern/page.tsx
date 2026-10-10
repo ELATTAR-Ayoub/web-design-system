@@ -1,18 +1,3 @@
-/**
- * Documentation page for `ambient-pattern`.
- *
- * The capability is `.starfield`, and the gap between those two names is worth
- * recording: this page was deleted once, on the grounds that nothing under
- * `styles/` implemented "ambient-pattern". Nothing does — under that name. The
- * class has always been `.starfield`, `components/ui/alert.tsx` has always
- * mounted it, and Flutter's own `ambient_pattern.dart` says so in its first
- * line, citing the web stylesheet as the source it was ported from.
- *
- * The lesson is in the Delivery doc comment in `lib/ds/platform-contract.ts`:
- * a registry item's NAME and a CSS class's NAME are different things, and the
- * Flutter side usually records the mapping.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Code, Meta, Note } from "@/components/ds/kit";
@@ -20,7 +5,6 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 import { meta } from "./meta";
 
-/** The effect on its real host: Alert mounts the starfield span itself. */
 function OnAlert() {
   return (
     <div className="max-w-lg">

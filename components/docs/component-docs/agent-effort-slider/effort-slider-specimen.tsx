@@ -1,12 +1,5 @@
 "use client";
 
-/**
- * Live specimens for the `agent-effort-slider` page. The slider is controlled,
- * so the chosen level lives here. In the product it sits inside a popover
- * opened from the composer's Effort chip; here it sits in a plain frame the
- * same width as that popover (w-64).
- */
-
 import * as React from "react";
 
 import { EffortSlider, isMaxEffort } from "@/components/agent/parts/effort-slider";

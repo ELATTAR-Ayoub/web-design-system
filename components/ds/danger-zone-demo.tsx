@@ -20,41 +20,11 @@ import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { Skeleton } from "@/components/ui/skeleton";
 
-/**
- * Danger zone — the settings-page pattern, live.
- *
- * It is a **composition**, not a new primitive: a bordered region built from
- * `Card`-grade surface tokens, one row per irreversible action, and an
- * `AlertDialog` carrying the confirmation. Nothing here was forked and nothing
- * new entered `components/ui/` — RULES §5 says a screen is composition before it
- * is creation, and the pieces this needs all existed.
- *
- * Why the region is bordered rather than tinted: RULES §5, *Alert: one surface,
- * five meanings*. A filled red block beside three neutral settings blocks reads
- * as an error that has already happened. The hairline and the heading say
- * "careful"; the tint is spent on the button, which is the thing that acts.
- *
- * The delete call arrives as a prop (`onDelete`) so the specimen page can hand
- * it a failing one. That is the injectable seam `state-inventory.md` asks for:
- * without it the error state could only be a screenshot, and a screenshot is
- * exactly what the pages here refuse to be.
- */
-
 type DeleteStatus = "idle" | "deleting" | "deleted" | "failed";
 
 export type DangerZoneProps = {
-  /**
-   * The effect. Defaults to a call that resolves, so the happy path works with
-   * no wiring. Reject to reach the error state.
-   */
   onDelete?: () => Promise<void>;
-  /**
-   * Present = the action is unavailable, and this is the sentence saying why.
-   * A disabled control that does not explain itself is a dead end; RULES §7
-   * exempts it from contrast but not from being understandable.
-   */
   unavailableReason?: string;
-  /** Render the loading footprint instead of the content. */
   loading?: boolean;
 };
 
@@ -172,11 +142,6 @@ export function DangerZone({
   );
 }
 
-/**
- * The outcome, on the page rather than only in the toast. A toast is transient
- * by design, so an action whose only confirmation is a toast leaves the page
- * looking untouched thirty seconds later.
- */
 function DeletedRow() {
   return (
     <div className="anim-enter min-w-0">
@@ -188,11 +153,6 @@ function DeletedRow() {
   );
 }
 
-/**
- * The same row with its content replaced, which is the only reliable way to
- * keep the footprint identical. Measured against the resting row: same height,
- * to the pixel.
- */
 function DangerZoneRowSkeleton() {
   return (
     <>

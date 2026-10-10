@@ -13,11 +13,6 @@ import { findCategory } from "@/lib/ds/nav";
 
 const { category } = findCategory("foundations", "spacing");
 
-/**
- * The ladder, by CLASS. `px` is the React key and the documented rung from
- * RULES §3; the rendered number and the bar are both derived from
- * `--spacing`, so neither can disagree with the framework's base unit.
- */
 const spacing = [
   { px: 4, cls: "1", use: "Icon-to-label inside a badge. Pip gaps." },
   { px: 8, cls: "2", use: "Between related controls. Chip gaps." },
@@ -31,20 +26,6 @@ const spacing = [
   { px: 80, cls: "20", use: "Above and below a hero. The largest step." },
 ];
 
-/**
- * The corner ladder, by token.
- *
- * Every rung used to carry its pixel value twice — once as the number printed
- * under the swatch and once as the `borderRadius` that drew it — so the page
- * could disagree with `styles/tokens.css` on both. It now paints with
- * `var(--radius-*)` and prints what the browser resolved.
- *
- * Two rungs were missing outright: `xs`, which the tooltip arrow and the chart
- * legend key use, and `4xl`, the soft-slab step. Both are in the ladder the
- * Flutter counterpart states as `Radii`, and a rung documented on one platform
- * and not the other is exactly the drift
- * `docs/contracts/flutter-web-foundation-parity.md` exists to catch.
- */
 const radii = [
   { name: "xs", token: "--radius-xs", use: "Tips and swatches only — a tooltip arrow, a chart legend key. Nothing with content in it should be this sharp." },
   { name: "sm", token: "--radius-sm", use: "Badges, pips, small chips, inline code." },
@@ -108,9 +89,6 @@ export default function SpacingPage() {
               <span className="flex items-center gap-4">
                 <span
                   className="h-3 shrink-0 rounded-sm bg-action"
-                  // The bar is the class it is documenting: `gap-6` is
-                  // `calc(var(--spacing) * 6)`, so the specimen moves if the
-                  // base unit ever does. It used to be the literal px.
                   style={{ width: `calc(var(--spacing) * ${s.cls})` }}
                 />
                 <span className="type-small text-muted-foreground">{s.use}</span>

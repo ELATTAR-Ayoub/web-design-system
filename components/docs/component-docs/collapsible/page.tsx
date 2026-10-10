@@ -1,16 +1,3 @@
-/**
- * Authored documentation page for `collapsible`.
- *
- * Replaces the generated baseline. Migrated from the old `base/navigation`
- * category page (`app/design-system/components/base/navigation/page.tsx`, since deleted).
- * Every specimen renders the real `Collapsible` composition from
- * `components/ui/collapsible.tsx` — nothing here is a styled div.
- *
- * Collapsible is the bare single trigger-and-panel primitive Accordion
- * composes into a list of them — reach for it for one independent section,
- * like an advanced filter block, not a set where only one should be open.
- */
-
 import { ChevronRight } from "lucide-react";
 
 import { SourceMeta } from "@/components/docs/component-page/sections";

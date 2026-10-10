@@ -1,10 +1,3 @@
-/**
- * Authored documentation page for `ai-model-selector`.
- *
- * The dialog's open state and the picked model need state, so every live
- * render goes through `model-selector-specimen.tsx`.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Meta, Note, Panel, StateCell, StateGrid } from "@/components/ds/kit";

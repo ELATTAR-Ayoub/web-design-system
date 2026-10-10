@@ -1,39 +1,9 @@
-/**
- * Documentation page for `background-effect`.
- *
- * Authored, not generated. This is Flutter's name for the PAGE ATMOSPHERE —
- * the `body` rule in `styles/tokens.css` that paints one wide, slightly lifted
- * radial glow from `--page-glow` behind every page, fixed to the viewport, and
- * never animates. `background_effect.dart` quotes the rule and its intent:
- * "a flat fill at zinc 950 reads as black paint, and the same fill under a
- * wide, slightly lifted glow reads as a deep room."
- *
- * THIS PAGE USED TO DOCUMENT `bloom-action` AND `bloom-value` — the per-surface
- * reveal glows — under this name. The per-capability audit found the two
- * platforms describing two unrelated things under one slug. The glows moved to
- * `reveal-bloom`; the atmosphere, which is what Flutter means, is here.
- *
- * The specimen cannot be a box wearing a class, because the effect is on the
- * page itself. So the stage shows the same gradient applied to a panel at the
- * same geometry, beside a flat fill, so the difference the atmosphere makes is
- * the thing on screen — and the caption says the real one is behind the reader
- * already.
- */
-
 import { Meta, Note } from "@/components/ds/kit";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 
 import { meta } from "./meta";
 
-/**
- * The atmosphere, reproduced on a panel so it can be compared.
- *
- * `bg-page-atmosphere` is not a utility — the real rule lives on `body` and
- * nothing else should wear it. The specimen composes the same
- * `radial-gradient` inline from the same token, which is the one place a
- * documentation page may spell a gradient out: it is quoting the stylesheet.
- */
 function AtmosphereSpecimen() {
   return (
     <div className="grid gap-4 sm:grid-cols-2">

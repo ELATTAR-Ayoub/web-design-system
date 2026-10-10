@@ -1,20 +1,3 @@
-/**
- * Authored documentation page for `user-menu`.
- *
- * Replaces the generated baseline. Migrated from
- * `app/design-system/components/base/sidebar/page.tsx`, since deleted, which documented this
- * component as part of the sidebar's "Footer" section. `user-menu` is its own
- * registry item — renamed from `nav-user` — so it gets its own page; Sidebar's
- * page links back here instead of redocumenting it.
- *
- * Every specimen renders the real `UserMenu` from `components/ui/user-menu.tsx`.
- * `UserMenu` calls `useSidebar()` internally (it renders `SidebarMenu` /
- * `SidebarMenuItem` and reads `isMobile`), so every specimen is mounted inside
- * the real `PartStage` fixture (`components/ds/sidebar-specimens.tsx`, a
- * read-only fixture this task may not edit), which wraps it in a real
- * `SidebarProvider` and `Sidebar`.
- */
-
 import { BadgeCheck, Bell, CreditCard, LogOut } from "lucide-react";
 
 import { Code, Meta, Panel } from "@/components/ds/kit";

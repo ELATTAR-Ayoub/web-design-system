@@ -1,12 +1,5 @@
 "use client";
 
-/**
- * Live specimens for the `ai-mic-selector` page. The picker reads the real
- * audio inputs the browser reports (`navigator.mediaDevices`), so what a
- * reader sees depends on their machine; with no device, or with permission
- * refused, the list shows its empty message.
- */
-
 import * as React from "react";
 import { MicIcon } from "lucide-react";
 
@@ -41,7 +34,6 @@ function DeviceList() {
   );
 }
 
-/** A full-width trigger that names the chosen microphone. */
 export function MicSelectorSpecimen() {
   const [value, setValue] = React.useState<string | undefined>();
   return (
@@ -56,10 +48,6 @@ export function MicSelectorSpecimen() {
   );
 }
 
-/**
- * The workspace composer's shape: a bare chevron beside a mic glyph. The trigger
- * is narrower than the list, which never draws narrower than min-w-64.
- */
 export function MicSelectorCompactSpecimen() {
   const [value, setValue] = React.useState<string | undefined>();
   return (

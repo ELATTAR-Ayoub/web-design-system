@@ -6,7 +6,6 @@ import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 
 import { edgeTypes, FlowFrame, miniNodeTypes, pairEdges, pairNodes, planEdges, planNodes, stepNodeTypes } from "../ai-canvas/flow-fixture";
 
-/** The Preview: the goal and plan version in the top-left corner, as the workflow dialog shows them. */
 export function PanelPreview() {
   return (
     <Panel label="Panel" note="stays put while the graph scrolls underneath">
@@ -38,7 +37,6 @@ function Cell({ position }: { position: "top-left" | "top-right" | "bottom-left"
   );
 }
 
-/** Where the panel can sit. */
 export function PanelStateGrid() {
   return (
     <StateGrid cols={2}>

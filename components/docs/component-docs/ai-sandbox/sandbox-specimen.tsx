@@ -12,15 +12,9 @@ import {
 } from "@/components/ai-elements/sandbox";
 import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 
-/**
- * Live specimens for the `ai-sandbox` documentation page. The code and output
- * panes are plain `pre` blocks; the workspace puts a `CodeBlock` in each.
- */
-
 const CODE = `const nums = [3, 5, 8];
 console.log(nums.reduce((a, b) => a + b, 0));`;
 
-/** The Preview: a Code / Output tab pair under a status header. */
 export function SandboxPreview() {
   return (
     <Panel label="Sandbox" note="header badge + Code / Output tabs">
@@ -47,7 +41,6 @@ export function SandboxPreview() {
   );
 }
 
-/** The States grid: the four tool states the header badge reports, each collapsed. */
 export function SandboxStateGrid() {
   return (
     <StateGrid cols={2}>

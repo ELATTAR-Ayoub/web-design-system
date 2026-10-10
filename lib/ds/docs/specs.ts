@@ -1,15 +1,3 @@
-/**
- * The route's map from a catalog name to its page spec.
- *
- * Dynamic `import()` rather than 102 static imports: the documentation route is
- * one file serving every item, and a static import list would put every
- * specimen on every page's bundle. The keys are generated from the catalog, so
- * a name here that has no page — or a page with no name here — is a build
- * error rather than a route that renders nothing.
- *
- * Supervisor-owned; regenerate rather than hand-edit.
- */
-
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 
 type SpecModule = { spec: ComponentDocSpec };
@@ -176,7 +164,6 @@ export async function loadSpec(name: string): Promise<ComponentDocSpec | null> {
   return (await load()).spec;
 }
 
-/** Every documented name, for `generateStaticParams`. */
 export function specNames(): string[] {
   return Object.keys(LOADERS);
 }

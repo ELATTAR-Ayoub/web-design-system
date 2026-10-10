@@ -1,15 +1,3 @@
-/**
- * The run lifecycle — what one task the agent carries out is doing.
- *
- * The transcript (`timeline.ts`) is what was said. A run is what was DONE: a
- * plan, the effects it had outside the chat, the checkpoints it can resume
- * from, the queue behind it, and — when it cannot finish — who owns it now.
- * Twelve statuses, from the 2026 agent-UX run model; the seven rules the
- * reducer enforces are listed in the spec and tested one by one.
- *
- * Imports nothing but types from `core/`, like every file here.
- */
-
 import type { AgentState } from "./states";
 import type { Attachment } from "./types";
 
@@ -53,7 +41,6 @@ export type Handoff = {
   note?: string;
 };
 
-/** What failed, why, and what to try next — never a bare "something went wrong". */
 export type RunError = {
   what: string;
   why: string;
@@ -84,7 +71,6 @@ export type ActivityEntry = {
   kind: ActivityKind;
   text: string;
   status?: StepStatus | EffectStatus | RunStatus;
-  /** Why an approval entry was refused, so the UI never has to read `text`. */
   reason?: "approval_expired" | "approval_stale";
 };
 
@@ -92,7 +78,6 @@ export type RunState = {
   run: Run | null;
   connection: Connection;
   timeline: ActivityEntry[];
-  /** Event ids already applied (rule 2). */
   seen: readonly string[];
 };
 
@@ -224,7 +209,6 @@ export function reduceRunEvent(state: RunState, e: RunEvent): RunState {
   return next;
 }
 
-/** Rule 7: the steps after a checkpoint, in plan order. */
 export function stepsAfterCheckpoint(run: Run, checkpointId: string): string[] {
   const cp = run.checkpoints.find((c) => c.id === checkpointId);
   if (!cp?.stepId) return run.plan.map((p) => p.id);
@@ -232,7 +216,6 @@ export function stepsAfterCheckpoint(run: Run, checkpointId: string): string[] {
   return run.plan.slice(at + 1).map((p) => p.id);
 }
 
-/** Rule 5: what undoing would reverse, newest first, and what it cannot. */
 export function compensationOrder(run: Run): { reverse: Effect[]; irreversible: Effect[] } {
   const committed = run.effects.filter((f) => f.status === "committed");
   return {
@@ -241,11 +224,6 @@ export function compensationOrder(run: Run): { reverse: Effect[]; irreversible: 
   };
 }
 
-/**
- * The avatar state a run forces, or null when the turn-derived state should win.
- * Full precedence, enforced by `resolveState`: connection → declared → run
- * status → the transcript. This function covers only the run-status half.
- */
 export function runAvatarState(run: Run | null, connection: Connection): AgentState | null {
   if (connection !== "connected") return "offline";
   if (!run) return null;

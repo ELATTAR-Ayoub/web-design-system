@@ -1,17 +1,3 @@
-/**
- * Authored documentation page for `navigation-menu`.
- *
- * Replaces the generated baseline. Migrated from the old `base/navigation`
- * category page (`app/design-system/components/base/navigation/page.tsx`, since deleted).
- * Every specimen renders the real `NavigationMenu` composition from
- * `components/ui/navigation-menu.tsx` — nothing here is a styled div.
- *
- * Reach for it when a top-bar item needs more than a link — a set of
- * destinations with descriptions. A plain top-nav row (Button + Avatar + a
- * blue active rule, not a registry item) is still right when every item is a
- * single destination.
- */
-
 import { Flame, Gavel, Layers, TrendingUp } from "lucide-react";
 
 import { SourceMeta } from "@/components/docs/component-page/sections";

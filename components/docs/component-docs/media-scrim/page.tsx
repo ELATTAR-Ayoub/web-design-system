@@ -1,18 +1,3 @@
-/**
- * Documentation page for `media-scrim`.
- *
- * Authored, not generated. Every specimen applies the real `media-scrim`
- * utility from `styles/utilities.css` to a real image; the ramp's stops and
- * alphas are the tokens the utility reads, quoted from `styles/tokens.css`
- * rather than retyped.
- *
- * The page exists because the utility does. `docs/migrations/flutter-0.0.3-web.md`
- * §8 listed this as the one Flutter item with no web counterpart and no page —
- * "a route for something that does not exist is worse than a visible gap" —
- * and that stayed true until `styles/utilities.css` gained the ramp. The
- * migration doc is updated in the same change.
- */
-
 import { Code, Meta, Note } from "@/components/ds/kit";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

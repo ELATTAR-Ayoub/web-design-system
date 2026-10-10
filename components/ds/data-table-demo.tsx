@@ -1,25 +1,5 @@
 "use client";
 
-/**
- * The Data Table recipe, live.
- *
- * Not a component in `ui/` — deliberately. shadcn ships Data Table as a RECIPE
- * over `table.tsx`, not as a file, because the interesting part is always the
- * column definitions and those belong to whatever is being listed. Wrapping it
- * would mean inventing an API for something whose whole job is to differ per
- * screen. So this lives in `ds/` beside the other specimen helpers, and the
- * page shows the composition rather than an import.
- *
- * `@tanstack/react-table` is PINNED to v8, and that is a decision rather than
- * an accident. v9 exists and is a full API rewrite — `useTable`,
- * `createCoreRowModel`, row models as slots inside `tableFeatures()`,
- * `ColumnDef<TFeatures, TData>` — under which not one line of shadcn's
- * published data-table example compiles. Pinning v8 is what makes "one
- * vocabulary, and it is shadcn's" true here rather than aspirational: code
- * copied from their docs drops in and works. Read the caret in `package.json`
- * as load-bearing before anyone bumps it.
- */
-
 import { useState } from "react";
 import { ArrowDown, ArrowUp, ArrowUpDown, Search } from "lucide-react";
 import {
@@ -76,7 +56,6 @@ const money = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 0,
 });
 
-/** Static keys — a skeleton row has no identity beyond its position. */
 const SKELETON_ROWS = ["a", "b", "c", "d"];
 
 const columns: ColumnDef<Sale>[] = [
@@ -115,7 +94,6 @@ const columns: ColumnDef<Sale>[] = [
   {
     accessorKey: "price",
     header: "Price",
-    /* Money is mono, tabular and right-aligned — §2.4. */
     cell: ({ row }) => (
       <span className="type-number-sm block text-right text-foreground">
         {money.format(row.original.price)}
@@ -125,36 +103,18 @@ const columns: ColumnDef<Sale>[] = [
 ];
 
 export function DataTableDemo({ loading = false }: { loading?: boolean }) {
-  /*
-   * TanStack's own opt-out from the React Compiler, and the reason this repo
-   * needs it. `useReactTable()` hands back methods that read mutable state held
-   * on the table instance rather than derived from props — `getRowModel()`
-   * returns something different after a sort with no input to that function
-   * having changed. The compiler cannot see that, memoises the call, and the
-   * table silently stops re-rendering. Next 16's eslint-config flags it as
-   * `react-hooks/incompatible-library`; this directive is the documented
-   * answer, and it scopes the opt-out to this one component.
-   */
+  // Opts out of the React Compiler: table methods read mutable state.
   "use no memo";
 
-  /*
-   * Each controlled slice is paired with its `on…Change` writer. That pairing
-   * is the whole contract: hand `state` a value without the matching setter and
-   * the table reads it once and then ignores every later change — a filter box
-   * that types fine, updates React state fine, and never filters anything.
-   */
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
-  // The `"use no memo"` directive above is the fix; this rule fires anyway
-  // because it matches on the call, not on whether the hazard was handled.
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: SALES,
     columns,
-    /* A stable id from the data. Without it selection is keyed by array index
-       and survives nothing — sort the table and the wrong rows stay ticked. */
+    // Stable row ids keep selection on the right rows after sorting.
     getRowId: (row) => row.id,
     state: { sorting, columnFilters, rowSelection },
     onSortingChange: setSorting,
@@ -218,11 +178,6 @@ export function DataTableDemo({ loading = false }: { loading?: boolean }) {
                       }
                     >
                       {header.column.getCanSort() ? (
-                        /*
-                         * A real button, not a click handler on the <th>.
-                         * Sorting is an action, so it has to be reachable by
-                         * keyboard and announced as a control (§7).
-                         */
                         <button
                           type="button"
                           onClick={header.column.getToggleSortingHandler()}
@@ -260,11 +215,6 @@ export function DataTableDemo({ loading = false }: { loading?: boolean }) {
 
           <TableBody>
             {loading ? (
-              /*
-               * Skeleton rows match the real row footprint — same cell count,
-               * same padding, same height — because the whole point is that
-               * nothing moves when the data lands (§5).
-               */
               SKELETON_ROWS.map((key) => (
                 <TableRow key={key}>
                   {columns.map((c, i) => (

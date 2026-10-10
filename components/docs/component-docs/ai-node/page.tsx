@@ -1,10 +1,3 @@
-/**
- * Authored documentation page for `ai-node`.
- *
- * Live specimens render the real `Node` parts from
- * `components/ai-elements/node.tsx` and live in `node-specimen.tsx`.
- */
-
 import { NodePreview, NodeStateGrid } from "./node-specimen";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

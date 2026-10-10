@@ -1,17 +1,3 @@
-/**
- * Documentation page for `source-foundation`.
- *
- * Authored, not generated. This is the one item every other item in the
- * registry assumes is already installed — not a component with a specimen,
- * but the shared source and style delivery: the four `styles/*.css` files,
- * the `app/globals.css` entry that imports them in load-bearing order,
- * `lib/utils.ts` (the `cn()` merge, taught this system's non-standard token
- * groups), and the icon primitives (`components/ui/icon.tsx`,
- * `components/ui/icon-swap.tsx`) every other component is built against.
- * There is no single specimen to render — see `selection-control` and `menu`
- * for the page shape this follows when a capability is not a placeable thing.
- */
-
 import { Code, Meta } from "@/components/ds/kit";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

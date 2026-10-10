@@ -1,12 +1,3 @@
-/**
- * Authored documentation page for `ai-message`.
- *
- * Every live specimen renders the real parts from
- * `components/ai-elements/message.tsx`; the interactive ones live in the
- * companion client file `message-specimen.tsx` (a spec module cannot carry
- * `"use client"`).
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Meta, Note } from "@/components/ds/kit";

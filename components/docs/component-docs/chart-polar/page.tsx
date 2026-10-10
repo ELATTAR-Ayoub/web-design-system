@@ -1,20 +1,3 @@
-/**
- * Authored documentation page for `chart-polar`.
- *
- * Replaces the generated baseline. Migrated from the old `base/charts`
- * category page (`app/design-system/components/base/charts/page.tsx`, since deleted), which
- * held the whole family's documentation on one page. This item owns the
- * three angular plot families — Pie, Radar, Radial — built on the shared
- * `ChartContainer` documented on the `chart` item page. It resolves through
- * the registry as a `dependency` of `chart`, never as its own install target
- * — see Installation.
- *
- * Every specimen below is the real `PieChart` / `RadarChart` /
- * `RadialBarChart` from `components/ds/charts/{pie,radar,radial}.tsx`,
- * wrapped in `ChartStates` so each one carries its real
- * Empty · Loading · Error · Ready switch.
- */
-
 import {
   PieDonut,
   PieDonutActive,

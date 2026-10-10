@@ -1,11 +1,5 @@
 "use client";
 
-/**
- * Live specimens for the `ai-conversation` page. Each renders the real
- * `Conversation` from `components/ai-elements/conversation.tsx` in a box with
- * a fixed height, because the log scrolls inside whatever height its host gives.
- */
-
 import type { UIMessage } from "ai";
 import { MessageSquareIcon } from "lucide-react";
 
@@ -33,7 +27,6 @@ function textOf(m: UIMessage): string {
   return m.parts.map((p) => (p.type === "text" ? p.text : "")).join("");
 }
 
-/** The Preview: a scrolling log with the scroll-to-latest and download buttons. */
 export function ConversationPreview() {
   return (
     <Panel flush label="Conversation" note="role=log">
@@ -54,7 +47,6 @@ export function ConversationPreview() {
   );
 }
 
-/** The States grid: the default empty state and a custom one. */
 export function ConversationStateGrid() {
   return (
     <StateGrid cols={2}>

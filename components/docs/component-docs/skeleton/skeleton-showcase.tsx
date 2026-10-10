@@ -1,18 +1,5 @@
 "use client";
 
-/**
- * The live Preview specimen for the `skeleton` documentation page.
- *
- * `components/docs/component-docs/skeleton/page.tsx` is a plain data module
- * rendered by a SERVER component (per `references/traps.md` #29) — it cannot
- * hold the loaded/loading toggle. This client companion owns it: "Load"
- * swaps the skeleton for the real pack card it stands in for — same
- * wrapper, same footprint, no layout jump — and "Reset" swaps it back. The
- * swap itself is one spring (`anim-enter` on the arriving card), never a
- * fade-out-then-fade-in of two different things (RULES §5, *Skeletons match
- * the footprint, and swap once*).
- */
-
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";

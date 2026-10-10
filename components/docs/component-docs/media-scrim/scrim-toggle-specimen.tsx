@@ -1,18 +1,5 @@
 "use client"
 
-/**
- * Companion client file for the `media-scrim` Preview — plain data per trap 29
- * (`components/docs/component-docs/<name>/page.tsx` is a server-read spec
- * module and cannot carry `"use client"` itself), so the one piece of this
- * page that needs state — the reader toggling the scrim off and on over the
- * same photograph — lives here instead.
- *
- * Same figure, same image, same title: only the `media-scrim` class and the
- * caption's own colour (it carries no colour without the class) are added or
- * removed on toggle, which is the whole point — the scrim is the only thing
- * making the white title readable against a bright upper-left photograph.
- */
-
 import * as React from "react"
 
 import { Switch } from "@/components/ui/switch"

@@ -6,7 +6,6 @@ import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 
 import { edgeTypes, FlowFrame, pairEdges, pairNodes, miniNodeTypes, planEdges, planNodes, stepNodeTypes } from "./flow-fixture";
 
-/** The Preview: a three-step plan, scrolled with the wheel (drag selects, it does not pan). */
 export function CanvasPreview() {
   return (
     <Panel label="Canvas" note="scroll to pan · drag on empty space to select">
@@ -17,7 +16,6 @@ export function CanvasPreview() {
   );
 }
 
-/** States that exist: rest, empty, and a caller that turns drag-to-pan back on. */
 export function CanvasStateGrid() {
   return (
     <StateGrid cols={3}>

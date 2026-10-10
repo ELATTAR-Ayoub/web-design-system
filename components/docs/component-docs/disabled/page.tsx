@@ -1,21 +1,3 @@
-/**
- * Documentation page for `disabled`.
- *
- * Authored, not generated. `Disabled` is a wrapper CALLERS COMPOSE around a
- * single control to explain why it is unavailable — it never replaces the
- * native `disabled` attribute, and no base component self-wraps in it. Read
- * the extensive doc comment on `components/ui/disabled.tsx` for the full
- * reasoning; this page summarises it and shows the two real modes.
- *
- * The Preview section renders `DisabledShowcase` (`./disabled-showcase.tsx`),
- * a client companion (per `references/traps.md` #29) that owns the condition
- * being explained: checking "Add a payment method" flips both `Disabled`'s
- * own `disabled` prop and the child `Button`'s native `disabled` attribute
- * together, for real, so the reader watches the wrapper's job — cursor,
- * reason discoverability, DOM stability — actually happen across the
- * transition rather than seeing one frozen disabled frame.
- */
-
 import { Code, Meta, Note, Row } from "@/components/ds/kit";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

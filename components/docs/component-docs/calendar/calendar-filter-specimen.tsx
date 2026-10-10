@@ -1,15 +1,5 @@
 "use client";
 
-/**
- * The live Preview specimen for the `calendar` documentation page.
- *
- * `components/docs/component-docs/calendar/page.tsx` is a plain data module
- * rendered by a SERVER component — it cannot hold the `useState`/`onSelect`
- * a real filter needs (trap 29). This companion is that scene: pick a date
- * on the grid and a short Stash list below it filters down to only the cards
- * acquired that day, using nothing but Calendar's own `onSelect`.
- */
-
 import { useMemo, useState } from "react";
 import { format, isSameDay } from "date-fns";
 

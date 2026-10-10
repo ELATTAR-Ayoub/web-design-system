@@ -1,15 +1,3 @@
-/**
- * Documentation page for `surface`.
- *
- * Authored, not generated. Not one class but a family of `--shadow-*` tokens
- * in `styles/tokens.css`, each generating a `shadow-*` Tailwind utility: the
- * MACHINE surfaces (raised and pressed, in the elevation block) as distinct
- * from `--shadow-e1`–`e4`, which are ambient depth rather than a physical
- * control. Every base control in this system — Input, Select, Slider, Switch,
- * Checkbox, Radio, Button — is built from this ladder; this page documents the
- * ladder itself.
- */
-
 import { Meta, Note, Row } from "@/components/ds/kit";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

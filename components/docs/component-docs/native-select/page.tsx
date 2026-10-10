@@ -1,12 +1,3 @@
-/**
- * Authored documentation page for `native-select`.
- *
- * Replaces the generated baseline. Migrated from the old `base/selects`
- * category page. Every specimen renders the real `NativeSelect` from
- * `components/ui/native-select.tsx` — a styled wrapper around the browser's
- * own <select>, not a reimplementation of one.
- */
-
 import {
   Field,
   FieldDescription,

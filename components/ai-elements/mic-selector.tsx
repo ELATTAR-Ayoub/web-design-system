@@ -118,11 +118,7 @@ export const useAudioDevices = () => {
   }, [loading]);
 
   useEffect(() => {
-    // Vendored change: `loadDevicesWithoutPermission`'s first statement is a
-    // synchronous `setLoading(true)`, so calling it directly here set state
-    // in the same tick as the effect body (react-hooks/set-state-in-effect).
-    // Deferred to a microtask; the device list still loads immediately after
-    // mount, same as before.
+    // Vendored change: `loadDevicesWithoutPermission`'s first statement is a synchronous `setLoading(true)`, so calling it directly here set state in the same tick as the effect body (react-hooks/set-state-in-effect).
     queueMicrotask(() => {
       loadDevicesWithoutPermission();
     });
@@ -222,7 +218,6 @@ export const MicSelectorTrigger = ({
   const ref = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    // Create a ResizeObserver to detect width changes
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const newWidth = (entry.target as HTMLElement).offsetWidth;
@@ -236,7 +231,6 @@ export const MicSelectorTrigger = ({
       resizeObserver.observe(ref.current);
     }
 
-    // Clean up the observer when component unmounts
     return () => {
       resizeObserver.disconnect();
     };
@@ -270,9 +264,7 @@ export const MicSelectorContent = ({
 
   return (
     <PopoverContent
-      // Vendored change: the list follows the trigger's width, as upstream, but
-      // never narrower than a readable device list — a trigger can be a bare
-      // chevron (the workspace composer's), which drew a sliver.
+      // Vendored change: the list follows the trigger's width, as upstream, but never narrower than a readable device list — a trigger can be a bare chevron (the workspace composer's), which drew a sliver.
       className={cn("min-w-64 p-0", className)}
       style={{ width }}
       {...popoverOptions}

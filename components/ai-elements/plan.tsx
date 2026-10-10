@@ -132,8 +132,7 @@ export const PlanFooter = (props: PlanFooterProps) => (
 
 export type PlanTriggerProps = ComponentProps<typeof CollapsibleTrigger>;
 
-// Vendored change: dropped the `size-8` (32px) override — icon-only controls
-// never go below 40px (RULES §7), and the `icon` size is exactly that.
+// Vendored change: dropped the `size-8` (32px) override — icon-only controls never go below 40px, and the `icon` size is exactly that.
 export const PlanTrigger = ({ className, ...props }: PlanTriggerProps) => (
   <CollapsibleTrigger asChild>
     <Button

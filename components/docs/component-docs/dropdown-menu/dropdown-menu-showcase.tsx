@@ -1,17 +1,5 @@
 "use client";
 
-/**
- * The account menu, fully interactive.
- *
- * `page.tsx` must stay a plain spec module (trap 29), so the two rows of
- * state the Preview needs — the "Notify on price drops" checkbox and the
- * "Appearance" radio group inside the Preferences submenu — live here.
- * Everything else (the identity header, the Kbd-shortcut rows, the
- * destructive sign-out below its own separator) needs no state and is
- * rendered inline with it, so the Preview reads as one real menu rather than
- * a static half plus a stateful fragment bolted on.
- */
-
 import { useState } from "react";
 
 import { Bell, LogOut, Palette, Settings, ShieldCheck, Wallet } from "lucide-react";

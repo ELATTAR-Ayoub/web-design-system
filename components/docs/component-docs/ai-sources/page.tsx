@@ -1,10 +1,3 @@
-/**
- * Authored documentation page for `ai-sources`.
- *
- * Every live specimen renders the real parts from
- * `components/ai-elements/sources.tsx` in `sources-specimen.tsx`.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Meta, Note } from "@/components/ds/kit";

@@ -1,13 +1,3 @@
-/**
- * Authored documentation page for `label`.
- *
- * Replaces the generated baseline. Label itself was never shown bare on the
- * old `base/inputs` category page — every specimen there used
- * `FieldLabel` (from `field`, wrapping this) — so the examples below use
- * Label directly, the way a consumer reaches for it outside of Field's
- * wiring, plus the composition Field actually builds on it.
- */
-
 import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";

@@ -1,11 +1,3 @@
-/**
- * Authored documentation page for `ai-environment-variables`.
- *
- * Every live specimen renders the real component from `components/ai-elements/environment-variables.tsx`.
- * Anything interactive lives in the companion client file
- * `environment-variables-specimen.tsx` (a spec module cannot carry "use client").
- */
-
 import { EnvironmentVariablesPreview, EnvironmentVariablesStateGrid } from "./environment-variables-specimen";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

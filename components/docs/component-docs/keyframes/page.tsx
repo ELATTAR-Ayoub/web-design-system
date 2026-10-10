@@ -1,21 +1,3 @@
-/**
- * Documentation page for `keyframes`.
- *
- * Authored, not generated. Every `@keyframes` timeline in `styles/motion.css`
- * — the raw animation curves an `anim-*` (or effect-specific) utility spends.
- * A `@keyframes` block is never applied to an element directly in this
- * system; it is always reached through the utility that names it, which is
- * what keeps "every animation has exactly one home" true. This page is the
- * catalogue those utilities draw from, not a component or a class of its own.
- *
- * An entrance that already played on mount is invisible the moment a reader
- * looks at it, so the opening specimen needs a way to see it again. A spec
- * module stays plain server-rendered data (no local `useState`), per trap 29,
- * so the tile's own counter lives in the companion client file
- * `replay-grid-specimen.tsx`: it is set as the tile's `key`, and bumping it
- * unmounts and remounts the tile, replaying its timeline.
- */
-
 import { Meta, Note } from "@/components/ds/kit";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

@@ -38,8 +38,7 @@ export const ModelSelectorContent = ({
   className,
   children,
   title = "Model Selector",
-  // Vendored change: a search dialog has no corner ✕ — it sat on top of the
-  // search field. Escape and a press outside close it, as our CommandDialog.
+  // Vendored change: a search dialog has no corner ✕ — it sat on top of the search field.
   showCloseButton = false,
   ...props
 }: ModelSelectorContentProps) => (
@@ -116,7 +115,6 @@ export type ModelSelectorLogoProps = Omit<
   ComponentProps<"span">,
   "children"
 > & {
-  /** An approved logo you host. Without it, a monogram is drawn. */
   src?: string;
   provider:
     | "moonshotai-cn"
@@ -189,7 +187,6 @@ export const ModelSelectorLogo = ({
   src ? (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      // The props are typed for the span branch; the shared ones (className, aria, data-*, handlers) apply to both.
       {...(props as ComponentProps<"img">)}
       alt={`${provider} logo`}
       className={cn("size-3 dark:invert", className)}
@@ -215,8 +212,7 @@ export const ModelSelectorLogo = ({
 
 export type ModelSelectorLogoGroupProps = ComponentProps<"div">;
 
-// Vendored change: the child selector matches the logo's `data-slot` rather than
-// `img`, because without a `src` the logo is a span (a monogram), not an image.
+// Vendored change: the child selector matches the logo's `data-slot` rather than `img`, because without a `src` the logo is a span (a monogram), not an image.
 export const ModelSelectorLogoGroup = ({
   className,
   ...props

@@ -8,7 +8,6 @@ import { Icon } from "@/components/ui/icon";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 
-/** The Preview: a restore marker between two turns; clicking it reports what it restored. */
 export function CheckpointShowcase() {
   const [restored, setRestored] = React.useState<string | null>(null);
   return (
@@ -33,7 +32,6 @@ export function CheckpointShowcase() {
   );
 }
 
-/** The States grid. */
 export function CheckpointStateGrid() {
   return (
     <TooltipProvider>
@@ -61,7 +59,6 @@ export function CheckpointStateGrid() {
   );
 }
 
-/** The Examples: a custom icon through the children slot and a different tone. */
 export function CheckpointExamples() {
   return (
     <TooltipProvider>

@@ -1,12 +1,5 @@
 "use client";
 
-/**
- * Live specimens for the `ai-inline-citation` page, rendering the real parts
- * from `components/ai-elements/inline-citation.tsx`. The card opens on hover or
- * focus; the specimens that need it open set `open` so the page can show it
- * without a pointer.
- */
-
 import {
   InlineCitation,
   InlineCitationCard,
@@ -68,7 +61,6 @@ function Card({ urls, open }: { urls: string[]; open?: boolean }) {
   );
 }
 
-/** The Preview: a claim with a citation badge; hover or focus the badge for the card. */
 export function InlineCitationPreview() {
   return (
     <Panel label="InlineCitation" note="hover or focus the badge">
@@ -82,7 +74,6 @@ export function InlineCitationPreview() {
   );
 }
 
-/** Other configurations: one source, and a card held open. */
 export function InlineCitationExamples() {
   return (
     <div className="flex flex-col gap-4">
@@ -106,7 +97,6 @@ export function InlineCitationExamples() {
   );
 }
 
-/** The States grid. */
 export function InlineCitationStateGrid() {
   return (
     <StateGrid cols={3}>

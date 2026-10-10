@@ -1,28 +1,5 @@
 "use client";
 
-/**
- * One user message and one assistant reply, composed the way AI Elements
- * composes a chat (demo-claude / chatbot): a `Message` per speaker, the reply
- * built top to bottom in a fixed order —
- *
- *   Reasoning | ChainOfThought   what it thought and did (Tool, Confirmation)
- *   MessageResponse              the answer (CodeBlock, Snippet, InlineCitation)
- *   tool outputs                 Terminal, TestResults, StackTrace, Image, …
- *   RunInline                    the run this reply started
- *   Sources                      "Used N sources"
- *   MessageActions               only once the reply has finished
- *   Suggestions                  only under the last finished reply
- *
- * Everything is read through the adapter (`reply-model.ts`, `tool-output.ts`);
- * nothing here re-derives a state, an owner or an output shape.
- *
- * Branching: `MessageBranch` wraps the whole reply, as chatbot.tsx / demo-claude
- * wrap the whole message — it is uncontrolled and builds its branches from its
- * children, so each message is remounted (`key`) when its version count
- * changes — `defaultBranch` then re-seeds from the transport's
- * `activeVersion` — and `onBranchChange` calls `transport.selectBranch`.
- */
-
 import * as React from "react";
 import {
   AlertCircleIcon,
@@ -169,13 +146,6 @@ import {
   useReadAloud,
 } from "./workspace-outputs";
 
-/* ── Small shared pieces ─────────────────────────────────────────────────── */
-
-/**
- * A disclosure that opens itself when something needs the reader (`auto`),
- * stays open once it has, and always yields to a click. Derived while
- * rendering, so the open state is right on the first frame.
- */
 function useDisclosure(auto: boolean) {
   const [chosen, setChosen] = React.useState<boolean | null>(null);
   const [latched, setLatched] = React.useState(auto);
@@ -183,7 +153,6 @@ function useDisclosure(auto: boolean) {
   return [chosen ?? latched, setChosen] as const;
 }
 
-/** The row under a message: faint at rest on a hover device, full on hover or focus. */
 const ACTION_ROW =
   "md:opacity-60 md:transition-opacity md:duration-fast md:group-hover:opacity-100 md:group-focus-within:opacity-100";
 
@@ -197,17 +166,10 @@ const toData = (a: AgentAttachment): AttachmentData => ({
   filename: a.name,
 });
 
-/* ── Markdown: citations, code, snippets ─────────────────────────────────── */
-
 const SourcesContext = React.createContext<AgentSource[]>([]);
 
 const CITE = "#cite-";
 
-/**
- * Turn `[1]` / `[1][2]` markers into links to `#cite-1` / `#cite-1-2` so the
- * renderer can draw them as `InlineCitation`s. Only markers that name a real
- * source become links, and code (fenced or inline) is left alone.
- */
 export function linkCitations(text: string, sources: AgentSource[]): string {
   if (!sources.length || !text.includes("[")) return text;
   const known = new Set(sources.map((s) => s.n));
@@ -284,7 +246,6 @@ function textOf(node: React.ReactNode): string {
 
 const SHELL = new Set(["sh", "bash", "shell", "zsh", "console", "terminal", "shellscript", "powershell", "cmd", "bat"]);
 
-/** A fenced block: a one-line shell command is a `Snippet`, anything else a `CodeBlock`. */
 function MarkdownBlockCode({ className, children }: React.ComponentProps<"code">) {
   const language = /language-([\w+-]+)/.exec(className ?? "")?.[1] ?? "";
   const code = textOf(children).replace(/\n$/, "");
@@ -341,19 +302,12 @@ function Response({ turn, text, sources }: { turn: TextTurn; text: string; sourc
   );
 }
 
-/* ── User message ────────────────────────────────────────────────────────── */
-
 export type WorkspaceUserMessageProps = {
   turn: UserTurn;
   transport: AgentTransport;
   className?: string;
 };
 
-/**
- * A user message: its attachments (image tiles, file chips), the text in a
- * bubble, and under it Copy, Edit (inline) and — once edited — `MessageBranch`
- * ‹ n of m › over the versions.
- */
 export function WorkspaceUserMessage({ turn, transport, className }: WorkspaceUserMessageProps) {
   const [editing, setEditing] = React.useState(false);
   const [draft, setDraft] = React.useState(turn.text);
@@ -457,7 +411,6 @@ export function WorkspaceUserMessage({ turn, transport, className }: WorkspaceUs
             <MessageContent key={v.id}>{i === active || !canNavigate ? turn.text : v.text}</MessageContent>
           ))}
         </MessageBranchContent>
-        {/* A user message's row sits under its bubble, at the end — the selector renders nothing for a single version. */}
         <MessageToolbar className={cn("mt-0 justify-end", ACTION_ROW)}>
           {canNavigate ? (
             <MessageBranchSelector>
@@ -483,8 +436,6 @@ export function WorkspaceUserMessage({ turn, transport, className }: WorkspaceUs
     </Message>
   );
 }
-
-/* ── Steps: Tool, Confirmation, the code gate ────────────────────────────── */
 
 function ApprovalCode({
   turn,
@@ -624,9 +575,6 @@ function ToolStepCard({
   const isTool = turn.kind === "tool";
   const name = isTool ? turn.name : turn.action;
   const params = turn.params;
-  /* Only a stack trace draws the failure itself (message and Retry), so only
-     then does the step keep quiet — every other failed tool says what went
-     wrong, and offers "Try again", in its own step. */
   const drawnBelow = output !== null && output.kind !== "search" && output.kind !== "image";
   const owned = output?.kind === "stack-trace";
   const failed = state === "output-error" && !owned;
@@ -659,30 +607,20 @@ function ToolStepCard({
   );
 }
 
-/* ── The reply ───────────────────────────────────────────────────────────── */
-
 export type WorkspaceReplyProps = {
-  /** The user message this reply answers (Open in…, Retry). */
   user: UserTurn;
-  /** The reply, or null while the user turn has none yet (the waiting shell). */
   reply: Reply | null;
   transport: AgentTransport;
-  /** The agent is working. */
   busy: boolean;
-  /** The last reply in the thread — Suggestions, Retry and Reconnecting belong to it. */
   isLast: boolean;
-  /** The run this reply started, when it is the run's owner — drawn with `RunInline`. */
   run?: Run | null;
   speak?: (text: string) => Promise<string>;
-  /** Chat services the "Open in…" menu offers, each opened with the user message as the query. Empty or absent renders no menu. */
   openIn?: OpenInTarget[];
   onSend: (text: string) => void;
-  /** Hides follow-up Suggestions once the user starts typing. Defaults to true. */
   composerEmpty?: boolean;
   className?: string;
 };
 
-/** The same transient status words everywhere a reply is waiting. */
 function ReplyStatus({ children }: { children: string }) {
   return (
     <div role="status">
@@ -712,7 +650,7 @@ export function WorkspaceReply({
   const textTurns = turns.filter((t): t is TextTurn => t.kind === "text");
   const stepTurns = turns.filter((t): t is ToolTurn | ActionTurn => t.kind === "tool" || t.kind === "action");
   const errorTurns = turns.flatMap((t) => (t.kind === "error" ? [t] : []));
-  // A fatal error owns the reply's one Retry; the failed step it came from does not repeat it.
+  // A fatal error owns the reply's one Retry.
   const fatalError = errorTurns.some((e) => e.fatal);
   const reasoningSteps = textTurns.flatMap((t) => t.reasoning?.steps ?? []);
   const reasoningMs = textTurns.reduce<number | undefined>(
@@ -721,8 +659,6 @@ export function WorkspaceReply({
   );
   const sources = reply?.sources ?? [];
 
-  /* `regenerate` takes the answer to write again — the reply's last text
-     turn — falling back to the question when there is no answer yet. */
   const answerId = [...turns].reverse().find((t) => t.kind === "text")?.id ?? user.id;
   const retry = React.useCallback(() => {
     if (transport.regenerate && transport.capabilities.branching) void transport.regenerate(answerId);
@@ -730,14 +666,11 @@ export function WorkspaceReply({
   }, [transport, answerId, user.text, onSend]);
   const canRetry = isLast && !busy;
 
-  /* Which tool calls get a component of their own below the answer. */
   const outputs = stepTurns.flatMap((t) => {
     if (t.kind !== "tool") return [];
     const data = toolOutput(t);
     return data && data.kind !== "search" && data.kind !== "image" ? [{ turn: t, data }] : [];
   });
-  /* An image a tool is making appears in a GeneratedImage, from its first stage
-     to the finished picture; whatever else a tool hands back is a produced file. */
   const frames = stepTurns.flatMap((t) => {
     if (t.kind !== "tool") return [];
     const data = toolOutput(t);
@@ -761,16 +694,11 @@ export function WorkspaceReply({
   const needsYou = stepTurns.some((t) => t.kind === "action" && t.approval === "pending");
   const stepRunning = stepTurns.some((t) => t.status === "running");
   const working = streaming && (stepRunning || !hasText);
-  /* Open while the reply is being written or a step is waiting on the reader,
-     closed again once it is done — unless the reader opened it. */
   const [chainChoice, setChainChoice] = React.useState<boolean | null>(null);
   const anyStepFailed = stepTurns.some((t) => toolState(t) === "output-error");
   const chainOpen = chainChoice ?? (streaming || needsYou || anyStepFailed);
 
-  /* The text turn whose regenerations the reader can page through. An edit
-     gives the question a new version AND its answer a new one; the question's
-     own ‹ n of m › already pages that pair, so the answer shows a selector
-     only once it has more versions than the question (a real Regenerate). */
+  /* The question's own selector pages the edited pair; the answer shows one only with more versions. */
   const editVersions = user.versions?.length ?? 0;
   const branchTurn = [...textTurns]
     .reverse()
@@ -779,7 +707,6 @@ export function WorkspaceReply({
   const branchVersions = canNavigate && branchTurn ? (branchTurn.regenerations ?? []) : [];
   const branchActive = branchTurn ? Math.min(branchTurn.activeVersion ?? 0, Math.max(branchVersions.length - 1, 0)) : 0;
 
-  // A reply whose run is still going (paused, waiting on the reader) is not finished either.
   const finished = Boolean(reply) && !streaming && !(run && RUN_IN_FLIGHT.has(run.status));
   const copy = useCopy(reply?.text ?? "");
   const readAloud = useReadAloud(reply?.text ?? "", speak);
@@ -788,7 +715,6 @@ export function WorkspaceReply({
   const lastText = textTurns.at(-1);
   const suggestions = isLast && finished && composerEmpty ? (lastText?.suggestions ?? []) : [];
 
-  // A run drawn in this reply already says what is happening — no "Thinking…" above it.
   const waiting = streaming && !hasText && !hasSteps && !thinkingOnly && !errorTurns.length && !run;
 
   if (!reply && !waiting && !run && !reconnecting) return null;
@@ -900,7 +826,6 @@ export function WorkspaceReply({
           {frames.map(({ turn, image, stage }) => (
             <GeneratedImage key={turn.id} stage={stage} onRetry={canRetry ? retry : undefined} className="max-w-sm">
               {image?.url ? (
-                // A data: or blob: url the workspace already holds — next/image has nothing to optimise.
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={image.url} alt={image.name} />
               ) : null}

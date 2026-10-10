@@ -1,35 +1,9 @@
-/**
- * Documentation page for `safe-area`.
- *
- * Authored, not generated.
- *
- * THIS PAGE USED TO SAY THE CAPABILITY DID NOT EXIST, and it was right. The
- * contract named `safe-area`, `docs/architecture/platform-parity.md` said it
- * arrived as "`env(safe-area-inset-*)` utilities", and nothing under `styles/`
- * implemented one — three documents, two of which disagreed with the code. The
- * per-capability audit under `docs/contracts/audit/` is what put all three in
- * one place and made the disagreement visible.
- *
- * The seven utilities now exist in `styles/utilities.css`, so this page
- * documents them. Every class named below is a real `@utility` in that file and
- * `npm run check:refs` resolves each one — which is the reason the earlier
- * version refused to name any: a class in prose that resolves to nothing is a
- * worse lie than an admitted gap.
- */
-
 import { Code, Meta, Note } from "@/components/ds/kit";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 
 import { meta } from "./meta";
 
-/**
- * A specimen that renders the inset a device actually reports.
- *
- * On a desktop browser every one of these is `0px`, and that is not a broken
- * demo — it is the correct answer, and the reason each utility carries a
- * `, 0px` fallback. The panel says so rather than showing an empty box.
- */
 function SafeAreaSpecimen() {
   return (
     <div className="w-full rounded-lg border border-dashed border-border p-4">

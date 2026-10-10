@@ -13,12 +13,6 @@ import {
 } from "@/components/ai-elements/confirmation";
 import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 
-/**
- * Live specimens for the `ai-confirmation` page. The same composition the
- * AgentWorkspace uses for a low-confidence step (run-inline.tsx): a request
- * with two actions, and the recorded answer once one is given.
- */
-
 type Answer = "approved" | "declined" | null;
 
 export function ConfirmationPreview() {

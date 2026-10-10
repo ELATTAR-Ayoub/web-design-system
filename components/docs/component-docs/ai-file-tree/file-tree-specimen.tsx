@@ -15,11 +15,6 @@ import { Icon } from "@/components/ui/icon";
 import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 import { FileIcon, PlusIcon } from "lucide-react";
 
-/**
- * Live specimens for the `ai-file-tree` page — a fixed project tree, with the
- * selection held in the specimen the way a host would hold it.
- */
-
 function Nodes() {
   return (
     <>

@@ -1,12 +1,3 @@
-/**
- * Authored documentation page for `button-group`.
- *
- * Migrated from the old `base/buttons` category page (the "Button Group"
- * section), which held this content alongside five other components before
- * the per-item split. Every specimen renders the real `ButtonGroup`,
- * `ButtonGroupSeparator` and `ButtonGroupText` from `components/ui/button-group.tsx`.
- */
-
 import { ChevronDown, Minus, Plus } from "lucide-react";
 
 import { SourceMeta } from "@/components/docs/component-page/sections";

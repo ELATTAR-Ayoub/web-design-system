@@ -1,27 +1,12 @@
-/**
- * The agent's stream, folded into something renderable.
- *
- * A transport maintains its own message list, but those only ever hold user and
- * assistant *text* — tool calls, tool results and action requests arrive on the
- * event channel and are then dropped. Those are the interesting half of an
- * agentic product, so the console keeps its own timeline built from the raw
- * events and treats the transport purely as delivery.
- *
- * Every entry is immutable; settling a tool call replaces the entry rather than
- * mutating it, so React sees a new array and the renderers stay pure.
- */
-
 import type { AgentEvent, AgentTurn, Attachment, TextTurn, ToolTurn } from "./types";
 
 let seq = 0;
 const nextId = () => `turn-${(seq += 1)}`;
 
-/** Reset the id counter. Tests only — ids are otherwise process-lifetime unique. */
 export function __resetIds() {
   seq = 0;
 }
 
-/** Replace the most recent entry matching `match`. Returns the array unchanged if there is none. */
 function settleLast(
   turns: AgentTurn[],
   match: (turn: AgentTurn) => boolean,
@@ -47,14 +32,6 @@ export function userTurn(text: string, attachments?: Attachment[]): AgentTurn {
   };
 }
 
-/**
- * How many times this tool has already been tried and failed in this run.
- *
- * A model that calls the same tool again after an error is retrying, and that is
- * worth showing — it is the difference between "still working" and "stuck". The
- * count is scoped to the tool name rather than to its arguments, because a retry
- * with corrected arguments is still a retry.
- */
 function priorFailures(turns: AgentTurn[], name: string): number {
   let count = 0;
   for (const turn of turns) {
@@ -63,19 +40,6 @@ function priorFailures(turns: AgentTurn[], name: string): number {
   return count;
 }
 
-/**
- * Page control arrives twice.
- *
- * A DOM action is invoked through the same tool syntax as everything else, so
- * the runtime emits a tool_call *and* an action_request for it, then a
- * tool_result once the browser reports back. Rendering both puts the same step
- * on screen twice under two different names. The action entry is the one worth
- * keeping — it reads as a sentence and is timed by the browser that did the
- * work — so the tool half is dropped here rather than filtered in the console.
- *
- * Supplied by the transport, because which names are DOM actions is a property
- * of the agent, not of the timeline.
- */
 export type ReduceOptions = { domActions?: ReadonlySet<string> };
 
 export function reduceEvent(
@@ -148,8 +112,6 @@ export function reduceEvent(
         ...closeStreaming(turns),
         {
           kind: "action",
-          // The correlation id is already unique per request and is what the
-          // action bridge will quote back when the browser reports the outcome.
           id: event.correlationId,
           action: event.action,
           params: event.parameters ?? {},
@@ -189,8 +151,7 @@ export function reduceEvent(
       return withStreamingText(turns, (turn) => ({ ...turn, confidence: event.confidence }));
 
     case "run":
-      // Run events are folded by the transport with `reduceRunEvent`
-      // (run.ts), not by the transcript. Nothing here to do.
+      // Run events are folded by the transport, not the transcript.
       return turns;
 
     default:
@@ -198,10 +159,6 @@ export function reduceEvent(
   }
 }
 
-/**
- * Apply `update` to the current streaming answer, creating one first if the
- * transcript has none — reasoning can arrive before the first text token.
- */
 function withStreamingText(
   turns: AgentTurn[],
   update: (turn: TextTurn) => TextTurn,
@@ -213,13 +170,6 @@ function withStreamingText(
   return [...turns, update({ kind: "text", id: nextId(), text: "", streaming: true, at: Date.now() })];
 }
 
-/**
- * Mark the trailing text turn as finished streaming.
- *
- * Called whenever something other than more text arrives. Without it the cursor
- * keeps blinking on a paragraph the model stopped writing several tool calls
- * ago, and `resolveState` cannot tell "writing" from "wrote".
- */
 function closeStreaming(turns: AgentTurn[]): AgentTurn[] {
   const last = turns.at(-1);
   if (last?.kind !== "text" || !last.streaming) return turns;
@@ -230,7 +180,6 @@ function closeStreaming(turns: AgentTurn[]): AgentTurn[] {
   );
 }
 
-/** Called once the browser has actually performed a DOM action. */
 export function settleAction(
   turns: AgentTurn[],
   action: string,
@@ -251,7 +200,6 @@ export function settleAction(
   );
 }
 
-/** Flag an action turn as held at an approval gate. */
 export function markApproval(
   turns: AgentTurn[],
   turnId: string,
@@ -264,14 +212,6 @@ export function markApproval(
   );
 }
 
-/**
- * Remove the agent protocol's control tags from text destined for a human.
- *
- * The Lens runtime ends every completed turn with `</complete>` and does not
- * strip it. Because text arrives in chunks a tag can also be split across two
- * events, so a trailing partial tag is swallowed too — otherwise the user
- * watches `</comp` sit at the end of a sentence for a beat.
- */
 export function stripProtocol(text: string): string {
   return text.replace(/<\/?complete>/g, "").replace(/<\/?[a-z]*$/i, "");
 }

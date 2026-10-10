@@ -1,22 +1,5 @@
 "use client";
 
-/**
- * The live Preview specimen for the `form` documentation page.
- *
- * `components/docs/component-docs/form/page.tsx` is a plain data module
- * rendered by a SERVER component (see the long comment at the top of that
- * file) — it cannot call `useForm()` itself. This one small client component
- * is the exception: it exists only so the Preview section can mount a real,
- * working `Form` (react-hook-form + Zod, wired through the actual exports of
- * `components/ui/form.tsx`) instead of a static snippet. `page.tsx` imports
- * `AccountForm` and renders it as an ordinary element — the same pattern any
- * other doc page uses when it composes an already-client component (Dialog,
- * Combobox, …) into a showcase.
- *
- * Submit with an empty handle or a malformed email to see the validation
- * error; submit successfully to see the loading-then-success round trip.
- */
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";

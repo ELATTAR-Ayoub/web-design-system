@@ -17,11 +17,6 @@ import {
 } from "@/components/ai-elements/environment-variables";
 import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 
-/**
- * Live specimens for the `ai-environment-variables` documentation page. The
- * values are fake placeholders, never a real key.
- */
-
 const VARIABLES = [
   { name: "DATABASE_URL", required: true, value: "postgres://demo:demo@localhost:5432/app" },
   { name: "LOG_LEVEL", required: false, value: "info" },
@@ -46,7 +41,6 @@ function Rows() {
   );
 }
 
-/** The Preview: the same composition the workspace draws, with the visibility switch live. */
 export function EnvironmentVariablesPreview() {
   const [shown, setShown] = React.useState(false);
 
@@ -63,7 +57,6 @@ export function EnvironmentVariablesPreview() {
   );
 }
 
-/** The States grid: masked, revealed, disabled toggle and no variables. */
 export function EnvironmentVariablesStateGrid() {
   return (
     <StateGrid cols={2}>

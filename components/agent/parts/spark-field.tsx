@@ -1,115 +1,66 @@
 "use client";
 
-/**
- * SparkField — the max-effort atmosphere: a soft agent-coloured tint over the
- * prompt box and a canvas of rising sparks that speed up and flare while the
- * user types. Written for this system, on its tokens; its behaviour deliberately
- * matches the max-effort sparks it replaced. The AgentWorkspace composer arms it
- * on one condition: max effort, the prompt focused and no reduced-motion
- * preference.
- *
- * Place it as the first child of the prompt box. It fills the box behind the
- * content (`-z-10`), so the box itself must be `relative isolate`. The host
- * keeps a ref and calls `ref.current?.bump()` on every keystroke.
- *
- * The physics are small pure functions (`spawnSpark`, `stepSpark`,
- * `bumpTyping`, `decayTyping`, `drawSpark`) so they can be tested without a
- * canvas; the component only owns the loop. Colour is read once from the
- * canvas' own `text-agent`, so the sparks follow the theme token.
- */
-
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-/** What a host can do to a running field: feed it one keystroke. */
 export type SparkFieldHandle = { bump: () => void };
 
-/** One spark. Positions are CSS pixels inside the box; times are seconds. */
 export type Spark = {
   x: number;
   y: number;
-  /** Radius at rest. */
   r: number;
-  /** Vertical velocity at rest speed; negative is up. */
   vy: number;
-  /** Amplitude of the sideways drift. */
   sway: number;
-  /** Offset into the drift and twinkle waves, so sparks do not pulse together. */
   phase: number;
-  /** Age. */
   life: number;
-  /** Lifespan: the spark fades in, then out, over this long. */
   span: number;
 };
 
-/** How sparks are born. */
 export const SPAWN = {
-  /** Sparks scattered through the box the moment the field arms. */
   SCATTERED: 26,
-  /** Population ceiling while running. */
   MAX: 30,
-  /** One new spark from the bottom edge this often, until the ceiling. */
   INTERVAL_S: 0.14,
-  /** Fraction of the box's height, from the top, where scattered sparks may start. */
   SCATTER_TOP: 0.2,
-  /** Head start on its age that a scattered spark may be given (random up to this). */
   HEAD_START_S: 1.2,
-  /** How far below the bottom edge a rising spark starts, and the top edge it recycles past. */
   MARGIN_PX: 3,
   RECYCLE_ABOVE_PX: 4,
 } as const;
 
-/** How sparks look and move at rest. */
 export const SPARK = {
   RADIUS_MIN_PX: 0.9,
   RADIUS_SPREAD_PX: 1.1,
   RISE_MIN_PX_S: 7,
   RISE_SPREAD_PX_S: 9,
-  /** Total sideways range, so a spark drifts +/- half of it. */
   SWAY_RANGE_PX: 10,
   LIFE_MIN_S: 2.4,
   LIFE_SPREAD_S: 2.4,
-  /** Sparks fade out within this distance of the top and bottom edges. */
   EDGE_FADE_PX: 14,
-  /** Drift wave: period 2*pi*this ms at rest, quickened by typing. */
   SWAY_MS: 900,
-  /** Twinkle wave: likewise. */
   TWINKLE_MS: 160,
   TWINKLE_FLOOR: 0.7,
   TWINKLE_DEPTH: 0.3,
 } as const;
 
-/** What typing does to the field. */
 export const TYPING = {
-  /** Energy one keystroke adds, and the most it can hold. */
   PER_KEY: 0.22,
   CAP: 1.6,
-  /** Energy decays exponentially with this time constant. */
   TIME_CONSTANT_S: 0.8,
-  /** A keystroke also flares the glow; the flare decays much faster. */
   FLARE_TIME_CONSTANT_S: 0.16,
-  /** Rise speed multiplier is 1 + energy * this (about x7 at the cap). */
   SPEED_GAIN: 6,
-  /** The rise speed eases toward its target over this long. */
   SPEED_EASE_S: 0.15,
-  /** Brightness, size and drift quickening per unit of energy. */
   ALPHA_GAIN: 0.25,
   SIZE_GAIN: 0.35,
   SWAY_GAIN: 0.8,
 } as const;
 
-/** Glow blur radius at rest, and what energy and the flare add to it. */
 export const GLOW = { BASE_PX: 6, PER_ENERGY_PX: 10, PER_FLARE_PX: 6 } as const;
 
-/** The largest step the loop takes, so a background tab does not teleport the sparks. */
 const MAX_FRAME_S = 0.05;
-/** Backing-store pixel ratio ceiling. */
 const MAX_DPR = 2;
 
 type Random = () => number;
 
-/** A new spark: scattered through the box on arm, otherwise rising from below the bottom edge. */
 export function spawnSpark(width: number, height: number, scattered: boolean, random: Random = Math.random): Spark {
   return {
     x: random() * width,
@@ -123,11 +74,6 @@ export function spawnSpark(width: number, height: number, scattered: boolean, ra
   };
 }
 
-/**
- * Age and move one spark by `dt` seconds at rise multiplier `speed`. A spark that
- * floats past the top is recycled to the bottom at a new x; returns false once
- * its life is spent and it should be dropped.
- */
 export function stepSpark(
   spark: Spark,
   dt: number,
@@ -146,14 +92,11 @@ export function stepSpark(
   return true;
 }
 
-/** Typing energy after one more keystroke. */
 export const bumpTyping = (energy: number) => Math.min(TYPING.CAP, energy + TYPING.PER_KEY);
 
-/** Exponential decay over `dt` seconds toward zero. */
 export const decayTyping = (value: number, dt: number, timeConstantS: number = TYPING.TIME_CONSTANT_S) =>
   value * Math.exp(-dt / timeConstantS);
 
-/** Paint one spark. The caller sets the fill colour and the glow once per frame. */
 export function drawSpark(
   ctx: CanvasRenderingContext2D,
   spark: Spark,
@@ -189,7 +132,6 @@ export function SparkField({
   className?: string;
 }) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
-  // Shared with the loop: how worked-up the typist is, and whether a flare is owed.
   const typing = React.useRef({ energy: 0, flarePending: false });
 
   React.useImperativeHandle(ref, () => ({

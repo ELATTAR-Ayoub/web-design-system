@@ -1,41 +1,9 @@
-/**
- * Getting a file from the user to the agent, and back.
- *
- * The honest position, stated once here so no component has to reason about it:
- *
- *   A Lens message is a string. `sendMessage(text, context?)` has no binary
- *   channel, so the only way an attachment reaches the model is inside that
- *   string. Text-bearing files therefore travel in full and the agent can quote
- *   them; an image or a PDF cannot, and its filename travels instead.
- *
- * Both outcomes are recorded on the attachment as `delivery`, and the console
- * renders that distinction rather than showing one paperclip for both. A
- * paperclip that sometimes means "the agent read your spreadsheet" and sometimes
- * means "the agent knows you have a spreadsheet" is worse than no paperclip.
- *
- * The seam for fixing this properly is `TransportCapabilities.attachments`. A
- * transport that advertises `"content"` for binaries — a multimodal endpoint, or
- * Lens once `sendMessage` grows a content-parts overload — supplies its own
- * serialiser and nothing above this file changes.
- */
-
 import { attachmentKind, type Attachment } from "./types";
 
-/**
- * How much of one file we are willing to put in a prompt.
- *
- * 128k characters is roughly 32k tokens: enough for a real CSV export or a long
- * document, and short of the point where one attachment evicts the conversation
- * that motivated it. Truncation is announced in the payload rather than done
- * silently, because a model that reasons over half a file while believing it has
- * all of it produces confidently wrong answers.
- */
 export const MAX_INLINE_CHARS = 128_000;
 
-/** Above this, the picker refuses the file outright rather than reading it. */
 export const MAX_FILE_BYTES = 25 * 1024 * 1024;
 
-/** Kinds whose bytes are meaningfully text. */
 const TEXTUAL = new Set(["data", "code", "other"]);
 
 export function isTextual(attachment: Attachment): boolean {
@@ -44,13 +12,6 @@ export function isTextual(attachment: Attachment): boolean {
   return TEXTUAL.has(attachment.kind) && attachment.kind !== "audio";
 }
 
-/**
- * Read what a File actually is, without trusting the picker's MIME.
- *
- * Browsers report `application/octet-stream` for plenty of ordinary text files
- * depending on the OS and the extension registry, so kind is derived from both
- * the MIME and the filename and the two are allowed to disagree.
- */
 export async function readAttachment(file: File): Promise<Attachment> {
   const kind = attachmentKind(file.type, file.name);
   const base: Attachment = {
@@ -68,22 +29,10 @@ export async function readAttachment(file: File): Promise<Attachment> {
     const text = await file.text();
     return { ...base, text };
   } catch {
-    // An unreadable file still deserves to appear in the tray — the user picked
-    // it, and silently dropping it looks like the picker is broken.
     return base;
   }
 }
 
-/**
- * Fold attachments into the message the agent receives.
- *
- * Returns the text to send plus the same attachments with `delivery` stamped on
- * each, so the transcript can say which ones actually made it.
- *
- * The block is delimited and named rather than pasted raw: a 3,000-line CSV
- * dropped into the middle of a sentence reads to the model as the user's own
- * words. The fences tell it where the user stops and the file starts.
- */
 export function serialiseAttachments(
   text: string,
   attachments: Attachment[],
@@ -95,11 +44,7 @@ export function serialiseAttachments(
   const referenced: string[] = [];
 
   for (const attachment of attachments) {
-    // An image that has been through a vision pass carries its transcription on
-    // `text`. It is fenced as an <image> rather than a <file> and labelled as a
-    // reading, because the agent is receiving a description of a picture and not
-    // the picture — and a model that believes it saw the thing itself will
-    // answer questions the transcription cannot actually support.
+    // A vision transcription is fenced as <image> and labelled a reading: the agent never saw the picture.
     if (attachment.kind === "image" && attachment.text) {
       blocks.push(
         [
@@ -145,8 +90,6 @@ export function serialiseAttachments(
   const parts = [text.trim()];
   if (blocks.length) parts.push(blocks.join("\n\n"));
   if (referenced.length) {
-    // Stated as a fact about the conversation rather than as content, so the
-    // model does not attempt to reason about bytes it was never given.
     parts.push(
       `<attached-but-not-readable>\n${referenced.join(
         "\n",
@@ -157,20 +100,11 @@ export function serialiseAttachments(
   return { text: parts.filter(Boolean).join("\n\n"), attachments: stamped };
 }
 
-/**
- * Pull attachments back out of a tool result.
- *
- * The agent side of the same street: a tool that generates a report, a chart or
- * an export returns it under a known key, and the console renders it in the
- * transcript with a download. The key is namespaced so an ordinary result that
- * happens to have an `attachments` field is not mistaken for one.
- */
 const PRODUCED_KEY = "__attachments";
 
 export type ProducedAttachment = {
   name: string;
   mime: string;
-  /** Inline content. One of `text` or `dataUrl` is required. */
   text?: string;
   dataUrl?: string;
 };
@@ -206,7 +140,6 @@ export function extractProduced(result: unknown): Attachment[] {
   return out;
 }
 
-/** Strip the attachment envelope so the generative renderers see a clean result. */
 export function withoutProduced(result: unknown): unknown {
   if (!result || typeof result !== "object") return result;
   if (!(PRODUCED_KEY in (result as Record<string, unknown>))) return result;

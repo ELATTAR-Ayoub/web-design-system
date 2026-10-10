@@ -1,23 +1,3 @@
-/**
- * Authored documentation page for `progress`.
- *
- * Replaces the generated baseline. Migrated from the old `base/feedback`
- * category page (`app/design-system/components/base/feedback/page.tsx`, since deleted),
- * where it was documented together with Spinner under one "Progress &
- * Spinner" heading. Spinner now has its own page — see `spinner`; this page
- * covers only the measurable-total case. Every specimen below renders the
- * real `Progress` from `components/ui/progress.tsx` — nothing here is a
- * styled div. Prop rows in API Reference come from that file's own
- * `progressIndicatorVariants` cva config and component signature; nothing is
- * invented.
- *
- * The Preview section renders `ProgressShowcase` (`./progress-showcase.tsx`),
- * a client companion (per `references/traps.md` #29 — a spec module cannot
- * hold the `useState` the bar animates from) whose "Add 20" / "Reset" /
- * "Send to 100" buttons drive a real value change, so the reader watches the
- * fill actually travel rather than looking at one frozen frame.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 
@@ -284,17 +264,3 @@ export function PackSupply() {
   ],
 };
 
-/* Sizes and Keyboard are omitted for this item:
- *
- * - Sizes: Progress has no size prop — the track is a fixed 10px (h-2.5)
- *   channel, matching the Slider's track deliberately (both are "a filled
- *   channel"). Documenting a Sizes section would invent a lever the source
- *   does not expose.
- * - Keyboard: Progress is not a control — it has no tabIndex and no
- *   Radix-assigned keyboard behaviour, unlike the Slider it visually
- *   matches. There is nothing to document.
- *
- * Responsive is included implicitly rather than as its own section: the
- * track is width: 100% of its container at every breakpoint, with no
- * breakpoint-specific rule in progress.tsx to document separately.
- */

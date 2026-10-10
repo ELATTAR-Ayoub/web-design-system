@@ -6,6 +6,13 @@ claim deployment: a tag says what the code is, not where it runs.
 
 ## Unreleased
 
+### Changed — the voice orb is a glass sphere again
+- `VoiceOrb` is redrawn as a dark glass sphere: a lit body, two reflections turning against each other, a highlight and a rim light. It has five states (`idle`, `listening`, `thinking`, `speaking`, `asleep`), each with its own pace and motion, from the `voice-orb` utility, the `--orb-*` tokens and three new keyframes (`orb-breathe`, `orb-speak`, `orb-ripple`). Still original code with no canvas, WebGL or network request.
+
+### Changed — cleaner source
+- Explanatory essay comments are removed across `components`, `lib`, `hooks` and `app`; only lint directives, the AI Elements `Vendored change:` notes and one-line guards on non-obvious code remain. Every file compiles to the same output as before.
+- Removed unused files: the AI Elements study notes, an unused docs helper, empty public placeholders, and the showcase-only `--height-cta` / `--*-showcase` tokens.
+
 ### Changed — the terminal renders its own colours
 - `TerminalText` (`lib/terminal-text.tsx`) is new, original code. It reads terminal colour
   codes (16 colours, bright, 256-colour, truecolor, bold, dim, italic, underline, blink,

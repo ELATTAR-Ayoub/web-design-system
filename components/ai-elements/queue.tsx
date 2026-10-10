@@ -121,12 +121,7 @@ export type QueueItemActionProps = Omit<
   "variant" | "size"
 >;
 
-// Vendored change: `size-auto rounded p-1` overrode the icon-button ladder
-// with a raw size. The action is nested in a row (RULES §7: a nested control
-// keeps a small visual size and gets its hit area back with negative margin):
-// the button is the 40px `icon` target, pulled back with `-m-2` so the row's
-// layout footprint stays 24px, and the glyph sits in a 24px pill that carries
-// the hover fill.
+// Vendored change: `size-auto rounded p-1` overrode the icon-button ladder with a raw size.
 export const QueueItemAction = ({
   className,
   children,
@@ -175,8 +170,7 @@ export const QueueItemImage = ({
 
 export type QueueItemFileProps = ComponentProps<"span">;
 
-// Vendored change: `max-w-[100px]` was an invented literal — nearest step on
-// the 8-point scale is 80px (`max-w-20`).
+// Vendored change: `max-w-[100px]` was an invented literal — nearest step on the 8-point scale is 80px (`max-w-20`).
 export const QueueItemFile = ({
   children,
   className,
@@ -208,7 +202,6 @@ export const QueueList = ({
   </ScrollArea>
 );
 
-// QueueSection - collapsible section container
 export type QueueSectionProps = ComponentProps<typeof Collapsible>;
 
 export const QueueSection = ({
@@ -219,7 +212,6 @@ export const QueueSection = ({
   <Collapsible className={cn(className)} defaultOpen={defaultOpen} {...props} />
 );
 
-// QueueSectionTrigger - section header/trigger
 export type QueueSectionTriggerProps = ComponentProps<"button">;
 
 export const QueueSectionTrigger = ({
@@ -241,7 +233,6 @@ export const QueueSectionTrigger = ({
   </CollapsibleTrigger>
 );
 
-// QueueSectionLabel - label content with icon and count
 export type QueueSectionLabelProps = ComponentProps<"span"> & {
   count?: number;
   label: string;
@@ -268,7 +259,6 @@ export const QueueSectionLabel = ({
   </span>
 );
 
-// QueueSectionContent - collapsible content area
 export type QueueSectionContentProps = ComponentProps<
   typeof CollapsibleContent
 >;
@@ -282,10 +272,7 @@ export const QueueSectionContent = ({
 
 export type QueueProps = ComponentProps<"div">;
 
-// Vendored change: `shadow-xs` is Tailwind's stock elevation, outside this
-// system's named ladder (RULES §3 — shadow-e1..e4|key|pressed|btn|chip|
-// glow-*). `shadow-e1` is the ladder's own lowest ambient step, for a small
-// floating surface like this one.
+// Vendored change: `shadow-xs` is Tailwind's stock elevation, outside this system's named ladder.
 export const Queue = ({ className, ...props }: QueueProps) => (
   <div
     className={cn(

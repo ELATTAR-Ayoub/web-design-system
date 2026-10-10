@@ -1,11 +1,3 @@
-/**
- * Authored documentation page for `ai-toolbar`.
- *
- * Live specimens render the real `Toolbar` inside step nodes on a real
- * `Canvas` (`toolbar-specimen.tsx`), forced visible with `isVisible` so it can
- * be seen without selecting a node.
- */
-
 import { ToolbarPreview, ToolbarStateGrid } from "./toolbar-specimen";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

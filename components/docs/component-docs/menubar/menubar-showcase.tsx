@@ -1,13 +1,5 @@
 "use client";
 
-/**
- * The admin menubar, fully interactive.
- *
- * `page.tsx` must stay a plain spec module (trap 29). The "View" menu's
- * checkbox group (which panels are visible) and radio group (row density)
- * are real state, so it lives here rather than as a static picture of one.
- */
-
 import { useState } from "react";
 
 import {

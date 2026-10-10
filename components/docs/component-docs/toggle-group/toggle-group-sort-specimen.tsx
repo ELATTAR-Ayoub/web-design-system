@@ -1,15 +1,5 @@
 "use client";
 
-/**
- * The live Preview specimen for the `toggle-group` documentation page.
- *
- * `components/docs/component-docs/toggle-group/page.tsx` is a plain data
- * module rendered by a SERVER component — it cannot hold the `useState` a
- * real sort needs (trap 29). This companion is that scene: pick a sort key
- * and a short list of cards actually re-orders beneath it, using nothing but
- * `ToggleGroup`'s own `onValueChange` and an in-memory sort.
- */
-
 import { useMemo, useState } from "react";
 
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";

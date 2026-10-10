@@ -1,29 +1,3 @@
-/**
- * Documentation page for `use-reduced-motion`.
- *
- * Authored, not generated. A hook, not a component — no States,
- * Accessibility or Keyboard section applies. This page documents the
- * signature and, more importantly, when NOT to reach for it: per
- * `hooks/use-reduced-motion.ts`'s own doc comment, most components in this
- * system never need it, because `styles/motion.css` already collapses CSS
- * animation and transition to a single frame under
- * `prefers-reduced-motion: reduce`.
- *
- * NOT ATTEMPTED: a live reading of `usePrefersReducedMotion()` driving a real
- * requestAnimationFrame loop, the way the brief for this sweep asks for. That
- * needs a client component, and `scripts/validate-docs.mjs` hard-fails any
- * `component-docs/<name>/page.tsx` that carries a `"use client"` directive — a
- * spec module must stay plain data. The sanctioned fix is a companion file
- * beside this one (the pattern `form/account-form-specimen.tsx` already
- * uses), which this task is scoped not to create: the brief restricts this
- * page to editing `page.tsx` only. Unlike `use-mobile`, there is no honest
- * CSS-only proxy here — the entire point of this hook is the one case CSS
- * cannot reach (`prefers-reduced-motion` gating a `requestAnimationFrame`
- * loop, not a CSS animation), so a CSS stand-in would document the wrong
- * mechanism. The Usage section below is therefore the accurate way to show
- * this hook without a working component.
- */
-
 import { Code, Meta, Note } from "@/components/ds/kit";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

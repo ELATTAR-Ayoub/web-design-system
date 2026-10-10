@@ -1,15 +1,3 @@
-/**
- * Authored documentation page for `radio`.
- *
- * Replaces the generated baseline. Migrated from the old `base/selection`
- * category page. The registry item is `radio` — see
- * `platform-contract.ts` and the `radio-group` → `radio` item alias — but the
- * compound React exports stay `RadioGroup` / `RadioGroupItem`, and every
- * specimen below uses those real exports from `components/ui/radio.tsx`.
- * Prop rows come from that file's signature plus the underlying Radix
- * `RadioGroupPrimitive.Root` / `.Item` they forward props to.
- */
-
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio";
 

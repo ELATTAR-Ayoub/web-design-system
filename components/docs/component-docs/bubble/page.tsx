@@ -1,15 +1,3 @@
-/**
- * Authored documentation page for `bubble`.
- *
- * Replaces the generated baseline. Migrated from the old `base/chat` category
- * page (`app/design-system/components/base/chat/page.tsx`, since deleted), which held every
- * conversation primitive's real documentation on one page. Every specimen
- * below renders the real `Bubble` family from `components/ui/bubble.tsx` —
- * nothing here is a styled div. Prop rows in API Reference come from that
- * file's own `bubbleVariants` cva config and component signatures; nothing
- * is invented.
- */
-
 import {
   Bubble,
   BubbleContent,

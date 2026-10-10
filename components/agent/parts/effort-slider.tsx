@@ -1,57 +1,35 @@
 "use client";
 
-/**
- * EffortSlider — the reasoning-effort control: "Effort · level", a Faster to
- * Smarter caption, and a notched track whose thumb snaps from level to level.
- * Written for this system, on its tokens; its behaviour deliberately matches the
- * effort control it replaced. The AgentWorkspace composer uses it inside its
- * Effort popover.
- *
- * The track is a `role="slider"` over the level INDEX, with the level name as
- * `aria-valuetext`. Arrows step, Home / End jump to the ends, and a press or a
- * drag (pointer captured) snaps to the nearest notch. At the last level the
- * fill and thumb take the agent colour — the same moment the host arms its
- * sparks, which it learns from `isMaxEffort`.
- */
-
 import * as React from "react";
 import { CircleHelpIcon } from "lucide-react";
 
 import { Icon } from "@/components/ui/icon";
 import { cn } from "@/lib/utils";
 
-/** Half the thumb's width: the first and last notches sit this far inside the track ends. */
 export const THUMB_HALF_PX = 11;
-/** How far the fill runs past the current notch, so the thumb stands on filled track. */
 const FILL_OVERSHOOT_PX = THUMB_HALF_PX / 1.5;
 
 const HELP_TEXT = "Higher effort thinks longer before answering";
 
 export type EffortSliderProps = {
-  /** Levels, low to high. The last one is "max". */
   efforts: string[];
   value: string;
   onValueChange: (level: string) => void;
-  /** Escape on the track: the host closes its panel and returns focus. */
   onEscape?: () => void;
   className?: string;
 };
 
-/** Whether `value` is the last of more than one level: the armed state. */
 export const isMaxEffort = (efforts: string[], value: string | undefined) =>
   efforts.length > 1 && value === efforts[efforts.length - 1];
 
-/** Nearest level index for a pointer at `x` over a track `width` wide. */
 export function indexFromOffset(x: number, width: number, count: number) {
   const usable = Math.max(1, width - 2 * THUMB_HALF_PX);
   return Math.round(((x - THUMB_HALF_PX) / usable) * (count - 1));
 }
 
-/** CSS `left` of the notch at `i`, measured along the inset track. */
 const notchLeft = (i: number, count: number) =>
   `calc(${THUMB_HALF_PX}px + (100% - ${THUMB_HALF_PX * 2}px) * ${i / Math.max(1, count - 1)})`;
 
-/** CSS width of the fill for level `i`: whole track at the last level. */
 const fillWidth = (i: number, count: number) =>
   i === count - 1 ? "100%" : `calc(${notchLeft(i, count)} + ${FILL_OVERSHOOT_PX}px)`;
 

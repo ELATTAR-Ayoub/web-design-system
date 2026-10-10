@@ -1,18 +1,3 @@
-/**
- * Documentation page for `menu`.
- *
- * Authored, not generated: like `selection-control`, this page documents a
- * DECISION rather than a component.
- *
- * Flutter's `menu` is the shared body its menu widgets are built from. The web
- * equivalent was measured rather than assumed: DropdownMenu, ContextMenu and
- * Menubar share ZERO byte-identical class strings between them. They are
- * similar, and each is tuned — DropdownMenu's item carries a destructive-variant
- * rule the others do not. Hoisting a shared body would mean changing three
- * working components to share something they currently do not, and the plan
- * says plainly: do not create a fourth menu system.
- */
-
 import { Heart, Share2 } from "lucide-react";
 
 import { Code, Note, Panel, Row } from "@/components/ds/kit";

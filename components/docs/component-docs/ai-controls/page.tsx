@@ -1,10 +1,3 @@
-/**
- * Authored documentation page for `ai-controls`.
- *
- * Live specimens render the real `Controls` inside a real `Canvas`
- * (`controls-specimen.tsx`) — the buttons need React Flow's store to work.
- */
-
 import { ControlsPreview, ControlsStateGrid } from "./controls-specimen";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

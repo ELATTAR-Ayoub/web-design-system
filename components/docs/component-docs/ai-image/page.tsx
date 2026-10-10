@@ -1,11 +1,3 @@
-/**
- * Authored documentation page for `ai-image`.
- *
- * Every live specimen renders the real component from `components/ai-elements/image.tsx`.
- * Anything interactive lives in the companion client file
- * `image-specimen.tsx` (a spec module cannot carry "use client").
- */
-
 import { ImagePreview, ImageStateGrid } from "./image-specimen";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

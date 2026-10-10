@@ -44,12 +44,8 @@ export const Suggestion = ({
 
   return (
     <Button
-      // Vendored change: dropped `rounded-full` — Button already ships
-      // `rounded-pill` (RULES §3, "controls are pills"), so the arbitrary
-      // stock radius was both redundant and off-scale.
-      // Vendored change: a suggestion is a standalone tap target, so the 32px
-      // pill keeps its look and restores a 44px hit area with ::after
-      // (overflow-visible lets it through Button's overflow-hidden).
+      // Vendored change: dropped `rounded-full` — Button already ships `rounded-pill`, so the arbitrary stock radius was both redundant and off-scale.
+      // Vendored change: a suggestion is a standalone tap target, so the 32px pill keeps its look and restores a 44px hit area with ::after (overflow-visible lets it through Button's overflow-hidden).
       className={cn(
         "relative cursor-pointer overflow-visible px-4 after:absolute after:inset-x-0 after:-inset-y-1.5",
         className

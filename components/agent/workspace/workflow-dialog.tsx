@@ -1,21 +1,5 @@
 "use client";
 
-/**
- * "View as workflow" — the run's plan drawn as a graph.
- *
- * Built from the AI Elements workflow parts the way their `workflow.tsx` /
- * `demo-workflow.tsx` examples use them: a `Canvas`, one `Node` per step
- * (`NodeHeader` title, `NodeContent` detail, `NodeFooter` status), an `Edge`
- * between consecutive steps, the `Connection` line, `Controls`, a `Panel`
- * naming the goal and version, and a `Toolbar` on each node.
- *
- * Read-only. A plan is a line of steps, not a graph the person wires up, so
- * `nodesConnectable` is off, nothing can be dragged or deleted, and the xyflow
- * handles are decoration. The one edit is the step's title, through the
- * toolbar, handed back to the caller (`onEditStep`) so it is the same local
- * edit the Plan card makes.
- */
-
 import { useRef, useState } from "react";
 import type { Edge as FlowEdge, Node as FlowNode, NodeProps as FlowNodeProps } from "@xyflow/react";
 import { PencilIcon } from "lucide-react";
@@ -39,19 +23,9 @@ export type WorkflowDialogProps = {
   run: Run;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  /** Present when the plan may still be edited; the node toolbar offers "Edit step". */
   onEditStep?: (stepId: string, title: string) => void;
 };
 
-/**
- * Distance between node origins, in React Flow's own coordinate space (plain
- * px at zoom 1 - not a CSS length, so no token applies). It is coupled to the
- * node's width: a step node is `w-60` (15rem = 240px), so COLUMN_STEP = 240 plus
- * a 60px run for the edge, and ROW_STEP clears a node's ~112px height plus
- * its toolbar. Kept small so fit-to-view keeps a four-step plan near zoom 1 —
- * at 384px nodes the graph zoomed out until the text was unreadable. Change
- * the node size and these move with it.
- */
 const COLUMN_STEP = 300;
 const ROW_STEP = 180;
 
@@ -66,11 +40,6 @@ type StepNodeData = {
 
 type StepFlowNode = FlowNode<StepNodeData, "step">;
 
-/**
- * The plan as a graph: one node per step in a line, an edge between each
- * consecutive pair. The edge into the running step travels; the edge into a
- * skipped step is the dashed alternate path.
- */
 export function buildWorkflowGraph(
   run: Run,
   options: { vertical?: boolean; editable?: boolean; onEditStep?: WorkflowDialogProps["onEditStep"] } = {},
@@ -149,7 +118,6 @@ function StepNode({ data }: FlowNodeProps<StepFlowNode>) {
         </span>
         {step.ms !== undefined && <span className="type-small text-muted-foreground">{formatDuration(step.ms)}</span>}
       </NodeFooter>
-      {/* Shown for the selected node only — React Flow's default — not under every node at once. */}
       {editable && (
         <Toolbar>
           <Button
@@ -188,7 +156,6 @@ function WorkflowGraph({ run, onEditStep }: Pick<WorkflowDialogProps, "run" | "o
         edges={edges}
         edgeTypes={edgeTypes}
         edgesReconnectable={false}
-        // Re-fit when the layout flips between a row and a column.
         key={vertical ? "column" : "row"}
         nodes={nodes}
         nodesConnectable={false}
@@ -210,7 +177,6 @@ function WorkflowGraph({ run, onEditStep }: Pick<WorkflowDialogProps, "run" | "o
 export function WorkflowDialog({ run, open, onOpenChange, onEditStep }: WorkflowDialogProps) {
   return (
     <Dialog onOpenChange={onOpenChange} open={open}>
-      {/* h-3/4: the dialog is fixed to the viewport, so 3/4 is three quarters of it. */}
       <DialogContent className="flex h-3/4 flex-col sm:max-w-5xl">
         <DialogHeader>
           <DialogTitle>Workflow</DialogTitle>

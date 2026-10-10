@@ -1,18 +1,3 @@
-/**
- * The Agent family landing.
- *
- * THIS ROUTE USED TO BE A CATEGORY INDEX over six hand-authored grouped pages —
- * `agent/console`, `agent/avatar`, `agent/composer`, `agent/history`,
- * `agent/transcript`, `agent/voice`. Those are gone: every capability they
- * grouped now has its own catalog-backed route, and a second documentation
- * system beside the first is the drift this migration exists to remove.
- *
- * This route is a live gallery and a derived reference index. The single
- * live workspace lets a visitor exercise the actual AgentWorkspace
- * before reading the per-item documentation. The card grid stays catalog-
- * driven so it cannot promise a page that does not exist.
- */
-
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -28,13 +13,6 @@ export const metadata: Metadata = {
     "A complete AI workspace — history, thread, composer, avatar and voice — pointed at whatever is actually answering.",
 };
 
-/**
- * The four seams, as data.
- *
- * Read against `components/agent/agent-workspace.tsx`'s own props, not from
- * memory: these are the four things a caller supplies and the only four the
- * workspace does not decide for itself.
- */
 const SEAMS = [
   {
     seam: "transport",

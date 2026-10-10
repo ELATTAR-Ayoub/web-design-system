@@ -1,20 +1,3 @@
-/**
- * Authored documentation page for `skeleton`.
- *
- * Replaces the generated baseline. Migrated from the old `base/feedback`
- * category page (`app/design-system/components/base/feedback/page.tsx`, since deleted).
- * Every specimen below renders the real `Skeleton` from
- * `components/ui/skeleton.tsx` — nothing here is a styled div standing in
- * for a placeholder. Prop rows in API Reference come straight from that
- * file's signature; nothing is invented.
- *
- * The Preview section renders `SkeletonShowcase` (`./skeleton-showcase.tsx`),
- * a client companion (per `references/traps.md` #29) that owns a
- * loaded/loading toggle: "Load" swaps the skeleton for the real card it
- * stands in for, in the same wrapper at the same footprint, so the reader
- * sees the promised no-layout-jump swap happen rather than reading about it.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 
@@ -248,15 +231,3 @@ export function PackCardSkeleton() {
   ],
 };
 
-/* Variants and Sizes are omitted for this item (see the `omitted` map above
- * for Keyboard and Responsive, which are required sections):
- *
- * - Variants: Skeleton has no variant prop — its only shape lever is `as`,
- *   documented under API Reference and demonstrated in "Inline placeholders".
- *   A separate Variants section would repeat that one prop under a heading
- *   that implies more than one axis exists.
- * - Sizes: there is no size prop. A skeleton is sized entirely by the
- *   Tailwind classes a caller passes, to match whatever it stands in for —
- *   the Examples section demonstrates that directly rather than through a
- *   fixed size ladder that does not exist in the source.
- */

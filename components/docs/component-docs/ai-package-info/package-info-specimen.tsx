@@ -13,9 +13,6 @@ import {
 } from "@/components/ai-elements/package-info";
 import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 
-/** Live specimens for the `ai-package-info` documentation page. */
-
-/** The Preview: the full composition the workspace draws for a dependency change. */
 export function PackageInfoPreview() {
   return (
     <Panel label="PackageInfo" note="header, version, description, dependencies">
@@ -37,7 +34,6 @@ export function PackageInfoPreview() {
   );
 }
 
-/** The Examples: one card per change type, each with its badge variant. */
 export function PackageInfoChangeTypes() {
   return (
     <div className="grid gap-4 sm:grid-cols-2">
@@ -50,7 +46,6 @@ export function PackageInfoChangeTypes() {
   );
 }
 
-/** The States grid: what the default composition does when pieces are missing. */
 export function PackageInfoStateGrid() {
   return (
     <StateGrid cols={3}>

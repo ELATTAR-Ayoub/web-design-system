@@ -1,13 +1,5 @@
 "use client";
 
-/**
- * Live companion for the `icon-swap` Preview — see traps.md #29. Adds a
- * sort-direction toggle beside the existing play/pause demo
- * (`components/ds/icon-swap-demo.tsx`, restored from the pre-migration
- * base/selection page) so the Preview shows two independent controls the
- * reader can flip, not one.
- */
-
 import { useState } from "react";
 import { ArrowDownNarrowWide, ArrowUpNarrowWide } from "lucide-react";
 

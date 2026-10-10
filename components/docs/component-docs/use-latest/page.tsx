@@ -1,24 +1,3 @@
-/**
- * Documentation page for `use-latest`.
- *
- * Authored, not generated. A hook, not a component — no States,
- * Accessibility or Keyboard section applies, because a ref is never drawn on
- * screen.
- *
- * NOT ATTEMPTED: a live specimen contrasting a closure that goes stale
- * against one read through `useLatest`, the way the brief for this sweep
- * asks for. That contrast needs component state (two ticking intervals and
- * two logs), which needs a client component — and
- * `scripts/validate-docs.mjs` hard-fails any `component-docs/<name>/page.tsx`
- * carrying a `"use client"` directive; a spec module must stay plain data.
- * The sanctioned fix is a companion file beside this one (the pattern
- * `form/account-form-specimen.tsx` already uses), which this task is scoped
- * not to create — the brief restricts this page to editing `page.tsx` only.
- * The Usage section below is the accurate way to show the hook without a
- * working component: the exact requestAnimationFrame-loop shape its own doc
- * comment gives as the motivating case.
- */
-
 import { Code, Meta, Note } from "@/components/ds/kit";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

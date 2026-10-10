@@ -1,13 +1,3 @@
-/**
- * Authored documentation page for `switch`.
- *
- * Replaces the generated baseline. Migrated from the old `base/selection`
- * category page. Every specimen renders the real `Switch` from
- * `components/ui/switch.tsx`. Prop rows come from that file's own signature
- * (including its non-Radix `size` prop) plus the underlying Radix
- * `SwitchPrimitive.Root` it forwards props to.
- */
-
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Switch } from "@/components/ui/switch";
 

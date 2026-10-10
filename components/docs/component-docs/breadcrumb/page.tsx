@@ -1,12 +1,3 @@
-/**
- * Authored documentation page for `breadcrumb`.
- *
- * Replaces the generated baseline. Migrated from the old `base/navigation`
- * category page (`app/design-system/components/base/navigation/page.tsx`, since deleted).
- * Every specimen renders the real `Breadcrumb` composition from
- * `components/ui/breadcrumb.tsx` — nothing here is a styled div.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Code, Meta, Note, Panel, Row, StateCell, StateGrid } from "@/components/ds/kit";

@@ -1,10 +1,3 @@
-/**
- * Authored documentation page for `ai-file-tree`.
- *
- * Specimens live in `file-tree-specimen.tsx` (a spec module cannot carry
- * `"use client"`, and the preview holds the selection).
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Meta, Note } from "@/components/ds/kit";

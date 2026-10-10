@@ -1,13 +1,5 @@
 "use client";
 
-/**
- * Live companion for the `stat` Preview — see traps.md #29. "Simulate a
- * sale" runs the exact reload pattern documented in Usage below: state goes
- * to "loading" (the figure and delta skeleton, same footprint), a sale
- * lands after a short delay, and the figure ticks up with a fresh delta.
- * Every render is the real `Stat` — nothing here is a styled div.
- */
-
 import { useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";

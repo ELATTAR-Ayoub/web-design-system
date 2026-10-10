@@ -68,7 +68,6 @@ export const Reasoning = memo(
     ...props
   }: ReasoningProps) => {
     const resolvedDefaultOpen = defaultOpen ?? isStreaming;
-    // Track if defaultOpen was explicitly set to false (to prevent auto-open)
     const isExplicitlyClosed = defaultOpen === false;
 
     const [isOpen, setIsOpen] = useControllableState<boolean>({
@@ -85,7 +84,6 @@ export const Reasoning = memo(
     const [hasAutoClosed, setHasAutoClosed] = useState(false);
     const startTimeRef = useRef<number | null>(null);
 
-    // Track when streaming starts and compute duration
     useEffect(() => {
       if (isStreaming) {
         hasEverStreamedRef.current = true;
@@ -98,14 +96,12 @@ export const Reasoning = memo(
       }
     }, [isStreaming, setDuration]);
 
-    // Auto-open when streaming starts (unless explicitly closed)
     useEffect(() => {
       if (isStreaming && !isOpen && !isExplicitlyClosed) {
         setIsOpen(true);
       }
     }, [isStreaming, isOpen, setIsOpen, isExplicitlyClosed]);
 
-    // Auto-close when streaming ends (once only, and only if it ever streamed)
     useEffect(() => {
       if (
         hasEverStreamedRef.current &&
@@ -178,7 +174,7 @@ export const ReasoningTrigger = memo(
     return (
       <CollapsibleTrigger
         className={cn(
-          // Vendored change: a line of small text is a ~20px target; `after:` restores 44px without moving the layout (RULES hit targets).
+          // Vendored change: a line of small text is a ~20px target; `after:` restores 44px without moving the layout.
           "relative after:absolute after:inset-x-0 after:-inset-y-3 flex w-full items-center gap-2 type-small text-muted-foreground transition-colors hover:text-foreground",
           className
         )}
@@ -211,9 +207,7 @@ export type ReasoningContentProps = ComponentProps<
 
 const streamdownPlugins = { cjk, code, math, mermaid };
 
-// Vendored change: dropped the hand-rolled tw-animate enter/exit classes —
-// CollapsibleContent already plays anim-expand/anim-collapse off the measured
-// Radix height (components/ui/collapsible.tsx).
+// Vendored change: dropped the hand-rolled tw-animate enter/exit classes — CollapsibleContent already plays anim-expand/anim-collapse off the measured Radix height.
 export const ReasoningContent = memo(
   ({ className, children, ...props }: ReasoningContentProps) => (
     <CollapsibleContent

@@ -1,17 +1,3 @@
-/**
- * Authored documentation page for `separator`.
- *
- * Replaces the generated baseline. Migrated from the old `base/data` category
- * page (`app/design-system/components/base/data/page.tsx`, since deleted), which held every
- * data-display component's real documentation on one page. Every specimen
- * below renders the real `Separator` from `components/ui/separator.tsx` —
- * nothing here is a styled div.
- *
- * Separator is decorative by default, so its most interesting section is
- * Accessibility rather than States — see the omissions recorded on States
- * and Keyboard below.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Code, Meta, Panel } from "@/components/ds/kit";

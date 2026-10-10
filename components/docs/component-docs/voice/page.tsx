@@ -1,18 +1,3 @@
-/**
- * Authored documentation page for `voice`.
- *
- * Documents the browser's speech synthesis module
- * (`components/agent/voice/speech.ts`): `useBrowserSpeech`, the `SpeechAdapter`
- * seam it satisfies, and `speakableText`. Speech recognition and the listening
- * visuals are not part of the agent family.
- *
- * `voice` has no rendered surface of its own — it is one hook and one pure
- * function. The Examples section is a small live specimen built on top of it,
- * not a component of this item. So the page has no Variants, Sizes or States
- * sections, and no keyboard contract beyond the native <button> and <select>
- * semantics of whatever control a caller builds on it.
- */
-
 import { Code, Meta, Panel } from "@/components/ds/kit";
 
 import { SourceMeta } from "@/components/docs/component-page/sections";

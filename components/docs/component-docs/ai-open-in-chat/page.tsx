@@ -1,10 +1,3 @@
-/**
- * Authored documentation page for `ai-open-in-chat`.
- *
- * Every live specimen renders the real menu from
- * `components/ai-elements/open-in-chat.tsx` in `open-in-chat-specimen.tsx`.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Meta, Note } from "@/components/ds/kit";

@@ -169,10 +169,6 @@ export const TestResultsProgress = ({
     <div className={cn("space-y-2", className)} {...props}>
       {children ?? (
         <>
-          {/* A progress fill carries no foreground of its own, so it is on
-              the same contract as text (RULES §1 rule 3): the two segments
-              name `-ink`, never the raw `--color-success` / `--destructive`,
-              matching `Progress`'s own `tone` treatment. */}
           <div className="flex h-2 overflow-hidden rounded-pill bg-muted">
             <div
               className="bg-success-ink transition-[width]"
@@ -217,12 +213,6 @@ const TestSuiteContext = createContext<TestSuiteContextType>({
   status: "passed",
 });
 
-/* Every state colour on this file used to name the raw Tailwind palette hue
-   with a separate dark-mode override, which is legible on one theme and not
-   the other (RULES §1 rule 3 / trap 12). `-ink` is the role built to answer
-   per-theme; `running`, which had no state token at all, takes `action` — a
-   running test is something actively happening, the meaning `action`
-   already owns. */
 const STATUS_TONE: Record<TestStatus, IconTone> = {
   failed: "error",
   passed: "success",
@@ -230,9 +220,7 @@ const STATUS_TONE: Record<TestStatus, IconTone> = {
   skipped: "warning",
 };
 
-// Vendored change: `running` swaps the vendor's pulsing `CircleDotIcon`
-// (`animate-pulse`, off the motion scale) for `LoaderCircleIcon` + `anim-spin`
-// — `anim-pulse` is the green live-dot glow, not a generic "active" ring.
+// Vendored change: `running` swaps the vendor's pulsing `CircleDotIcon` (`animate-pulse`) for `LoaderCircleIcon` + `anim-spin`.
 const STATUS_ICON: Record<TestStatus, LucideIcon> = {
   failed: XCircleIcon,
   passed: CheckCircle2Icon,
@@ -309,10 +297,6 @@ export const TestSuiteName = ({
         tone="muted"
       />
       <StatusIcon status={status} />
-      {/* `type-nav` rather than `type-small` + a bolted-on `font-medium`: a
-          clickable row label is exactly the role `type-nav` (weight 500, no
-          case) already owns, and §2 rule 1 keeps weight out of the call
-          site. */}
       <span className="type-nav">{children ?? name}</span>
     </CollapsibleTrigger>
   );

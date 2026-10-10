@@ -11,14 +11,6 @@ import { findCategory } from "@/lib/ds/nav";
 
 const { category } = findCategory("foundations", "colors");
 
-/**
- * The whole colour system on one page, and nothing else.
- *
- * Every value is read from the live stylesheet and every contrast ratio is
- * computed from it, so this page cannot disagree with `app/globals.css`. The
- * full set of rules lives in RULES.md — this page shows, it does not lecture.
- */
-
 const monochrome = [
   {
     token: "--background",
@@ -102,14 +94,6 @@ const value = [
   },
 ];
 
-/**
- * The raw hues — fills, borders, rings and blooms. Never text.
- *
- * `measure` is off for all four deliberately, and it is not an omission: §1.3
- * puts them on the same contract as the brand ramps, so the ratio that matters
- * is the one the `-ink` end scores. Printing a contrast badge beside a token
- * nothing may set `color:` to would document a pairing the system forbids.
- */
 const state = [
   {
     token: "--color-success",
@@ -137,17 +121,6 @@ const state = [
   },
 ];
 
-/**
- * The text-safe end of each state hue, resolved per theme.
- *
- * This half of §1.3 kept being missed, because `--destructive` is a real token
- * so `text-destructive` compiles and every guard resolves it. It is still
- * wrong: the three hues above were chosen against near-black, and on white they
- * are decorative rather than legible. Flip the theme and watch these four
- * re-measure — each `-ink` IS its raw token in the theme that token was chosen
- * for, and improves the other, so the swap costs nothing either way.
- */
-/** The eight code-highlighting roles — each an existing -ink-grade token, so code reads the theme. */
 const code = [
   { token: "--code-keyword", name: "Keyword", use: "Control flow and declarations: if, return, const, @media, decorators. Action ink." },
   { token: "--code-string", name: "String", use: "Quoted literals and URLs. Success ink." },

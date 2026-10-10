@@ -1,21 +1,3 @@
-/**
- * Authored documentation page for `combobox`.
- *
- * Replaces the generated baseline. Migrated from the old `base/selects`
- * category page. Every specimen renders the real `Combobox` from
- * `components/ui/combobox.tsx`, a styled wrapper around Base UI's
- * `Combobox` primitive.
- *
- * `ComboboxList`'s `children` prop types as
- * `ReactNode | ((item, index) => ReactNode)` — the source page used the
- * function form. This page is a plain data module rendered by a SERVER
- * component, and passing a function into a Client Component prop crashes
- * `npm run build` ("Event handlers cannot be passed to Client Component
- * props"). Every specimen below maps the items to elements up front instead,
- * which is ordinary ReactNode children and crosses the server/client
- * boundary the same way any other JSX does.
- */
-
 import { Code } from "@/components/ds/kit";
 import {
   Combobox,

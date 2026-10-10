@@ -1,12 +1,3 @@
-/**
- * Documentation page for `icon`.
- *
- * Authored, not generated. `Icon` is the one way Lucide glyphs enter the
- * product (see the doc comment on `components/ui/icon.tsx`): every prop
- * documented below is read from that file's own `IconProps` type and its two
- * const ladders, `ICON_SIZES` and `ICON_TONES` — nothing here is invented.
- */
-
 import { Bell, Check, Package, Sparkle } from "lucide-react";
 
 import { Code, Meta, Note, Panel, Row, StateCell, StateGrid } from "@/components/ds/kit";

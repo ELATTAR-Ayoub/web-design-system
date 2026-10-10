@@ -1,12 +1,5 @@
 "use client";
 
-/**
- * Live companion for the `avatar` Preview — see traps.md #29. "Invite" adds
- * a real Avatar to the group (up to four visible), then rolls into
- * AvatarGroupCount once the row is full — the same overflow pattern the
- * static specimen documents, now actually exercised by the reader.
- */
-
 import { useState } from "react";
 import { UserPlusIcon } from "lucide-react";
 

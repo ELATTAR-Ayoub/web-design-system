@@ -13,15 +13,6 @@ import {
 import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 import { Icon } from "@/components/ui/icon";
 
-/**
- * Live specimens for the `ai-web-preview` documentation page.
- *
- * The frame never loads a remote site. The body is an `about:blank` frame with
- * an inline `srcDoc` page, and the address field is `readOnly` so a reader
- * cannot type a remote address into the docs. In the product the workspace
- * only mounts this with an http(s) URL (`isWebUrl`, tool-output.ts).
- */
-
 const SRC_DOC =
   "<!doctype html><html><body><h1>Preview</h1><p>This frame is an inline document, not a remote page.</p></body></html>";
 
@@ -31,7 +22,6 @@ const LOGS = [
   { level: "error" as const, message: "Failed to load /api/missing", timestamp: new Date(1_700_000_002_000) },
 ];
 
-/** The Preview: toolbar, frame and a console that opens on click. */
 export function WebPreviewPreview() {
   return (
     <Panel label="WebPreview" note="inline document, read-only address">
@@ -50,7 +40,6 @@ export function WebPreviewPreview() {
   );
 }
 
-/** The States grid: rest and an empty address. */
 export function WebPreviewStateGrid() {
   return (
     <StateGrid cols={2}>

@@ -1,15 +1,5 @@
 "use client";
 
-/**
- * A real pack grid, paged.
- *
- * `page.tsx` must stay a plain spec module (trap 29), so the page number and
- * the rows it renders — a small in-memory list, not a network request — live
- * here. Pressing a page link or Previous/Next actually changes what is on
- * screen, including the "Showing X–Y of N" line, rather than a static
- * picture of a pager sitting above content that never moves.
- */
-
 import { useMemo, useState } from "react";
 
 import {
@@ -41,7 +31,6 @@ function packName(index: number) {
   return `${SET_NAMES[index % SET_NAMES.length]} #${index + 1}`;
 }
 
-/** The page numbers to show as links, collapsing the middle behind an ellipsis. */
 function pageWindow(current: number, total: number): (number | "ellipsis")[] {
   if (total <= 5) return Array.from({ length: total }, (_, i) => i + 1);
   if (current <= 3) return [1, 2, 3, "ellipsis", total];

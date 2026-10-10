@@ -1,19 +1,3 @@
-/**
- * Authored documentation page for `scroll-area`.
- *
- * Replaces the generated baseline. Migrated from the old `base/layout`
- * category page (`app/design-system/components/base/layout/page.tsx`, since deleted), which
- * held every layout primitive's real documentation on one page. Every
- * specimen below renders the real `ScrollArea` from
- * `components/ui/scroll-area.tsx` — nothing here is a styled div.
- *
- * "Browser Scrollbar" is not its own registry item or its own page: it is
- * the native-overflow scrollbar this system styles globally with
- * `scrollbar-thin` (see `styles/utilities.css`). Its documentation lives
- * here, in the "ScrollArea vs. the browser scrollbar" section below, so the
- * two are read side by side and a reader leaves knowing which to reach for.
- */
-
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 import { SourceMeta } from "@/components/docs/component-page/sections";

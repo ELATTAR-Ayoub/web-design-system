@@ -1,18 +1,3 @@
-/**
- * Authored documentation page for `dropdown-menu`.
- *
- * Replaces the generated baseline. Migrated from the old `base/menus` category
- * page (`app/design-system/components/base/menus/page.tsx`, since deleted), which held every
- * menu component's real documentation on one page. Every specimen renders the
- * real `DropdownMenu` composition from `components/ui/dropdown-menu.tsx` —
- * nothing here is a styled div.
- *
- * See `components/docs/component-docs/menu/page.tsx` for the measured decision
- * behind there being no shared "menu" module: DropdownMenu, ContextMenu and
- * Menubar share zero identical class strings of eighty characters or more.
- * This page does not restate that reasoning, only relies on it.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Code, Meta, Row } from "@/components/ds/kit";

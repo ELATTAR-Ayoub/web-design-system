@@ -1,10 +1,3 @@
-/**
- * Authored documentation page for `ai-code-block`.
- *
- * Specimens live in `code-block-specimen.tsx` (a spec module cannot carry
- * `"use client"`, and the examples hold state).
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Meta, Note } from "@/components/ds/kit";

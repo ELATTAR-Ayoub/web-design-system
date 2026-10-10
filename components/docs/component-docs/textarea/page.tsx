@@ -1,15 +1,3 @@
-/**
- * Authored documentation page for `textarea`.
- *
- * Replaces the generated baseline. Migrated from the old `base/inputs`
- * category page (`app/design-system/components/base/inputs/page.tsx`, since deleted), which
- * held every text-entry control's real documentation on one page. Every
- * specimen below renders the real `Textarea` from `components/ui/textarea.tsx`
- * — nothing here is a styled div. Field/FieldLabel/FieldDescription compose
- * around it for realistic context but are documented on their own `field`
- * page.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 

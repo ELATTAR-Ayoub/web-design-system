@@ -215,12 +215,6 @@ export const TerminalContent = ({
           {/* Vendored change: output renders through our own TerminalText (lib/terminal-text.tsx) as term-* classes, not an ANSI package with inline colours. */}
           <TerminalText>{output}</TerminalText>
           {isStreaming && (
-            /* The streaming cursor is the same idea as the OTP caret — a mark
-               that says "input lands here" — so it plays the same named
-               blink (`anim-caret`) rather than the vendored pulse utility,
-               which both bypasses the motion scale (RULES §6's
-               foreign-animation guard) and reads as a loading dim rather
-               than a text-insertion caret. */
             <span className="anim-caret ml-0.5 inline-block h-4 w-2 bg-foreground" />
           )}
         </pre>

@@ -1,11 +1,5 @@
 "use client";
 
-/**
- * Live specimens for the `ai-reasoning` page. `Reasoning` times its own
- * streaming and auto-close, so the playground drives `isStreaming` from a
- * button rather than a timer of its own: nothing here runs unprompted.
- */
-
 import { useState } from "react";
 
 import { Reasoning, ReasoningContent, ReasoningTrigger } from "@/components/ai-elements/reasoning";
@@ -15,7 +9,6 @@ import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 export const THOUGHT =
   "The user asked for the renewal date. The contract says 1 March, and the order form agrees.\n\nNo conflicting clause turned up.";
 
-/** The Preview: start and finish a thought. It closes itself a second after it finishes. */
 export function ReasoningPlayground() {
   const [streaming, setStreaming] = useState(false);
   return (
@@ -33,7 +26,6 @@ export function ReasoningPlayground() {
   );
 }
 
-/** The States grid. */
 export function ReasoningStateGrid() {
   return (
     <StateGrid cols={2}>

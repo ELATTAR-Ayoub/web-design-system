@@ -1,23 +1,5 @@
 "use client";
 
-/**
- * "Add message" — the reader grows the transcript themselves and watches the
- * jump-to-latest pill earn its place, rather than reading about it in a
- * caption over a scene that was already scrolled for them.
- *
- * Starts with two turns, which fit inside the 320px viewport with room to
- * spare — the pill has nothing to offer yet, because there is nowhere to
- * jump to. Each press of "Add message" appends the next real line from the
- * same conversation `page.tsx`'s static Examples specimen uses. The provider
- * keeps `defaultScrollPosition="start"`, so once the transcript outgrows the
- * viewport the reader is not sitting at the live edge, and the button
- * (`direction="end"`) fades in on its own — the same appearance a reader
- * scrolled up mid-conversation would see the moment a real reply lands.
- *
- * `"use client"`, per trap 29 — the appended messages are reader-driven
- * state, and `page.tsx` is a spec module a server component reads.
- */
-
 import { useState } from "react";
 
 import { Bubble, BubbleContent } from "@/components/ui/bubble";

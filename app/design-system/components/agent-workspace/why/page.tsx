@@ -1,19 +1,3 @@
-/**
- * The workspace explainer: why each component in `AgentWorkspace` is the one
- * that shipped, and the licence it ships under.
- *
- * An authored route, not a catalog item — it documents a set of components
- * that already have their own catalog pages, rather than one component of
- * its own. Registered directly in `lib/ds/nav.ts`'s `catalog` list (slug
- * `"agent-workspace/why"`) rather than getting a second `DsGroup`, the same
- * way the two family landings are registered inline rather than duplicating
- * the mechanism.
- *
- * Every specimen is imported from the component's own `component-docs/*`
- * playground — never a second implementation — so
- * this page can only ever show the real, already-verified fixture.
- */
-
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -92,8 +76,6 @@ function WhyCard({ title, catalogName, whatItIs, whereUsed, whyChosen, whatChang
     </article>
   );
 }
-
-/* ── From Vercel AI Elements — what the AgentWorkspace is built from ──── */
 
 const AI_ELEMENTS_CARDS: WhyCardData[] = [
   {

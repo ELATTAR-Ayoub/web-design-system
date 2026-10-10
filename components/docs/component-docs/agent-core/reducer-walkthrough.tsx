@@ -1,22 +1,5 @@
 "use client";
 
-/**
- * The live specimen for `agent-core`'s Preview section.
- *
- * A spec module (`page.tsx`) must stay plain data — `scripts/validate-docs.mjs`
- * fails the build on a `"use client"` directive there — so this is a sibling
- * file in the item's own directory, the same shape as
- * `components/docs/component-docs/form/account-form-specimen.tsx`: local to
- * the one page that needs it.
- *
- * `agent-core` has no component of its own to place in a stage — it is the
- * transport-agnostic contract every agent surface renders from. What it can
- * show is the reducer itself running: `reduceEvent` folding a real event
- * stream into turns, and `resolveState` deriving a real `AgentState` from the
- * result after every step, drawn through `AgentAvatar` and a
- * status line.
- */
-
 import { useMemo, useState } from "react";
 
 import {
@@ -31,15 +14,6 @@ import {
 } from "@/components/agent";
 import { Button } from "@/components/ui/button";
 
-/**
- * One walk through a full turn, as the raw events a transport would emit —
- * the same shape `lib/agent/mock-transport.ts` folds through `reduceEvent`,
- * just slowed down to one step per click instead of one every few
- * milliseconds. `kind: "user"` is not an `AgentEvent` — starting a turn is the
- * caller pushing a `UserTurn` onto the transcript, not something the wire
- * emits — so this script tags it separately and the walkthrough below
- * branches on it.
- */
 type Step =
   | { kind: "user"; text: string; note: string }
   | { kind: "event"; event: AgentEvent; note: string };

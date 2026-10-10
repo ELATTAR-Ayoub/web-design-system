@@ -1,21 +1,5 @@
 "use client";
 
-/**
- * What a tool produced, drawn by the AI Elements component made for it.
- *
- * `WorkspaceReply` calls `ToolOutputView` once per tool call whose result (or
- * running `partial`) the adapter recognises (`toolOutput` in `tool-output.ts`).
- * Every composition below is the official example's, nothing else is invented:
- * Terminal ← terminal-streaming, TestResults ← test-results-errors,
- * StackTrace ← stack-trace, FileTree ← file-tree-expanded, Commit ← commit,
- * PackageInfo ← package-info, EnvironmentVariables ← environment-variables,
- * SchemaDisplay ← schema-display-body, Sandbox ← sandbox, Artifact ← artifact,
- * WebPreview ← web-preview, JSXPreview ← jsx-preview.
- *
- * Also here: generated images (`Image`, `Attachments`) and the small
- * Copy / Read aloud helpers the reply's action row shares.
- */
-
 import * as React from "react";
 import {
   CheckIcon,
@@ -167,15 +151,11 @@ import { generatedImage } from "./reply-model";
 import { fileTree, isWebUrl, type FileNode, type ToolOutput } from "./tool-output";
 import type { ToolState } from "./reply-model";
 
-/* ── Helpers ─────────────────────────────────────────────────────────────── */
-
-/** A language shiki knows, else plain text — an unknown one rejects the highlighter. */
 export function codeLanguage(language: string | undefined): BundledLanguage {
   const name = (language ?? "").toLowerCase();
   return (name in bundledLanguages ? name : "text") as BundledLanguage;
 }
 
-/** Copy `text`, and say whether it worked — a toast either way. */
 export async function copyText(text: string, what = "Copied to clipboard"): Promise<boolean> {
   try {
     if (!navigator.clipboard?.writeText) throw new Error("Clipboard API not available");
@@ -206,15 +186,10 @@ function download(filename: string, text: string, mime = "text/plain") {
   URL.revokeObjectURL(url);
 }
 
-/* ── One output ──────────────────────────────────────────────────────────── */
-
 export type ToolOutputViewProps = {
   output: ToolOutput;
-  /** The tool is still running — Terminal and JSXPreview stream, Sandbox shows its state. */
   running: boolean;
-  /** The Tool state of the call that produced it (Sandbox's header badge). */
   state: ToolState;
-  /** Retry the work that crashed. Absent renders no Retry (StackTrace). */
   onRetry?: () => void;
   className?: string;
 };
@@ -553,8 +528,6 @@ function FileTreeNode({ node }: { node: FileNode }) {
   );
 }
 
-/* ── Files the agent produced ────────────────────────────────────────────── */
-
 const toData = (a: AgentAttachment): AttachmentData => ({
   id: a.id,
   type: "file",
@@ -563,10 +536,6 @@ const toData = (a: AgentAttachment): AttachmentData => ({
   filename: a.name,
 });
 
-/**
- * Generated images through `Image` (their bytes are inline), every other
- * produced file — or an image with no inline bytes — as `Attachments`.
- */
 export function ProducedFiles({ attachments, className }: { attachments: AgentAttachment[]; className?: string }) {
   const images: { id: string; alt: string; props: NonNullable<ReturnType<typeof generatedImage>> }[] = [];
   const files: AgentAttachment[] = [];
@@ -596,9 +565,6 @@ export function ProducedFiles({ attachments, className }: { attachments: AgentAt
   );
 }
 
-/* ── Copy ────────────────────────────────────────────────────────────────── */
-
-/** Copy's icon rolls to a check (the control heard you); the toast says it worked. */
 export function useCopy(text: string) {
   const [copied, setCopied] = React.useState(false);
   const timer = React.useRef<number>(0);
@@ -625,21 +591,13 @@ export function CopyGlyph({ copied }: { copied: boolean }) {
   );
 }
 
-/* ── Read aloud ──────────────────────────────────────────────────────────── */
-
 export type ReadAloud = {
-  /** An audio url is ready and the player is open. */
   open: boolean;
-  /** `speak` is resolving. */
   loading: boolean;
   url: string | null;
   toggle: () => void;
 };
 
-/**
- * Read aloud: `speak(text)` resolves an audio url, the reply shows an
- * `AudioPlayer` under its actions while it plays, and the same button stops it.
- */
 export function useReadAloud(text: string, speak?: (text: string) => Promise<string>): ReadAloud | null {
   const [state, setState] = React.useState<{ open: boolean; loading: boolean; url: string | null }>({
     open: false,

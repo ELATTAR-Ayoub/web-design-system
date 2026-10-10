@@ -74,11 +74,6 @@ export type IconGroup = {
   icons: IconEntry[];
 };
 
-/**
- * The curated set. Lucide has well over a thousand glyphs; shipping all of them
- * guarantees inconsistency. These are the ones this system actually uses, each
- * pinned to a single meaning so the same glyph never means two things.
- */
 export const ICON_GROUPS: IconGroup[] = [
   {
     id: "navigation",

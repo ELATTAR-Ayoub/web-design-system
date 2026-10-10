@@ -1,20 +1,5 @@
 "use client";
 
-/**
- * The live Preview specimen for the `questionnaire` documentation page.
- *
- * `components/docs/component-docs/questionnaire/page.tsx` is a plain data
- * module rendered by a SERVER component — passing `onSubmit` into
- * `Questionnaire.Root` (a client component) from a server module crashes the
- * build ("Event handlers cannot be passed to Client Component props"), so
- * that page's own live specimen renders `QuestionnairePrevious` /
- * `QuestionnaireNext` only, never `QuestionnaireSubmit` (see the file header
- * comment there). This companion is the full flow with the piece that needs:
- * two questions, Submit wired to a real `onSubmit`, and a result screen once
- * both are answered — restart to answer differently and see the result
- * change.
- */
-
 import { useState } from "react";
 import { CheckCircle2 } from "lucide-react";
 

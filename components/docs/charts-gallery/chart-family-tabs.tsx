@@ -7,7 +7,6 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 type Family = { id: string; title: string };
 
-/** Keep only one family of Recharts trees mounted at a time. */
 export function ChartFamilyTabs({
   selected,
   families,

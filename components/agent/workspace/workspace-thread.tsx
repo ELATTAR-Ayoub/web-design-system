@@ -1,20 +1,5 @@
 "use client";
 
-/**
- * WorkspaceThread — the conversation, built from AI Elements.
- *
- * `Conversation` sticks to the bottom and offers the scroll-to-latest button;
- * each user turn and the reply that answers it is one pair
- * (`groupReplies`), drawn by `WorkspaceUserMessage` and `WorkspaceReply`.
- * Between turns the `Checkpoint`s the transport and the run recorded are drawn
- * where they were taken. An empty conversation is a greeting and the starter
- * prompts as `Suggestion`s.
- *
- * There is no status row, run bar or activity panel: the reply itself shows
- * what is happening — a Shimmer, Reasoning, ChainOfThought, a Tool's state,
- * `RunInline`.
- */
-
 import * as React from "react";
 import { toast } from "sonner";
 
@@ -43,24 +28,17 @@ import { WorkspaceReply, WorkspaceUserMessage } from "./workspace-reply";
 
 export type WorkspaceThreadProps = {
   transport: AgentTransport;
-  /** resolveState-derived: the agent is working (thinking, streaming, running a tool or run). */
   busy: boolean;
-  /** Starter prompts for the empty conversation (Suggestions under the greeting). */
   starters?: string[];
-  /** Send a prompt — used by starters, follow-up Suggestions and Retry. */
   onSend: (text: string) => void;
-  /** Read aloud: resolves to a playable audio url for `text` (the controller binds the chosen voice). Absent → no Read aloud action. */
   speak?: (text: string) => Promise<string>;
-  /** Chat services offered by each reply's "Open in…" menu. Absent or empty → no menu. */
   openIn?: OpenInTarget[];
-  /** Hides follow-up Suggestions once the user starts typing (Claude behaviour). */
   composerEmpty?: boolean;
   className?: string;
 };
 
 type Restore = { label: string; tooltip: string; onRestore: () => void };
 
-/** The marker between two turns: a bookmark, the checkpoint's label, one click to go back. */
 function TurnCheckpoints({ restores }: { restores: (Restore & { id: string })[] }) {
   return restores.map((r) => (
     <Checkpoint key={r.id}>

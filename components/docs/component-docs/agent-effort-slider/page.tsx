@@ -1,10 +1,3 @@
-/**
- * Authored documentation page for `agent-effort-slider`.
- *
- * The slider is controlled, so every live render goes through
- * `effort-slider-specimen.tsx`.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Meta, Note, Panel, StateCell, StateGrid } from "@/components/ds/kit";

@@ -26,18 +26,6 @@ import {
 
 const { category } = findCategory("foundations", "motion");
 
-/**
- * The scale, by NAME only — and the name comes from `lib/motion-names.ts`,
- * the single source every test and the parity document are checked against.
- *
- * Every number on this page used to be typed beside its token — 80, 150, 250 —
- * which meant the page could disagree with `styles/motion.css` and nothing
- * would say so. Now the row prints `TokenValue`, the demo bar animates on
- * `var(--duration-…)`, and the curve graph is drawn from the curve the browser
- * resolved. If a duration is retuned, this page retunes with it. And because
- * the token NAME itself is looked up rather than retyped, a rename this page
- * forgot to follow throws here instead of silently drifting from the map.
- */
 function entry(list: ReadonlyArray<MotionNameEntry>, name: string): MotionNameEntry {
   const found = list.find((e) => e.name === name);
   if (!found) throw new Error(`${name} is not in lib/motion-names.ts`);
@@ -62,10 +50,6 @@ const durations = Object.keys(DURATION_USE).map((name) => ({
   use: DURATION_USE[name],
 }));
 
-/** Every duration token NOT in the interactive demo above — the utility- and
- * ambient-specific steps — read straight off the map so the full scale is
- * accounted for without retyping a second name list. */
-
 
 const EASE_USE: Record<string, string> = {
   "--ease-emphasized": "THE curve. Overshoots then settles. press springing back, anim-open, anim-expand, anim-change, toggle-slide, swap-roll.",
@@ -80,7 +64,6 @@ const EASE_USE: Record<string, string> = {
 
 const easings = EASE_TOKENS.map((t) => ({ ...t, use: EASE_USE[t.name] }));
 
-/** `cubic-bezier(a, b, c, d)` → the four control points, or null. */
 function points(curve: string | null): number[] | null {
   if (!curve) return null;
   const m = /cubic-bezier\(([^)]+)\)/.exec(curve);
@@ -89,15 +72,6 @@ function points(curve: string | null): number[] | null {
   return parts.length === 4 && parts.every(Number.isFinite) ? parts : null;
 }
 
-/**
- * Drawn from the token, not from a copy of it.
- *
- * The control points used to be a second literal beside the curve string, so a
- * retuned curve would have moved the animation and left the graph drawing the
- * old one — a page whose premise is "judged, not read" showing the wrong shape.
- * `useTokenValue` returns null on the server and on first paint, which is why
- * the frame renders without a path until the stylesheet has been read.
- */
 function CurveGraph({ token }: { token: string }) {
   const pts = points(useTokenValue(token));
   const d = pts
@@ -181,11 +155,7 @@ export default function MotionPage() {
                     key={`${d.name}-${run}`}
                     className="h-full rounded-sm bg-action"
                     style={{
-                      // allow-dynamic-motion: this page IS the duration scale,
-                      // and what is interpolated is the token's NAME. The bar
-                      // sweeps on `var(--duration-…)`, so it runs at whatever
-                      // the stylesheet says rather than at a number this file
-                      // remembered — which is what the row beside it prints.
+                      // allow-dynamic-motion: the token name is interpolated; the browser resolves the value.
                       animation: `ds-sweep var(${d.name}) var(--ease-enter) both`,
                     }}
                   />
@@ -223,11 +193,7 @@ export default function MotionPage() {
                   key={`${e.name}-${run}`}
                   className="size-6 rounded-sm bg-value"
                   style={{
-                    // allow-dynamic-motion: same shape as the durations above —
-                    // the token's NAME is interpolated and the curve itself is
-                    // read by the browser. The travel time is fixed on purpose
-                    // so every curve is judged over the same distance, and it
-                    // comes from the scale rather than a literal.
+                    // allow-dynamic-motion: the token name is interpolated; the browser resolves the value.
                     animation: `ds-travel var(--duration-bloom) var(${e.name}) both`,
                   }}
                 />

@@ -94,7 +94,6 @@ export interface ConfirmationRequestProps {
 export const ConfirmationRequest = ({ children }: ConfirmationRequestProps) => {
   const { state } = useConfirmation();
 
-  // Only show when approval is requested
   if (state !== "approval-requested") {
     return null;
   }
@@ -111,7 +110,6 @@ export const ConfirmationAccepted = ({
 }: ConfirmationAcceptedProps) => {
   const { approval, state } = useConfirmation();
 
-  // Only show when approved and in response states
   if (
     !approval?.approved ||
     (state !== "approval-responded" &&
@@ -133,7 +131,6 @@ export const ConfirmationRejected = ({
 }: ConfirmationRejectedProps) => {
   const { approval, state } = useConfirmation();
 
-  // Only show when rejected and in response states
   if (
     approval?.approved !== false ||
     (state !== "approval-responded" &&
@@ -154,7 +151,6 @@ export const ConfirmationActions = ({
 }: ConfirmationActionsProps) => {
   const { state } = useConfirmation();
 
-  // Only show when approval is requested
   if (state !== "approval-requested") {
     return null;
   }
@@ -169,10 +165,7 @@ export const ConfirmationActions = ({
 
 export type ConfirmationActionProps = ComponentProps<typeof Button>;
 
-// Vendored change: `h-8 px-3 text-sm` duplicated Button's own `sm` size step
-// (32px, `min-h-8 gap-1.5 px-3.5 text-small`) by hand — use the real size
-// variant. `sm` (not the 40px default) matches the official example's compact
-// action row; it sits beside another small control, which RULES §7 allows.
+// Vendored change: `h-8 px-3 text-sm` duplicated Button's own `sm` size step (32px, `min-h-8 gap-1.5 px-3.5 text-small`) by hand — use the real size variant.
 export const ConfirmationAction = ({
   size = "sm",
   ...props

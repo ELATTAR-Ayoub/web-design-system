@@ -1,12 +1,3 @@
-/**
- * Authored documentation page for `dialog`.
- *
- * Replaces the generated baseline. Every specimen renders the real `Dialog`
- * composition from `components/ui/dialog.tsx`. Dialog has no size prop
- * (only the default/media `variant`) — see the Sizes omission recorded in
- * the handoff — so this page has no Sizes section.
- */
-
 import { PackageOpen, Truck } from "lucide-react";
 
 import { SourceMeta } from "@/components/docs/component-page/sections";

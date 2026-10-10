@@ -39,7 +39,6 @@ const OUTPUT_SCHEMA = `interface Summary {
   skipped: string[];
 }`;
 
-/** The Preview: a full agent card — header, instructions, expandable tools and the output schema. */
 export function AgentShowcase() {
   return (
     <Panel label="Agent">
@@ -61,7 +60,6 @@ export function AgentShowcase() {
   );
 }
 
-/** The States grid. */
 export function AgentStateGrid() {
   return (
     <StateGrid cols={3}>
@@ -95,7 +93,6 @@ export function AgentStateGrid() {
   );
 }
 
-/** The Examples: a tool with no description. */
 export function AgentExamples() {
   return (
     <Panel label="Tool without a description">

@@ -1,11 +1,3 @@
-/**
- * Authored documentation page for `toggle-group`.
- *
- * Migrated from the old `base/buttons` category page (the "Toggle & Toggle
- * Group" section, Toggle Group half). Every specimen renders the real
- * `ToggleGroup` and `ToggleGroupItem` from `components/ui/toggle-group.tsx`.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 

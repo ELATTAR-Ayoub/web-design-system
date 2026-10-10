@@ -1,10 +1,3 @@
-/**
- * Authored documentation page for `agent-generated-image`.
- *
- * The frame is driven by a stage prop, so the switcher lives in
- * `generated-image-specimen.tsx`; the States grid renders the real frame.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Meta, Note, Panel, StateCell, StateGrid } from "@/components/ds/kit";

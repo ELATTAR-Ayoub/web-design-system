@@ -49,7 +49,6 @@ function OwnerQuestion({
   );
 }
 
-/** The Preview: pick an owner or type a note, submit, and see the response the form hands back. */
 export function QuestionShowcase() {
   const [sent, setSent] = React.useState<string | null>(null);
   return (
@@ -63,7 +62,6 @@ export function QuestionShowcase() {
   );
 }
 
-/** The States grid. */
 export function QuestionStateGrid() {
   return (
     <StateGrid cols={2}>
@@ -91,7 +89,6 @@ export function QuestionStateGrid() {
   );
 }
 
-/** The Examples: choices only, no free text. */
 export function QuestionExamples() {
   return (
     <Panel label="Choices only">

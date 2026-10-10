@@ -1,10 +1,3 @@
-/**
- * Authored documentation page for `ai-voice-selector`.
- *
- * The dialog's open state, the chosen voice and the preview toggle need
- * state, so every live render goes through `voice-selector-specimen.tsx`.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Meta, Note, Panel, StateCell, StateGrid } from "@/components/ds/kit";

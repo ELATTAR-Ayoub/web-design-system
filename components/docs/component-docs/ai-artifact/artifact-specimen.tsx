@@ -14,17 +14,10 @@ import {
 } from "@/components/ai-elements/artifact";
 import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 
-/**
- * Live specimens for the `ai-artifact` documentation page. Every one renders
- * the real `Artifact` family from `components/ai-elements/artifact.tsx`. The
- * file is a client module because the actions mount a Radix tooltip.
- */
-
 const CONTENT = `export function total(items: number[]) {
   return items.reduce((sum, n) => sum + n, 0);
 }`;
 
-/** The Preview: header with title, description and two actions, body with a file. */
 export function ArtifactPreview() {
   return (
     <Panel label="Artifact" note="title, description, two actions">
@@ -47,7 +40,6 @@ export function ArtifactPreview() {
   );
 }
 
-/** The States grid: the structural variations that are visible at rest. */
 export function ArtifactStateGrid() {
   return (
     <StateGrid cols={3}>

@@ -1,12 +1,3 @@
-/**
- * Authored documentation page for `sheet`.
- *
- * Replaces the generated baseline. Migrated from the old `base/dialogs`
- * category page (`app/design-system/components/base/dialogs/page.tsx`, since deleted).
- * Every specimen below renders the real `Sheet` composition from
- * `components/ui/sheet.tsx` — nothing here is a styled div.
- */
-
 import { SlidersHorizontal } from "lucide-react";
 
 import { SourceMeta } from "@/components/docs/component-page/sections";

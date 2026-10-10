@@ -1,25 +1,3 @@
-/**
- * The one documentation catalog.
- *
- * Routes, search, the rail, the family views, the `/components` index and the
- * parity check all read THIS list. It is flat on purpose: the four families are
- * views over it, computed from `lib/ds/platform-contract.ts`, not four
- * separately authored lists that can disagree about where a component lives.
- *
- * Each entry is a per-item `meta.ts` imported under its own name, so two items
- * cannot collide and a missing file is a build error rather than a silently
- * shorter list.
- *
- * THE COUNT IS NOT THE POINT. This catalog holds every capability that has a
- * real page behind it. `PLATFORM_CONTRACT` holds every capability the system
- * intends to publish, and `scripts/check-platform-parity.mjs` reports the
- * difference. An entry appears here when — and only when — something renders at
- * its route.
- *
- * Supervisor-owned; see the migration plan's section 10.3. Add an item by
- * adding its `meta.ts` and `page.tsx`, then regenerating.
- */
-
 import { PLATFORM_CONTRACT, type ContractEntry, type DocFamily } from "@/lib/ds/platform-contract";
 import type { ComponentDocMeta } from "@/lib/ds/docs/types";
 
@@ -327,7 +305,6 @@ export const COMPONENT_DOCS: readonly ComponentDocMeta[] = [
 
 const byName = new Map(COMPONENT_DOCS.map((m) => [m.name, m]));
 
-/** The route a catalog item is documented at. One shape, never typed by hand. */
 export function docRoute(name: string): string {
   return `/design-system/components/${name}`;
 }
@@ -336,7 +313,6 @@ export function docMeta(name: string): ComponentDocMeta | undefined {
   return byName.get(name);
 }
 
-/** The contract entry behind a catalog item. Every catalog item has one. */
 export function docContract(name: string): ContractEntry | undefined {
   return PLATFORM_CONTRACT.find((e) => e.name === name);
 }
@@ -346,31 +322,25 @@ export type CatalogEntry = {
   readonly contract: ContractEntry;
 };
 
-/** Catalog items paired with their contract entry, alphabetical by title. */
 export function catalogEntries(): CatalogEntry[] {
   const out: CatalogEntry[] = [];
   for (const meta of COMPONENT_DOCS) {
     const contract = docContract(meta.name);
-    // Unreachable while the wiring test passes: it fails on any catalog entry
-    // with no contract row. Skipping rather than throwing keeps one bad name
-    // from blanking every documentation route in production.
+    // Skip rather than throw so one bad name cannot blank every docs route.
     if (contract) out.push({ meta, contract });
   }
   out.sort((a, b) => a.contract.title.localeCompare(b.contract.title));
   return out;
 }
 
-/** Every catalog item in one family, alphabetical by title. */
 export function catalogEntriesIn(family: DocFamily): CatalogEntry[] {
   return catalogEntries().filter((e) => e.contract.family === family);
 }
 
-/** Items the rail lists. Routable and searchable items may still be excluded. */
 export function railEntriesIn(family: DocFamily): CatalogEntry[] {
   return catalogEntriesIn(family).filter((e) => e.meta.showInRail !== false);
 }
 
-/** Contract entries that have no page yet — the honest remaining work. */
 export function undocumentedContractEntries(): readonly ContractEntry[] {
   return PLATFORM_CONTRACT.filter((e) => !byName.has(e.name));
 }

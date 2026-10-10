@@ -1,21 +1,3 @@
-/**
- * Authored documentation page for `stat`.
- *
- * Replaces the generated baseline. Migrated from the old `base/data` category
- * page (`app/design-system/components/base/data/page.tsx`, since deleted), which held every
- * data-display component's real documentation on one page. Every specimen
- * below renders the real `Stat` from `components/ui/stat.tsx` — nothing here
- * is a styled div.
- *
- * Stat handles money and other figures that move. RULES §1.4 and the "delta
- * is a shape before it is a hue" section (§7) govern every colour choice on
- * this page: money out is never red, a falling figure is never red either,
- * and every direction is legible with colour stripped out. The specimens
- * below are all uncontrolled — a live "reload" demo would need useState,
- * which a spec module (a server component) cannot have; the Usage snippet
- * shows the controlled/live pattern as code instead of mounting it.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Code, Meta, Note, StateCell, StateGrid } from "@/components/ds/kit";

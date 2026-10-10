@@ -1,18 +1,3 @@
-/**
- * The complete components index — every documented capability, in one place.
- *
- * Four sections, one per family, derived from the catalog. The version this
- * replaces iterated `DS_GROUPS` minus Foundations, which after the category
- * pages were deleted meant it listed the **Documentation** group among the
- * components: Introduction, Installation, Theming and Changelog rendered as
- * cards beside Button and Dialog. Its opening sentence still described "three
- * families" and a "Site pages" family that had been removed months earlier.
- *
- * Nothing here is authored except the four one-line family descriptions. A card
- * cannot promise a page that does not exist, because the list it maps is the
- * same one the routes are generated from.
- */
-
 import type { Metadata } from "next";
 
 import { DsPageHeader, DsSection, IndexCard, IndexGrid } from "@/components/ds/kit";
@@ -27,7 +12,6 @@ export const metadata: Metadata = {
     "Every capability the system publishes, each at its own route: what it is, how it is delivered, its API, states, accessibility and keyboard behaviour.",
 };
 
-/** What each family is for. The only prose this page owns. */
 const FAMILY_BLURB: Record<DocFamily, string> = {
   components:
     "The chassis: shadcn primitives on Radix, restyled onto this system's tokens. Generic, reusable and product-agnostic.",

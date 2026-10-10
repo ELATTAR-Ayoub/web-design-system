@@ -19,47 +19,6 @@ import { PageContainer } from "@/components/docs/layout/page-container";
 import { cn } from "@/lib/utils";
 import type { SiteNavItem } from "@/lib/docs/nav";
 
-/**
- * The top of every page: a brand, a short nav, and whatever the product wants
- * on the right.
- *
- * Private furniture for the documentation site — not a published registry
- * item, so it is free to keep the shape that caller actually needs rather than
- * one generic enough to publish.
- *
- * **`brand` is a slot, and that is not laziness.** A header that imports a
- * wordmark ships somebody else's logo into the next caller. `components/ds/logo.tsx`
- * is the documentation site's own chrome, and this component reaching into it
- * directly would tie a piece of shared chrome to one specific caller's brand.
- *
- * **There is no `useIsMobile` here, and there must not be.** Both navigations
- * are always rendered and CSS decides which is visible — `hidden md:flex` on
- * the row, `md:hidden` on the trigger. §5's product section is explicit about
- * why: a width branch in JavaScript means the server and the client can draw
- * different trees, and the same tree at every size is what makes hydration
- * impossible to get wrong. The cost is one hidden subtree; the alternative is a
- * class of bug that only appears on someone else's screen.
- *
- * **The active link is marked, and not with colour alone.** `aria-current="page"`
- * carries it to assistive technology, and visually it is a foreground shift
- * plus a fill — presence against absence, which is what trap 11 asks for. Not
- * weight: a heavier label is a wider label, and a nav that reflows as you move
- * between pages is a nav that looks broken.
- *
- * **The mobile sheet's links close it.** A `SheetClose asChild` around each one,
- * because a navigation drawer that stays open over the page you just asked for
- * is the most common bug in this shape.
- *
- * State model:
- * rest · hover — links lift their foreground. focus-visible — the global ring,
- * untouched. pressed — N/A for links; the navigation is the feedback. The
- * trigger is a `Button` and carries `press`. loading · success · error —
- * N/A, nothing here is asynchronous. disabled — N/A; an unavailable page is
- * absent from the nav rather than dimmed in it. empty — N/A in practice, and
- * safe in principle: with no items the row and the sheet both render nothing
- * rather than an empty drawer.
- */
-
 function SiteHeader({
   brand,
   items,
@@ -68,10 +27,8 @@ function SiteHeader({
   className,
   ...props
 }: Omit<React.ComponentProps<"header">, "title"> & {
-  /** Your wordmark, usually wrapped in a link home. */
   brand?: React.ReactNode;
   items: SiteNavItem[];
-  /** Sign-in, a search trigger, a theme toggle. */
   actions?: React.ReactNode;
   menuLabel?: string;
 }) {
@@ -139,8 +96,6 @@ function SiteHeader({
               </SheetHeader>
               <nav aria-label="Primary" className="grid gap-1 px-4 pb-4">
                 {items.map((item) => (
-                  // Closes on navigation. A drawer left open over the page you
-                  // just asked for is this shape's most common bug.
                   <SheetClose asChild key={item.href}>
                     <Link
                       href={item.href}

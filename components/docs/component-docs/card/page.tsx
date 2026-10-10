@@ -1,13 +1,3 @@
-/**
- * Authored documentation page for `card`.
- *
- * Replaces the generated baseline. Migrated from the old `base/data` category
- * page (`app/design-system/components/base/data/page.tsx`, since deleted), which held every
- * data-display component's real documentation on one page. Every specimen
- * below renders the real `Card` family from `components/ui/card.tsx` —
- * nothing here is a styled div.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Code, Meta, Note } from "@/components/ds/kit";

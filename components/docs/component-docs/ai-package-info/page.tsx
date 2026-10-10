@@ -1,11 +1,3 @@
-/**
- * Authored documentation page for `ai-package-info`.
- *
- * Every live specimen renders the real component from `components/ai-elements/package-info.tsx`.
- * Anything interactive lives in the companion client file
- * `package-info-specimen.tsx` (a spec module cannot carry "use client").
- */
-
 import { PackageInfoPreview, PackageInfoStateGrid, PackageInfoChangeTypes } from "./package-info-specimen";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

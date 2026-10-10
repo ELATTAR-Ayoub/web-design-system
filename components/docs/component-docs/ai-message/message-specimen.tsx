@@ -1,11 +1,5 @@
 "use client";
 
-/**
- * Live specimens for the `ai-message` page. They render the real parts from
- * `components/ai-elements/message.tsx` with fixed data. A spec module cannot
- * carry `"use client"` or event handlers, so everything interactive lives here.
- */
-
 import { CopyIcon, RefreshCcwIcon } from "lucide-react";
 
 import {
@@ -38,7 +32,6 @@ const total = seats * unitPrice - discount;
 
 See the [pricing page](https://example.com/pricing) for the rate card.`;
 
-/** The Preview: a user message, then an assistant reply with its action row. */
 export function MessagePreview() {
   return (
     <Panel label="Message" note="user + assistant">
@@ -66,7 +59,6 @@ export function MessagePreview() {
   );
 }
 
-/** Two regenerated versions of one reply, with the selector. */
 export function MessageBranchSpecimen() {
   return (
     <Panel label="MessageBranch" note="2 versions">
@@ -93,7 +85,6 @@ export function MessageBranchSpecimen() {
   );
 }
 
-/** The States grid. */
 export function MessageStateGrid() {
   return (
     <StateGrid cols={3}>

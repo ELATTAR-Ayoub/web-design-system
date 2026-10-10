@@ -1,16 +1,5 @@
 "use client";
 
-/**
- * Live companion for the `table` Preview — see traps.md #29 (a spec module
- * cannot carry state, so this lives beside `page.tsx` instead of inside it).
- *
- * A sortable, selectable transaction history: click "Amount" to sort by it,
- * check rows to select them, and a bulk-action bar appears the moment
- * anything is selected. Every element is the real `Table` family plus the
- * real `Checkbox` and `Button` — nothing here is a styled div standing in
- * for TanStack's row model.
- */
-
 import { useMemo, useState } from "react";
 import { ArrowDownLeft, ArrowUpDown, ArrowUpRight, FlagIcon } from "lucide-react";
 

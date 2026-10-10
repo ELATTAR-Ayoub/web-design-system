@@ -1,19 +1,3 @@
-/**
- * Authored documentation page for `chart-cartesian`.
- *
- * Replaces the generated baseline. Migrated from the old `base/charts`
- * category page (`app/design-system/components/base/charts/page.tsx`, since deleted), which
- * held the whole family's documentation on one page. This item owns the
- * three cartesian (x/y-axis) plot families — Area, Bar, Line — built on the
- * shared `ChartContainer` documented on the `chart` item page. It resolves
- * through the registry as a `dependency` of `chart`, never as its own install
- * target — see Installation.
- *
- * Every specimen below is the real `AreaChart` / `BarChart` / `LineChart`
- * from `components/ds/charts/{area,bar,line}.tsx`, wrapped in `ChartStates`
- * so each one carries its real Empty · Loading · Error · Ready switch.
- */
-
 import {
   AreaAxes,
   AreaDefault,

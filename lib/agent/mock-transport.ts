@@ -34,51 +34,8 @@ import {
 } from "@/components/agent/core/run";
 import type { ImageStage } from "@/components/agent/workspace/tool-output";
 
-/**
- * A complete agent, with nothing behind it.
- *
- * The design system has no backend, no key and no socket, but `AgentWorkspace` is
- * a shell around a transport and shows nothing without one. So this is a real
- * `AgentTransport` — the same interface a live agent implements — that answers
- * from a script instead of from a model.
- *
- * It exists for two reasons, and the second is the important one:
- *
- *  1. Every state in the machine becomes reachable on the documentation page.
- *     Thinking, calling a tool, producing a file, holding an action for
- *     approval, failing — none of those can be demonstrated by a transport that
- *     only echoes, and a design system that cannot show a state cannot be said
- *     to specify it.
- *  2. **It is the reference implementation.** This is the file to read before
- *     writing a real transport. Everything a live one must do is here and
- *     nowhere else is it written down: own `turns`, fold events through
- *     `reduceEvent`, flip `isLoading` around the round trip, honour `abort`,
- *     publish `capabilities` honestly, and resolve the promise an approval is
- *     blocking on. Swap the scripted event stream for a fetch and the rest of
- *     this file is what a production transport looks like.
- *
- * It is deterministic on purpose. A mock that varies makes the documentation
- * page different on every reload, which turns a reference into a slot machine.
- *
- * `scenario` extends that reference role onto the run lifecycle
- * (`components/agent/core/run.ts`): 25 named scripts that each walk `RunState`
- * to one of the end states catalogued in the design spec §8. When `scenario`
- * is left undefined every byte of the original keyword-routed behaviour below
- * is unchanged — the workspace demo page opts in, nothing else is affected.
- */
-
-/* ── The script ────────────────────────────────────────────────────────────
- *
- * Chosen to walk the state machine rather than to be impressive: a tool call
- * that succeeds and returns a file, prose streamed around it, and an action the
- * agent is not allowed to take by itself. Between them they light every part of
- * the transcript the console can draw.
- */
-
 type Beat =
-  /** Stream a string in, a few characters at a time. */
   | { beat: "say"; text: string }
-  /** Call a tool, wait, then settle it. */
   | {
       beat: "tool";
       name: string;
@@ -86,24 +43,8 @@ type Beat =
       ms: number;
       result: unknown;
       attachments?: Attachment[];
-      /**
-       * `tool_progress` events fired while the call is in flight, each at its
-       * own `at` (ms from dispatch, scaled the same as `ms`) with the partial
-       * shape the running tool has produced so far — a `ToolOutput` (terminal
-       * lines accumulating, a test suite filling in). What lets Terminal and
-       * TestResults stream instead of popping in fully-formed on settle.
-       */
       progress?: { at: number; partial: unknown }[];
     }
-  /**
-   * Ask to do something, and stop until a human answers.
-   *
-   * `params.risk === "high"` routes through `approveWithCode` instead of the
-   * ordinary `approve`/`reject` pair — see the `ask` case in `runBeat`.
-   * `onApprove`/`onReject` override the default follow-up sentence; omitted,
-   * both fall back to the original copy so the default (non-scenario) script
-   * reads exactly as it always has.
-   */
   | {
       beat: "ask";
       action: string;
@@ -111,34 +52,17 @@ type Beat =
       onApprove?: string;
       onReject?: string;
     }
-  /** Fail, recoverably — or, with `fatal`, break the transport itself. */
   | { beat: "fail"; error: string; fatal?: boolean }
-  /** Stream chain-of-thought steps above the answer, then close them. */
   | { beat: "reason"; steps: string[] }
-  /** Attach citations to the answer in progress. */
   | { beat: "sources"; sources: Source[] }
-  /** State how sure the answer in progress is. */
   | { beat: "confidence"; confidence: Confidence }
-  /** Offer follow-up prompts under the answer in progress. */
   | { beat: "suggest"; items: string[] }
-  /** Fold a run event through `reduceRunEvent`. */
   | { beat: "run"; event: DistributiveOmit<RunEvent, "eventId" | "at"> }
-  /** Sit for `ms` (scaled by `speed` in scenario mode). */
   | { beat: "wait"; ms: number }
-  /** Sit for `ms` (unscaled when long), then wait for `resume()` only if the run is paused. */
   | { beat: "pausePoint"; ms: number }
-  /** Block until the matching transport method releases this signal. */
   | { beat: "until"; signal: Signal }
-  /** Generate an image through its stages, ending in `complete` or `error`. */
   | { beat: "image"; stages: ImageStage[] };
 
-/**
- * `Omit<RunEvent, K>` collapses the union to its common keys only — `RunEvent`
- * is a discriminated union and the built-in `Omit` is not distributive, so it
- * would leave every `run` beat typed as `{ type: RunEvent["type"] }` with none
- * of a variant's own fields (`runId`, `plan`, `checkpoint`, …). This applies
- * `Omit` to each member separately instead.
- */
 type DistributiveOmit<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never;
 
 const SCRIPTS: Record<string, Beat[]> = {
@@ -157,7 +81,6 @@ const SCRIPTS: Record<string, Beat[]> = {
     },
   ],
 
-  /* The path that ends at a decision a human has to make. */
   approval: [
     { beat: "say", text: "I can do that. Checking the balance first." },
     {
@@ -178,8 +101,6 @@ const SCRIPTS: Record<string, Beat[]> = {
     },
   ],
 
-  /* The path that produces a file, so the attachment renderer has something to
-     draw in the direction that is easy to forget: agent to user. */
   report: [
     { beat: "say", text: "Pulling the last thirty days." },
     {
@@ -209,8 +130,6 @@ const SCRIPTS: Record<string, Beat[]> = {
     { beat: "say", text: "148 rows, attached above. Net position over the window is **+$123.50**." },
   ],
 
-  /* The unhappy path. A design system that only documents success is documenting
-     half a component. */
   error: [
     { beat: "say", text: "Trying the pricing service." },
     {
@@ -224,16 +143,6 @@ const SCRIPTS: Record<string, Beat[]> = {
   ],
 };
 
-/**
- * Attachments described back (name + size) and/or a web-search answer with
- * sources — built from what `send` actually received rather than a static
- * script, since the reply has to name the REAL files a reader attached
- * through the composer's own `+` menu/paste/drag, not a fixture. Shared by
- * the "Attachments and web search" scenario AND the keyword-routed default
- * path below, so web search and attachment description both work from any
- * ordinary message, not only a named scenario (v2-layout-spec.md, "Demo: a
- * scenario with image + PDF attachments, web search on returns sources").
- */
 function attachmentsAndSearchBeats(sendOptions?: SendOptions): Beat[] {
   const attachments = sendOptions?.attachments ?? [];
   const beats: Beat[] = [];
@@ -272,12 +181,7 @@ function attachmentsAndSearchBeats(sendOptions?: SendOptions): Beat[] {
   return beats;
 }
 
-/** Which script a message runs, chosen by keyword so the page can drive it. */
 function scriptFor(text: string, sendOptions?: SendOptions): Beat[] {
-  /* Attachments or web search bypass keyword routing entirely — matching
-     what a real agent would do (answer what was actually sent), and keeping
-     the plain keyword path below byte-for-byte identical whenever neither
-     field is present, exactly as it always has been. */
   if (sendOptions?.attachments?.length || sendOptions?.webSearch) {
     return attachmentsAndSearchBeats(sendOptions);
   }
@@ -287,27 +191,6 @@ function scriptFor(text: string, sendOptions?: SendOptions): Beat[] {
   if (/\b(price|worth|value|market|fail|error|broken)\b/.test(t)) return SCRIPTS.error;
   return SCRIPTS.default;
 }
-
-/* ── Conversations ────────────────────────────────────────────────────────
- *
- * The workspace demo page (task-5-common.md) drives these by id — one
- * multi-beat script per conversation. `CONVERSATIONS` is the metadata the
- * live specimen's picker and history rows render (and `e2e/agent-workspace.spec.ts`
- * walks); `CONVERSATION_SCRIPTS` is what `send` actually runs, one array
- * entry per beat, advancing by one beat on every `send` regardless of what
- * was actually typed — the starter is beat 1. Text-keyword routing
- * (`scriptFor`) is bypassed entirely once a conversation is set, exactly as
- * the old scenario system bypassed it — the prompt only has to be
- * non-empty for the transcript.
- *
- * A beat that needs a human action rather than another `send` — approve,
- * pause/resume, verify, restore — does not advance the beat index itself.
- * Its script ends (or pauses, via an `until` beat) waiting on the generic,
- * conversation-agnostic run/transport methods below (`approvePlan`, `pause`,
- * `resume`, `verifyStep`, `approveWithCode`, `retryEffect`, `compensate`,
- * `regenerate`, `restoreTo`) — the same methods a real UI control calls
- * regardless of which conversation produced the run it is acting on.
- */
 
 export type ConversationId =
   | "chat"
@@ -407,14 +290,6 @@ export const CONVERSATIONS: ConversationDef[] = [
   },
 ];
 
-/**
- * The "hero image" the mock generates: a dusk landscape — sky, sun, three
- * ranges of hills — as a 4:3 SVG, base64-encoded. Deterministic, no network,
- * no binary asset in the repo. It has real detail on purpose: GeneratedImage
- * shows it blurred and sharpens it stage by stage, and a flat card gives a blur
- * nothing to resolve. Picture content, not interface colour, so the stops are named
- * colours rather than tokens.
- */
 export function heroImageUrl(): string {
   const svg = [
     `<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">`,
@@ -434,11 +309,7 @@ export function heroImageUrl(): string {
   return `data:image/svg+xml;base64,${base64}`;
 }
 
-/** A tiny, valid, silent WAV file, base64-encoded — the read-aloud playback source. Pure, no network. */
 export async function speakMock(text: string): Promise<string> {
-  // 44-byte PCM header + a handful of silent frames. `text` only sizes the
-  // clip (roughly one frame per character) so a longer answer "sounds" longer
-  // without this file needing an actual speech engine.
   const frames = Math.max(8, Math.min(400, text.length * 2));
   const dataSize = frames * 2;
   const buffer = new ArrayBuffer(44 + dataSize);
@@ -476,22 +347,13 @@ const AGENT_PROFILE: AgentProfile = {
   ],
 };
 
-/** Pushes a chat-level checkpoint onto `restorePoints`, after the beat's own user turn. */
 type CheckpointBeat = { beat: "checkpoint"; label: string };
 
-/**
- * The web-preview demo loads a page served by this app (`public/samples/`), so
- * the live demo makes no request to any other host. It is resolved when the
- * beat runs, in the browser, because an absolute same-origin address needs
- * `location.origin`; during SSR there is no origin, so the path stays relative
- * to the (also local) page.
- */
 export function releasePreviewUrl(): string {
   const path = "/samples/release-preview.html";
   return typeof location === "undefined" ? path : new URL(path, location.origin).href;
 }
 
-/** A conversation's per-beat script; a function only when it must read what was actually attached. */
 type ConversationBeatScript = (Beat | CheckpointBeat)[] | ((sendOptions?: SendOptions) => (Beat | CheckpointBeat)[]);
 
 const CONVERSATION_SCRIPTS: Record<ConversationId, ConversationBeatScript[]> = {
@@ -526,7 +388,6 @@ const CONVERSATION_SCRIPTS: Record<ConversationId, ConversationBeatScript[]> = {
   ],
 
   tools: [
-    /* 1 — a search (the ChainOfThought chips) and a test run that fills in. */
     [
       { beat: "reason", steps: ["Searching the codebase"] },
       {
@@ -577,7 +438,6 @@ const CONVERSATION_SCRIPTS: Record<ConversationId, ConversationBeatScript[]> = {
       { beat: "say", text: "Found the billing module and all three tests pass." },
       { beat: "suggest", items: ["Run the build"] },
     ],
-    /* 2 — Terminal streaming: the output grows through tool_progress, then settles. */
     [
       { beat: "say", text: "Running the build." },
       {
@@ -600,7 +460,6 @@ const CONVERSATION_SCRIPTS: Record<ConversationId, ConversationBeatScript[]> = {
       { beat: "say", text: "The build passed." },
       { beat: "suggest", items: ["Now deploy it"] },
     ],
-    /* 3 — a tool fails, then retries on its own. */
     [
       { beat: "say", text: "Deploying now." },
       {
@@ -628,7 +487,6 @@ const CONVERSATION_SCRIPTS: Record<ConversationId, ConversationBeatScript[]> = {
       { beat: "say", text: "Deployed on the second try." },
       { beat: "suggest", items: ["Run the database migration"] },
     ],
-    /* 4 — a crash: the tool fails with a stack trace; Retry (regenerate) succeeds. */
     [
       { beat: "say", text: "Running the migration." },
       {
@@ -647,14 +505,12 @@ const CONVERSATION_SCRIPTS: Record<ConversationId, ConversationBeatScript[]> = {
       { beat: "say", text: "The migration crashed. Press Retry to run it again." },
       { beat: "suggest", items: ["Make a hero image for the release"] },
     ],
-    /* 5 — image generation: Shimmer, then the Image. */
     [
       { beat: "say", text: "Generating that now." },
       { beat: "image", stages: ["queued", "generating", "refining", "complete"] },
       { beat: "say", text: "Here's the image." },
       { beat: "suggest", items: ["Write up the release notes"] },
     ],
-    /* 6 — an Artifact. */
     [
       { beat: "say", text: "Drafting the release notes." },
       {
@@ -673,7 +529,6 @@ const CONVERSATION_SCRIPTS: Record<ConversationId, ConversationBeatScript[]> = {
       { beat: "say", text: "The notes are ready." },
       { beat: "suggest", items: ["Put together a quick demo page"] },
     ],
-    /* 7 — a WebPreview and a JSXPreview. */
     () => [
       { beat: "say", text: "Putting together a small preview." },
       {
@@ -693,7 +548,6 @@ const CONVERSATION_SCRIPTS: Record<ConversationId, ConversationBeatScript[]> = {
       { beat: "say", text: "Preview is live." },
       { beat: "suggest", items: ["Run a quick calculation"] },
     ],
-    /* 8 — a Sandbox: the code the agent ran and what it printed. */
     [
       { beat: "say", text: "Running that in the sandbox." },
       {
@@ -722,7 +576,6 @@ const CONVERSATION_SCRIPTS: Record<ConversationId, ConversationBeatScript[]> = {
           plan: [{ id: "pl1", title: "Draft the launch brief", status: "pending" }],
         },
       },
-      /* The plan streams in: same version, one more step each time. */
       { beat: "wait", ms: 80 },
       {
         beat: "run",
@@ -747,7 +600,6 @@ const CONVERSATION_SCRIPTS: Record<ConversationId, ConversationBeatScript[]> = {
         },
       },
       { beat: "wait", ms: 80 },
-      /* Then the user's own edit — a fourth step — bumps it to v2. */
       {
         beat: "run",
         event: {
@@ -890,8 +742,6 @@ const CONVERSATION_SCRIPTS: Record<ConversationId, ConversationBeatScript[]> = {
           ],
         },
       },
-      /* An approval for v1 lands after the plan became v2 — the reducer
-         rejects it as stale, which is what the reply's notice shows. */
       { beat: "run", event: { type: "plan_approved", version: 1 } },
       { beat: "say", text: "Your approval was for the first version — the plan changed since, so approve v2 to go ahead." },
       { beat: "until", signal: "approve" },
@@ -939,10 +789,7 @@ const CONVERSATION_SCRIPTS: Record<ConversationId, ConversationBeatScript[]> = {
       { beat: "run", event: { type: "step_status", stepId: "rc1", status: "done", ms: 100 } },
       { beat: "run", event: { type: "checkpoint", checkpoint: { id: "cp-rc-1", label: "After the backup", turnId: "$userTurn", at: 0, stepId: "rc1" } } },
       { beat: "run", event: { type: "step_status", stepId: "rc2", status: "running" } },
-      /* Long relative to real time so the human — or Playwright — has room to
-         press Pause; `pause()`/`resume()` are the generic, conversation-agnostic
-         run controls. `pausePoint` waits for `resume()` only if the run was
-         actually paused — a user who never presses Pause is never blocked. */
+      // Long enough for a person to press Pause.
       { beat: "pausePoint", ms: 5000 },
       { beat: "run", event: { type: "step_status", stepId: "rc2", status: "done", ms: 100 } },
       { beat: "run", event: { type: "run_status", status: "completed" } },
@@ -966,8 +813,6 @@ const CONVERSATION_SCRIPTS: Record<ConversationId, ConversationBeatScript[]> = {
       { beat: "run", event: { type: "step_status", stepId: "rx1", status: "running" } },
       { beat: "wait", ms: 100 },
       { beat: "run", event: { type: "step_status", stepId: "rx1", status: "done", ms: 100 } },
-      /* The checkpoint lives on THIS run — `run_proposed` starts a run with
-         none, so the one the restore beat offers has to be added after it. */
       { beat: "run", event: { type: "checkpoint", checkpoint: { id: "cp-rx-1", label: "After the index backup", turnId: "$userTurn", at: 0, stepId: "rx1" } } },
       { beat: "run", event: { type: "step_status", stepId: "rx2", status: "running" } },
       { beat: "wait", ms: 5000 },
@@ -975,8 +820,6 @@ const CONVERSATION_SCRIPTS: Record<ConversationId, ConversationBeatScript[]> = {
       { beat: "run", event: { type: "run_status", status: "completed" } },
     ],
     [
-      /* No "Restored" here: the restore happens when `resume(checkpointId)` is
-         called (the Restore button), and the mock's `resume` posts that reply. */
       { beat: "say", text: "Pick the checkpoint on the run above and press Restore to rewind it." },
     ],
   ],
@@ -1086,27 +929,10 @@ const CONVERSATION_SCRIPTS: Record<ConversationId, ConversationBeatScript[]> = {
   ],
 };
 
-/* ── Timing ────────────────────────────────────────────────────────────────
- *
- * Streaming is what makes an agent feel like it is thinking rather than
- * returning. The numbers below are the only ones in this file that were tuned
- * by eye rather than derived: fast enough not to waste a reader's time, slow
- * enough that the cursor, the shimmer and the state transitions are actually
- * legible on the documentation page. `scale` (the `speed` option, scenario
- * mode only) divides every one of them; it is always 1 — a no-op — when
- * `scenario` is undefined, which is what keeps that path byte-for-byte.
- */
-/** The model a conversation stamps on answers when `SendOptions.model` names none. */
 const MOCK_MODEL = "steady";
 
-/**
- * The context meter prices its counts from a real model catalog (tokenlens via
- * AI Elements' `Context`); the demo's own model names are not in it, so the
- * meter is priced as a real model would be. Display only — no request is made.
- */
 const MOCK_PRICED_MODEL = "anthropic/claude-sonnet-4";
 
-/** A conversation's opening token count, split into what was read and written. */
 function startUsage(conversation: ConversationId | undefined): ContextUsage | undefined {
   if (!conversation) return undefined;
   const used = conversation === "long-session" ? 82_000 : 8_000;
@@ -1118,8 +944,7 @@ const CHUNK = 3;
 const CHAR_MS = 12;
 const THINK_MS = 420;
 const REASON_STEP_MS = 120;
-/* Long enough per stage for GeneratedImage's blur to visibly clear — its filter
-   transition runs for one normal duration. The spec's speed divides it. */
+// Long enough for the image blur to visibly clear.
 const IMAGE_STAGE_MS = 1200;
 
 const sleep = (ms: number, signal?: AbortSignal) =>
@@ -1137,48 +962,20 @@ const sleep = (ms: number, signal?: AbortSignal) =>
   });
 
 export type MockTransportOptions = {
-  /**
-   * Delay before the first event. The console shows `awaitingFirstEvent`
-   * during it, which is a distinct state from `thinking` and otherwise has no
-   * way to be seen.
-   */
   latency?: number;
-  /** Advertised to the console. Defaults to a fully-featured agent. */
   capabilities?: Partial<AgentTransport["capabilities"]>;
-  /** Runs the named conversation's multi-beat script instead of the keyword-routed default. */
   conversation?: ConversationId;
-  /** Multiplies every conversation-beat wait. The Playwright spec sets it high. */
   speed?: number;
 };
 
-/** What a blocking `until` beat waits on, and what releases it. */
 type Signal = "approve" | "resume" | "verify" | "otp";
 
 type ImageAttachment = Attachment & { stage: ImageStage };
 
-/**
- * `useMockTransport`'s return type.
- *
- * `verifyStep` and `approveWithCode` are now part of `AgentTransport` itself
- * (`core/types.ts`) — they exist because some steps need a release mechanism
- * the base contract otherwise does not declare: a low-confidence step is
- * verified rather than approved, and a high-risk approval is authorised by a
- * code rather than a plain approve/reject. Both are
- * optional on `AgentTransport`, so a caller that only implements the rest of
- * the contract is unaffected. This alias is kept only so call sites that
- * still name `MockAgentTransport` do not need to change.
- *
- * `lastSettings` is not part of `AgentTransport` — no real transport needs to
- * report back what it was last sent. It exists purely so a test can assert
- * that `AgentWorkspace`'s settings sheet actually reached `send`'s
- * `options.settings`, without the mock having to fake a server round trip.
- */
 export type MockAgentTransport = AgentTransport & {
-  /** The `options.settings` most recently passed to `send`, if any. Read-only signal for tests. */
   lastSettings?: SendOptions["settings"];
 };
 
-/** Replace the still-running tool call's attachments — used only to animate an image through its stages before it settles. */
 function updateRunningToolAttachment(turns: AgentTurn[], name: string, attachment: ImageAttachment): AgentTurn[] {
   for (let i = turns.length - 1; i >= 0; i -= 1) {
     const turn = turns[i];
@@ -1209,38 +1006,20 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
   const imageSeq = useRef(0);
   const queueSeq = useRef(0);
   const runEventSeq = useRef(0);
-  /** Which beat of `conversation`'s script `send` runs next. Advances by one
-      on every completed send, whatever was actually typed. */
   const beatIndexRef = useRef(0);
-  /** `recovery`'s fatal-error beat (index 2) fails once, then succeeds when
-      `regenerate` retries it — see the note above `CONVERSATION_SCRIPTS`. */
   const fatalRetriedRef = useRef(false);
-  /** `tools`' crash beat succeeds once regenerated, the same way. */
   const crashRetriedRef = useRef(false);
-  /** The model id answers are stamped with: `SendOptions.model`, else the default. */
   const modelRef = useRef(MOCK_MODEL);
   const restoreTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-  /** Mirrors `runState` synchronously — React state updates are not visible
-      to the scenario loop until the next render, and the loop needs to read
-      "did that last event just cancel the run?" the instant it happens. */
   const runStateRef = useRef(runState);
-  /** The `action_request` turn id a high-risk approval is waiting on. */
   const highRiskRef = useRef<string | null>(null);
-  /** Resolvers for `until` beats, one FIFO queue per signal. */
   const waitersRef = useRef<Partial<Record<Signal, ((value: boolean) => void)[]>>>({});
-  /** The settle timeout `cancel()` schedules for an in-flight step — cleared on reset/unmount so a stale timer can never fire against a torn-down run. */
   const cancelTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  /* Events are folded rather than pushed. `reduceEvent` owns how an event
-     becomes a turn — how a text delta appends to the turn already streaming,
-     how a tool_result finds and settles its own call — and duplicating any of
-     that here is how a transport drifts from the transcript it feeds. */
   const emit = useCallback(
     (event: AgentEvent) => {
       setTurns((prev) => {
         const next = reduceEvent(prev, event);
-        /* Conversations stamp the model that wrote each answer (the one picked
-           for this send, else the mock's default); the default path never does. */
         return conversation
           ? next.map((t) => (t.kind === "text" && !t.model ? { ...t, model: modelRef.current } : t))
           : next;
@@ -1249,10 +1028,6 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
     [conversation],
   );
 
-  /* Run events are folded the same way, through `reduceRunEvent` (rule 2 of
-     that reducer is what makes this idempotent against a duplicate eventId).
-     Nothing here decides what a `run_proposed` or `step_status` event DOES —
-     that is entirely the reducer's rules, tested on their own in run.test.ts. */
   const emitRun = useCallback((partial: DistributiveOmit<RunEvent, "eventId" | "at">) => {
     const event = { ...partial, eventId: `run-evt-${(runEventSeq.current += 1)}`, at: Date.now() } as RunEvent;
     const next = reduceRunEvent(runStateRef.current, event);
@@ -1261,11 +1036,7 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
     return event;
   }, []);
 
-  /* In a conversation, an answer can arrive before the script reaches the
-     line that waits for it — a reader pressing Run plan while the agent is
-     still mid-sentence. It is kept, and the next wait for that signal takes
-     it at once, instead of being lost and leaving the run stuck. Cleared at
-     every send so nothing carries into the next beat. */
+  // Holds an answer that arrives before its wait so the next wait takes it at once.
   const earlyRef = useRef<Partial<Record<Signal, boolean>>>({});
 
   const waitSignal = useCallback(
@@ -1307,24 +1078,6 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
     [emit],
   );
 
-  /* An approval is a promise the agent is blocked on. The console renders the
-     card; answering it resolves this, and the script continues. Rejecting is a
-     normal outcome, not an error — the user said no, and the agent should say
-     so rather than throw.
-
-     `markApproval(prev, turnId, "pending")` fires the moment the ask opens, not
-     only once it is answered. `reduceEvent`'s `action_request` branch creates
-     the action turn with no opinion on `approval` at all — a DOM action rides
-     the same event and is never gated on a human, so the reducer cannot assume
-     one — which left `resolveState`'s `awaiting_approval` branch, keyed
-     entirely off `turn.approval === "pending"`, unreachable: nothing had ever
-     written "pending" onto the turn, only "approved" or "rejected" once
-     `settle` ran. `ApprovalCard` rendered anyway because it reads
-     `transport.pendingApprovals` rather than the turn, which is what let the
-     card work while the face's own state stayed wrong. Marking it here, in the
-     one place that actually knows this particular action_request is blocking
-     on a person, is symmetric with the `settle` call below that later moves it
-     on. */
   const askPermission = useCallback(
     (turnId: string, action: string, params: Record<string, unknown>) =>
       new Promise<boolean>((resolve) => {
@@ -1342,7 +1095,6 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
     [],
   );
 
-  /** Walks an image through its stages, settling the tool call on the last one. */
   const runImageBeat = useCallback(
     async (beat: Extract<Beat, { beat: "image" }>, signal: AbortSignal, scale: number) => {
       const attachmentId = `mock-image-${(imageSeq.current += 1)}`;
@@ -1354,13 +1106,10 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
         await sleep(IMAGE_STAGE_MS / scale, signal);
         if (signal.aborted) return;
         const stage = stages[i];
-        /* The reply's "Generating image…" reads this typed progress, not the
-           tool's name — `{ kind: "image", stage }` in tool-output.ts. */
         if (conversation) emit({ type: "tool_progress", name: "generate_image", partial: { kind: "image", stage } });
         setTurns((prev) =>
           updateRunningToolAttachment(prev, "generate_image", {
             id: attachmentId, name, mime: conversation ? "image/svg+xml" : "image/png", kind: "image", size: 0, stage,
-            /* A real generator streams a preview; the frame develops it, stage by stage. */
             ...(conversation && stage !== "error" ? { url: heroImageUrl() } : {}),
           }),
         );
@@ -1372,9 +1121,6 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
       const success = finalStage !== "error";
       const finalAttachment: ImageAttachment = {
         id: attachmentId, name, mime: conversation ? "image/svg+xml" : "image/png", kind: "image", size: success ? 48_210 : 0,
-        /* `generatedImage` (reply-model.ts) reads `attachment.url` as a `data:`
-           url — a small generated SVG, base64, so a generated image renders
-           for real with no binary asset in the repo. */
         ...(conversation && success ? { url: heroImageUrl() } : {}),
         delivery: { sent: "produced" }, stage: finalStage,
       };
@@ -1388,7 +1134,6 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
     [emit, conversation],
   );
 
-  /** Runs one beat of either the keyword-routed default script or a named scenario. */
   const runBeat = useCallback(
     async (beat: Beat, signal: AbortSignal, scale: number) => {
       switch (beat.beat) {
@@ -1411,18 +1156,11 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
           emit({
             type: "tool_result",
             name: beat.name,
-            /* `result` carries `beat.result` either way — even on failure — so
-               a `ToolOutput` shape (a terminal's captured output, say) survives
-               onto the settled turn rather than being discarded in favour of a
-               generic error string; `resolveState`/`toolOutput` read it off
-               `turn.result` regardless of status. */
             result: ok
               ? { success: true, result: beat.result }
               : {
                   success: false,
                   error: resultShape?.error ?? "Upstream returned no data.",
-                  /* Only a typed `ToolOutput` (one with a `kind`) survives a
-                     failure; the frozen default path never carries one. */
                   ...(conversation && (beat.result as { kind?: string })?.kind ? { result: beat.result } : {}),
                 },
             ...(beat.attachments ? { attachments: beat.attachments } : {}),
@@ -1431,11 +1169,6 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
         }
 
         case "ask": {
-          /* `reduceEvent` uses the correlation id as the action turn's id, so
-             the approval can be attached without reading state back — which is
-             the whole reason the wire carries a correlation id. Counted per
-             request so asking twice in one conversation produces two turns
-             rather than one that gets answered twice. */
           const correlationId = `mock-${beat.action}-${(askCount.current += 1)}`;
           emit({ type: "action_request", correlationId, action: beat.action, parameters: beat.params });
 
@@ -1450,7 +1183,6 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
                 turnId: correlationId,
                 action: beat.action,
                 params: beat.params,
-                /* High risk is authorised by `approveWithCode`, not a bare click. */
                 approve: () => {},
                 reject: () => {
                   setPendingApprovals((p) => p.filter((x) => x.turnId !== correlationId));
@@ -1479,13 +1211,6 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
         }
 
         case "fail": {
-          /**
-           * A turn that failed, not a transport that broke — and the two are
-           * rendered differently, so a transport must not report both, except
-           * when `fatal` is true: the connection banner IS the point of the
-           * "fatal-error" scenario, so that one case sets `transport.error`
-           * too.
-           */
           emit({ type: "error", error: beat.error, fatal: beat.fatal ?? false });
           if (beat.fatal) setError(new Error(beat.error));
           return;
@@ -1517,21 +1242,7 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
           return;
 
         case "wait": {
-          /* Floored at 80ms real time (regardless of `scale`) so a transient
-             state a caller waits for in between two "wait" beats — connection
-             "reconnecting" before "connected", for one — survives at least one
-             of `waitFor`'s ~50ms polls rather than flipping past it between
-             polls at a high `speed`.
-             A beat authored with `ms >= 1000` (only "cancel-in-flight" and
-             "queue" today) is deliberately long relative to real time
-             specifically so a human — or Playwright, in e2e — has room to
-             press a button while it is still true; scaling it down at a
-             high `speed` the same way the narration/flavour waits are
-             scaled defeats that (observed: even a 2000ms floor still lost
-             the race under real headless-browser + CI load). These two
-             waits are the exception, not the rule: the floor for them is
-             their own full, unscaled `ms`, so `speed` never touches them at
-             all — matching how long a human actually has in production. */
+          // Short waits are floored above the poll interval; waits of 1s or more are not scaled.
           const floor = beat.ms >= 1000 ? beat.ms : 80;
           await sleep(Math.max(beat.ms / scale, floor), signal);
           return;
@@ -1570,9 +1281,6 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
       const thisUserTurn = userTurn(text, sendOptions?.attachments);
       setTurns((prev) => [...prev, thisUserTurn]);
 
-      /* `scale` is the only place `speed` touches timing. It is 1 — a no-op —
-         whenever no conversation is running, which is what keeps the
-         original, keyword-routed path byte-for-byte. */
       const scale = conversation ? Math.max(speed, 0.001) : 1;
 
       try {
@@ -1585,13 +1293,9 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
         const script = conversation ? conversationScript : scriptFor(text, sendOptions);
         const beats = typeof script === "function" ? script(sendOptions) : (script ?? []);
         if (conversation) beatIndexRef.current = beatNumber + 1;
-        /* `usage` grows a fixed amount per beat — enough that "long-session"
-           (which starts near the ceiling) reads ≥90% after its own first
-           beat, and every other conversation's meter simply climbs. */
         if (conversation) {
           setUsage((prev) => {
             if (!prev) return prev;
-            // 9 000 a beat: the question and context read in, the answer written out.
             const usedTokens = Math.min(prev.maxTokens, prev.usedTokens + 9_000);
             const grown = usedTokens - prev.usedTokens;
             const written = Math.round(grown * 0.28);
@@ -1616,13 +1320,7 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
             continue;
           }
 
-          /* A scripted "checkpoint" run event has no way to know the real,
-             `nextId()`-generated id of the user turn `send` just pushed —
-             `Checkpoint`'s marker only ever renders under the turn its own
-             `checkpoint.turnId` names (workspace-thread.tsx's
-             `checkpointsAfter`), so a script that wants its checkpoint to
-             actually appear writes the sentinel "$userTurn" and gets it
-             substituted for the real id here. */
+          // "$userTurn" stands in for the id of the user turn just sent.
           const resolvedBeat =
             beat.beat === "run" && beat.event.type === "checkpoint" && beat.event.checkpoint.turnId === "$userTurn"
               ? { ...beat, event: { ...beat.event, checkpoint: { ...beat.event.checkpoint, turnId: thisUserTurn.id } } }
@@ -1633,8 +1331,6 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
 
         if (!signal.aborted) emit({ type: "done" });
       } catch (cause) {
-        /* Abort is the user pressing stop. It is the transport working, not the
-           transport failing, so it must not surface as an error. */
         if ((cause as DOMException)?.name !== "AbortError") {
           const failure = cause instanceof Error ? cause : new Error(String(cause));
           setError(failure);
@@ -1680,10 +1376,6 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
     setUsage(startUsage(conversation));
   }, [conversation]);
 
-  /* The cancel() settle timeout is fire-and-forget by design (cancel() itself
-     returns void), so nothing else ever awaits or clears it — without this,
-     unmounting mid-cancel would fire `emitRun` against a component that is no
-     longer there. */
   useEffect(() => {
     turnsRef.current = turns;
   }, [turns]);
@@ -1705,24 +1397,12 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
     );
   }, []);
 
-  /* ── Run lifecycle controls ──────────────────────────────────────────────
-   *
-   * These are generic — they act on whatever `runState.run` currently holds,
-   * independent of which scenario (if any) produced it. That is what lets the
-   * workspace page's own controls (an Approve button, a Pause toggle, a Retry
-   * link on a failed effect) work the same way regardless of which scenario is
-   * on screen: the method reads the live run, not a script position. */
-
   const approvePlan = useCallback(
     (version: number, plan?: PlanStep[]) => {
       const run = runStateRef.current.run;
       if (!run) return;
       if (plan) emitRun({ type: "plan_edited", version, plan });
       emitRun({ type: "plan_approved", version });
-      /* Rule 1 (run.ts): an approval for a version the plan has moved past is
-         rejected by the reducer rather than applied. Only resolve "approve"
-         when it actually landed — otherwise the caller is still waiting on a
-         valid approval, exactly as `stale-approval` exercises. */
       if (runStateRef.current.run?.status === "running") resolveSignal("approve", true);
     },
     [emitRun, resolveSignal],
@@ -1741,8 +1421,6 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
       const rerun = checkpoint ? stepsAfterCheckpoint(run, checkpoint.id) : [];
       emitRun({ type: "run_status", status: "running", resumeFrom: checkpointId });
       resolveSignal("resume", true);
-      /* Conversations make the restore real: say so only now, and play the
-         rewound steps again through to completion. */
       if (conversation && checkpoint) {
         setTurns((prev) => [
           ...prev,
@@ -1772,18 +1450,9 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
     emitRun({ type: "run_status", status: "cancelling" });
     const runningStep = run.plan.find((p) => p.status === "running");
     if (runningStep) {
-      /* Settling the in-flight step is what rule 3 (run.ts) turns into
-         "cancelled" — a fixed delay standing in for "the step actually
-         wound down", not scaled by `speed` since this is a control action,
-         not part of a scripted narrative. Genuinely fixed at a real
-         perceptible length (not the 30ms this once was): `cancelled` forces
-         the avatar straight back to `idle` (`runAvatarState`, run.ts), so
-         "cancelling" ("Stopping") is the only moment that actually shows a
-         human — or an e2e assertion — that the cancel took effect at all. A
-         30ms window is imperceptible to either. */
+      // Fixed delay, not scaled by speed: long enough to see the stopping state.
       cancelTimeoutRef.current = setTimeout(() => {
         cancelTimeoutRef.current = null;
-        // A conversation shows the interrupted step as not done; the default path keeps its original settle.
         emitRun({ type: "step_status", stepId: runningStep.id, status: conversation ? "skipped" : "done", ms: 0 });
       }, 400);
     } else {
@@ -1810,8 +1479,6 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
         id: effect.id, stepId: effect.stepId, description: effect.description, target: effect.target, reversible: effect.reversible,
       };
       emitRun({ type: "effect", outcome: "committed", effect: retried });
-      /* The ref still holds the run from before this effect landed, so the
-         "anything else failed?" question is asked of every OTHER effect. */
       const stillFailed = run?.effects.some((f) => f.id !== effectId && f.status === "failed");
       if (run?.plan.some((p) => p.id === effect.stepId && p.status === "failed")) {
         emitRun({ type: "step_status", stepId: effect.stepId, status: "done" });
@@ -1864,12 +1531,9 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
     [emitRun, resolveSignal],
   );
 
-  /** Shrinks the meter and posts a short summary answer. */
   const summarise = useCallback(async () => {
     setUsage((u) => (u ? { ...u, usedTokens: Math.round(u.maxTokens * 0.2) } : u));
     setTurns((prev) => {
-      /* The summary becomes the last answer, so it carries forward whatever
-         the conversation was about to offer next. */
       const pending = [...prev].reverse().find((t): t is TextTurn => t.kind === "text")?.suggestions;
       return [
         ...prev,
@@ -1878,17 +1542,11 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
     });
   }, []);
 
-  /**
-   * Server-side speech-to-text, mocked: whatever was recorded, from whichever
-   * microphone, comes back as the long-session dictation line after a short
-   * wait, so the composer's record → "Transcribing…" → text path is real.
-   */
   const transcribe = useCallback(async (audio: Blob) => {
     await sleep(Math.min(600, 200 + audio.size / 1000));
     return "Remind me to call the vendor tomorrow at ten.";
   }, []);
 
-  /** Returns the chat to how it stood right after `turnId`. */
   const restoreTo = useCallback((turnId: string) => {
     setTurns((prev) => {
       const idx = prev.findIndex((t) => t.id === turnId);
@@ -1911,12 +1569,7 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
   const approveWithCode = useCallback(
     (code: string): boolean => {
       const turnId = highRiskRef.current;
-      /* "000000" is the mock's one reserved wrong code — every other
-         well-formed 6-digit code approves, same as before. `false` is
-         `CodeGate`'s own contract (`approval-card.tsx`) for "the code was
-         wrong": it clears the field, refocuses and shows the inline error,
-         with the approval still pending for a retry — not a thrown error, a
-         genuine wrong answer. */
+      // "000000" is the one rejected code.
       if (!turnId || !/^\d{6}$/.test(code) || code === "000000") return false;
       setPendingApprovals((prev) => prev.filter((p) => p.turnId !== turnId));
       setTurns((prev) => markApproval(prev, turnId, "approved"));
@@ -1926,8 +1579,6 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
     },
     [resolveSignal],
   );
-
-  /* ── Queue ──────────────────────────────────────────────────────────────── */
 
   const enqueue = useCallback(
     (text: string, sendOptions?: SendOptions) => {
@@ -1972,8 +1623,6 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
     [emitRun, send],
   );
 
-  /* ── Editing & branching ───────────────────────────────────────────────── */
-
   const editMessage = useCallback(
     async (turnId: string, text: string) => {
       setTurns((prev) =>
@@ -2007,7 +1656,6 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
   const regenerate = useCallback(
     async (turnId: string) => {
       await sleep(THINK_MS / (conversation ? Math.max(speed, 0.001) : 1));
-      /* Retry on recovery's fatal error: clear it and succeed this time. */
       if (conversation === "recovery" && !fatalRetriedRef.current && error) {
         fatalRetriedRef.current = true;
         setError(null);
@@ -2017,7 +1665,6 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
         ]);
         return;
       }
-      /* Retry on tools' crash: run the failed tool again, and it succeeds. */
       if (conversation === "tools" && !crashRetriedRef.current && turnsRef.current.some((t) => t.kind === "tool" && t.name === "run_migration" && t.status === "error")) {
         crashRetriedRef.current = true;
         emit({ type: "tool_call", name: "run_migration", parameters: { direction: "up" } });
@@ -2049,8 +1696,6 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
 
   const selectBranch = useCallback((turnId: string, index: number) => {
     setTurns((prev) => {
-      /* Paging an edited question pages its answer with it: the answer at
-         the same index is the one that edit produced. */
       const userIdx = prev.findIndex((t) => t.id === turnId && t.kind === "user");
       const pairedReply = !conversation || userIdx === -1 ? -1 : prev.findIndex((t, i) => i > userIdx && t.kind === "text");
       return prev.map((t, i) => {
@@ -2077,10 +1722,6 @@ export function useMockTransport(options: MockTransportOptions = {}): MockAgentT
       handoff: true,
       branching: true,
       sources: true,
-      /* Only scenario mode advertises `settings` and `effects` — the default,
-         keyword-routed path stays byte-for-byte unchanged (the workspace's
-         own tests and usage rely on that), so both are absent there rather
-         than false. */
       ...(conversation ? { settings: true, effects: true } : {}),
       ...options.capabilities,
     }),

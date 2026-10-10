@@ -1,19 +1,3 @@
-/**
- * Authored documentation page for `message-scroller`.
- *
- * Replaces the generated baseline. Migrated from the old `base/chat` category
- * page (`app/design-system/components/base/chat/page.tsx`, since deleted), which held every
- * conversation primitive's real documentation on one page. Every specimen
- * below renders the real `MessageScroller` family from
- * `components/ui/message-scroller.tsx` — nothing here is a styled div.
- *
- * `MessageScrollerProvider` owns state through `@shadcn/react`, so nothing on
- * this page reaches for `useState` itself — the specimens below are
- * uncontrolled, and the controlled hooks (`useMessageScroller` and friends)
- * are shown in the Usage snippet instead, per the rule that a spec module is
- * plain data rendered by a server component.
- */
-
 import { Bubble, BubbleContent } from "@/components/ui/bubble";
 import { Message, MessageContent } from "@/components/ui/message";
 import {
@@ -32,7 +16,6 @@ import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { meta } from "./meta";
 import { MessageScrollerAddDemo } from "./message-scroller-showcase";
 
-/** Long enough that the viewport genuinely overflows — a fade over nothing proves nothing. */
 const TRANSCRIPT = [
   { id: "m1", from: "agent", text: "Morning. Three sets on your watchlist moved overnight." },
   { id: "m2", from: "user", text: "Which three?" },

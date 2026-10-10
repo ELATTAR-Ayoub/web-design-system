@@ -1,11 +1,3 @@
-/**
- * Authored documentation page for `ai-sandbox`.
- *
- * Every live specimen renders the real component from `components/ai-elements/sandbox.tsx`.
- * Anything interactive lives in the companion client file
- * `sandbox-specimen.tsx` (a spec module cannot carry "use client").
- */
-
 import { SandboxPreview, SandboxStateGrid } from "./sandbox-specimen";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";

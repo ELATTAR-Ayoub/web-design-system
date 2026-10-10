@@ -1,12 +1,5 @@
 "use client";
 
-/**
- * Live specimens for the `agent-spark-field` page. A host arms the field with
- * the same three conditions the product uses: the last effort level, the
- * prompt focused, and no reduced-motion preference. The loop is a canvas
- * animation frame that runs only while armed and stops on cleanup.
- */
-
 import * as React from "react";
 
 import { EffortSlider, isMaxEffort } from "@/components/agent/parts/effort-slider";

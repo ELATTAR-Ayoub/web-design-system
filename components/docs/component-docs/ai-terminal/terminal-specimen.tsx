@@ -14,12 +14,6 @@ import {
 } from "@/components/ai-elements/terminal";
 import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 
-/**
- * Live specimens for the `ai-terminal` page. Output is a fixed string with
- * ANSI escapes — the same shape the AgentWorkspace builds from a command
- * result (workspace-outputs.tsx). Nothing here streams on a timer.
- */
-
 const ESC = "\u001b";
 const OUTPUT = [
   `${ESC}[36m$${ESC}[0m npm run build`,

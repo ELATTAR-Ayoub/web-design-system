@@ -1,20 +1,3 @@
-/**
- * The five section renderers.
- *
- * Each one composes `components/ds/kit.tsx` — the documentation furniture this
- * repository already had — rather than re-drawing panels, code blocks and
- * definition lists. Nothing here declares a colour, a size, a radius or a
- * duration: every class is a token-backed utility or a `.type-*` role.
- *
- * `InstallBlock` is the section worth reading closely. It is the only place in
- * the documentation that may print a delivery instruction, and it DERIVES that
- * instruction from `lib/ds/platform-contract.ts` and the generated
- * `public/r/commands.json`. A page cannot pass it a command. That closes the
- * failure the audit found: pages printing `npx shadcn add <name>` for
- * dependency items, CSS capabilities and npm packages alike, none of which
- * resolve.
- */
-
 import { CodeBlock } from "@/components/ds/code-block";
 import { Code, CommandBlock, Meta } from "@/components/ds/kit";
 
@@ -32,20 +15,12 @@ import type {
   SnippetSection,
 } from "./types";
 
-/* ── Showcase ─────────────────────────────────────────────────────────────── */
-
 function ShowcaseBlock({ section }: { section: ShowcaseSection }) {
   return (
     <PreviewCode
       label={section.label ?? section.title}
       source={section.source}
       flush={section.flush}
-      /* The Preview section's stage has a floor (`--height-doc-stage`, 640px)
-         and centres its specimen vertically in it; every other stage is sized
-         by its content. `wide` (ShowcaseSection's own field — see
-         types.ts) drops the ordinary `max-w-3xl` cap for a specimen that
-         lays out by its own container width and needs the article's full
-         measure to ever reach its wider layouts. */
       stageClassName={
         section.id === "preview"
           ? section.wide
@@ -58,8 +33,6 @@ function ShowcaseBlock({ section }: { section: ShowcaseSection }) {
     </PreviewCode>
   );
 }
-
-/* ── Effect ───────────────────────────────────────────────────────────────── */
 
 function EffectBlock({ section }: { section: EffectSection }) {
   return (
@@ -78,18 +51,6 @@ function EffectBlock({ section }: { section: EffectSection }) {
   );
 }
 
-/* ── Snippet and shared source rendering ──────────────────────────────────── */
-
-/**
- * The source beneath a specimen.
- *
- * `CodeBlock` rather than the kit's `CommandBlock`: `CommandBlock` is
- * deliberately bash-only, because the one thing it renders is an install
- * command. Source is not a command, and giving `CommandBlock` a `language`
- * prop to serve both would erase the distinction the Install section depends
- * on. Both compose the same base `CodeBlock`, so the copy affordance and its
- * two-signal feedback are identical either way.
- */
 function SourceBlock({ code, language = "tsx" }: { code: string; language?: string }) {
   return (
     <div className="mt-4">
@@ -106,20 +67,6 @@ function SnippetBlock({ section }: { section: SnippetSection }) {
   return <SourceBlock code={section.code} language={section.language ?? "tsx"} />;
 }
 
-/* ── Install ──────────────────────────────────────────────────────────────── */
-
-/**
- * What this item's delivery actually is, in the system's own words.
- *
- * One branch per `Delivery` and per non-installable `Ownership`, so a reader is
- * never told to run a command that does not exist. The four honest answers a
- * page can give:
- *
- *   - a direct install target prints its real, generated command;
- *   - a dependency names the owner that brings it;
- *   - a CSS capability names the foundation item that delivers the stylesheet;
- *   - a package or browser capability names the package or the API.
- */
 function deliveryFor(entry: ContractEntry): {
   headline: string;
   command?: string;
@@ -205,17 +152,10 @@ function InstallBlock({
   );
 }
 
-/* ── Disclosure ───────────────────────────────────────────────────────────── */
-
 function DisclosureBlocks({ section }: { section: DisclosureSection }) {
   return (
     <div className="space-y-8">
       {section.blocks.map((block, index) => (
-        // `scroll-mt` on the anchored block, not on its heading: the id has to
-        // be on the element the rail links to, and that element has to come to
-        // rest clear of the sticky header. `--scroll-offset` is the same
-        // measure `DsSection` uses, so a nested anchor and a section anchor
-        // land at the same height.
         <div
           key={block.anchor ?? block.label ?? index}
           id={block.anchor}
@@ -231,21 +171,11 @@ function DisclosureBlocks({ section }: { section: DisclosureSection }) {
   );
 }
 
-/* ── Dispatch ─────────────────────────────────────────────────────────────── */
-
-/**
- * Render one section.
- *
- * The `switch` is exhaustive over the closed union, so adding a sixth section
- * type is a typecheck failure here rather than a silently unrendered section
- * on ninety pages.
- */
 export function DocSectionBody({
   section,
   name,
 }: {
   section: DocSection;
-  /** The catalog item, so `install` can read its ownership. */
   name: string;
 }) {
   switch (section.kind) {
@@ -260,9 +190,6 @@ export function DocSectionBody({
     case "install": {
       const entry = contractEntry(name);
       if (!entry) {
-        // Unreachable through the route, which resolves the entry before
-        // rendering. Kept as a visible statement rather than a thrown error so
-        // one bad name cannot blank a page in production.
         return (
           <p className="type-small text-muted-foreground">
             No contract entry for <Code>{name}</Code>.
@@ -274,7 +201,6 @@ export function DocSectionBody({
   }
 }
 
-/** A definition list of an item's public exports and source path. */
 export function SourceMeta({
   sourcePath,
   exports,

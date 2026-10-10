@@ -7,8 +7,6 @@ import { CodeBlock, type CopyFn } from "@/components/ds/code-block";
 import { cn } from "@/lib/utils";
 import { siblings, type DsGroup } from "@/lib/ds/nav";
 
-/* ── Page header ──────────────────────────────────────────────────────────── */
-
 export function DsPageHeader({
   eyebrow,
   title,
@@ -41,8 +39,6 @@ export function DsPageHeader({
   );
 }
 
-/* ── Section ──────────────────────────────────────────────────────────────── */
-
 export function DsSection({
   id,
   title,
@@ -57,10 +53,6 @@ export function DsSection({
   className?: string;
 }) {
   return (
-    /* No `scroll-mt-*`. `html` carries `scroll-padding-block-start:
-       var(--scroll-offset)`, which is derived from the header height rather
-       than guessing at it — this used to hand-set `scroll-mt-24` and happened
-       to agree. */
     <section id={id} className={cn("mb-20", className)}>
       <div className="mb-6">
         <h2 className="type-h3 text-foreground">{title}</h2>
@@ -72,8 +64,6 @@ export function DsSection({
     </section>
   );
 }
-
-/* ── Panel — the framed stage every specimen sits on ─────────────────────── */
 
 export function Panel({
   label,
@@ -88,7 +78,6 @@ export function Panel({
   children: React.ReactNode;
   className?: string;
   bodyClassName?: string;
-  /** Remove body padding, for specimens that should reach the panel edge. */
   flush?: boolean;
 }) {
   return (
@@ -113,7 +102,6 @@ export function Panel({
   );
 }
 
-/** Horizontal cluster of specimens. */
 export function Row({
   children,
   className,
@@ -140,8 +128,6 @@ export function Row({
     </div>
   );
 }
-
-/* ── State matrices ───────────────────────────────────────────────────────── */
 
 export function StateGrid({
   children,
@@ -197,35 +183,16 @@ export function StateCell({
   );
 }
 
-/* ── Reference blocks ─────────────────────────────────────────────────────── */
-
-/** Token / prop reference list. */
 export function Meta({
   items,
   className,
 }: {
-  /**
-   * `v` is a ReactNode rather than a string so a row can print a token's LIVE
-   * value — `<TokenValue token="--width-page" />` — instead of a number typed
-   * beside the token's name. The spacing page claimed 1320px for
-   * `--width-page` for as long as that section existed, while the token said
-   * 1200; a row that reads the stylesheet cannot make that mistake.
-   */
   items: { k: string; v: React.ReactNode }[];
   className?: string;
 }) {
   return (
     <dl
-      // `@container/meta`, and the rows below split on `@sm` rather than `sm`.
-      //
-      // A VIEWPORT breakpoint here was wrong, and the sidebar page is where it
-      // showed: that specimen puts a `Meta` inside a 20rem column, and because
-      // the viewport was 1440 the `sm:` rule fired anyway — a 13rem label
-      // column against a 320px container left 56px for the description, which
-      // wrapped to one word per line. Nothing catches this: the classes are
-      // tokens, the markup is right, and the page does not overflow. A
-      // component that can be placed in a narrow column has to ask how wide IT
-      // is, not how wide the window is.
+      // Container query, not viewport: Meta can sit in a narrow column.
       className={cn(
         "@container/meta divide-y divide-border overflow-hidden rounded-lg border border-border bg-card",
         className,
@@ -246,23 +213,13 @@ export function Meta({
 
 export function Code({ children }: { children: React.ReactNode }) {
   return (
-    /* `wrap-anywhere` is load-bearing at 375px, and it was missing.
-       An inline code chip is usually a short identifier, but the chat
-       specimen names a real path — a 41-character file path
-       in mono with no break opportunity in it — which measured
-       393px inside a 375px screen and pushed the document to 438px.
-       It was invisible to the page-overflow test for a second reason worth
-       recording: mobile Chrome GROWS `window.innerWidth` to fit an overflowing
-       document, so `scrollWidth === innerWidth` stayed true at 438 and the
-       assertion passed. `document.documentElement.clientWidth` is the layout
-       viewport and does not move; the helper reads that now. */
+    // wrap-anywhere keeps long file paths inside narrow screens.
     <code className="type-code rounded-sm border border-border bg-card px-1.5 py-0.5 wrap-anywhere text-muted-foreground">
       {children}
     </code>
   );
 }
 
-/** The rule pair. Every page that has a trap states it here. */
 export function DoDont({
   dos,
   donts,
@@ -298,7 +255,6 @@ export function DoDont({
   );
 }
 
-/** Callout for a rule or trap worth interrupting the reader for. */
 export function Note({
   tone = "action",
   title,
@@ -323,8 +279,6 @@ export function Note({
   );
 }
 
-/* ── Index cards, used by the three group index pages ─────────────────────── */
-
 export function IndexGrid({ children }: { children: React.ReactNode }) {
   return (
     <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">{children}</div>
@@ -340,14 +294,6 @@ export function IndexCard({
   href: string;
   title: string;
   blurb: string;
-  /**
-   * Section chips under the blurb. Optional, and increasingly unused.
-   *
-   * A card listing a page's sections is a third copy of an outline the page
-   * already derives and the rail already renders, and it is the copy nothing
-   * checks — the `data` card advertised a "Chart" chip for months with no
-   * section behind it. The family landings pass nothing.
-   */
   contents?: string[];
 }) {
   return (
@@ -383,8 +329,6 @@ export function IndexCard({
     </Link>
   );
 }
-
-/* ── Prev / next ─────────────────────────────────────────────────────────── */
 
 export function PageFootNav({
   groupId,
@@ -433,15 +377,6 @@ export function PageFootNav({
   );
 }
 
-/* ── Command block — docs code furniture ──────────────────────────────────
- *
- * The install commands documentation shows have to be copyable with the same
- * two-signal feedback (RULES §5: every action needs two signals) that the
- * agent transcript's fenced code already carries. Rather than a second
- * clipboard implementation, this composes `CodeBlock` from
- * `components/ds/code-block.tsx` — the base owner of copyable code —
- * with an injectable `copy` seam so a specimen can force the failure path.
- */
 export function CommandBlock({
   command,
   className,
@@ -449,7 +384,6 @@ export function CommandBlock({
 }: {
   command: string;
   className?: string;
-  /** Overrides the clipboard write. Exposed so a specimen can force the failure path. */
   copy?: CopyFn;
 }) {
   return (

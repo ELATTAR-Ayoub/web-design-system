@@ -1,31 +1,3 @@
-/**
- * Authored documentation page for `chart-geometry`.
- *
- * RESOLVED naming collision (`docs/contracts/audit/chart-geometry.json`,
- * `lib/ds/platform-contract.ts`). Flutter's `chart_geometry.dart` is a
- * pure-maths library — nice-tick calculation, band/point/linear scales, bar
- * layout, `d3-shape` curve interpolation, and polar sector/arc geometry —
- * shared by every cartesian and polar chart, because Flutter has no charting
- * package to lean on. On the web that same maths is not ours: it is
- * `recharts`' own (`XAxis`/`YAxis` `scale`, `tickCount`, `domain`; `Line`/
- * `Area` `type="monotone"`; `PolarGrid`/`PolarAngleAxis`), reached through
- * `ChartContainer`. The contract row is `delivery: "package-native"` — there
- * is no module of ours that computes a scale or a curve, so this page
- * documents the recharts primitives that own each piece of geometry rather
- * than pointing at a file that only contains the container.
- *
- * An earlier version of this page pointed `sourcePath` at
- * `components/ui/chart.tsx` and showed `UnitActivityChart` and
- * `ConversionFunnelChart` — two hand-drawn, non-recharts specimens from
- * `components/ds/charts/` — as if they WERE the capability. Neither claim
- * survives the audit: `chart.tsx` is the container, not the maths engine,
- * and those two components exist for the opposite reason `chart_geometry.dart`
- * does — they draw a percentage or a level comparison directly as CSS
- * geometry precisely because no scale function fits their shape. They are
- * kept below, honestly framed as documentation specimens of "when the
- * geometry is the component", not as this item's capability.
- */
-
 import { AreaAxes } from "@/components/ds/charts/area";
 import { LineMultiple } from "@/components/ds/charts/line";
 import { RadialStacked } from "@/components/ds/charts/radial";

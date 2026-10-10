@@ -1,11 +1,3 @@
-/**
- * Authored documentation page for `kbd`.
- *
- * Migrated from the old `base/buttons` category page (the "Kbd" section).
- * Every specimen renders the real `Kbd` and `KbdGroup` from
- * `components/ui/kbd.tsx`.
- */
-
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 

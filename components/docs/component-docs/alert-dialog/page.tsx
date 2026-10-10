@@ -1,18 +1,3 @@
-/**
- * Authored documentation page for `alert-dialog`.
- *
- * Replaces the generated baseline. Migrated from the old `base/dialogs`
- * category page (`app/design-system/components/base/dialogs/page.tsx`, since deleted), which
- * held every overlay's real documentation on one page. Every specimen below
- * renders the real `AlertDialog` from `components/ui/alert-dialog.tsx` —
- * nothing here is a styled div.
- *
- * "Danger Zone" is not a separate registry item: it is a composition built on
- * AlertDialog, documented here as an example
- * (`components/ds/danger-zone-demo.tsx`) rather than a component of its own —
- * see the Examples section below.
- */
-
 import {
   AlertDialog,
   AlertDialogAction,

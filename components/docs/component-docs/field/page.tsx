@@ -1,23 +1,3 @@
-/**
- * Authored documentation page for `field`.
- *
- * Replaces the generated baseline. Migrated from the old `base/forms`
- * category page (`app/design-system/components/base/forms/page.tsx`, since deleted), which
- * mentioned Field only as the presentation layer `FormField` renders into.
- * This page documents Field on its own terms: label, description, error and
- * grouping anatomy, independent of react-hook-form (that binding layer is
- * `form`, documented on its own page).
- *
- * `components/docs/component-docs/selection-control/page.tsx` already states
- * that a selection ROW — a checkbox or switch plus its label — is `Field`
- * composed with the control, not a separate component. Nothing below
- * contradicts that: the selection-row composition shown there is repeated
- * here only as one example among several, not redefined.
- *
- * Every specimen is the real export from `components/ui/field.tsx`. None of
- * it needs a hook to render, so — unlike `form` — this whole page stays live.
- */
-
 import { Mail } from "lucide-react";
 
 import { Checkbox } from "@/components/ui/checkbox";

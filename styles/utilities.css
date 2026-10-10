@@ -1265,44 +1265,39 @@
   --xy-resize-background-color: var(--color-action);
 }
 
-/* ============================================================================
-   terminal-ansi — a command's ANSI colours on our tokens
+/* ── terminal-colors — a command's colours on our tokens ───────────────────
+   components/ai-elements/terminal.tsx renders output through TerminalText
+   (lib/terminal-text.tsx), so a coloured span carries a class (term-fg-red,
+   term-bg-bright-green, term-bold, …) and no inline colour. Foregrounds are
+   -ink roles, readable in both themes; backgrounds are the same hue as a quiet
+   tint. Bright variants share their base role. 256-colour and truecolor output
+   carry a class but no colour, and fall back to the terminal's foreground. */
+@utility terminal-colors {
+  & .term-fg-black, & .term-fg-bright-black { color: var(--color-muted-foreground); }
+  & .term-fg-red, & .term-fg-bright-red { color: var(--color-destructive-ink); }
+  & .term-fg-green, & .term-fg-bright-green { color: var(--color-success-ink); }
+  & .term-fg-yellow, & .term-fg-bright-yellow { color: var(--color-warning-ink); }
+  & .term-fg-blue, & .term-fg-bright-blue { color: var(--color-action-ink); }
+  & .term-fg-magenta, & .term-fg-bright-magenta { color: var(--color-value-ink); }
+  & .term-fg-cyan, & .term-fg-bright-cyan { color: var(--color-info-ink); }
+  & .term-fg-white, & .term-fg-bright-white { color: var(--color-foreground); }
 
-   `components/ai-elements/terminal.tsx` renders output through ansi-to-react
-   with `useClasses`, so a coloured span carries a class (`ansi-red-fg`,
-   `ansi-bright-green-bg`, `ansi-bold`, …) and no inline rgb() — this is where
-   those classes resolve. Foregrounds are `-ink` roles, so coloured output
-   stays readable in both themes; backgrounds are the same hue as a quiet
-   tint. Bright variants share their base role — the theme already tunes each
-   ink for contrast, and a second brighter ramp would only fail it. 256-colour
-   and truecolor output carry a class but no colour, and fall back to the
-   terminal's own foreground.
-   ========================================================================= */
-@utility terminal-ansi {
-  & .ansi-black-fg, & .ansi-bright-black-fg { color: var(--color-muted-foreground); }
-  & .ansi-red-fg, & .ansi-bright-red-fg { color: var(--color-destructive-ink); }
-  & .ansi-green-fg, & .ansi-bright-green-fg { color: var(--color-success-ink); }
-  & .ansi-yellow-fg, & .ansi-bright-yellow-fg { color: var(--color-warning-ink); }
-  & .ansi-blue-fg, & .ansi-bright-blue-fg { color: var(--color-action-ink); }
-  & .ansi-magenta-fg, & .ansi-bright-magenta-fg { color: var(--color-value-ink); }
-  & .ansi-cyan-fg, & .ansi-bright-cyan-fg { color: var(--color-info-ink); }
-  & .ansi-white-fg, & .ansi-bright-white-fg { color: var(--color-foreground); }
+  & .term-bg-black, & .term-bg-bright-black { background-color: var(--color-muted); }
+  & .term-bg-red, & .term-bg-bright-red { background-color: color-mix(in oklab, var(--color-destructive) 20%, transparent); }
+  & .term-bg-green, & .term-bg-bright-green { background-color: color-mix(in oklab, var(--color-success) 20%, transparent); }
+  & .term-bg-yellow, & .term-bg-bright-yellow { background-color: color-mix(in oklab, var(--color-warning) 20%, transparent); }
+  & .term-bg-blue, & .term-bg-bright-blue { background-color: color-mix(in oklab, var(--color-action) 20%, transparent); }
+  & .term-bg-magenta, & .term-bg-bright-magenta { background-color: color-mix(in oklab, var(--color-value) 20%, transparent); }
+  & .term-bg-cyan, & .term-bg-bright-cyan { background-color: color-mix(in oklab, var(--color-info) 20%, transparent); }
+  & .term-bg-white, & .term-bg-bright-white { background-color: var(--color-secondary); }
 
-  & .ansi-black-bg, & .ansi-bright-black-bg { background-color: var(--color-muted); }
-  & .ansi-red-bg, & .ansi-bright-red-bg { background-color: color-mix(in oklab, var(--color-destructive) 20%, transparent); }
-  & .ansi-green-bg, & .ansi-bright-green-bg { background-color: color-mix(in oklab, var(--color-success) 20%, transparent); }
-  & .ansi-yellow-bg, & .ansi-bright-yellow-bg { background-color: color-mix(in oklab, var(--color-warning) 20%, transparent); }
-  & .ansi-blue-bg, & .ansi-bright-blue-bg { background-color: color-mix(in oklab, var(--color-action) 20%, transparent); }
-  & .ansi-magenta-bg, & .ansi-bright-magenta-bg { background-color: color-mix(in oklab, var(--color-value) 20%, transparent); }
-  & .ansi-cyan-bg, & .ansi-bright-cyan-bg { background-color: color-mix(in oklab, var(--color-info) 20%, transparent); }
-  & .ansi-white-bg, & .ansi-bright-white-bg { background-color: var(--color-secondary); }
-
-  & .ansi-bold { font-weight: 600; }
-  & .ansi-dim { color: var(--color-muted-foreground); }
-  & .ansi-italic { font-style: italic; }
-  & .ansi-underline { text-decoration: underline; }
-  & .ansi-strikethrough { text-decoration: line-through; }
-  & .ansi-hidden { visibility: hidden; }
+  & .term-bold { font-weight: 600; }
+  & .term-dim { color: var(--color-muted-foreground); }
+  & .term-italic { font-style: italic; }
+  & .term-underline { text-decoration: underline; }
+  & .term-strike { text-decoration: line-through; }
+  & .term-underline.term-strike { text-decoration: underline line-through; }
+  & .term-hidden { visibility: hidden; }
 }
 
 /* ── streamdown-chrome — the reply's markdown parts that keep their behaviour ──

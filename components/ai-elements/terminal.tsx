@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { IconSwap } from "@/components/ui/icon-swap";
 import { cn } from "@/lib/utils";
-import Ansi from "ansi-to-react";
+import { TerminalText } from "@/lib/terminal-text";
 import { CheckIcon, CopyIcon, TerminalIcon, Trash2Icon } from "lucide-react";
 import type { ComponentProps, HTMLAttributes } from "react";
 import {
@@ -206,18 +206,14 @@ export const TerminalContent = ({
 
   return (
     <div
-      className={cn("terminal-ansi max-h-96 overflow-auto p-4", className)}
+      className={cn("terminal-colors max-h-96 overflow-auto p-4", className)}
       ref={containerRef}
       {...props}
     >
       {children ?? (
         <pre className="type-code whitespace-pre-wrap break-words">
-          {/* Vendored change: `useClasses` makes ansi-to-react emit
-              `ansi-<colour>-fg|-bg` / `ansi-<decoration>` classes instead of
-              inline rgb() styles, which ignore the theme (white output
-              vanished in light mode). The token-based rules for those classes
-              belong in styles/utilities.css. */}
-          <Ansi useClasses>{output}</Ansi>
+          {/* Vendored change: output renders through our own TerminalText (lib/terminal-text.tsx) as term-* classes, not an ANSI package with inline colours. */}
+          <TerminalText>{output}</TerminalText>
           {isStreaming && (
             /* The streaming cursor is the same idea as the OTP caret — a mark
                that says "input lands here" — so it plays the same named

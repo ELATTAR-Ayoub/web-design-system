@@ -5,21 +5,14 @@ Each entry says what it is, what the exposure is and why it was accepted.
 
 ## Dependency advisories (`npm audit --omit=dev`)
 
-Accepted by the owner on 2026-10-10. `npm audit --omit=dev` reports 9
-vulnerabilities: 2 high and 7 low.
+Accepted by the owner on 2026-10-10. `npm audit --omit=dev` reports 7
+vulnerabilities, all low.
 
-### High: linkify-it (2)
-
-- Advisories: GHSA-22p9-wv53-3rq4 and GHSA-v245-v573-v5vm, both regular-expression
-  denial of service in `linkify-it` (quadratic scan loop).
-- Reached through `ansi-to-react@6.2.6`, which the AI Terminal output component
-  uses to colour ANSI escape sequences.
-- It runs client-side only. There is no server path that processes this text.
-- There is no patched release of `ansi-to-react`: 6.2.6 is the latest. `npm audit fix --force`
-  would move to the older 6.1.6, which does not depend on `linkify-it`; that
-  downgrade and replacing the package are not being done.
-- Exposure: very large or crafted terminal output makes the viewer's own browser
-  tab slow or unresponsive. It does not leak data or run code.
+The two high `linkify-it` advisories reported earlier are gone: the AI Terminal
+now renders its output with the system's own `TerminalText`
+(`lib/terminal-text.tsx`), and `ansi-to-react`, `anser`, `escape-carriage` and
+`linkify-it` are no longer dependencies. Its link finder scans forward once
+and never backtracks, and a test runs it on hostile input.
 
 ### Low: katex, mermaid and remark-math (7)
 

@@ -1424,7 +1424,6 @@
         "@streamdown/mermaid",
         "@xyflow/react",
         "ai",
-        "ansi-to-react",
         "lucide-react",
         "media-chrome",
         "nanoid",
@@ -1856,6 +1855,11 @@
           "path": "components/ai-elements/terminal.tsx",
           "type": "registry:component",
           "target": "components/ai-elements/terminal.tsx"
+        },
+        {
+          "path": "lib/terminal-text.tsx",
+          "type": "registry:component",
+          "target": "lib/terminal-text.tsx"
         },
         {
           "path": "components/ai-elements/test-results.tsx",

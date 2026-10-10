@@ -6,6 +6,17 @@ claim deployment: a tag says what the code is, not where it runs.
 
 ## Unreleased
 
+### Changed — the terminal renders its own colours
+- `TerminalText` (`lib/terminal-text.tsx`) is new, original code. It reads terminal colour
+  codes (16 colours, bright, 256-colour, truecolor, bold, dim, italic, underline, blink,
+  inverse, hidden, strikethrough), applies carriage returns, backspaces and erase-line so
+  progress output redraws in place, strips other control sequences, and can turn
+  http(s), www and email text into links with a single forward scan.
+- The AI Terminal uses it. `ansi-to-react`, `anser`, `escape-carriage` and `linkify-it` are
+  removed, and with them the two high `npm audit` advisories.
+- Output classes are `term-fg-*`, `term-bg-*` and `term-<decoration>`, resolved by the
+  `terminal-colors` utility (was `terminal-ansi` with `ansi-*` classes).
+
 ### Added
 - The project is released under the MIT licence (`LICENSE`). `THIRD_PARTY_NOTICES.md` credits every vendored source, and `components/ai-elements/` carries the full Apache-2.0 text beside its `NOTICE.md`.
 - `docs/known-issues.md` records the dependency advisories that are known and accepted.

@@ -980,7 +980,7 @@
    same eight `--code-*` roles the Prism highlighter uses, so code reads the
    same everywhere and follows the theme: declared on `:root`, which carries
    the theme class, so each alias resolves that theme's role. The ANSI names
-   match the terminal's own mapping (`terminal-ansi`, styles/utilities.css). */
+   match the terminal's own mapping (`terminal-colors`, styles/utilities.css). */
 :root {
   --shiki-foreground: var(--foreground);
   --shiki-background: transparent;

@@ -12,7 +12,7 @@
     "anatomy": {
       "verdict": "n/a",
       "flutter": "No Dart source exists at the pinned snapshot for AI Terminal — origin: web-only, flutterSources is [].",
-      "web": "Terminal is a bordered flex column; the default layout is TerminalHeader (border row) holding TerminalTitle (terminal Icon + text), TerminalStatus, TerminalActions with TerminalCopyButton and TerminalClearButton, followed by TerminalContent, a scrollable div carrying the terminal-ansi utility with a pre that renders the output through ansi-to-react and an anim-caret span while streaming.",
+      "web": "Terminal is a bordered flex column; the default layout is TerminalHeader (border row) holding TerminalTitle (terminal Icon + text), TerminalStatus, TerminalActions with TerminalCopyButton and TerminalClearButton, followed by TerminalContent, a scrollable div carrying the terminal-colors utility with a pre that renders the output through TerminalText (lib/terminal-text.tsx) and an anim-caret span while streaming.",
       "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
     },
     "api": {
@@ -24,7 +24,7 @@
     "states": {
       "verdict": "n/a",
       "flutter": "No Dart source exists at the pinned snapshot for AI Terminal — origin: web-only, flutterSources is [].",
-      "web": "Streaming adds the caret and lets TerminalStatus render, an empty output string leaves a blank content area, a copy swaps its glyph to a success check for timeout ms, and a failed command appears as red ANSI text that terminal-ansi maps to the error ink.",
+      "web": "Streaming adds the caret and lets TerminalStatus render, an empty output string leaves a blank content area, a copy swaps its glyph to a success check for timeout ms, and a failed command appears as red ANSI text that terminal-colors maps to the error ink.",
       "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
     },
     "disabled": {
@@ -42,7 +42,7 @@
     "semantics": {
       "verdict": "n/a",
       "flutter": "No Dart source exists at the pinned snapshot for AI Terminal — origin: web-only, flutterSources is [].",
-      "web": "The output is selectable text in a pre; copy and clear are icon-only Buttons with aria-label (Copy output, Copied, Clear terminal); there is no live region, and ANSI colour spans are classes (ansi-red-fg and so on) resolved by terminal-ansi in styles/utilities.css.",
+      "web": "The output is selectable text in a pre; copy and clear are icon-only Buttons with aria-label (Copy output, Copied, Clear terminal); there is no live region, and ANSI colour spans are classes (term-fg-red and so on) resolved by terminal-colors in styles/utilities.css.",
       "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
     }
   }

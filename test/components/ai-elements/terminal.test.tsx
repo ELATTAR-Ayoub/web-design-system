@@ -77,8 +77,8 @@ describe("Terminal", () => {
       <Terminal output={"\u001b[31mfail\u001b[0m \u001b[1;32mok\u001b[0m"} />
     );
     const red = screen.getByText("fail");
-    expect(red).toHaveClass("ansi-red-fg");
-    expect(screen.getByText("ok")).toHaveClass("ansi-green-fg", "ansi-bold");
+    expect(red).toHaveClass("term-fg-red");
+    expect(screen.getByText("ok")).toHaveClass("term-fg-green", "term-bold");
     for (const span of container.querySelectorAll("code span")) {
       expect((span as HTMLElement).style.color).toBe("");
       expect((span as HTMLElement).style.backgroundColor).toBe("");

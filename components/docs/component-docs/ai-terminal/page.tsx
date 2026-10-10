@@ -35,7 +35,7 @@ export const spec: ComponentDocSpec = {
       title: "Installation",
       notes: (
         <p className="type-small text-muted-foreground">
-          Vendored from Vercel AI Elements (Apache-2.0, see components/ai-elements/NOTICE.md) and restyled to the system — not redistributed through the registry. It renders ANSI with the <code className="type-code">ansi-to-react</code> package, and its colours come from the <code className="type-code">terminal-ansi</code> utility in <code className="type-code">styles/utilities.css</code>, which ships with the stylesheet.
+          Vendored from Vercel AI Elements (Apache-2.0, see components/ai-elements/NOTICE.md) and restyled to the system — not redistributed through the registry. It renders ANSI with the system&apos;s own <code className="type-code">TerminalText</code> (<code className="type-code">lib/terminal-text.tsx</code>), and its colours come from the <code className="type-code">terminal-colors</code> utility in <code className="type-code">styles/utilities.css</code>, which ships with the stylesheet.
         </p>
       ),
     },
@@ -71,7 +71,7 @@ export const spec: ComponentDocSpec = {
           body: (
             <Note tone="action" title="Every state, classified">
               <p>
-                <strong>rest</strong>: header, output, copy. <strong>hover</strong>, <strong>focus-visible</strong>, <strong>pressed</strong> and <strong>disabled</strong>: inherited from the ghost icon Buttons (copy and clear); the output area itself has no hover or press. <strong>loading</strong>: <code className="type-code">isStreaming</code> adds a blinking caret after the last line (<code className="type-code">anim-caret</code>, the same blink as the OTP caret) and lets TerminalStatus render; without it TerminalStatus returns null. <strong>success</strong>: the copy button swaps to a check for <code className="type-code">timeout</code> ms (default 2000). <strong>error</strong>: a failed command is not a component state — the exit code and error text arrive as red ANSI in the output, which <code className="type-code">terminal-ansi</code> maps to the error ink; a failed clipboard write calls <code className="type-code">onError</code>. <strong>empty</strong>: an empty output string draws the header and a blank content area; the clear button only exists while <code className="type-code">onClear</code> is set.
+                <strong>rest</strong>: header, output, copy. <strong>hover</strong>, <strong>focus-visible</strong>, <strong>pressed</strong> and <strong>disabled</strong>: inherited from the ghost icon Buttons (copy and clear); the output area itself has no hover or press. <strong>loading</strong>: <code className="type-code">isStreaming</code> adds a blinking caret after the last line (<code className="type-code">anim-caret</code>, the same blink as the OTP caret) and lets TerminalStatus render; without it TerminalStatus returns null. <strong>success</strong>: the copy button swaps to a check for <code className="type-code">timeout</code> ms (default 2000). <strong>error</strong>: a failed command is not a component state — the exit code and error text arrive as red ANSI in the output, which <code className="type-code">terminal-colors</code> maps to the error ink; a failed clipboard write calls <code className="type-code">onError</code>. <strong>empty</strong>: an empty output string draws the header and a blank content area; the clear button only exists while <code className="type-code">onClear</code> is set.
               </p>
             </Note>
           ),
@@ -96,8 +96,8 @@ export const spec: ComponentDocSpec = {
           body: (
             <Meta
               items={[
-                { k: "useClasses", v: "The output goes through <Ansi useClasses>, so a coloured span carries a class such as ansi-red-fg or ansi-bold and no inline rgb() — an inline colour ignores the theme, and white output vanished in light mode." },
-                { k: "terminal-ansi", v: "The utility on the content area resolves those classes. Foregrounds are -ink roles: red is destructive, green success, yellow warning, blue action, magenta value, cyan info, white the foreground, black the muted foreground. Bright variants share their base role." },
+                { k: "TerminalText", v: "The output goes through TerminalText, so a coloured span carries a class such as term-fg-red or term-bold and no inline colour — an inline colour ignores the theme. It also applies carriage returns, backspaces and erase-line, so a progress bar redraws in place, and strips every other control sequence." },
+                { k: "terminal-colors", v: "The utility on the content area resolves those classes. Foregrounds are -ink roles: red is destructive, green success, yellow warning, blue action, magenta value, cyan info, white the foreground, black the muted foreground. Bright variants share their base role." },
                 { k: "Backgrounds", v: "The same hues as a 20 percent tint (black is the muted surface, white the secondary)." },
                 { k: "Decorations", v: "bold, dim, italic, underline, strikethrough and hidden map to weight 600, the muted foreground, italic, underline, line-through and visibility." },
                 { k: "256-colour and truecolor", v: "These carry a class but no colour and fall back to the terminal's own foreground." },
@@ -171,8 +171,8 @@ export const spec: ComponentDocSpec = {
           body: (
             <Meta
               items={[
-                { k: "children?", v: "ReactNode — replaces the default pre with the Ansi output and caret." },
-                { k: "className?", v: 'string — merged after "terminal-ansi max-h-96 overflow-auto p-4"; div props pass through.' },
+                { k: "children?", v: "ReactNode — replaces the default pre with the TerminalText output and caret." },
+                { k: "className?", v: 'string — merged after "terminal-colors max-h-96 overflow-auto p-4"; div props pass through.' },
               ]}
             />
           ),
@@ -209,7 +209,7 @@ export const spec: ComponentDocSpec = {
         {
           body: (
             <Note tone="action">
-              Commands print ANSI, and rendering it as text shows escape garbage while rendering it with inline colours breaks one theme. The AgentWorkspace draws a command tool&apos;s result with this component: <code className="type-code">ToolOutputView</code> in <code className="type-code">components/agent/workspace/workspace-outputs.tsx</code> builds the string from the command (a cyan prompt line), the output and a red exit code, and sets <code className="type-code">isStreaming</code> while the tool runs; <code className="type-code">tool-output.ts</code> validates the <code className="type-code">terminal</code> shape first. Vendored changes: ansi-to-react now emits classes (<code className="type-code">useClasses</code>) that <code className="type-code">terminal-ansi</code> maps onto the -ink roles; the streaming cursor plays the system&apos;s caret blink instead of a vendored pulse that bypassed the motion scale; the icon buttons are system Buttons with the check swap; the type roles replaced raw sizes.
+              Commands print ANSI, and rendering it as text shows escape garbage while rendering it with inline colours breaks one theme. The AgentWorkspace draws a command tool&apos;s result with this component: <code className="type-code">ToolOutputView</code> in <code className="type-code">components/agent/workspace/workspace-outputs.tsx</code> builds the string from the command (a cyan prompt line), the output and a red exit code, and sets <code className="type-code">isStreaming</code> while the tool runs; <code className="type-code">tool-output.ts</code> validates the <code className="type-code">terminal</code> shape first. Vendored changes: output renders through the system&apos;s own <code className="type-code">TerminalText</code>, whose classes <code className="type-code">terminal-colors</code> maps onto the -ink roles; the streaming cursor plays the system&apos;s caret blink instead of a vendored pulse that bypassed the motion scale; the icon buttons are system Buttons with the check swap; the type roles replaced raw sizes.
             </Note>
           ),
         },

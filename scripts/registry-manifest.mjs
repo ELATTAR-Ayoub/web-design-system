@@ -253,6 +253,7 @@ const agentWorkspaceFiles = [
   "components/ai-elements/suggestion.tsx",
   "components/ai-elements/task.tsx",
   "components/ai-elements/terminal.tsx",
+  "lib/terminal-text.tsx",
   "components/ai-elements/test-results.tsx",
   "components/ai-elements/tool.tsx",
   "components/ai-elements/toolbar.tsx",

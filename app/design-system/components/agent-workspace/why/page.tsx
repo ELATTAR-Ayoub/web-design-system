@@ -148,7 +148,7 @@ const AI_ELEMENTS_CARDS: WhyCardData[] = [
     whatItIs: "Command output with ANSI colour — one of fourteen output components a typed tool result can ask for.",
     whereUsed: "workspace-outputs.tsx: a result with kind \"terminal\", \"test-results\", \"stack-trace\", \"commit\", \"web-preview\" and so on renders its own component; anything else falls back to the plain Tool output.",
     whyChosen: "A test run, a crash or a diff is easier to read as itself than as JSON. The typed contract (tool-output.ts) checks each shape before it is trusted.",
-    whatChanged: "ANSI colours mapped onto the -ink roles (terminal-ansi), code on the --code-* roles, and a web preview accepts only http(s).",
+    whatChanged: "ANSI colours mapped onto the -ink roles (terminal-colors, rendered by our TerminalText), code on the --code-* roles, and a web preview accepts only http(s).",
   },
   {
     title: "Sources",

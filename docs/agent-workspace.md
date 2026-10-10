@@ -213,7 +213,7 @@ this system's roles:
   wear this utility so they read as the system's own.
 - **`xy-tokens`.** Puts React Flow (`@xyflow/react`) on our roles for the
   workflow graph and the AI Canvas, Node and Edge elements.
-- **`terminal-ansi`.** ANSI colours in a terminal result resolve to `-ink` roles,
+- **`terminal-colors`.** ANSI colours in a terminal result resolve to `-ink` roles,
   readable in both themes. 256-colour and truecolor output falls back to the
   terminal's foreground.
 - **The avatar.** `--agent` is the action ramp (the agent acts): action-dark in light mode

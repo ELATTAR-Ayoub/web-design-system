@@ -46,18 +46,18 @@ SOFTWARE.
 
 ## 4. npm dependencies
 
-Installed, not vendored. Each package keeps its own licence. Counts from package-lock.json on 2026-10-10; re-run any licence scanner over the lockfile to refresh (for example `npx license-checker --production --summary`).
+Installed, not vendored. Each package keeps its own licence. Counts from package-lock.json on 2026-10-11; re-run any licence scanner over the lockfile to refresh (for example `npx license-checker --production --summary`).
 
 Advisories that `npm audit --omit=dev` reports for these packages, and why they are accepted, are in [docs/known-issues.md](docs/known-issues.md).
 
-Production dependencies (496 lockfile entries, including optional platform binaries):
+Production dependencies (491 lockfile entries, including optional platform binaries):
 
 | Licence | Packages |
 | --- | --- |
-| MIT | 390 (including `format`, which declares MIT in an array field, and `khroma`) |
+| MIT | 386 (including `format`, which declares MIT in an array field, and `khroma`) |
 | ISC | 38 |
 | Apache-2.0 | 33 |
-| BSD-3-Clause | 11 |
+| BSD-3-Clause | 10 |
 | LGPL-3.0-or-later | 10 |
 | Apache-2.0 AND LGPL-3.0-or-later | 3 |
 | BSD-2-Clause | 2 |

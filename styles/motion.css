@@ -1,0 +1,681 @@
+/* ============================================================================
+   MOTION — everything that owns time
+
+   The duration and easing scale, every `@keyframes` in the system, the
+   utilities that spend them (thirteen `anim-*`, `press`, `toggle-slide`,
+   `swap-roll`), and the `prefers-reduced-motion` block.
+
+   THE LINE BETWEEN THIS FILE AND utilities.css IS TIME VERSUS PAINT. A utility
+   that animates lives here; a utility that only fills, blurs or glows lives
+   there — even when it carries an `animation:` of its own (`foil-value`,
+   `sheen-action`, `bloom-cosmic`), because what those utilities ARE is a
+   surface. Their keyframes are still defined here, which is what keeps "every
+   animation has exactly one home" true.
+
+   The reduced-motion block keeps its unlayered position on purpose: it has to
+   beat layered output, and no selector written inside `@utility` ever can.
+   ========================================================================= */
+
+/* ── The motion scale ────────────────────────────────────────────────────────
+   Lifted verbatim out of the `@theme static` block that used to hold it, so the
+   durations and curves sit beside the keyframes and utilities that spend them.
+
+   A SECOND `@theme static` IS NOT A SECOND THEME. Tailwind v4 merges every
+   `@theme` block it is given, wherever they are written, so these keys land in
+   the same emitted `:root` as the colour and spacing scale in tokens.css and
+   generate the same `duration-*` / `ease-*` utilities they always did.
+
+   `static` for the same reason it is on the other block: these are read by
+   `var()` from rules Tailwind never scans, and the tree-shake would take them.
+   ------------------------------------------------------------------------- */
+@theme static {
+  /* ── The motion scale ─────────────────────────────────────────────────────
+     `tick` is the machine beat: a press registers in 80ms, then springs back
+     over `normal`. That asymmetry — instant in, springy out — is the whole feel. */
+  /* Tailwind's `transition-*` utilities emit their own default duration, which
+     would otherwise beat `duration-normal` on the same element. Normal IS our
+     default, so point the framework's default at it. */
+  --default-transition-duration: 250ms;
+  --default-transition-timing-function: var(--ease-enter);
+
+  --duration-tick: 80ms;
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+  --duration-overlay-enter: 320ms;
+  /* The spring entrance every modal overlay opens on. Longer than
+     `overlay-enter` because `ease-emphasized` spends its last stretch settling
+     an overshoot — cut it to 320ms and the bounce is clipped rather than
+     resolved. */
+  --duration-open: 420ms;
+  /* Ambient, not interactive. The bloom's hover swell is atmosphere rather than
+     feedback, so it is an order of magnitude slower than the control scale — at
+     `slow` it snaps and reads as a state change instead of light spreading. */
+  --duration-bloom: 1000ms;
+  /* The starfield's two sways. Both are slow enough that a toast living eight
+     seconds still visibly turns, and small enough in amplitude that nothing on
+     the surface ever competes with the text. The two are deliberately not
+     multiples of each other — sways that share a period re-sync every few
+     cycles and the field starts to look like one rigid sheet. */
+  --duration-sway: 44s;
+  --duration-sway-alt: 33s;
+  /* Named durations that replace literals written by hand inside the
+     utilities below — same values, so the rename cannot drift them. Ordered to
+     match `DURATION_TOKENS` in `lib/motion-names.ts`, the map this rename is
+     driven from. */
+  --duration-state-change: 600ms;
+  --duration-spin: 900ms;
+  --duration-caret: 1000ms;
+  --duration-shimmer: 1400ms;
+  --duration-shimmer-text: 2600ms;
+  --duration-pulse-live: 2000ms;
+  --duration-press-in: 40ms;
+  --duration-beat-hover: 2600ms;
+  --duration-beat-press: 620ms;
+  --duration-foil-drift: 11000ms;
+  --duration-glint: 5500ms;
+  /* The same glint on hover: it runs more often, because a hovered surface is
+     one somebody is looking at. Paired with --duration-glint and only
+     meaningful beside it. */
+  --duration-glint-hover: 2400ms;
+  --duration-cosmic-drift-deep: 18000ms;
+  --duration-cosmic-drift-near: 11000ms;
+
+  --ease-emphasized: cubic-bezier(0.34, 1.56, 0.64, 1); /* overshoot + settle */
+  --ease-enter: cubic-bezier(0.22, 1, 0.36, 1);
+  /* The accelerating exit. Declared rather than left to Tailwind, which ships
+     its own `ease-in` at cubic-bezier(0.4, 0, 1, 1) — a different, gentler
+     curve. Without this key, writing `ease-in` silently opts out of the motion
+     scale and into the framework's, which is the exact drift every token in
+     this file exists to prevent. Used where something leaves under its own
+     weight, like the scroll-to-bottom button dropping away. */
+  --ease-exit: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-move: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-out-flex: cubic-bezier(0.05, 0.6, 0.4, 0.9);
+  --ease-settle: cubic-bezier(0.16, 1, 0.3, 1); /* long travel, lands soft */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Tailwind's own easing vocabulary, repointed at ours — the same move as
+     --text-sm → --text-small. Not aliases of retired names. */
+  --ease-in: var(--ease-exit);
+  --ease-out: var(--ease-enter);
+  --ease-in-out: var(--ease-move);
+
+  /* ── Springs — the physical half of the scale ─────────────────────────────
+     Components that animate in JavaScript through `motion` (drag, flick,
+     velocity hand-off — the micro-interactions) cannot spend a keyframe: a
+     keyframe cannot inherit the velocity of a thrown finger. They spend a
+     SPRING instead, and a spring is two numbers — how long it takes to look
+     settled, and how much it overshoots. Both live here and are read at run
+     time by `lib/motion/spring.ts`; no component writes either number.
+
+     The roles follow §4's split, "content bounces; controls click":
+       control  a thing you operate settling — critically damped, no overshoot
+       travel   a thing you threw coming to rest — a snap, a swipe, a dismiss
+       content  a thing that arrived or rewarded — the one that may bounce
+       settle   a long, soft landing after a gesture — a toast, a recoil
+     A fifth spring is a design decision recorded in RULES §4. */
+  --spring-control-duration: 300ms;
+  --spring-control-bounce: 0;
+  --spring-travel-duration: 400ms;
+  --spring-travel-bounce: 0.1;
+  --spring-content-duration: 400ms;
+  --spring-content-bounce: 0.3;
+  --spring-settle-duration: 500ms;
+  --spring-settle-bounce: 0.2;
+}
+
+/* ── THE FOURTEEN ─────────────────────────────────────────────────────────────
+   Eleven keyframes and three transitions. This is the whole motion vocabulary
+   a consumer re-themes; every component below `components/` spends one of
+   these and nothing else. A twelfth keyframe is a design decision, not a
+   convenience — see RULES §4.
+
+     enter · exit         content arriving / leaving in place
+     open · close         an overlay arriving / leaving (dialog, popover, sheet…)
+     expand · collapse    disclosure, animated on height (one keyframe, reversed)
+     change               "this value just changed"
+     spin                 the spinner
+     shimmer              skeleton, live text, indeterminate progress (as a sliver)
+     pulse · caret        "still alive" — the live dot, the OTP caret
+
+     press                :active squish + spring back (the click feel)
+     toggle-slide         the travelling selection pill
+     swap-roll            the IconSwap wheel
+   ------------------------------------------------------------------------- */
+
+/* Content arriving. Reads three variables off the element so one keyframe
+   covers a card, a list row, a panel and a scrim:
+     --enter-stage   stagger, counted in HALF ticks (rows set it from index)
+     --enter-y       travel, default 12px; a scrim sets 0
+     --enter-scale   default 0.97; a scrim sets 1                            */
+@keyframes ds-enter {
+  from { opacity: 0; transform: translateY(var(--enter-y, 12px)) scale(var(--enter-scale, 0.97)); }
+  to { opacity: 1; transform: none; }
+}
+@utility anim-enter {
+  animation: ds-enter var(--duration-slow) var(--ease-enter) both;
+  animation-delay: calc(var(--enter-stage, 0) * var(--duration-tick) / 2);
+}
+
+/* Content leaving. Faster than arriving, and it accelerates out.
+ * reduced-motion: ds-exit EXIT — the element is unmounting; its final frame is the resting state. */
+@keyframes ds-exit {
+  from { opacity: 1; transform: none; }
+  to { opacity: 0; transform: translateY(var(--enter-y, 6px)) scale(var(--enter-scale, 0.98)); }
+}
+@utility anim-exit {
+  animation: ds-exit var(--duration-fast) var(--ease-exit) both;
+}
+
+/* "This just changed." Squash-and-stretch in place. Also what a checkbox,
+   radio or switch indicator does on mount — Radix mounts the indicator on
+   check, so it fires naturally. */
+@keyframes ds-change {
+  0% { transform: scale3d(1, 1, 1); }
+  30% { transform: scale3d(1.18, 0.82, 1); }
+  45% { transform: scale3d(0.88, 1.12, 1); }
+  60% { transform: scale3d(1.06, 0.94, 1); }
+  78% { transform: scale3d(0.98, 1.02, 1); }
+  100% { transform: scale3d(1, 1, 1); }
+}
+@utility anim-change {
+  animation: ds-change var(--duration-state-change) var(--ease-enter) both;
+}
+
+/* The sweeping band. One keyframe, three paints. */
+@keyframes ds-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+@utility anim-shimmer {
+  background: linear-gradient(90deg, var(--popover) 0%, var(--accent) 50%, var(--popover) 100%);
+  background-size: 200% 100%;
+  animation: ds-shimmer var(--duration-shimmer) var(--ease-move) infinite;
+}
+@utility anim-shimmer-text {
+  background-image: linear-gradient(100deg, var(--muted-foreground) 30%, var(--agent) 50%, var(--muted-foreground) 70%);
+  background-size: 220% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: ds-shimmer var(--duration-shimmer-text) var(--ease-move) infinite;
+}
+
+/* The live dot. */
+@keyframes ds-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(61, 220, 151, 0.5); }
+  50% { opacity: 0.75; box-shadow: 0 0 0 5px rgba(61, 220, 151, 0); }
+}
+@utility anim-pulse {
+  animation: ds-pulse var(--duration-pulse-live) var(--ease-move) infinite;
+}
+
+/* Collapse is expand played backwards — not a second keyframe. `both` so the
+   panel holds height 0 until Radix unmounts it; `reverse` so the 0% frame it
+   holds is the closed one. `anim-expand` keeps `backwards` for the reason
+   written on it. */
+@utility anim-collapse {
+  animation: ds-expand var(--duration-normal) var(--ease-move) reverse both;
+}
+
+/* ── The click feel ──────────────────────────────────────────────────────────
+   One transition for everything clickable: button, badge, chip, avatar, row,
+   nav item, card. Instant squish in (40ms), springy overshoot out (250ms).
+   `[data-pressed]` beside `:active` so a keyboard Space/Enter gets the same
+   feel — see the Press page. Colour and shadow ride the same curve so a
+   button's hover tint and its press read as one movement. */
+@utility press {
+  transition:
+    transform var(--duration-normal) var(--ease-emphasized),
+    background-color var(--duration-normal) var(--ease-emphasized),
+    border-color var(--duration-normal) var(--ease-emphasized),
+    color var(--duration-normal) var(--ease-emphasized),
+    box-shadow var(--duration-normal) var(--ease-emphasized),
+    opacity var(--duration-normal) var(--ease-emphasized);
+
+  &:active,
+  &[data-pressed] {
+    transform: scale(0.9);
+    transition-duration: var(--duration-press-in);
+  }
+}
+
+/* `press` for a control that also changes SHAPE when it changes state — the
+   voice pill growing from a 44px circle into a labelled pill while it
+   listens. The click feel is `press`'s, unchanged; padding and gap ride the
+   same spring so the growth and the tint read as one movement. One utility,
+   because two transition-owning utilities on one element fight (§4). */
+@utility press-grow {
+  transition:
+    transform var(--duration-normal) var(--ease-emphasized),
+    background-color var(--duration-normal) var(--ease-emphasized),
+    border-color var(--duration-normal) var(--ease-emphasized),
+    color var(--duration-normal) var(--ease-emphasized),
+    box-shadow var(--duration-normal) var(--ease-emphasized),
+    opacity var(--duration-normal) var(--ease-emphasized),
+    padding var(--duration-normal) var(--ease-emphasized),
+    gap var(--duration-normal) var(--ease-emphasized);
+
+  &:active,
+  &[data-pressed] {
+    transform: scale(0.9);
+    transition-duration: var(--duration-press-in);
+  }
+}
+
+/* The travelling selection pill. */
+@utility toggle-slide {
+  transition:
+    transform var(--duration-normal) var(--ease-emphasized),
+    width var(--duration-normal) var(--ease-emphasized),
+    height var(--duration-normal) var(--ease-emphasized),
+    opacity var(--duration-fast) var(--ease-enter);
+}
+
+/* A machine-operated WIDTH change: the history/activity panels collapsing
+   from the header's toggle, and the run bar's own progress line filling in.
+   "Content bounces; controls click" (§4's own line): both are something
+   OPERATED or MEASURED, not content arriving, so this rides `--ease-out-flex`
+   — long travel that must not overshoot — instead of `--ease-emphasized`'s
+   spring. Declared as the full `transition` shorthand, like `press`/
+   `toggle-slide` above, because Tailwind's own `transition-*` utilities set
+   `transition-duration` themselves and whether a following `duration-*`
+   beats them depends on generated CSS order (§4 "Timing must be declared in
+   one utility") — a bare `transition-all duration-normal ease-out-flex`
+   would not reliably hold.
+   No bespoke `prefers-reduced-motion` entry needed: this is a `transition`,
+   not a `@keyframes` animation, so the global blanket rule two screens down
+   (`transition-duration: 0.01ms !important`) already collapses it to the
+   correct final width instead of freezing mid-frame the way a vanishing
+   keyframe would. */
+@utility width-transition {
+  transition: width var(--duration-normal) var(--ease-out-flex);
+}
+
+/* A machine-operated MOVE — `width-transition`'s sibling for things that
+   travel rather than resize: the sidebar's resize rail following its panel
+   when it collapses (transform and its edge offset) and taking the panel's
+   fill on hover. Same reasoning, same curve: operated, so no overshoot. */
+@utility move-transition {
+  transition:
+    transform var(--duration-normal) var(--ease-out-flex),
+    left var(--duration-normal) var(--ease-out-flex),
+    right var(--duration-normal) var(--ease-out-flex),
+    background-color var(--duration-normal) var(--ease-out-flex);
+}
+
+/* The flow. Both run `alternate`, so they ease to a stop and turn around rather
+   than snapping back at the loop point — that soft turnaround is what makes it
+   read as silky rather than as a repeating slide.
+ *
+ * **The rotation is what sells it.** Translate and scale alone read as a panel
+ * sliding behind a window; rotating a blurred blob field makes the colours
+ * appear to move *through* each other, which is the cosmic part. The two layers
+ * rotate in opposite directions for the same reason they run at different
+ * speeds.
+ *
+ * 18s and 11s are deliberately coprime-ish: at these lengths the pair takes
+ * minutes to return to the same arrangement, so the texture never visibly loops.
+ *
+ * Under `prefers-reduced-motion` the global rule collapses both to one static
+ * frame. */
+@keyframes cosmic-drift-deep {
+  0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+  50% { transform: translate3d(-11%, 8%, 0) rotate(7deg) scale(1.2); }
+  100% { transform: translate3d(6%, -9%, 0) rotate(-5deg) scale(1.08); }
+}
+
+/* The near field translates far less than the deep one. Its job is to keep the
+   brightest point sitting in the bottom-right corner while it turns and breathes
+   there; the deep field does the travelling behind it. */
+@keyframes cosmic-drift-near {
+  0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1.04); }
+  35% { transform: translate3d(-3%, -2%, 0) rotate(-9deg) scale(1.18); }
+  70% { transform: translate3d(3%, 2%, 0) rotate(6deg) scale(1); }
+  100% { transform: translate3d(-2%, 1%, 0) rotate(-4deg) scale(1.14); }
+}
+
+/* ── Value foil ───────────────────────────────────────────────────────────────
+   The premium button's surface, in whatever the value ramp currently is —
+   lime today. Three parts, because real metal has three:
+
+   1. THE RAMP (the element's own background) — a light-dark-light gradient with
+      a darker band across the middle. That band is the edge of the metal, and it
+      is what separates a foil from "a coloured rectangle".
+   2. THE FOIL (::after) — fine diagonal striations plus a broad sheen, drifting
+      slowly and forever on soft-light so it keeps its hue rather than bleaching.
+   3. THE GLINT (::before) — a narrow, very bright band that sweeps across on
+      screen blend, then waits. It idles for most of its cycle, so it reads as
+      light catching the surface rather than as a loop.
+
+   CSS rather than a shader on purpose: a WebGL surface on a 130x40 control
+   renders at 64x19, which is far too few pixels for a noise field to resolve. */
+@keyframes value-foil-drift {
+  0% {
+    background-position:
+      0% 50%,
+      -60% 50%,
+      50% 50%;
+  }
+  100% {
+    background-position:
+      140% 50%,
+      160% 50%,
+      50% 50%;
+  }
+}
+
+@keyframes value-glint {
+  0%,
+  54% {
+    background-position: 135% 50%;
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  94% {
+    opacity: 1;
+  }
+  100% {
+    background-position: -55% 50%;
+    opacity: 0;
+  }
+}
+
+/* ── Action sheen ─────────────────────────────────────────────────────────────
+   The default button's surface. Quieter than the value foil on purpose — the
+   primary action should be interesting, not precious.
+
+   1. THE RAMP — a soft light-dark-light gradient in the action ramp. Same idea
+      as the foil's ramp but with much less contrast, so it reads as a moulded
+      surface rather than as metal.
+   2. THE TEXTURE (::after) — fine striations and one soft diagonal sheen, held
+      STATIC. Default buttons appear many times per screen, and a permanently
+      animating one would break the rule that only the live indicator moves
+      forever.
+   3. THE BEAT (::before) — an ellipse that expands from the centre on hover, in
+      a double thump: a strong beat, a weaker echo, then rest. Pressing fires a
+      single hard beat.
+
+   The motion is tied to intent: at rest it is a textured surface, and it comes
+   alive exactly when a pointer is on it. */
+@keyframes action-beat {
+  0% {
+    transform: scale(0.55);
+    opacity: 0;
+  }
+  10% {
+    transform: scale(1);
+    opacity: 0.62;
+  }
+  24% {
+    transform: scale(1.32);
+    opacity: 0;
+  }
+  30% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  40% {
+    transform: scale(1.06);
+    opacity: 0.34;
+  }
+  54% {
+    transform: scale(1.38);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.38);
+    opacity: 0;
+  }
+}
+
+/* The IconSwap carousel: a slower roll so the strip reads as a wheel. */
+@utility swap-roll {
+  --swap-offset: 0;
+  transform: translateY(calc(var(--swap-offset) * 160%));
+  transition:
+    transform var(--duration-slow) var(--ease-emphasized),
+    opacity var(--duration-slow) var(--ease-emphasized);
+}
+
+/* Every animation is registered with `@utility`, not `@layer components`.
+   A class in `@layer components` cannot take a Tailwind variant, so
+   `data-open:anim-open` would silently produce nothing — and overlays would
+   quietly fall back off the motion system, which is exactly the drift this file
+   exists to prevent. As utilities they compose: `data-open:`, `md:`,
+   `group-hover:` all work, and there is still only one definition of each. */
+
+/* The entrance every modal overlay uses: scale + rise with an overshoot.
+   Its keyframes drive `transform` only, never `translate`, so it composes with
+   the `-translate-x-1/2 -translate-y-1/2` that centres a dialog. Break that and
+   every dialog jumps to the bottom-right corner as it opens. */
+@utility anim-open {
+  animation: ds-open var(--duration-open) var(--ease-emphasized) both;
+}
+
+/* The exit. Not a played-backwards entrance: it anticipates upward for a beat,
+   then drops away faster than it arrived. Leaving should never take as long as
+   arriving. */
+@utility anim-close {
+  animation: ds-close var(--duration-normal) var(--ease-move) both;
+}
+
+/* Disclosure. Height is animated, not just faded, so the panel physically pushes
+   what is under it out of the way — and on `--ease-emphasized`, so it overshoots its
+   own height by a hair and settles back. That is the same overshoot as the
+   entrance, applied to a box rather than to a scale.
+ *
+ * The target height is read from `--unfold-h`, which the component points at
+ * whichever Radix variable it has (`--radix-collapsible-content-height` or
+ * `--radix-accordion-content-height`). One pair of keyframes, both primitives.
+ *
+ * The animating element MUST have `overflow: hidden`, or the overshoot shows as
+ * content spilling past the panel instead of the panel breathing.
+ *
+ * `backwards`, NOT `both`, and that is the batch-4 correction.
+ *
+ * `both` includes `forwards`, and a filled-forwards animation keeps painting
+ * its last keyframe from the *animation* origin, which outranks every author
+ * rule — so an opened panel stayed pinned at `height: var(--unfold-h)` for the
+ * life of the page. Radix writes that variable ONCE, when the panel first
+ * opens, so anything the content gained afterwards — an image finishing, a font
+ * swapping, a nested disclosure opening, a longer translation — sat behind the
+ * `overflow: hidden` with no scrollbar and no way to reach it. Measured on the
+ * built app before the fix: 50px panel, content grown to 290px, **230px
+ * unreachable**, identically with reduced motion on and off.
+ *
+ * With `backwards` the keyframes still own the height for the whole unfold (and
+ * the 0% frame still applies through any delay), and the moment it ends the
+ * element goes back to its own `height: auto`. There is no jump, because at
+ * that instant `auto` and `--unfold-h` are the same number.
+ *
+ * `anim-collapse` keeps `both` on purpose: it must hold `height: 0` after it
+ * finishes, or the panel would flash back to full height for the frames between
+ * the animation ending and Radix unmounting it. */
+@utility anim-expand {
+  animation: ds-expand var(--duration-open) var(--ease-emphasized) backwards;
+}
+
+/* Smooth continuous spin — the loading spinner. Previously Tailwind's own
+   `animate-spin`, which was the last animation in the product defined outside
+   this file. `linear` on purpose: a spinner that eases is a spinner that looks
+   like it is struggling. */
+@utility anim-spin {
+  animation: ds-spin var(--duration-spin) linear infinite;
+}
+
+/* The indeterminate progress sliver.
+ *
+ * `Progress` positions its fill with `translateX(-(100 - value)%)`, so a bar
+ * with no value translated to -100% and rendered an EMPTY channel — a state
+ * that drew nothing at all. A determinate bar cannot be borrowed for this:
+ * parking it at any width is a claim about how far through you are, and
+ * RULES §5 reserves progress for exactly the case where you can honestly make
+ * that claim. So the indeterminate bar is a third-width sliver that travels
+ * the channel instead.
+ *
+ * reduced-motion: ds-progress-indeterminate HANDLED .anim-progress-indeterminate — frozen it would sit wherever the blanket
+ *   rule caught it, which is a random-looking partial fill. Stopped in place at
+ *   the start of the channel instead: still visibly a sliver rather than a
+ *   reading, so the information ("busy, amount unknown") survives. */
+@utility anim-progress-indeterminate {
+  /* `linear`, and the reason is the same one written on `anim-spin` above: an
+     indeterminate mark that eases is a mark that looks like it is struggling.
+     It is also load-bearing here rather than a matter of taste. The sliver
+     sweeps from just off the left of the channel to just off the right, so an
+     eased curve DWELLS at both ends — outside the track — and the bar reads as
+     empty for a visible fraction of every cycle. Caught by reading two
+     screenshots taken at different moments: one showed the sliver mid-channel,
+     the other showed an empty track and a third caught three pixels of it at
+     the far edge. A constant sweep is always somewhere in the channel. */
+  animation: ds-progress-indeterminate 1.4s linear infinite;
+}
+
+/* The OTP caret. Was the vendored `animate-caret-blink` paired with a stock
+   `duration-1000`, so neither its rhythm nor its timing followed the system. */
+@utility anim-caret {
+  animation: ds-caret var(--duration-caret) steps(1, end) infinite;
+}
+
+@keyframes ds-open {
+  0% { opacity: 0; transform: scale(0.92) translateY(24px); }
+  60% { opacity: 1; transform: scale(1.02) translateY(-4px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes ds-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes ds-caret {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
+@keyframes ds-progress-indeterminate {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(300%); }
+}
+
+@keyframes ds-expand {
+  0% { height: 0; opacity: 0; }
+  100% { height: var(--unfold-h); opacity: 1; }
+}
+
+@keyframes ds-close {
+  0% { opacity: 1; transform: scale(1) translateY(0); }
+  30% { opacity: 1; transform: scale(1.01) translateY(-4px); }
+  100% { opacity: 0; transform: scale(0.94) translateY(16px); }
+}
+
+/* ── The vanishing-keyframe ledger ───────────────────────────────────────────
+   RULES §9.4: the blanket rule below collapses every animation to 0.01ms and
+   one iteration, which freezes it at its FINAL frame. That is right for almost
+   everything and catastrophic for a keyframe that ENDS at `opacity: 0` — with
+   motion reduced, the element is simply never painted, and any information it
+   carried is gone.
+
+   The rule is not that such keyframes may not exist. Three kinds legitimately
+   end invisible: an exit (the element is unmounting anyway, so the final frame
+   IS the resting state), a decorative overlay whose resting state is invisible,
+   and one handled explicitly below. What the rule requires is that a reader can
+   tell which kind each one is without opening a browser — so every keyframe in
+   the file that finishes at zero opacity is accounted for here, by name.
+   THE GRAMMAR IS PART OF THE CONTRACT, because a comment a test only
+   substring-matches proves nothing. Each line reads
+
+       reduced-motion: <keyframe> <EXIT|DECORATIVE|HANDLED [.selector]> — why
+
+   and `test/foundation/motion-contract.test.ts` fails the build on a vanishing
+   keyframe that is not listed, on a classification it does not recognise, and —
+   for HANDLED — on a named selector that does not actually appear inside a
+   `prefers-reduced-motion` block restoring a non-zero `opacity`. That last
+   check is the one with teeth: delete the override and the test goes red even
+   though the comment still reads correctly.
+
+   reduced-motion: value-glint DECORATIVE — the premium button's ::before is a
+     narrow band of light sweeping over an opaque foil. Its resting state is
+     invisible by construction; frozen at zero it is the button without a glint,
+     which is what the button looks like for most of every cycle anyway.
+   reduced-motion: action-beat DECORATIVE — the default button's ::before
+     ripple, hover-only. Same shape as the glint: an overlay that is absent at
+     rest, carrying no information the label does not.
+   reduced-motion: ds-close EXIT — a modal leaving. The final frame is
+     the element gone, which is the correct resting state.
+   reduced-motion: ds-exit EXIT — content leaving; the element is unmounting.
+   reduced-motion: ds-caret HANDLED .anim-caret — the one real defect this
+     ledger found. The OTP caret marks WHERE THE NEXT DIGIT LANDS; it is the
+     only thing distinguishing the active slot from the five empty ones beside
+     it. Frozen at the blink's off-frame it disappears, and a reduced-motion
+     reader gets six identical empty boxes — information living inside an
+     animation, which §4.3 forbids outright. It is pinned visible below.
+   reduced-motion: ds-progress-indeterminate HANDLED .anim-progress-indeterminate
+     — frozen it would sit wherever the blanket rule caught it, which is a
+     random-looking partial fill. Stopped in place at the start of the channel
+     instead: still visibly a sliver rather than a reading, so the information
+     ("busy, amount unknown") survives.
+   ------------------------------------------------------------------------- */
+
+/* Accessibility: honour the OS setting. Required by the brief. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .anim-enter,
+  .anim-change {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  /* The caret is a MARK, not a movement. `ds-caret` spends half its cycle at
+     opacity 0, so the blanket rule above freezes it there and the OTP input
+     loses the only cue that says which slot is being filled. Stopping the blink
+     is correct; hiding the caret is not. */
+  .anim-caret {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+  /* Same shape as the caret, for the same reason. The blanket rule above would
+     freeze the travelling sliver at whatever frame it caught — which reads as a
+     progress bar stopped at an arbitrary percentage, i.e. a value claim the
+     component is specifically avoiding. Parked at the start of the channel
+     instead: visibly a sliver, visibly not a reading. */
+  .anim-progress-indeterminate {
+    animation: none !important;
+    transform: none !important;
+    /* The HANDLED contract in this file's ledger is "the mark is still there
+       when the motion stops", and `opacity` is how every other entry states it.
+       Dropping `animation` also drops the fill mode, so it is restated rather
+       than inherited. */
+    opacity: 1 !important;
+  }
+}
+
+@keyframes star-sway {
+  from { rotate: -6deg; }
+  to { rotate: 6deg; }
+}
+
+@keyframes star-sway-alt {
+  from { rotate: 5deg; }
+  to { rotate: -5deg; }
+}
+
+/* The effort slider's glide — the fill's width, the thumb's left edge and the
+   shared agent/foreground colour swap, all on the normal duration and the enter
+   curve. One utility so the two moving parts cannot disagree about timing, and
+   declared as the full `transition` shorthand for the reason `width-transition`
+   gives. The global reduced-motion rule collapses it to the final position. */
+@utility effort-glide {
+  transition:
+    width var(--duration-normal) var(--ease-enter),
+    left var(--duration-normal) var(--ease-enter),
+    background-color var(--duration-normal) var(--ease-enter);
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "content-change",
+  "title": "Content Change",
+  "description": "The `content-change` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+  "registryDependencies": [
+    "@elattar/source-foundation"
+  ],
+  "files": [
+    {
+      "path": "components/ui/content-change.tsx",
+      "content": "\"use client\"\r\n\r\nimport * as React from \"react\"\r\n\r\nimport { cn } from \"@/lib/utils\"\r\n\r\nexport function useReplayOnStateChange<T extends HTMLElement>(\r\n  className = \"anim-change\"\r\n) {\r\n  const ref = React.useRef<T | null>(null)\r\n\r\n  React.useEffect(() => {\r\n    const el = ref.current\r\n    if (!el) return\r\n\r\n    let last = el.getAttribute(\"data-state\")\r\n    const observer = new MutationObserver(() => {\r\n      const next = el.getAttribute(\"data-state\")\r\n      if (next === last) return\r\n      last = next\r\n      el.classList.remove(className)\r\n      void el.offsetWidth\r\n      el.classList.add(className)\r\n    })\r\n\r\n    observer.observe(el, { attributes: true, attributeFilter: [\"data-state\"] })\r\n    return () => observer.disconnect()\r\n  }, [className])\r\n\r\n  return ref\r\n}\r\n\r\n// Only this animation is verified under reduced motion.\r\ntype ReplayAnimation = \"anim-enter\"\r\n\r\nfunction useContentChangeReplay<T extends HTMLElement>(\r\n  contentKey: React.Key,\r\n  animationClassName: ReplayAnimation\r\n) {\r\n  const ref = React.useRef<T | null>(null)\r\n  const lastKey = React.useRef(contentKey)\r\n\r\n  React.useEffect(() => {\r\n    const el = ref.current\r\n    if (!el) return\r\n    if (lastKey.current === contentKey) return\r\n    lastKey.current = contentKey\r\n\r\n    el.classList.remove(animationClassName)\r\n    // Force reflow so the animation restarts.\r\n    void el.offsetWidth\r\n    el.classList.add(animationClassName)\r\n  }, [contentKey, animationClassName])\r\n\r\n  return ref\r\n}\r\n\r\nexport interface ContentChangeProps\r\n  extends Omit<React.ComponentProps<\"div\">, \"children\"> {\r\n  contentKey: React.Key\r\n  animationClassName?: ReplayAnimation\r\n  children: React.ReactNode\r\n}\r\n\r\nfunction ContentChange({\r\n  contentKey,\r\n  animationClassName = \"anim-enter\",\r\n  className,\r\n  children,\r\n  ...props\r\n}: ContentChangeProps) {\r\n  const ref = useContentChangeReplay<HTMLDivElement>(\r\n    contentKey,\r\n    animationClassName\r\n  )\r\n\r\n  return (\r\n    <div\r\n      ref={ref}\r\n      data-slot=\"content-change\"\r\n      className={cn(animationClassName, className)}\r\n      {...props}\r\n    >\r\n      {children}\r\n    </div>\r\n  )\r\n}\r\n\r\nexport { ContentChange }\r\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

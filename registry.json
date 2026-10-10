@@ -1,0 +1,1908 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "elattar",
+  "homepage": "https://elattar-design-system.dev",
+  "items": [
+    {
+      "name": "source-foundation",
+      "type": "registry:style",
+      "title": "Source Foundation",
+      "description": "Elattar Design System foundation: the four canonical stylesheets (tokens, typeset, motion, utilities), the globals.css entry, the tailwind-merge config, the stylesheet-driven spring/duration reader, and the Icon/IconSwap primitives every component depends on.",
+      "dependencies": [
+        "class-variance-authority",
+        "clsx",
+        "geist",
+        "lucide-react",
+        "shadcn",
+        "tailwind-merge",
+        "tw-animate-css"
+      ],
+      "devDependencies": [
+        "tailwindcss"
+      ],
+      "files": [
+        {
+          "path": "styles/tokens.css",
+          "type": "registry:file",
+          "target": "styles/tokens.css"
+        },
+        {
+          "path": "styles/typeset.css",
+          "type": "registry:file",
+          "target": "styles/typeset.css"
+        },
+        {
+          "path": "styles/motion.css",
+          "type": "registry:file",
+          "target": "styles/motion.css"
+        },
+        {
+          "path": "styles/utilities.css",
+          "type": "registry:file",
+          "target": "styles/utilities.css"
+        },
+        {
+          "path": "app/globals.css",
+          "type": "registry:file",
+          "target": "app/globals.css"
+        },
+        {
+          "path": "lib/utils.ts",
+          "type": "registry:lib",
+          "target": "lib/utils.ts"
+        },
+        {
+          "path": "lib/motion/spring.ts",
+          "type": "registry:lib",
+          "target": "lib/motion/spring.ts"
+        },
+        {
+          "path": "components/ui/icon.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/icon.tsx"
+        },
+        {
+          "path": "components/ui/icon-swap.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/icon-swap.tsx"
+        }
+      ],
+      "docs": "This item does not ship public/fonts/inter-variable.woff2 (binary — the shadcn registry-item file schema inlines `content` as UTF-8 text, which would corrupt a woff2). After installing, copy that file from the design-system repo's public/fonts/ into your project's public/fonts/ manually; styles/tokens.css already declares the @font-face pointing at it. Geist Mono ships as the `geist` npm dependency and needs no manual step."
+    },
+    {
+      "name": "accordion",
+      "type": "registry:ui",
+      "title": "Accordion",
+      "description": "The `accordion` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "lucide-react",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/accordion.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "active-indicator",
+      "type": "registry:ui",
+      "title": "Active Indicator",
+      "description": "The `active-indicator` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/active-indicator.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "alert-dialog",
+      "type": "registry:ui",
+      "title": "Alert Dialog",
+      "description": "The `alert-dialog` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/button",
+        "@elattar/source-foundation",
+        "@elattar/spinner",
+        "@elattar/tooltip"
+      ],
+      "files": [
+        {
+          "path": "components/ui/alert-dialog.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "alert",
+      "type": "registry:ui",
+      "title": "Alert",
+      "description": "The `alert` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/alert.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "aspect-ratio",
+      "type": "registry:ui",
+      "title": "Aspect Ratio",
+      "description": "The `aspect-ratio` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/aspect-ratio.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "attachment",
+      "type": "registry:ui",
+      "title": "Attachment",
+      "description": "The `attachment` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "class-variance-authority",
+        "lucide-react",
+        "radix-ui",
+        "sonner"
+      ],
+      "registryDependencies": [
+        "@elattar/button",
+        "@elattar/dialog",
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/attachment.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "avatar",
+      "type": "registry:ui",
+      "title": "Avatar",
+      "description": "The `avatar` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/avatar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "The `badge` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/badge.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "breadcrumb",
+      "type": "registry:ui",
+      "title": "Breadcrumb",
+      "description": "The `breadcrumb` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "lucide-react",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/breadcrumb.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "bubble",
+      "type": "registry:ui",
+      "title": "Bubble",
+      "description": "The `bubble` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/bubble.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "button-group",
+      "type": "registry:ui",
+      "title": "Button Group",
+      "description": "The `button-group` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/separator",
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/button-group.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "The `button` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation",
+        "@elattar/spinner"
+      ],
+      "files": [
+        {
+          "path": "components/ui/button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "calendar",
+      "type": "registry:ui",
+      "title": "Calendar",
+      "description": "The `calendar` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "lucide-react",
+        "react-day-picker"
+      ],
+      "registryDependencies": [
+        "@elattar/button",
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/calendar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "The `card` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "carousel",
+      "type": "registry:ui",
+      "title": "Carousel",
+      "description": "The `carousel` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "embla-carousel-react",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@elattar/button",
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/carousel.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "chart",
+      "type": "registry:ui",
+      "title": "Chart",
+      "description": "The `chart` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "recharts"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/chart.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "title": "Checkbox",
+      "description": "The `checkbox` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/content-change",
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/checkbox.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "collapsible",
+      "type": "registry:ui",
+      "title": "Collapsible",
+      "description": "The `collapsible` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/collapsible.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "combobox",
+      "type": "registry:ui",
+      "title": "Combobox",
+      "description": "The `combobox` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "@base-ui/react",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@elattar/button",
+        "@elattar/disabled",
+        "@elattar/input-group",
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/combobox.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "command",
+      "type": "registry:ui",
+      "title": "Command",
+      "description": "The `command` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "cmdk",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@elattar/dialog",
+        "@elattar/disabled",
+        "@elattar/input-group",
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/command.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "content-change",
+      "type": "registry:ui",
+      "title": "Content Change",
+      "description": "The `content-change` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/content-change.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "context-menu",
+      "type": "registry:ui",
+      "title": "Context Menu",
+      "description": "The `context-menu` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "lucide-react",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/disabled",
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/context-menu.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "dialog",
+      "type": "registry:ui",
+      "title": "Dialog",
+      "description": "The `dialog` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "lucide-react",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/button",
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/dialog.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "direction",
+      "type": "registry:ui",
+      "title": "Direction",
+      "description": "The `direction` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/direction.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "disabled",
+      "type": "registry:ui",
+      "title": "Disabled",
+      "description": "The `disabled` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@elattar/button",
+        "@elattar/popover",
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/disabled.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "drawer",
+      "type": "registry:ui",
+      "title": "Drawer",
+      "description": "The `drawer` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "vaul"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/drawer.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "registry:ui",
+      "title": "Dropdown Menu",
+      "description": "The `dropdown-menu` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "lucide-react",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/disabled",
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/dropdown-menu.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "type": "registry:ui",
+      "title": "Empty",
+      "description": "The `empty` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/empty.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "field",
+      "type": "registry:ui",
+      "title": "Field",
+      "description": "The `field` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "@elattar/label",
+        "@elattar/separator",
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/field.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "form",
+      "type": "registry:ui",
+      "title": "Form",
+      "description": "The `form` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "radix-ui",
+        "react-hook-form"
+      ],
+      "registryDependencies": [
+        "@elattar/field",
+        "@elattar/source-foundation",
+        "@elattar/use-reduced-motion"
+      ],
+      "files": [
+        {
+          "path": "components/ui/form.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "hover-card",
+      "type": "registry:ui",
+      "title": "Hover Card",
+      "description": "The `hover-card` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/hover-card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "input-group",
+      "type": "registry:ui",
+      "title": "Input Group",
+      "description": "The `input-group` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "@elattar/button",
+        "@elattar/input",
+        "@elattar/source-foundation",
+        "@elattar/textarea"
+      ],
+      "files": [
+        {
+          "path": "components/ui/input-group.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "input-otp",
+      "type": "registry:ui",
+      "title": "Input Otp",
+      "description": "The `input-otp` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "input-otp",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/input-otp.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Input",
+      "description": "The `input` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/input.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "item",
+      "type": "registry:ui",
+      "title": "Item",
+      "description": "The `item` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/separator",
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/item.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "kbd",
+      "type": "registry:ui",
+      "title": "Kbd",
+      "description": "The `kbd` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/kbd.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "label",
+      "type": "registry:ui",
+      "title": "Label",
+      "description": "The `label` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/label.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "marker",
+      "type": "registry:ui",
+      "title": "Marker",
+      "description": "The `marker` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/marker.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "menubar",
+      "type": "registry:ui",
+      "title": "Menubar",
+      "description": "The `menubar` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "lucide-react",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/disabled",
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/menubar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "message-scroller",
+      "type": "registry:ui",
+      "title": "Message Scroller",
+      "description": "The `message-scroller` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "@shadcn/react",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@elattar/button",
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/message-scroller.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "message",
+      "type": "registry:ui",
+      "title": "Message",
+      "description": "The `message` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/message.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "native-select",
+      "type": "registry:ui",
+      "title": "Native Select",
+      "description": "The `native-select` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/native-select.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "navigation-menu",
+      "type": "registry:ui",
+      "title": "Navigation Menu",
+      "description": "The `navigation-menu` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "class-variance-authority",
+        "lucide-react",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/navigation-menu.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "pagination",
+      "type": "registry:ui",
+      "title": "Pagination",
+      "description": "The `pagination` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@elattar/button",
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/pagination.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "title": "Popover",
+      "description": "The `popover` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/popover.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "progress",
+      "type": "registry:ui",
+      "title": "Progress",
+      "description": "The `progress` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/progress.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "prose",
+      "type": "registry:ui",
+      "title": "Prose",
+      "description": "The `prose` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/prose.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "questionnaire",
+      "type": "registry:ui",
+      "title": "Questionnaire",
+      "description": "The `questionnaire` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "@shadcn/react",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@elattar/button",
+        "@elattar/checkbox",
+        "@elattar/kbd",
+        "@elattar/popover",
+        "@elattar/radio",
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/questionnaire.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "radio",
+      "type": "registry:ui",
+      "title": "Radio",
+      "description": "The `radio` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/content-change",
+        "@elattar/disabled",
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/radio.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "resizable",
+      "type": "registry:ui",
+      "title": "Resizable",
+      "description": "The `resizable` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "react-resizable-panels"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/resizable.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "scroll-area",
+      "type": "registry:ui",
+      "title": "Scroll Area",
+      "description": "The `scroll-area` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/scroll-area.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "Select",
+      "description": "The `select` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "lucide-react",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/disabled",
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/select.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "separator",
+      "type": "registry:ui",
+      "title": "Separator",
+      "description": "The `separator` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/separator.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "sheet",
+      "type": "registry:ui",
+      "title": "Sheet",
+      "description": "The `sheet` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "lucide-react",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/button",
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/sheet.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/sheet.css",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:ui",
+      "title": "Sidebar",
+      "description": "The `sidebar` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "lucide-react",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/active-indicator",
+        "@elattar/badge",
+        "@elattar/button",
+        "@elattar/collapsible",
+        "@elattar/input",
+        "@elattar/separator",
+        "@elattar/sheet",
+        "@elattar/skeleton",
+        "@elattar/source-foundation",
+        "@elattar/tooltip",
+        "@elattar/use-mobile"
+      ],
+      "files": [
+        {
+          "path": "components/ui/sidebar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "Skeleton",
+      "description": "The `skeleton` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/skeleton.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "slider",
+      "type": "registry:ui",
+      "title": "Slider",
+      "description": "The `slider` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/slider.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "spinner",
+      "type": "registry:ui",
+      "title": "Spinner",
+      "description": "The `spinner` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/spinner.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "stat",
+      "type": "registry:ui",
+      "title": "Stat",
+      "description": "The `stat` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@elattar/skeleton",
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/stat.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "title": "Switch",
+      "description": "The `switch` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/content-change",
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/switch.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "table",
+      "type": "registry:ui",
+      "title": "Table",
+      "description": "The `table` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/table.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "Tabs",
+      "description": "The `tabs` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/active-indicator",
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/tabs.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "Textarea",
+      "description": "The `textarea` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/textarea.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "toaster",
+      "type": "registry:ui",
+      "title": "Toaster",
+      "description": "The `toaster` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "lucide-react",
+        "next-themes",
+        "sonner"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/toaster.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "toggle-group",
+      "type": "registry:ui",
+      "title": "Toggle Group",
+      "description": "The `toggle-group` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/active-indicator",
+        "@elattar/source-foundation",
+        "@elattar/toggle"
+      ],
+      "files": [
+        {
+          "path": "components/ui/toggle-group.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "toggle",
+      "type": "registry:ui",
+      "title": "Toggle",
+      "description": "The `toggle` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/toggle.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "Tooltip",
+      "description": "The `tooltip` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/tooltip.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "user-menu",
+      "type": "registry:ui",
+      "title": "User Menu",
+      "description": "The `user-menu` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@elattar/avatar",
+        "@elattar/dropdown-menu",
+        "@elattar/sidebar",
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "components/ui/user-menu.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "use-mobile",
+      "type": "registry:hook",
+      "title": "Use Mobile",
+      "description": "Media-query hook that reports whether the viewport is at the mobile breakpoint.",
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "hooks/use-mobile.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "use-latest",
+      "type": "registry:hook",
+      "title": "Use Latest",
+      "description": "Ref hook that always holds the latest value of a prop or callback across renders.",
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "hooks/use-latest.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "use-reduced-motion",
+      "type": "registry:hook",
+      "title": "Use Reduced Motion",
+      "description": "Hook that reads the user's prefers-reduced-motion setting reactively.",
+      "registryDependencies": [
+        "@elattar/source-foundation"
+      ],
+      "files": [
+        {
+          "path": "hooks/use-reduced-motion.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "agent-workspace",
+      "type": "registry:block",
+      "title": "Agent Workspace",
+      "description": "The agent workspace: thread, composer, history, outputs, settings and workflow dialog, built on the AI Elements primitives (Apache-2.0, NOTICE.md ships with them) with the cube avatar and a mock transport — product-agnostic.",
+      "dependencies": [
+        "@radix-ui/react-use-controllable-state",
+        "@streamdown/cjk",
+        "@streamdown/code",
+        "@streamdown/math",
+        "@streamdown/mermaid",
+        "@xyflow/react",
+        "ai",
+        "ansi-to-react",
+        "lucide-react",
+        "media-chrome",
+        "nanoid",
+        "next-themes",
+        "react-jsx-parser",
+        "shiki",
+        "sonner",
+        "streamdown",
+        "tokenlens",
+        "use-stick-to-bottom"
+      ],
+      "registryDependencies": [
+        "@elattar/accordion",
+        "@elattar/alert",
+        "@elattar/alert-dialog",
+        "@elattar/avatar",
+        "@elattar/badge",
+        "@elattar/button",
+        "@elattar/button-group",
+        "@elattar/card",
+        "@elattar/carousel",
+        "@elattar/collapsible",
+        "@elattar/command",
+        "@elattar/dialog",
+        "@elattar/dropdown-menu",
+        "@elattar/field",
+        "@elattar/hover-card",
+        "@elattar/input",
+        "@elattar/input-group",
+        "@elattar/popover",
+        "@elattar/progress",
+        "@elattar/radio",
+        "@elattar/scroll-area",
+        "@elattar/select",
+        "@elattar/separator",
+        "@elattar/sheet",
+        "@elattar/sidebar",
+        "@elattar/slider",
+        "@elattar/source-foundation",
+        "@elattar/spinner",
+        "@elattar/switch",
+        "@elattar/tabs",
+        "@elattar/textarea",
+        "@elattar/tooltip",
+        "@elattar/use-reduced-motion"
+      ],
+      "files": [
+        {
+          "path": "components/agent/agent-workspace.tsx",
+          "type": "registry:component",
+          "target": "components/agent/agent-workspace.tsx"
+        },
+        {
+          "path": "components/agent/avatar/avatar.css",
+          "type": "registry:lib",
+          "target": "components/agent/avatar/avatar.css"
+        },
+        {
+          "path": "components/agent/avatar/cube-avatar.tsx",
+          "type": "registry:component",
+          "target": "components/agent/avatar/cube-avatar.tsx"
+        },
+        {
+          "path": "components/agent/avatar/cube.tsx",
+          "type": "registry:component",
+          "target": "components/agent/avatar/cube.tsx"
+        },
+        {
+          "path": "components/agent/avatar/scenes.ts",
+          "type": "registry:lib",
+          "target": "components/agent/avatar/scenes.ts"
+        },
+        {
+          "path": "components/agent/avatar/types.ts",
+          "type": "registry:lib",
+          "target": "components/agent/avatar/types.ts"
+        },
+        {
+          "path": "components/agent/core/attachments.ts",
+          "type": "registry:lib",
+          "target": "components/agent/core/attachments.ts"
+        },
+        {
+          "path": "components/agent/core/conversations.ts",
+          "type": "registry:lib",
+          "target": "components/agent/core/conversations.ts"
+        },
+        {
+          "path": "components/agent/core/resolve-state.ts",
+          "type": "registry:lib",
+          "target": "components/agent/core/resolve-state.ts"
+        },
+        {
+          "path": "components/agent/core/run.ts",
+          "type": "registry:lib",
+          "target": "components/agent/core/run.ts"
+        },
+        {
+          "path": "components/agent/core/states.ts",
+          "type": "registry:lib",
+          "target": "components/agent/core/states.ts"
+        },
+        {
+          "path": "components/agent/core/timeline.ts",
+          "type": "registry:lib",
+          "target": "components/agent/core/timeline.ts"
+        },
+        {
+          "path": "components/agent/core/types.ts",
+          "type": "registry:lib",
+          "target": "components/agent/core/types.ts"
+        },
+        {
+          "path": "components/agent/core/use-container-width.ts",
+          "type": "registry:hook",
+          "target": "components/agent/core/use-container-width.ts"
+        },
+        {
+          "path": "components/agent/core/use-presence.ts",
+          "type": "registry:hook",
+          "target": "components/agent/core/use-presence.ts"
+        },
+        {
+          "path": "components/agent/index.ts",
+          "type": "registry:lib",
+          "target": "components/agent/index.ts"
+        },
+        {
+          "path": "components/agent/parts/effort-slider.tsx",
+          "type": "registry:component",
+          "target": "components/agent/parts/effort-slider.tsx"
+        },
+        {
+          "path": "components/agent/parts/generated-image.tsx",
+          "type": "registry:component",
+          "target": "components/agent/parts/generated-image.tsx"
+        },
+        {
+          "path": "components/agent/parts/spark-field.tsx",
+          "type": "registry:component",
+          "target": "components/agent/parts/spark-field.tsx"
+        },
+        {
+          "path": "components/agent/parts/voice-orb.tsx",
+          "type": "registry:component",
+          "target": "components/agent/parts/voice-orb.tsx"
+        },
+        {
+          "path": "components/agent/voice/speech.ts",
+          "type": "registry:lib",
+          "target": "components/agent/voice/speech.ts"
+        },
+        {
+          "path": "components/agent/workspace/reply-model.ts",
+          "type": "registry:lib",
+          "target": "components/agent/workspace/reply-model.ts"
+        },
+        {
+          "path": "components/agent/workspace/run-inline.tsx",
+          "type": "registry:component",
+          "target": "components/agent/workspace/run-inline.tsx"
+        },
+        {
+          "path": "components/agent/workspace/step-status.tsx",
+          "type": "registry:component",
+          "target": "components/agent/workspace/step-status.tsx"
+        },
+        {
+          "path": "components/agent/workspace/tool-output.ts",
+          "type": "registry:lib",
+          "target": "components/agent/workspace/tool-output.ts"
+        },
+        {
+          "path": "components/agent/workspace/workflow-dialog.tsx",
+          "type": "registry:component",
+          "target": "components/agent/workspace/workflow-dialog.tsx"
+        },
+        {
+          "path": "components/agent/workspace/workspace-composer.tsx",
+          "type": "registry:component",
+          "target": "components/agent/workspace/workspace-composer.tsx"
+        },
+        {
+          "path": "components/agent/workspace/workspace-header.tsx",
+          "type": "registry:component",
+          "target": "components/agent/workspace/workspace-header.tsx"
+        },
+        {
+          "path": "components/agent/workspace/workspace-history.tsx",
+          "type": "registry:component",
+          "target": "components/agent/workspace/workspace-history.tsx"
+        },
+        {
+          "path": "components/agent/workspace/workspace-outputs.tsx",
+          "type": "registry:component",
+          "target": "components/agent/workspace/workspace-outputs.tsx"
+        },
+        {
+          "path": "components/agent/workspace/workspace-reply.tsx",
+          "type": "registry:component",
+          "target": "components/agent/workspace/workspace-reply.tsx"
+        },
+        {
+          "path": "components/agent/workspace/workspace-settings.tsx",
+          "type": "registry:component",
+          "target": "components/agent/workspace/workspace-settings.tsx"
+        },
+        {
+          "path": "components/agent/workspace/workspace-thread.tsx",
+          "type": "registry:component",
+          "target": "components/agent/workspace/workspace-thread.tsx"
+        },
+        {
+          "path": "components/ai-elements/LICENSE",
+          "type": "registry:lib",
+          "target": "components/ai-elements/LICENSE"
+        },
+        {
+          "path": "components/ai-elements/NOTICE.md",
+          "type": "registry:lib",
+          "target": "components/ai-elements/NOTICE.md"
+        },
+        {
+          "path": "components/ai-elements/agent.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/agent.tsx"
+        },
+        {
+          "path": "components/ai-elements/artifact.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/artifact.tsx"
+        },
+        {
+          "path": "components/ai-elements/attachments.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/attachments.tsx"
+        },
+        {
+          "path": "components/ai-elements/audio-player.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/audio-player.tsx"
+        },
+        {
+          "path": "components/ai-elements/canvas.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/canvas.tsx"
+        },
+        {
+          "path": "components/ai-elements/chain-of-thought.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/chain-of-thought.tsx"
+        },
+        {
+          "path": "components/ai-elements/checkpoint.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/checkpoint.tsx"
+        },
+        {
+          "path": "components/ai-elements/code-block.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/code-block.tsx"
+        },
+        {
+          "path": "components/ai-elements/commit.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/commit.tsx"
+        },
+        {
+          "path": "components/ai-elements/confirmation.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/confirmation.tsx"
+        },
+        {
+          "path": "components/ai-elements/connection.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/connection.tsx"
+        },
+        {
+          "path": "components/ai-elements/context.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/context.tsx"
+        },
+        {
+          "path": "components/ai-elements/controls.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/controls.tsx"
+        },
+        {
+          "path": "components/ai-elements/conversation.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/conversation.tsx"
+        },
+        {
+          "path": "components/ai-elements/edge.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/edge.tsx"
+        },
+        {
+          "path": "components/ai-elements/environment-variables.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/environment-variables.tsx"
+        },
+        {
+          "path": "components/ai-elements/file-tree.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/file-tree.tsx"
+        },
+        {
+          "path": "components/ai-elements/image.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/image.tsx"
+        },
+        {
+          "path": "components/ai-elements/inline-citation.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/inline-citation.tsx"
+        },
+        {
+          "path": "components/ai-elements/jsx-preview.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/jsx-preview.tsx"
+        },
+        {
+          "path": "components/ai-elements/message.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/message.tsx"
+        },
+        {
+          "path": "components/ai-elements/mic-selector.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/mic-selector.tsx"
+        },
+        {
+          "path": "components/ai-elements/model-selector.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/model-selector.tsx"
+        },
+        {
+          "path": "components/ai-elements/node.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/node.tsx"
+        },
+        {
+          "path": "components/ai-elements/open-in-chat.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/open-in-chat.tsx"
+        },
+        {
+          "path": "components/ai-elements/package-info.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/package-info.tsx"
+        },
+        {
+          "path": "components/ai-elements/panel.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/panel.tsx"
+        },
+        {
+          "path": "components/ai-elements/plan.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/plan.tsx"
+        },
+        {
+          "path": "components/ai-elements/prompt-input.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/prompt-input.tsx"
+        },
+        {
+          "path": "components/ai-elements/question.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/question.tsx"
+        },
+        {
+          "path": "components/ai-elements/queue.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/queue.tsx"
+        },
+        {
+          "path": "components/ai-elements/reasoning.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/reasoning.tsx"
+        },
+        {
+          "path": "components/ai-elements/sandbox.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/sandbox.tsx"
+        },
+        {
+          "path": "components/ai-elements/schema-display.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/schema-display.tsx"
+        },
+        {
+          "path": "components/ai-elements/shimmer.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/shimmer.tsx"
+        },
+        {
+          "path": "components/ai-elements/snippet.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/snippet.tsx"
+        },
+        {
+          "path": "components/ai-elements/sources.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/sources.tsx"
+        },
+        {
+          "path": "components/ai-elements/speech-input.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/speech-input.tsx"
+        },
+        {
+          "path": "components/ai-elements/stack-trace.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/stack-trace.tsx"
+        },
+        {
+          "path": "components/ai-elements/suggestion.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/suggestion.tsx"
+        },
+        {
+          "path": "components/ai-elements/task.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/task.tsx"
+        },
+        {
+          "path": "components/ai-elements/terminal.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/terminal.tsx"
+        },
+        {
+          "path": "components/ai-elements/test-results.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/test-results.tsx"
+        },
+        {
+          "path": "components/ai-elements/tool.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/tool.tsx"
+        },
+        {
+          "path": "components/ai-elements/toolbar.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/toolbar.tsx"
+        },
+        {
+          "path": "components/ai-elements/transcription.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/transcription.tsx"
+        },
+        {
+          "path": "components/ai-elements/voice-selector.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/voice-selector.tsx"
+        },
+        {
+          "path": "components/ai-elements/web-preview.tsx",
+          "type": "registry:component",
+          "target": "components/ai-elements/web-preview.tsx"
+        },
+        {
+          "path": "lib/code-theme.ts",
+          "type": "registry:lib",
+          "target": "lib/code-theme.ts"
+        },
+        {
+          "path": "lib/agent/mock-transport.ts",
+          "type": "registry:lib",
+          "target": "lib/agent/mock-transport.ts"
+        },
+        {
+          "path": "public/samples/release-preview.html",
+          "type": "registry:file",
+          "target": "public/samples/release-preview.html"
+        }
+      ]
+    }
+  ]
+}

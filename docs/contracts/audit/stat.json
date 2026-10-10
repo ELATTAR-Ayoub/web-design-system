@@ -1,0 +1,40 @@
+{
+  "name": "stat",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": ["lib/src/components/ui/stat.dart"],
+  "webSources": ["components/ui/stat.tsx", "components/docs/component-docs/stat/page.tsx"],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "Stat(label, value, delta, betterWhen, hint, state, message, disabled, disabledReason) builds Disabled > Semantics > Column[StyledText(label), figure ConstrainedBox(minHeight)/Align, optional delta row Wrap/Row] with a separate exported StatDeltaMark(delta, betterWhen) widget, matching stat.tsx's own StatDeltaMark export.",
+      "web": "Stat({label, value, delta, betterWhen='up', hint, state='ready', message, disabled=false, className}) renders <div data-slot='stat'> > <p label> > <p figure (Skeleton|em-dash|value)> > optional delta row (Skeleton|StatDeltaMark|error message|empty message|hint), with StatDeltaMark exported separately for reuse — the doc comment's own docstring notes 'exported so a caller that already has a label can reuse the mark instead of redrawing it', which stat.dart quotes verbatim."
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "StatState enum {ready, loading, error, empty} with a .blank getter (error || empty); StatDirection enum {up, down, flat} carrying glyph/sign/word per variant; StatDelta = ({String value, StatDirection direction}) typedef; Stat's constructor mirrors every web prop 1:1 plus a Flutter-only disabledReason for tooltip text.",
+      "web": "StatState = 'ready'|'loading'|'error'|'empty'; StatDirection = 'up'|'down'|'flat'; StatDelta = {value: string; direction: StatDirection}; Stat's props are label/value/delta/betterWhen/hint/state/message/disabled/className — the same shape, with the doc comment's own 'Not ported: nothing' line in stat.dart confirming full parity."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "Stat.build() branches figure on loading (Skeleton sized figureSkeleton) vs. blank (em dash + Semantics 'No value') vs. ready (ContentChange(replayKey: state) wrapping StyledText), and the delta row similarly branches Skeleton(deltaSkeleton) vs. StatDeltaMark vs. null, matching the seven-row state table (rest/hover/focus/pressed n/a, loading, success n/a, error, disabled, empty) stat.tsx's own doc comment lays out.",
+      "web": "stat.tsx's doc comment states the identical state table verbatim (hover/focus-visible/pressed are N/A because 'a Stat has no action to succeed at'; loading skeletons the figure and delta only; error becomes an em dash with message; disabled is opacity-45 + aria-disabled; empty is an em dash with message), and Stat's JSX implements each branch exactly as described."
+    },
+    "disabled": {
+      "verdict": "match",
+      "flutter": "Stat wraps its body in Disabled(disabled: disabled, reason: disabledReason) and Semantics(enabled: !disabled, child: body) — the doc comment states 'disabled: opacity-45, aria-disabled. Contrast-exempt (WCAG 2.1 SC 1.4.3, trap 9) — it only has to read as unavailable, and the shimmer is what separates it from loading.'",
+      "web": "The root <div> carries data-disabled={disabled || undefined} aria-disabled={disabled || undefined} className={cn('min-w-0', disabled && 'opacity-45', className)}, matching the 45% opacity and aria-disabled semantics exactly."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "Stat's own doc comment states 'The host owns the box, and the host owns any interaction: a Stat is not a control' — there is no GestureDetector, Focus, or key handling anywhere in stat.dart.",
+      "web": "stat.tsx renders a plain <div>/<p>/<span> tree with no onClick, tabIndex, or keyboard handling of its own; the doc comment repeats the same 'a Stat is not a control' claim.",
+      "note": "Both platforms explicitly document that Stat is presentational; any interactivity (e.g. a clickable stat card) is composed by wrapping it in a link or button, which is out of scope for this capability."
+    },
+    "semantics": {
+      "verdict": "match",
+      "flutter": "StatDeltaMark wraps its Row in Semantics(label: '${delta.direction.word},', child: ...) — announcing 'Up,'/'Down,'/'No change,' before the numeric value — and the direction is carried three ways as the doc comment states: glyph shape (arrowUp/arrowDown/minus), the sign written onto the magnitude (+/−/none), and the Semantics label word.",
+      "web": "StatDeltaMark renders <Icon icon={icon}/><span className='sr-only'>{word},</span><span>{sign}{delta.value}</span> — the identical three-way encoding (shape, sign, sr-only word) the doc comment calls out under 'Trap 11: a mark whose only difference between states is hue is ONE signal, not two.'"
+    }
+  }
+}

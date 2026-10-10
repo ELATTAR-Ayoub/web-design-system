@@ -1,0 +1,49 @@
+{
+  "name": "ai-connection",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/connection.tsx",
+    "components/docs/component-docs/ai-connection/connection-specimen.tsx",
+    "components/docs/component-docs/ai-connection/page.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Connection — origin: web-only, flutterSources is [].",
+      "web": "components/ai-elements/connection.tsx exports Connection, a ConnectionLineComponent that renders a g holding a path (class animated, fill none, stroke var(--color-ring), width 1) and a circle at the pointer (radius 3, fill var(--color-action-ink), stroke var(--color-ring)).",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Connection — origin: web-only, flutterSources is [].",
+      "web": "It is a function of React Flow's ConnectionLineComponentProps and reads only fromX, fromY, toX and toY; the bezier's control points sit half way across horizontally. It is passed to Canvas as connectionLineComponent and takes no props of its own.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Connection — origin: web-only, flutterSources is [].",
+      "web": "One state: it renders only while a drag out of a handle is in progress, ending at the pointer. There is no resting, hover or error appearance; React Flow does not mount it otherwise.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Connection — origin: web-only, flutterSources is [].",
+      "web": "No disabled prop. A graph with nodesConnectable false never starts a drag, so the line never appears.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Connection — origin: web-only, flutterSources is [].",
+      "web": "Pointer only: it follows the pointer during a handle drag, with no animation of its own beyond the animated class's dash in xyflow's stylesheet. There is no keyboard path through a drag.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Connection — origin: web-only, flutterSources is [].",
+      "web": "None: a decorative drawing inside React Flow's connection-line svg, with no role or name.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

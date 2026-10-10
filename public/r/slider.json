@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "slider",
+  "title": "Slider",
+  "description": "The `slider` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "registryDependencies": [
+    "@elattar/source-foundation"
+  ],
+  "files": [
+    {
+      "path": "components/ui/slider.tsx",
+      "content": "\"use client\"\r\n\r\nimport * as React from \"react\"\r\nimport { Slider as SliderPrimitive } from \"radix-ui\"\r\n\r\nimport { cn } from \"@/lib/utils\"\r\n\r\nfunction Slider({\r\n  className,\r\n  defaultValue,\r\n  value,\r\n  min = 0,\r\n  max = 100,\r\n  thumbLabels,\r\n  \"aria-label\": rootLabel,\r\n  \"aria-labelledby\": labelledBy,\r\n  ...props\r\n}: React.ComponentProps<typeof SliderPrimitive.Root> & {\r\n  thumbLabels?: string[]\r\n}) {\r\n  const _values = React.useMemo(\r\n    () =>\r\n      Array.isArray(value)\r\n        ? value\r\n        : Array.isArray(defaultValue)\r\n          ? defaultValue\r\n          : [min, max],\r\n    [value, defaultValue, min, max]\r\n  )\r\n\r\n  const thumbName = (index: number) =>\r\n    thumbLabels?.[index] ??\r\n    (rootLabel\r\n      ? _values.length > 1\r\n        ? `${rootLabel} ${index + 1}`\r\n        : rootLabel\r\n      : undefined)\r\n\r\n  return (\r\n    <SliderPrimitive.Root\r\n      data-slot=\"slider\"\r\n      defaultValue={defaultValue}\r\n      value={value}\r\n      min={min}\r\n      max={max}\r\n      className={cn(\r\n        \"relative flex w-full touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:min-h-40 data-vertical:w-auto data-vertical:flex-col\",\r\n        className\r\n      )}\r\n      {...props}\r\n    >\r\n      <SliderPrimitive.Track\r\n        data-slot=\"slider-track\"\r\n        className=\"relative grow overflow-hidden rounded-pill border border-input bg-muted shadow-pressed data-horizontal:h-2.5 data-horizontal:w-full data-vertical:h-full data-vertical:w-2.5\"\r\n      >\r\n        <SliderPrimitive.Range\r\n          data-slot=\"slider-range\"\r\n          className=\"absolute bg-action-ink shadow-btn-primary select-none data-horizontal:h-full data-vertical:w-full\"\r\n        />\r\n      </SliderPrimitive.Track>\r\n      {Array.from({ length: _values.length }, (_, index) => (\r\n        <SliderPrimitive.Thumb\r\n          data-slot=\"slider-thumb\"\r\n          key={index}\r\n          aria-label={thumbName(index)}\r\n          aria-labelledby={thumbName(index) ? undefined : labelledBy}\r\n          className={cn(\r\n            \"relative block size-5 shrink-0 rounded-full border border-input bg-foreground shadow-btn ring-ring/50 select-none\",\r\n            \"transition-[transform,box-shadow] duration-fast ease-emphasized\",\r\n            \"after:absolute after:-inset-3\",\r\n            \"hover:scale-110 hover:ring-3\",\r\n            \"focus-visible:ring-3 focus-visible:outline-hidden\",\r\n            \"active:scale-125 active:ring-3\",\r\n            \"disabled:pointer-events-none disabled:opacity-50\"\r\n          )}\r\n        />\r\n      ))}\r\n    </SliderPrimitive.Root>\r\n  )\r\n}\r\n\r\nexport { Slider }\r\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

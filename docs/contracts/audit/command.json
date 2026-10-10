@@ -1,0 +1,48 @@
+{
+  "name": "command",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/command.dart"
+  ],
+  "webSources": [
+    "components/ui/command.tsx",
+    "components/docs/component-docs/command/page.tsx"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "flutter-behind",
+      "flutter": "Command builds Padding(_CommandInput) + a capped SingleChildScrollView of _inset(_CommandGroupBlock(heading + _CommandRow rows)) with a leading _CommandSeparator sibling and an optional _CommandEmpty, wrapped in a Container carrying the rounded-xl fill; inDialog is only a bool that swaps styling.",
+      "web": "CommandDialog wraps `children` in a `Command` root inside `DialogContent`, alongside Dialog/DialogHeader/DialogTitle/DialogDescription — the cmdk store the input subscribes to comes from that root.",
+      "note": "A SEPARATE DEFECT WAS FOUND AND FIXED WHILE CONFIRMING THIS ROW. `CommandDialog` dropped `children` straight into `DialogContent` with no `Command` root, so a `CommandInput` inside it read an undefined store and threw on `.subscribe` — the command documentation page, which renders a `defaultOpen` CommandDialog, returned \"This page couldn't load\" in a production build. A green typecheck, lint and unit run never saw it, because nothing rendered that specimen outside a browser. Now pinned by `e2e/component-interactions.spec.ts`. The original verdict stands on its own terms: Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: CommandDialog is a real, working subcomponent on the web (Dialog + DialogHeader/DialogTitle/DialogDescription + DialogContent, with open/onOpenChange/defaultOpen forwarded) but command.dart's own doc comment states the dialog variant is only 'recorded, not built' — Command.inDialog merely toggles rounded-lg!/bg-popover/no-border styling with no Dialog widget, no focus trap and no Escape-to-close wired to it."
+    },
+    "api": {
+      "verdict": "flutter-behind",
+      "flutter": "Command's constructor covers groups, placeholder, emptyLabel, controller, focusNode, shouldFilter, filter, loop, vimBindings, label, onValueChanged and inDialog — there is no open/onOpenChange/defaultOpen, title, description or showCloseButton anywhere in command.dart.",
+      "web": "CommandDialog's own prop set — title (default 'Command Palette'), description, showCloseButton (default false), plus open/onOpenChange/defaultOpen forwarded to the underlying Dialog — is documented in the doc page's API Reference block under the 'CommandDialog' label.",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: This mirrors the anatomy gap: every CommandDialog-specific prop the web API Reference documents (title, description, showCloseButton, open/onOpenChange/defaultOpen) has no Flutter parameter to compare against, because Command.inDialog is a plain bool with none of that surface."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "_selectFirstItemInner runs in a post-frame callback so the first row is highlighted before any input, data-selected uses theme.muted fill via DecoratedBox, and onHover keeps the highlight on the last-hovered row with no pointer-leave handler, reproducing cmdk's disablePointerSelection:false default.",
+      "web": "cmdk (CommandPrimitive) selects the first item once rows register, applies data-selected:bg-muted data-selected:text-foreground on CommandItem, and likewise never clears the highlight on pointer-leave — the same 'moving off the palette leaves the last-hovered row selected' behavior command.dart's doc comment measures and reproduces."
+    },
+    "disabled": {
+      "verdict": "match",
+      "flutter": "_CommandRow's disabled path is Disabled(disabled: !item.enabled, blockPointer: false, reason: item.disabledReason, child: row) in Command.build — a disabled row can carry a reason string surfaced to the user.",
+      "web": "CLOSED: CommandItem now takes disabledReason?: string (components/ui/command.tsx). When given, the item is wrapped in components/ui/disabled.tsx's Disabled (mode=\"aria\", since cmdk's Item is a plain div with no native disabled attribute to carry) — an always-on aria-describedby merges the reason onto the row for a screen reader regardless of whether the popover is ever opened, and a small info affordance beside the row makes it click/tap-reachable. ORIGINAL: CommandItem's class list only applies data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50; there is no reason/description prop on CommandItem, CommandPrimitive.Item, or the doc page's API Reference block for one.",
+      "note": "CLOSED 2026-09-11: measured in the dev server (http://localhost:3111, desktop-dark) — focusing a disabled CommandItem with disabledReason set reads the reason via its aria-describedby association, and the info button opens a Popover on click/Enter/Space without disturbing cmdk's own highlight. Pinned by a new unit test (test/command.test.tsx) and by e2e/gaps-disabled.spec.ts (keyboard reachability + announcement). ORIGINAL: Same shape as combobox's disabled gap: Flutter's CommandItem can explain why a row is disabled via disabledReason, while the web CommandItem only dims the row with opacity-50 and offers no text a screen reader or tooltip could surface."
+    },
+    "interaction": {
+      "verdict": "match",
+      "flutter": "_onKey reproduces Ctrl+N/J and Ctrl+P/K under vimBindings, plain ArrowDown/Up via _move, Cmd+ArrowDown/Up via _moveTo, Alt+Arrow via _moveByGroup, Home/End, and Enter calling _commit — loop defaults false so _move stops dead at both ends, matching 'five ArrowDowns from the top of a four-row palette leave the fourth row selected'.",
+      "web": "cmdk's own keyboard contract — vim bindings gated on vimBindings+Ctrl, arrow/meta/alt navigation, Home/End, Enter running onSelect, loop off by default — is what command.dart's doc comment cites and measures line-for-line, and the doc page's Keyboard block lists the identical set."
+    },
+    "semantics": {
+      "verdict": "match",
+      "flutter": "Command.itemHeight is floored via math.max(Input.textSpecDefault.step.leading + space(2)*2, TouchTargets.minimum) with a TARGET SIZING comment stating the measured 34.5625px reading is 'below the platform's 44px touch-target floor, so the floor is applied to the row's own layout height'.",
+      "web": "CLOSED: CommandItem rows now carry min-h-(--size-target-min) (44px) in components/ui/command.tsx, per the 2026-09-11 decision recorded in docs/audits/web-component-audit.md that rows inside grouped controls get the 44px floor. The label stays centred in the taller row; font size is unchanged. The focus-ring fix already recorded below stands unchanged. ORIGINAL: CommandInput's InputGroup now carries `has-[[data-slot=command-input]:focus-visible]:border-ring|ring-3|ring-ring/50`, measured painting a 3px ring at 50% alpha. CommandItem rows still render at ~34.6px against the 44px --size-target-min floor.",
+      "note": "CLOSED 2026-09-11 (row height). measured in the dev server (http://localhost:3111, desktop-dark) with computed getBoundingClientRect() on CommandItem — reads >= 44px tall. Pinned by e2e/gaps-disabled.spec.ts, which asserts the measured height and would fail with min-h-(--size-target-min) removed (confirmed: removing it dropped the reading back to ~34.6px and the assertion failed). HALF CLOSED. The focus ring is fixed: `InputGroup` paints its own ring off `[data-slot=input-group-control]`, a slot only `InputGroupInput` stamps, and cmdk needs `CommandPrimitive.Input` to carry `data-slot=\"command-input\"` instead — so the group's rule could never match and the search field focused with no visible indicator (WCAG 2.4.7). Measured before the fix: every entry of the group's computed box-shadow was `rgba(0, 0, 0, 0) 0px 0px 0px 0px`. The same three declarations, keyed off the slot that is actually there, now paint it; `e2e/component-interactions.spec.ts` asserts the COMPUTED shadow rather than the selector, after an earlier draft that checked `element.matches()` passed with the fix deliberately removed. STILL OPEN: the 44px row-pitch floor inside grouped controls is a parked owner decision in `docs/audits/web-component-audit.md`, not this audit's to close."
+    }
+  }
+}

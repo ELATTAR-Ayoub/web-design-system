@@ -1,0 +1,49 @@
+{
+  "name": "ai-schema-display",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/schema-display.tsx",
+    "components/docs/component-docs/ai-schema-display/schema-display-specimen.tsx",
+    "components/docs/component-docs/ai-schema-display/page.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Schema Display — origin: web-only, flutterSources is [].",
+      "web": "schema-display.tsx exports SchemaDisplay (a rounded-lg bordered div providing method, path, description, parameters and bodies in context) and parts: SchemaDisplayHeader, SchemaDisplayMethod (a Badge), SchemaDisplayPath (type-identifier with tinted {params}), SchemaDisplayDescription, SchemaDisplayContent and SchemaDisplayBody, SchemaDisplayParameters and SchemaDisplayParameter, SchemaDisplayRequest, SchemaDisplayResponse, a recursive SchemaDisplayProperty and SchemaDisplayExample (a pre).",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Schema Display — origin: web-only, flutterSources is [].",
+      "web": "SchemaDisplay takes method (required), path (required), description, parameters (name, type, required, description, location), requestBody and responseBody (recursive properties and items), and children; SchemaDisplayProperty also takes depth; every part reads its default content from context and accepts children to override it.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Schema Display — origin: web-only, flutterSources is [].",
+      "web": "Sections are open or closed (Collapsible, open by default; nested properties are open when depth is under 2) with a chevron that turns 90 degrees. The method badge variant encodes GET success, POST info, PUT and PATCH warning and DELETE destructive, and required fields show a destructive required badge.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Schema Display — origin: web-only, flutterSources is [].",
+      "web": "Not applicable: the triggers are plain disclosures and no part takes or sets a disabled state.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Schema Display — origin: web-only, flutterSources is [].",
+      "web": "Click, Enter or Space on a section or nested-property trigger toggles it; the triggers have press feedback and a hover fill. Nothing else is interactive, and the rows are not selectable controls.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Schema Display — origin: web-only, flutterSources is [].",
+      "web": "Triggers are Radix collapsible buttons with aria-expanded and aria-controls and visible text names. The component adds no headings, lists or table roles; meaning for method, location and required is in badge text, and the indentation depth is visual only.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "skeleton",
+  "title": "Skeleton",
+  "description": "The `skeleton` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+  "registryDependencies": [
+    "@elattar/source-foundation"
+  ],
+  "files": [
+    {
+      "path": "components/ui/skeleton.tsx",
+      "content": "import { cn } from \"@/lib/utils\"\r\n\r\nfunction Skeleton({\r\n  className,\r\n  as: Tag = \"div\",\r\n  ...props\r\n}: React.ComponentProps<\"div\"> & { as?: \"div\" | \"span\" }) {\r\n  return (\r\n    <Tag\r\n      data-slot=\"skeleton\"\r\n      aria-hidden=\"true\"\r\n      className={cn(\r\n        \"anim-shimmer rounded-md\",\r\n        Tag === \"span\" && \"inline-block\",\r\n        className,\r\n      )}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nexport { Skeleton }\r\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

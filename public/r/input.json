@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "input",
+  "title": "Input",
+  "description": "The `input` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+  "registryDependencies": [
+    "@elattar/source-foundation"
+  ],
+  "files": [
+    {
+      "path": "components/ui/input.tsx",
+      "content": "import * as React from \"react\"\r\n\r\nimport { cn } from \"@/lib/utils\"\r\n\r\nfunction Input({ className, type, ...props }: React.ComponentProps<\"input\">) {\r\n  return (\r\n    <input\r\n      type={type}\r\n      data-slot=\"input\"\r\n      className={cn(\r\n        \"min-h-10 w-full min-w-0 rounded-pill border border-input bg-card px-4 py-1 text-sm shadow-pressed outline-none\",\r\n        \"transition-[box-shadow,border-color,background-color] duration-normal ease-out\",\r\n        \"file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground\",\r\n        \"placeholder:text-muted-foreground\",\r\n        \"focus-visible:border-primary/50 focus-visible:ring-3 focus-visible:ring-ring/35\",\r\n        \"disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50\",\r\n        \"aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20\",\r\n        className\r\n      )}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nexport { Input }\r\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

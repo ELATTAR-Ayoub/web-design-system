@@ -1,0 +1,47 @@
+{
+  "name": "navigation-menu",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/navigation_menu.dart"
+  ],
+  "webSources": [
+    "components/ui/navigation-menu.tsx",
+    "components/docs/component-docs/navigation-menu/page.tsx"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "NavigationMenu(items: List<NavigationMenuItem>, indicator=false) builds the bar; NavigationMenuItem.trigger({label, content}) / .link({label, onTap}) are the two row shapes; _NavigationMenuTrigger, NavigationMenuLink, NavigationMenuIndicator (_CaretSquare inside) and a Popover-backed panel round out the anatomy, mirroring List/Item/Trigger/Content/Link/Indicator/Viewport.",
+      "web": "navigation-menu.tsx exports NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuContent, NavigationMenuTrigger, NavigationMenuLink, NavigationMenuIndicator, NavigationMenuViewport and navigationMenuTriggerStyle — Radix NavigationMenuPrimitive parts with matching data-slot attributes, the same anatomy the Dart file's doc comment measures item by item."
+    },
+    "api": {
+      "verdict": "platform-difference",
+      "flutter": "NavigationMenuItem is a closed two-constructor union (.trigger{label,content} / .link{label,onTap}) with no per-item disabled, no controlled open value, and NavigationMenu itself only takes items and indicator:bool.",
+      "web": "NavigationMenuPrimitive.Root/Item/Trigger/Link expose Radix's full prop surface — value/onValueChange for controlled open state, delayDuration/skipDelayDuration overrides, and disabled inherited from Radix's own Item — none of which NavigationMenuItem's Dart union can express.",
+      "note": "Consistent with the whole menu-family pattern documented elsewhere in this system: Flutter's NavigationMenuItem is a simplified declarative wrapper composed from the two shapes the corpus actually uses, while the web is the raw Radix primitive with its full prop surface. This is the expected shape of the gap between a composed Flutter widget and an installable Radix component, not a defect."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "menu doc comment drift 3: 'Nothing about the trigger's paint is transitioned... transition-property reads exactly transform. (The panel links are the same story — press and nothing else.) The one thing that does interpolate is the chevron.' _NavigationMenuTrigger and NavigationMenuLink reproduce this snap-everything-but-the-chevron behavior via the shared `press` mixin, matching the doc's own measured finding.",
+      "web": "CLOSED: navigationMenuTriggerStyle's cva class still includes hover:bg-secondary hover:text-foreground and data-[state=open]:bg-secondary data-[state=open]:text-foreground with no transition-color utility of its own, and the chevron's `transition-transform` is unchanged — drift 3 stands as before. Drift 1 is what closed: NavigationMenuItem's `<li>` no longer carries `className=\"relative\"` (components/ui/navigation-menu.tsx), so @radix-ui/react-navigation-menu's `activeTrigger.offsetLeft` — read in its `NavigationMenuIndicatorImpl` to position the caret — now resolves against the nearest positioned ancestor left standing: the `indicatorTrack` div NavigationMenuList itself wraps the `<ul>` in (`style={{position:\"relative\"}}`, set by the library, not by us), which is what the offset was always meant to be read against.",
+      "note": "CLOSED by this worker. Root cause read directly from node_modules/@radix-ui/react-navigation-menu/dist/index.mjs: NavigationMenuList renders `jsx(Primitive.div, {style:{position:\"relative\"}, ...}, jsx(Collection.Slot, ..., list))` around the `<ul>` — the library's own \"indicator track\", the intended measurement ancestor — while NavigationMenuIndicatorImpl computes `offset: activeTrigger.offsetLeft`, which resolves against `offsetParent`, the NEAREST positioned ancestor. This component's NavigationMenuItem gave every `<li>` `className=\"relative\"` (stock shadcn does the same), which made each `<li>` its own positioning context — so every trigger's `offsetLeft` was read against its own list item (a box the trigger fills, so ~0) instead of against the track, and the caret sat over the first trigger regardless of which panel was actually open. Fix: NavigationMenuItem no longer sets `relative` (components/ui/navigation-menu.tsx); nothing else in this file or the doc page anchors to it, so removing it does not change how NavigationMenuContent (viewport={false}) is positioned. Live source-level confirmation only, not yet re-measured with the fix applied in a live browser: the shared dev server (http://localhost:3111) was mid-flight from other concurrent work in this repository throughout this session (a Turbopack panic tied to app/globals.css eventually took it down entirely) and repeated attempts to click a second trigger and read the indicator's translateX via script produced inconsistent results (the indicator failing to mount at all on some attempts, even before this fix) that tracked the server's instability rather than this component — not a result this note will assert as a measurement. `e2e/gaps-interaction.spec.ts` pins the intended behaviour (open the second trigger, assert its indicator position is to the right of the first's) and is the source of truth for whether this actually holds; see the spec and this worker's handoff for its outcome. Original finding kept below for the record. Recorded as gap rather than match because of drift 1, not drift 3: the doc comment's own drift-1 finding — 'The indicator never travels... every offsetLeft is 0... The caret therefore sits centred over the list's left edge and points at the wrong trigger for every item but the first' — is a real, measured defect present in the underlying Radix/web behavior that navigation_menu.dart's NavigationMenuIndicator reproduces faithfully (bug-compatible) rather than fixing. Since the indicator is meant to tie the open panel back to its trigger and does not for any item past the first, this is a live UX gap on the web that Flutter has correctly ported rather than corrected — filed here as the states-affecting defect since it is the indicator's open/positioned state that is wrong."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No enabled/disabled parameter exists anywhere on NavigationMenuItem, NavigationMenu, or NavigationMenuLink — every row is always interactive.",
+      "web": "navigationMenuTriggerStyle's cva class does carry disabled:pointer-events-none disabled:opacity-50 (inherited from Radix's disabled-capable Trigger), but no disabled prop is ever passed or documented on the navigation-menu doc page.",
+      "note": "Neither side demonstrates or documents a disabled navigation item in practice — the web's class list carries the selector defensively (shared boilerplate with other press-based triggers) but nothing exercises it, so there is no real disabled behavior on either platform to compare; marked n/a rather than gap since the web capability is present but unused/unverified rather than the Flutter side being missing something the web actually does."
+    },
+    "interaction": {
+      "verdict": "match",
+      "flutter": "_openDelay/_closeDelay/_skipDelay are Radix's own hover-intent timers, documented as measured: 'a first hover opened the panel 281ms after the pointer landed' (~280ms delayDuration), '~186ms from a real pointerleave' (close), and 'travelling from Packs to Marketplace flipped data-state 78ms after the pointer moved' (skipDelayDuration window).",
+      "web": "These three timers are Radix NavigationMenuPrimitive's own internal delayDuration/skipDelayDuration constants — 'the library's own default, not a --duration-* token,' per the Dart doc comment's own framing — which navigation-menu.tsx inherits unchanged from the primitive with no override in the component file."
+    },
+    "semantics": {
+      "verdict": "match",
+      "flutter": "_NavigationMenuTriggerState and _NavigationMenuLinkState both wrap their row in Semantics(...) (lines ~617 and ~772) carrying the trigger/link's own onTap-driven activation, mirroring a real anchor/button's accessible role and name.",
+      "web": "NavigationMenuLink and NavigationMenuTrigger are Radix NavigationMenuPrimitive.Link/Trigger, which render as real <a>/<button>-equivalent elements with Radix's own ARIA (aria-expanded on the trigger, data-active reflecting the current destination) — the component doc comment even calls out 'data-active: is stock shadcn's spelling and is correct: Radix emits data-active=\"\", and the shim's variant matches [data-active]:not([data-active=\"false\"])' as a subtlety intentionally preserved rather than 'fixed.'"
+    }
+  }
+}

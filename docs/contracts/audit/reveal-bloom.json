@@ -1,0 +1,47 @@
+{
+  "name": "reveal-bloom",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "styles/utilities.css"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "Flutter has no counterpart: `background_effect.dart` is the page atmosphere, and nothing in the Flutter inventory carries a per-surface reveal glow.",
+      "web": "Two `@utility` blocks, `bloom-action` and `bloom-value`: a static `radial-gradient(ellipse 70% 60% at 50% 30%, color-mix(in oklab, var(--color-action|--color-value) 28%|22%, transparent), transparent 70%)` on a host.",
+      "note": "Web-only. These had been documented under `background-effect`, which is Flutter’s name for a different thing; they are recorded here under their own name so the collision cannot recur."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "Flutter has no counterpart: `background_effect.dart` is the page atmosphere, and nothing in the Flutter inventory carries a per-surface reveal glow.",
+      "web": "Two class names, no props. The tint is the action or value ramp mixed toward transparent; the geometry is percentages of the host.",
+      "note": "Web-only capability, declared `origin: \"web-only\"` in the contract; there is no Flutter side to compare this dimension against."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "Flutter has no counterpart: `background_effect.dart` is the page atmosphere, and nothing in the Flutter inventory carries a per-surface reveal glow.",
+      "web": "A static gradient with no state of its own — rest only; interaction belongs to the surface it sits behind.",
+      "note": "Web-only capability, declared `origin: \"web-only\"` in the contract; there is no Flutter side to compare this dimension against."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "Flutter has no counterpart: `background_effect.dart` is the page atmosphere, and nothing in the Flutter inventory carries a per-surface reveal glow.",
+      "web": "Decoration; nothing here can be disabled or needs a reason.",
+      "note": "Web-only capability, declared `origin: \"web-only\"` in the contract; there is no Flutter side to compare this dimension against."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "Flutter has no counterpart: `background_effect.dart` is the page atmosphere, and nothing in the Flutter inventory carries a per-surface reveal glow.",
+      "web": "Never focusable, never reached by keyboard or pointer; it is applied to a positioned host, not a control.",
+      "note": "Web-only capability, declared `origin: \"web-only\"` in the contract; there is no Flutter side to compare this dimension against."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "Flutter has no counterpart: `background_effect.dart` is the page atmosphere, and nothing in the Flutter inventory carries a per-surface reveal glow.",
+      "web": "Announced by nothing and named by nothing; it carries no content and contrasts against nothing directly.",
+      "note": "Web-only capability, declared `origin: \"web-only\"` in the contract; there is no Flutter side to compare this dimension against."
+    }
+  }
+}

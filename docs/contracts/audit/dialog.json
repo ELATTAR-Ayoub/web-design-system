@@ -1,0 +1,43 @@
+{
+  "name": "dialog",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": ["lib/src/components/ui/dialog.dart"],
+  "webSources": ["components/ui/dialog.tsx", "components/docs/component-docs/dialog/page.tsx"],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "Dialog(trigger, content, onOpenChange) wraps OverlayPortal with an OpenTransition; DialogContent lays out DialogHeader/DialogFooter/DialogMedia as bleeding bands via DialogContentGroup (InheritedWidget) around body children in a Column + SingleChildScrollView.",
+      "web": "Dialog > DialogTrigger, DialogPortal > DialogOverlay + DialogPrimitive.Content(data-slot=\"dialog-content\") containing DialogHeader/DialogFooter/DialogMedia/DialogTitle/DialogDescription, exactly the slot list dialog.dart's own header comment cites as \"components/ui/dialog.tsx\"."
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "DialogContent takes children: List<Widget>, variant: DialogVariant{normal,media}, showCloseButton (default true), onClose; DialogFooter has no showCloseButton param of its own (dialog.dart line 59: \"Not ported\").",
+      "web": "DialogContent takes showCloseButton (default true) and variant: \"default\"|\"media\"; DialogFooter takes an extra showCloseButton (default false) that appends a Button variant=\"outline\" wrapped in DialogClose — the API Reference block documents this as DialogFooter's own prop.",
+      "note": "DialogFooter's showCloseButton is real on the web (dialog.tsx lines 150-171, demoed nowhere in the doc page but present in the component) and explicitly called out in dialog.dart's own \"Not ported\" section as absent from the Dart DialogFooter — a deliberate, documented omission rather than an oversight, but still a live prop difference between the two APIs."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "OverlayPortalState._open drives _content/_overlay AnimationControllers; open() takes primaryFocus into _restoreTo, pushes onto the static _stack, and _takeFocus() calls _scope.nextFocus() on the post-frame callback to land on the first tabbable child (measured: Cancel).",
+      "web": "Docs States block lists rest/closed, hover, focus-visible, pressed (all delegated to the trigger Button), open (\"data-open on content and overlay\"), disabled trigger, and loading/success/error/empty as N/A with the Note explaining those outcomes belong to alert-dialog's AlertDialogAction instead."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "DialogContent, DialogHeader and DialogFooter carry no disabled field anywhere in dialog.dart — a dialog is a container, so the only thing that can be disabled is its trigger button, which Button already owns.",
+      "web": "The docs States block itself marks disabled as belonging to the trigger (\"disabled trigger — Nothing to decide yet\") rather than to Dialog, and Dialog/DialogContent/DialogFooter accept no disabled prop in dialog.tsx.",
+      "note": "Both sides agree disabled is not a Dialog-level concept: it lives on whatever DialogTrigger wraps (Button), which is audited separately, so n/a applies identically on both sides rather than one side lacking something the other has."
+    },
+    "interaction": {
+      "verdict": "match",
+      "flutter": "_onKey closes on LogicalKeyboardKey.escape unconditionally (\"Escape closes every modal on the page ... Drift, reproduced\"), while _onPop only closes the topmost entry in the static _stack on Android back/predictive-back, an order with no reference counterpart.",
+      "web": "Docs Keyboard block: Enter/Space activates the trigger, Tab/Shift+Tab cycles only inside the dialog, Escape closes and returns focus to the trigger; Accessibility block adds \"a click on the overlay, and a click outside the content all close the dialog by default.\"",
+      "note": "Escape is transcribed 1:1 (dialog.dart lines 87-94: \"Escape follows the reference, back always dismisses\"), but the Android back/predictive-back handling in OverlayPortalState._onPop (lines 461-478) is a USER-ORDERED MOBILE ADAPTATION with no web equivalent, since the web has no back-gesture concept — recorded here as expected platform divergence, not compared against the web."
+    },
+    "semantics": {
+      "verdict": "platform-difference",
+      "flutter": "OverlayPortalState wraps the panel in Semantics(scopesRoute: true, explicitChildNodes: true) plus a top-level BlockSemantics() so the page behind is unreachable to assistive tech, but sets no namesRoute/label tying the route's accessible name to DialogTitle's text.",
+      "web": "Docs Accessibility block: role=\"dialog\" with aria-modal=\"true\", \"Accessible name: aria-labelledby, pointed automatically at DialogTitle's generated id ... its absence leaves the dialog unnamed,\" and \"Background inertness: the rest of the page is marked inert.\"",
+      "note": "Web wires an explicit aria-labelledby from the dialog root to DialogTitle's id (Radix's own mechanism); Flutter has no namesRoute/label equivalent and instead relies on explicitChildNodes ordering so a screen reader reads DialogTitle first in sequence — functionally similar (the title is still the first thing announced) but via a different, platform-native semantics mechanism rather than an explicit id relationship, so this is recorded as a platform difference rather than a gap."
+    }
+  }
+}

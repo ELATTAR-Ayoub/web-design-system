@@ -1,0 +1,48 @@
+{
+  "name": "spinner",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/spinner.dart"
+  ],
+  "webSources": [
+    "components/ui/spinner.tsx",
+    "components/docs/component-docs/spinner/page.tsx"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "flutter-behind",
+      "flutter": "Spinner(size=16, strokeOverride) is RepaintBoundary > ExcludeSemantics > RotationTransition(turns: _controller) > Icon(IconGlyph.loaderCircle, sizePx: widget.size, strokeOverride, tone: IconTone.inherit) — a bare rotating glyph with no host wrapper and no status text node.",
+      "web": "The CURRENT spinner.tsx wraps the glyph in a <span data-slot='spinner' role={status} aria-label={label}> with a visually-hidden <span className='sr-only'>{label}</span> sibling beside the <Icon icon={Loader2Icon} className='size-full anim-spin' />, per the file's own header comment: 'the status is hosted on a <span>, with real, visually hidden words in it, and the glyph inside is decoration.'",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: spinner.dart's doc comment describes and reproduces an OLDER, already-fixed web bug: 'spinner.tsx hands Icon a role=\"status\" and an aria-label=\"Loading\", and Icon... spreads nothing — so both attributes, and data-slot, are dropped on the floor... The spinner announces nothing.' The Dart file explicitly chooses to reproduce that silence under 'ruling B9.' But the CURRENT components/ui/spinner.tsx (read directly) has already been rewritten to host role/aria-label/sr-only text on an outer <span> specifically to fix this — it is not a bare Icon anymore. So the Flutter port is now stale: it reproduces a defect the web has since corrected, and Spinner (Flutter) still renders no status host and no announced text at all, via ExcludeSemantics wrapping the whole thing unconditionally."
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "Spinner({size = Spinner.px (16), strokeOverride}) — size sets the rendered box, strokeOverride independently overrides the stroke width which is otherwise fixed at Icon.strokeFor(Spinner.px) regardless of size.",
+      "web": "Spinner({className, aria-label, aria-hidden, ...props}) sizes via the caller's className (default size-4 = 16px) exactly as spinner.dart's px constant documents, with the same 'stroke does not scale with a larger className' behavior implicit in using a fixed Loader2Icon glyph."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "_SpinnerState drives a single continuous AnimationController.repeat() at MotionDurations.spin, with reduced-motion collapsing it to one held frame at controller.lowerBound (upright, 0°) rather than stopping animation entirely — 'stops the controller at its lower bound... 0°, upright, still.'",
+      "web": "spinner.tsx's anim-spin utility is pulls-spin 0.9s linear infinite per the doc comment, and the file explicitly notes 'linear on purpose... a spinner that eases is a spinner that looks like it is struggling' — the only animation in the system with no --ease-* curve, matching Flutter's MotionCurves usage bypass (RotationTransition has no curve applied, turns runs linearly with the controller)."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "Spinner has no enabled/disabled field — it is a pure loading indicator with a fixed animation.",
+      "web": "spinner.tsx defines no disabled prop; the spinner's only conditional behavior is aria-hidden vs role=status based on the decorative flag.",
+      "note": "A spinner represents an in-progress state, not a control; there is nothing to disable on either platform."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "Spinner wires no GestureDetector, Focus, or key handling — it is decoration inside whatever control hosts it (e.g. a loading Button).",
+      "web": "spinner.tsx renders a <span> with no onClick, tabIndex, or keyboard handling.",
+      "note": "Neither implementation is itself operable; a spinner communicates state, it does not receive input."
+    },
+    "semantics": {
+      "verdict": "flutter-behind",
+      "flutter": "Spinner.build() always wraps its content in ExcludeSemantics unconditionally, with the doc comment stating 'the glyph is wrapped in ExcludeSemantics... and Button carries the busy state alone' — there is no label parameter, no role='status' equivalent, and no way for a Flutter caller to opt the spinner itself into announcing anything.",
+      "web": "The current spinner.tsx computes `const decorative = ariaHidden === true || ariaHidden === 'true'` and, when NOT decorative, renders role='status' aria-label={label ?? 'Loading'} plus a visible-to-AT sr-only text node — so by default (no aria-hidden passed) a web Spinner DOES announce 'Loading' via a live region, and only opts out when the caller explicitly passes aria-hidden.",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: This is the same drift already flagged under 'anatomy' but it belongs here too because it is fundamentally an accessibility gap: the CURRENT web spinner announces its loading state by default and Flutter's Spinner never does, unconditionally, regardless of any label a caller might want to supply — spinner.dart offers no parameter equivalent to the web's aria-label/decorative toggle at all. The Flutter doc comment's justification (reproducing an old web bug under 'ruling B9') is stale against the current source and should be revisited."
+    }
+  }
+}

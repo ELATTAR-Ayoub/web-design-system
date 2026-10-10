@@ -1,0 +1,45 @@
+{
+  "name": "resizable",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": ["lib/src/components/ui/resizable.dart"],
+  "webSources": ["components/ui/resizable.tsx", "components/docs/component-docs/resizable/page.tsx"],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "platform-difference",
+      "flutter": "ResizablePanelGroup(panels, withHandle, minHeight) always lays out a single Row via LayoutBuilder/Stack, placing a _Seam (w-px bg-border + optional gripSize grip) between panels and an overlaid _GrabStrip per seam positioned in the group's own Stack (not the 1px seam) so the hit area is not bounds-clipped by the hairline.",
+      "web": "ResizablePanelGroup/ResizablePanel/ResizableHandle wrap react-resizable-panels' Group/Panel/Separator directly; Group switches between `flex` (row) and `flex-col` via the CSS selector `aria-[orientation=vertical]:flex-col`, so the same component handles both a horizontal and a vertical split depending on the `orientation` prop.",
+      "note": "Flutter's ResizablePanelGroup only ever builds a Row — there is no vertical/column layout path in _ResizablePanelGroupState.build — while the web wrapper natively supports orientation=\"vertical\" (documented and demoed in resizable/page.tsx's 'Vertical split' section); this is the Dart port being a horizontal-only subset of the web component, not a defect in the web capability being audited."
+    },
+    "api": {
+      "verdict": "platform-difference",
+      "flutter": "ResizablePanel({required defaultSize, minSize = 0, required child}) — defaultSize is a flex-grow weight, minSize is pixels (an explicitly documented unit mismatch reproduced from the reference); ResizablePanelGroup({required panels, withHandle = true, minHeight}) has no orientation, disabled, autoSaveId or onLayoutChange parameter.",
+      "web": "ResizablePanelGroup/ResizablePanel/ResizableHandle type their props straight off react-resizable-panels' GroupProps/PanelProps/SeparatorProps; the doc's API Reference states GroupProps includes 'orientation (\"horizontal\" | \"vertical\", default \"horizontal\"), autoSaveId, disabled, onLayoutChange, etc.' and PanelProps includes 'collapsible, order, id, onResize, etc.', all forwarded directly.",
+      "note": "The web component exposes the full react-resizable-panels API (orientation, disabled, autoSaveId, onLayoutChange, collapsible panels, onResize) while the Flutter port only models defaultSize/minSize/withHandle/minHeight — a much narrower surface; this is Flutter lacking web capability rather than the reverse, so it is not scored as a web gap, but it means 'parity' here covers only a fraction of what react-resizable-panels offers."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "_GrabStripState.onHorizontalDragUpdate feeds widget.onDrag(d.delta.dx) straight into _resize every frame with no easing or commit-on-release, and _onKey maps ArrowLeft/Right to keyboardStep (5 percentage points) and Home/End to the panel's minSize / (space - next panel's minSize) — both documented as reproducing measurements taken directly off the reference ('The drag is live and 1:1 — sampled every frame at exactly the pointer's delta' and 'The keyboard step is 5 percentage points').",
+      "web": "ResizableHandle forwards straight to react-resizable-panels' Separator, the same library the Flutter file's probe (scratchpad/bl-resize.js) measured to produce those exact numbers (aria-valuemin=\"2.434\" at minSize 25px / 1027px width, 90.068 -> 85.068 -> ... keyboard steps); resizable/page.tsx's Keyboard section independently documents 'Up / Down arrow ... Resizes a focused vertical handle by 5% per press.'",
+      "note": ""
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "Neither ResizablePanelGroup, ResizablePanel, nor ResizableHandle declares an `enabled`/`disabled` field anywhere in resizable.dart — there is no disabled path to read.",
+      "web": "GroupProps' `disabled` is forwarded straight from react-resizable-panels (per the doc's API Reference row quoted in the api dimension); resizable.tsx adds no additional disabled styling of its own on top of it.",
+      "note": "The Flutter port has nothing to compare against here since it never modelled a disabled state for this capability at all; the web forwarding the library's own disabled prop is therefore an addition rather than something to verify against Flutter, so this is recorded n/a rather than a gap."
+    },
+    "interaction": {
+      "verdict": "match",
+      "flutter": "handleGrab (24px, space(6)) is the actual hit width _GrabStrip answers to, hoisted into the group's own Stack specifically so a Positioned child 1.5px past the 1px seam is not bounds-clipped; the library doc comment calls this out explicitly as a 'USER-ORDERED DIVERGENCE — the grab strip is 24px, not the measured 4' because 'the reference is a mouse-only document: after:w-1 is a 4px target, which a cursor hits and a fingertip does not (the platform guidance both stores publish is 44/48px, and 4px is under a tenth of it).'",
+      "web": "CLOSED: ResizableHandle's `::after` hit area is now `after:w-(--size-target-min)` (vertical handles) / `aria-[orientation=horizontal]:after:h-(--size-target-min)` (horizontal handles) in components/ui/resizable.tsx — the invisible pseudo-element grows to the 44px token floor across the drag axis while the drawn separator itself stays the same `w-px`/`h-px` hairline, so nothing painted changes.",
+      "note": "CLOSED by this worker. Fixed in components/ui/resizable.tsx's ResizableHandle className: `after:w-1`/`after:h-1` (a 4px pointer-only hit zone) replaced with `after:w-(--size-target-min)`/`after:h-(--size-target-min)`, reading the same 44px token the audit measured Flutter's 24px fix against. Measured live on /design-system/components/resizable (dev server, http://localhost:3111): the Preview split's handle drew at `x: 613, width: 1` (`getBoundingClientRect`); `document.elementFromPoint(cx±20, cy)` — 20px either side of the drawn line, past the old 4px zone entirely — both resolved to the `[data-slot=\"resizable-handle\"]` element, while `elementFromPoint(cx±26, cy)` — just past the new 44px-wide (±22px) zone — resolved to the neighbouring panel's own child (a `P`/`DIV`) instead, confirming the hit area grew to the token floor and is bounded there, not unbounded. `getBoundingClientRect` on the handle itself stayed `width: 1`, confirming the drawn line did not thicken. Original finding kept below for the record. This is a confirmed, measured gap: the web resize handle's actual pointer/touch hit target is ~4px wide (elementFromPoint measured x=735..739 against the reference in the Flutter file's own probe notes), far under the --size-target-min 44px floor RULES sets, and the Flutter port was deliberately widened to 24px specifically because of this shortfall — the web component never received the equivalent fix."
+    },
+    "semantics": {
+      "verdict": "platform-difference",
+      "flutter": "_GrabStripState wraps the strip in Semantics(container: true, label: 'Resize') with no value/min/max communicated to the accessibility tree; the widget's tabIndex-equivalent is a Focus with a debugLabel-only FocusNode (resizableHandleFocusLabel), not a numeric readout.",
+      "web": "ResizablePrimitive.Separator is react-resizable-panels' own element, which the Flutter doc's probe measured as carrying `role=\"separator\"`, `tabIndex={0}`, and a live `aria-valuemin` (measured '2.434' i.e. 25px / 1027px) — richer ARIA value semantics than the Flutter Semantics(label) alone provides.",
+      "note": "The web separator announces role, tab stop and a numeric aria-valuemin/now/max through the underlying library, which is at least as complete as Flutter's label-only Semantics node; recorded as platform-difference because the mechanism (native ARIA separator pattern vs a single accessibility label) differs, not because the web is missing anything."
+    }
+  }
+}

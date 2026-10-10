@@ -1,0 +1,46 @@
+{
+  "name": "calendar",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/calendar.dart"
+  ],
+  "webSources": [
+    "components/ui/calendar.tsx"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "Calendar.single/Calendar.range (mode single|range) composed of _Caption (nav buttons + caption_label), _WeekdayRow, per-week Row of _DayCell (a _CalendarSurface wraps the whole grid at CalendarPresentation background|card|popover), plus a separate DatePicker widget = outline Button trigger + Popover + Calendar.popover, built by hand because 'the reference has no DatePicker file'.",
+      "web": "DayPicker (react-day-picker v10) wrapped with classNames overrides for root/months/month/nav/button_previous/button_next/month_caption/caption_label/month_grid/weekdays/weekday/week/day/range_start/range_middle/range_end/today/outside/disabled, and components overrides for Root, Nav, Chevron, DayButton (CalendarDayButton), WeekNumber; the selects page mounts Calendar mode=single, mode=range, and mode=single inside a Popover behind an outline Button (the DatePicker recipe)."
+    },
+    "api": {
+      "verdict": "flutter-behind",
+      "flutter": "Calendar.single({selected, onSelected, month, defaultMonth, onMonthChanged, surface, autoFocus}) and Calendar.range({selected: DateRange, onSelected, ...}); mode=multiple is explicitly 'recorded, not built' per the file's own doc comment ('mode=\"multiple\" ... no page mounts it').",
+      "web": "DayPicker's full prop surface passes through (...props), including mode=\"multiple\", showOutsideDays, captionLayout=\"label\"|\"dropdown\", buttonVariant, locale, formatters, components, disabled, etc.",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: Flutter's Calendar has no multiple-selection constructor at all (CalendarMode enum only has single/range), while the web wraps DayPicker generically and can render mode=\"multiple\" if a caller passes it. This is a real API gap, not just an unexercised path: a consumer porting a screen that uses mode=\"multiple\" has no Flutter equivalent to reach for. The Flutter doc comment frames this as a deliberate 'not built' decision, but the ledger's api dimension is about what a caller can ask for, and one mode is simply missing."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "_DayCell/_DayCellState models outside, today, selectedSingle, rangeStart, rangeEnd, rangeMiddle, focused (via one shared FocusNode + _focusedDay), hovered/pressed on _PressableCell, and CalendarBandPainter renders the today/range band exactly as the two-rect composite described in the file header (drawRRect + at most one drawRect, never combined).",
+      "web": "DayPicker's own modifiers (outside, today, selected, range_start, range_middle, range_end, disabled, hidden, focused) surfaced as classNames/data-attributes on the day cell and CalendarDayButton (data-selected-single, data-range-start, data-range-end, data-range-middle), with hover/press covered by the underlying ghost Button variant classes."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "Calendar itself has no enabled/disabled flag on the widget (a null onDaySelected/onRangeSelected simply makes the grid read-only rather than a disabled control); disabled modifier support is not exercised by any page-level Flutter call site named in the doc comment.",
+      "web": "DayPicker supports a `disabled` matcher prop and ships a `disabled` classNames key (\"text-muted-foreground opacity-50\"), but no disabled day is demonstrated on the referenced selects page either.",
+      "note": "Neither side documents a disabled-day story for this capability's actual usage; the web has the class hook (disabled: cn(...)) ready but unexercised, and Flutter's day cells have no disabled flag at all in _DayCell. Recorded n/a because the dimension does not apply to how either side is actually wired into the page, not because parity was verified."
+    },
+    "interaction": {
+      "verdict": "match",
+      "flutter": "_onKey implements ArrowLeft/Right/Up/Down (day/week), Home/End (start/end of focused week), PageUp/PageDown (month, same day-of-month), Enter/NumpadEnter/Space to select, and navigates the displayed month automatically when a key moves focus outside it -- documented as driven against the live reference ('forty ArrowRights carried the caption from September to October').",
+      "web": "react-day-picker v10's own internal keyboard handling (roving tabIndex across day buttons) provides the same arrow/Home/End/PageUp/PageDown/Enter/Space behaviour; DatePicker equivalent is the Popover + outline Button recipe with PopoverTrigger's aria-haspopup semantics."
+    },
+    "semantics": {
+      "verdict": "platform-difference",
+      "flutter": "_PressableCell wraps each day in Semantics(button: true, label: DateFormat.dayLabel(day)); nav buttons carry explicit labels ('Go to the previous/next month'); DatePicker's trigger is a Button with an accessible label/placeholder text.",
+      "web": "react-day-picker renders semantic <button> elements natively with the browser's own focus/keyboard/AT support, and the Nav wrapper is intentionally stripped to role=\"none\" with aria-label removed (Nav: (navProps) => <DayPickerNav {...navProps} role=\"none\" aria-label={undefined} />) because two calendars on one route otherwise publish duplicate 'Navigation bar' landmarks and fail axe's landmark-unique rule.",
+      "note": "This is a genuine platform-appropriate divergence: the web's Nav role stripping is a documented accessibility fix specific to the DOM landmark model (duplicate <nav aria-label> elements), which has no Flutter analogue since Flutter has no landmark/region tree in the same sense. The Flutter port's Semantics(button:true, label:...) on each cell is the correct native equivalent. Recorded as platform-difference rather than gap because both achieve the intended accessible outcome through mechanisms native to their platform."
+    }
+  }
+}

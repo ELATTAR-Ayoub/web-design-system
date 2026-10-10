@@ -1,0 +1,50 @@
+{
+  "name": "voice",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/voice.dart"
+  ],
+  "webSources": [
+    "components/agent/voice/speech.ts",
+    "components/docs/component-docs/voice/page.tsx"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "platform-difference",
+      "flutter": "voice.dart's own doc comment maps itself to two web files by name: 'visualisers.tsx -> LiveWaveform, BarVisualizer' and 'pickers.tsx -> MicControl' (lines 5-9), and builds LiveWaveform(CustomPaint/_WaveformPainter), BarVisualizer(CustomPaint/_BarsPainter) and MicControl(Container border + _MicButton) — voice.dart lines 77-129, 184-320, 439-497.",
+      "web": "The web voice item is speech.ts only: useBrowserSpeech() returning a SpeechAdapter, the SpeechVoice and SpeechAdapter types, and the pure speakableText(markdown). The doc page's Examples section is a Select of voices plus a Speak/Stop button built on the hook (components/docs/component-docs/voice/speech-specimen.tsx).",
+      "note": "Flutter's voice.dart draws LiveWaveform, BarVisualizer and MicControl; the web agent family no longer ships any listening visuals or speech recognition, so only the synthesis module is audited against it. Flutter parity for the removed web parts is out of scope."
+    },
+    "api": {
+      "verdict": "platform-difference",
+      "flutter": "voice.dart takes buffers instead of live audio: LiveWaveform.samples: ValueListenable<Float32List>? and BarVisualizer.spectrum: ValueListenable<Float32List>? replace an AnalyserNode (lines 77-99, 184-215), and there is no useDictation/useBrowserSpeech port at all — no SpeechRecognition, no speechSynthesis, no getUserMedia anywhere in the file.",
+      "web": "useBrowserSpeech() returns a SpeechAdapter { isSupported, isSpeaking, isPaused, voices, voiceId, setVoiceId, speak, pause, resume, stop, analyser } with analyser always null (speech.ts lines 24-49); it wraps the native speechSynthesis API. There is no recognition hook on the web.",
+      "note": "Declared and explained by the Flutter file itself: 'Web Audio, getUserMedia and SpeechRecognition are three browser APIs with no Flutter equivalent that does not cost a plugin, and this package takes no third-party dependency. So the seam moves out by one step... these take the buffer that call would have filled' (voice.dart lines 15-25). This is the correct answer for a dependency-free package: audio capture and speech recognition/synthesis stay a host-app responsibility that feeds pre-computed buffers in, exactly as the doc comment states."
+    },
+    "states": {
+      "verdict": "platform-difference",
+      "flutter": "MicControl's chevron/device-and-voice submenu is explicitly not built: 'Upstream renders it only when hasMenu... Behind it sit enumerateDevices and speechSynthesis, two more browser APIs with no dependency-free Flutter equivalent. So the branch is documented here and not built' (voice.dart lines 428-438) — MicControl (voice.dart lines 439-497) has only `listening`, `onToggle`, `disabled`, `disabledReason`, no device list or voice list at all.",
+      "web": "useBrowserSpeech exposes isSpeaking and isPaused as data; the doc page's Examples specimen renders them as a Speak / Stop button. The web has no microphone control, device picker or recognition state.",
+      "note": "Flutter's MicControl states (listening, device submenu) describe recognition surfaces the web no longer ships; the web module covers speech synthesis only, and its states are the data fields above."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "MicControl(disabled, disabledReason) — voice.dart lines 439-457 — and _MicButton passes disabledReason straight to Button's disabledReason parameter (line 572), which voice.dart's own comments elsewhere describe as being shown as a tooltip while disabled (line 457: 'Why the mic is disabled. Shown as a tooltip while disabled.').",
+      "web": "The web voice module renders no control of its own, so it has no disabled state; a caller's Speak button is a native button and is omitted when isSupported is false rather than shown disabled.",
+      "note": "Not applicable to the web item: it is a hook with no rendered surface, and the MicControl disabledReason surface that this dimension once measured was removed with the dictation controls."
+    },
+    "interaction": {
+      "verdict": "platform-difference",
+      "flutter": "_MicButton wraps a real Button (voice.dart lines 561-575) with onPressed wired to onToggle when not disabled, giving it the Button widget's own focus/keyboard-activation handling; the live pulse ring is a pure decoration driven by AnimationController, not a separate hit target (lines 518-618).",
+      "web": "The doc page's Examples specimen builds Speak/Stop on the system's Button and the voice list on Select, both native-semantics controls reachable by Tab and activated by Enter or Space; the hook itself renders nothing.",
+      "note": "Flutter measures a MicControl button; the web has no equivalent control in the voice item, only the hook a caller builds one on."
+    },
+    "semantics": {
+      "verdict": "platform-difference",
+      "flutter": "Button in _MicButton is given `label: widget.listening ? 'Stop dictation' : 'Dictate'` (voice.dart line 571), matching the web's aria-label text verbatim, and the disabled tooltip carries disabledReason as its explanation (line 457, 572).",
+      "web": "The doc page's Accessibility section documents that a speak control should carry its state in its name (Speak / Stop) and that speakableText strips markup so a spoken answer never reads out asterisks; the specimen's voice Select carries aria-label=\"Voice\".",
+      "note": "Flutter's semantics are on its MicControl button (Dictate / Stop dictation); the web item no longer ships that control, so semantics are those of whatever the caller builds on useBrowserSpeech."
+    }
+  }
+}

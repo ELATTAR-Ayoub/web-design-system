@@ -1,0 +1,49 @@
+{
+  "name": "ai-code-block",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/code-block.tsx",
+    "components/docs/component-docs/ai-code-block/code-block-specimen.tsx",
+    "components/docs/component-docs/ai-code-block/page.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Code Block — origin: web-only, flutterSources is [].",
+      "web": "CodeBlock is a CodeBlockContainer (bordered rounded div with data-language) holding any children (CodeBlockHeader, CodeBlockTitle, CodeBlockFilename, CodeBlockActions, CodeBlockCopyButton or a language selector built from Select parts) above CodeBlockContent, a scrollable div with a pre and code of per-token spans, optionally with a CSS-counter line-number gutter.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Code Block — origin: web-only, flutterSources is [].",
+      "web": "CodeBlock takes code, language (Shiki BundledLanguage) and showLineNumbers; CodeBlockCopyButton takes onCopy, onError, timeout and Button props; the language selector parts wrap Select, SelectTrigger, SelectValue, SelectContent and SelectItem; highlightCode(code, language, callback?) is exported and now calls the callback for a cached result too.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Code Block — origin: web-only, flutterSources is [].",
+      "web": "First paint is raw uncoloured tokens, then Shiki recolours with var(--shiki-token-*) values that styles/tokens.css aliases to the --code-* roles; an unknown language falls back to text, a highlighter failure is logged and leaves the raw text, copy swaps to a success check, and an empty string renders one blank line.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Code Block — origin: web-only, flutterSources is [].",
+      "web": "The block has no disabled state; the copy Button and the language Select accept disabled and inherit their own treatment.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Code Block — origin: web-only, flutterSources is [].",
+      "web": "Copy writes the code prop to the clipboard and calls onCopy or onError; the language selector is Radix Select (pointer, Enter, Space, arrows, type-ahead); the code area scrolls and its text is selectable; line numbers are not selectable.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Code Block — origin: web-only, flutterSources is [].",
+      "web": "The code is real text in pre and code; the copy button is icon-only with an aria-label (Copy code, Copied) and a title; the language trigger needs a caller-supplied aria-label; highlight colours are decorative -ink roles resolved per theme.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

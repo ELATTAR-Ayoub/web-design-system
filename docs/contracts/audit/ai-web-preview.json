@@ -1,0 +1,49 @@
+{
+  "name": "ai-web-preview",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/web-preview.tsx",
+    "components/docs/component-docs/ai-web-preview/web-preview-specimen.tsx",
+    "components/docs/component-docs/ai-web-preview/page.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Web Preview — origin: web-only, flutterSources is [].",
+      "web": "web-preview.tsx exports WebPreview (a div root with a context carrying url and consoleOpen), WebPreviewNavigation (toolbar div), WebPreviewNavigationButton (ghost icon-sm Button inside Tooltip), WebPreviewUrl (an Input with local typed text), WebPreviewBody (a div around a sandboxed iframe plus an optional loading sibling, whose type intersects ReactNode with the iframe loading attribute) and WebPreviewConsole (a Collapsible with a Button trigger and a list of log lines).",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Web Preview — origin: web-only, flutterSources is [].",
+      "web": "WebPreview takes defaultUrl (default empty string) and onUrlChange; WebPreviewNavigationButton adds tooltip to Button props; WebPreviewUrl takes Input props; WebPreviewBody takes iframe props plus loading (ReactNode) and an optional src override; WebPreviewConsole takes logs of level, message and timestamp. WebPreviewUrl, WebPreviewBody and WebPreviewConsole throw if used outside WebPreview, because they read its context.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Web Preview — origin: web-only, flutterSources is [].",
+      "web": "The shared state is url and consoleOpen. The console toggles between closed and open (chevron rotates 180 degrees), shows each log coloured by level or the text No console output, and the body shows the iframe with an optional loading sibling. Buttons carry Button's hover, focus and pressed states.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Web Preview — origin: web-only, flutterSources is [].",
+      "web": "WebPreviewNavigationButton forwards disabled to its Button, and WebPreviewUrl forwards disabled and readOnly to Input; the frame as a whole has no disabled mode.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Web Preview — origin: web-only, flutterSources is [].",
+      "web": "Typing in WebPreviewUrl keeps local text; pressing Enter calls setUrl, which updates the iframe src and fires onUrlChange. Toolbar buttons fire the caller's onClick and show a tooltip on hover and focus. The Console trigger toggles the Collapsible with click, Enter or Space.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Web Preview — origin: web-only, flutterSources is [].",
+      "web": "The iframe carries title Preview and a fixed sandbox attribute. The Console trigger is a native button with visible text and Radix aria-expanded and aria-controls. The address Input has only a placeholder, and the icon-only toolbar buttons rely on the caller for accessible names, as the docs specimens supply with aria-label and sr-only text.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

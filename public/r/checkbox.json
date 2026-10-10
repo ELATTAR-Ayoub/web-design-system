@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "checkbox",
+  "title": "Checkbox",
+  "description": "The `checkbox` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "registryDependencies": [
+    "@elattar/content-change",
+    "@elattar/source-foundation"
+  ],
+  "files": [
+    {
+      "path": "components/ui/checkbox.tsx",
+      "content": "\"use client\"\r\n\r\nimport * as React from \"react\"\r\nimport { Checkbox as CheckboxPrimitive } from \"radix-ui\"\r\n\r\nimport { cn } from \"@/lib/utils\"\r\nimport { useReplayOnStateChange } from \"@/components/ui/content-change\"\r\n\r\nconst checkboxControlClassName =\r\n  \"relative flex size-5 shrink-0 items-center justify-center rounded-sm border border-input bg-card shadow-pressed outline-none transition-[background-color,border-color,box-shadow] duration-fast ease-out\"\r\n\r\nfunction CheckboxMark({ indeterminate = false }: { indeterminate?: boolean }) {\r\n  return (\r\n    <svg viewBox=\"0 0 24 24\" fill=\"none\" className=\"size-3.5\" aria-hidden>\r\n      <path\r\n        className=\"anim-change\"\r\n        d={indeterminate ? \"M6 12h12\" : \"M5 12.5 10 17.5 19 7\"}\r\n        stroke=\"currentColor\"\r\n        strokeWidth=\"3.2\"\r\n        strokeLinecap=\"round\"\r\n        strokeLinejoin=\"round\"\r\n      />\r\n    </svg>\r\n  )\r\n}\r\n\r\nfunction Checkbox({\r\n  className,\r\n  ...props\r\n}: React.ComponentProps<typeof CheckboxPrimitive.Root>) {\r\n  const ref = useReplayOnStateChange<HTMLButtonElement>()\r\n\r\n  return (\r\n    <CheckboxPrimitive.Root\r\n      ref={ref}\r\n      data-slot=\"checkbox\"\r\n      className={cn(\r\n        \"group/checkbox peer\",\r\n        checkboxControlClassName,\r\n        \"after:absolute after:-inset-x-3 after:-inset-y-2\",\r\n        \"focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50\",\r\n        \"disabled:cursor-not-allowed disabled:opacity-50 group-has-disabled/field:opacity-50\",\r\n        \"aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20\",\r\n        \"data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:shadow-btn-primary\",\r\n        \"data-[state=indeterminate]:border-primary data-[state=indeterminate]:bg-primary data-[state=indeterminate]:text-primary-foreground data-[state=indeterminate]:shadow-btn-primary\",\r\n        className\r\n      )}\r\n      {...props}\r\n    >\r\n      <CheckboxPrimitive.Indicator\r\n        data-slot=\"checkbox-indicator\"\r\n        className=\"grid place-content-center text-current\"\r\n      >\r\n        <span className=\"group-data-[state=indeterminate]/checkbox:hidden\">\r\n          <CheckboxMark />\r\n        </span>\r\n        <span className=\"hidden group-data-[state=indeterminate]/checkbox:block\">\r\n          <CheckboxMark indeterminate />\r\n        </span>\r\n      </CheckboxPrimitive.Indicator>\r\n    </CheckboxPrimitive.Root>\r\n  )\r\n}\r\n\r\nexport { Checkbox, CheckboxMark, checkboxControlClassName }\r\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

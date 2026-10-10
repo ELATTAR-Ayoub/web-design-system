@@ -1,0 +1,49 @@
+{
+  "name": "ai-context",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/context.tsx",
+    "components/docs/component-docs/ai-context/page.tsx",
+    "components/docs/component-docs/ai-context/context-specimen.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Context — origin: web-only, flutterSources is [].",
+      "web": "Context is a HoverCard with a context of usedTokens, maxTokens, usage and modelId; ContextTrigger is a ghost Button holding the percentage and a 20px SVG ring; ContextContent is the HoverCardContent holding ContextContentHeader (percentage, compact used / max and the thin Progress bar), ContextContentBody with the Input, Output, Reasoning and Cache rows, and ContextContentFooter (Total cost).",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Context — origin: web-only, flutterSources is [].",
+      "web": "Context requires usedTokens and maxTokens and takes usage (LanguageModelUsage), modelId and HoverCard props with openDelay and closeDelay defaulting to 0; ContextTrigger forwards Button props; every part accepts children to replace its default content, and the usage rows return null at zero.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Context — origin: web-only, flutterSources is [].",
+      "web": "Closed or open (HoverCard), percentage and ring from used over max, rows present only when their count is above zero, and prices from tokenlens that read $0.00 without a modelId; there is no loading, error or disabled state.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Context — origin: web-only, flutterSources is [].",
+      "web": "There is no disabled handling: the meter is read-only and has no action to withhold, so callers hide it when there is no usage.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Context — origin: web-only, flutterSources is [].",
+      "web": "Pointer hover or keyboard focus on the trigger opens the popup with no delay and leaving or Escape closes it; pressing the trigger does nothing of its own.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Context — origin: web-only, flutterSources is [].",
+      "web": "The trigger is a button containing the percentage text and an svg with role img and aria-label Model context usage; the popup is plain text rows and a Progress with role progressbar; touch does not open a HoverCard so the percentage on the trigger carries the figure.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

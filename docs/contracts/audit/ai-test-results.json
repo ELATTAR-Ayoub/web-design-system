@@ -1,0 +1,49 @@
+{
+  "name": "ai-test-results",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/test-results.tsx",
+    "components/docs/component-docs/ai-test-results/test-results-specimen.tsx",
+    "components/docs/component-docs/ai-test-results/page.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Test Results — origin: web-only, flutterSources is [].",
+      "web": "TestResults is a bordered div with a summary context; TestResultsHeader, TestResultsSummary (Badges), TestResultsDuration, TestResultsProgress (a two-segment bar and caption) and TestResultsContent compose the report; each TestSuite is a Collapsible whose TestSuiteName is the trigger row with a chevron and status Icon, with TestSuiteStats and TestSuiteContent; each Test is a flex row of TestStatus, TestName and TestDuration, optionally followed by TestError, TestErrorMessage and TestErrorStack.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Test Results — origin: web-only, flutterSources is [].",
+      "web": "TestResults takes summary { passed, failed, skipped, total, duration? }; TestSuite takes name, status and Collapsible props; Test takes name, status and duration; TestSuiteStats takes passed, failed and skipped counts; every part takes its element props and children replace its default content.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Test Results — origin: web-only, flutterSources is [].",
+      "web": "Four statuses (passed, failed, skipped, running) map to an Icon glyph and an ink tone (success, error, warning, action), running spins with anim-spin, counts at zero and a missing duration render nothing, and a failing test can show a TestError block on a faint destructive tint.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Test Results — origin: web-only, flutterSources is [].",
+      "web": "There is no disabled state: a TestSuite forwards the Collapsible disabled prop but a result list has nothing to disable.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Test Results — origin: web-only, flutterSources is [].",
+      "web": "Only the suite rows interact: a click or Enter or Space on TestSuiteName toggles the suite, the chevron turns 90 degrees and the content animates its height; tests, errors and stacks are static selectable text.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Test Results — origin: web-only, flutterSources is [].",
+      "web": "TestSuiteName is a Radix CollapsibleTrigger button with aria-expanded named by the suite name and has a 44px minimum height; status glyphs are decorative Icons, with the summary Badges and TestSuiteStats carrying the counts as text.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

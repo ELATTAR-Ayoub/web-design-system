@@ -1,0 +1,49 @@
+{
+  "name": "content-change",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/content_change.dart"
+  ],
+  "webSources": [
+    "components/ui/content-change.tsx",
+    "components/docs/component-docs/content-change/page.tsx"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "flutter-behind",
+      "flutter": "ContentChange is a StatelessWidget that hands child straight to KeyframePlayer(key: replayKey == null ? null : ValueKey(replayKey), duration, builder: Opacity+Transform.scale), i.e. a declarative animation-controller wrapper keyed by replayKey.",
+      "web": "ContentChange renders a plain <div ref={ref} data-slot=\"content-change\" className={cn(animationClassName, className)}>{children}</div>, and useContentChangeReplay imperatively does el.classList.remove(animationClassName); void el.offsetWidth; el.classList.add(animationClassName) inside a useEffect keyed on contentKey.",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: The two mechanisms are structurally different, not just re-skinned: Flutter drives the entrance through a widget-tree KeyframePlayer built from an interpolated t value, while the web version never re-renders an animated widget at all — it forces a synchronous reflow on a live DOM node and toggles a CSS class, which is the file's own documented reason ('does not restart just because its trigger fires again')."
+    },
+    "api": {
+      "verdict": "flutter-behind",
+      "flutter": "ContentChange's only parameters are child and an optional replayKey, and it is hard-wired to one keyframe: Combobox... no — content_change.dart's own build() always plays 'pulls-content-change' (opacity 0->1, scale 0.96->1) at MotionDurations.normal/MotionCurves.emphasized, i.e. `var(--duration-base)` and `var(--ease-spring)` per the file's doc comment citing globals.css L2904-2906.",
+      "web": "ContentChangeProps requires contentKey and accepts animationClassName restricted to the single-member union \"anim-enter\" (default \"anim-enter\") — the one entrance utility `styles/motion.css`'s global `prefers-reduced-motion` block special-cases; it is not anim-content-change or pulls-content-change.",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: The @utility anim-content-change / @keyframes pulls-content-change pair content_change.dart's own doc comment quotes verbatim from 'globals.css L2904-2906' does not exist anywhere in this repo: grep across styles/*.css for content-change and pulls-content-change returns zero matches, and styles/motion.css's real entrance utility (anim-enter, on ds-enter/--duration-slow) uses a different keyframe, duration and easing than the scale-0.96 spring the Flutter file documents and plays."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "content_change.dart declares no hover/focus/pressed/loading/success/error/disabled/empty handling anywhere — ContentChange is a StatelessWidget with only child and replayKey, so 'rest' (the one-shot play) is its only steady state.",
+      "web": "The doc page's States block states outright: 'rest is the only steady state — the animation is a transient reaction to a prop change' and 'loading / success / error / disabled / empty are N/A: ContentChange has no async operation, no control to disable and no empty representation'."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "There is no enabled/disabled field, branch, or Disabled(...) wrapper anywhere in content_change.dart — ContentChange only ever plays its keyframe over whatever child it is given.",
+      "web": "ContentChangeProps has no disabled prop and the component renders a bare <div>, not a control; the doc page's States block explicitly calls disabled N/A because the wrapper 'has no async operation, no control to disable'.",
+      "note": "Neither implementation models a disabled path because ContentChange is a presentational replay wrapper around arbitrary content, not an interactive control — n/a on both sides for the same reason, not a missing feature."
+    },
+    "interaction": {
+      "verdict": "flutter-behind",
+      "flutter": "KeyframePlayer is given key: ValueKey(replayKey) when replayKey is non-null, and Flutter's key mechanism causes the element to be treated as a new widget instance when the key value changes — i.e. the animated subtree is torn down and rebuilt, per Flutter's own reconciliation rules for a changed key.",
+      "web": "The file's own 'WHY REMOVE / REFLOW / RE-ADD' doc comment is explicit: 'ContentChange deliberately does not remount: ... A remount would throw away focus and scroll position inside children' — the ref-held DOM node survives every contentKey change untouched, only its class list is toggled.",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: content_change.dart's replayKey doc comment claims to reproduce 'exactly as a changed React key remounts the node and restarts the CSS animation', but the actual web ContentChange explicitly avoids that remount to preserve focus/scroll state inside children; Flutter's ValueKey-driven KeyframePlayer replay is a real remount of the animated subtree, so a focused or scrolled descendant inside child would lose that state on replay where the web original is documented to preserve it."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "ContentChange.build() returns KeyframePlayer directly with no Semantics(...) wrapper, no semanticLabel, and no role — it is purely visual, forwarding whatever accessibility tree child itself produces.",
+      "web": "The rendered <div data-slot=\"content-change\"> carries no role, aria-* attribute, or accessible name of its own beyond {...props} passthrough — it is a transparent wrapper around children's own semantics.",
+      "note": "Both sides are semantics-transparent wrappers with no accessible name, role, or announcement of their own — there is nothing to compare because neither one participates in the accessibility tree beyond passing children through."
+    }
+  }
+}

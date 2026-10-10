@@ -1,0 +1,44 @@
+{
+  "name": "message",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": ["lib/src/components/ui/message.dart"],
+  "webSources": ["components/ui/message.tsx", "components/docs/component-docs/message/page.tsx"],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "message.dart's own doc comment: 'Six flex containers sharing one group/message, holding no state and knowing nothing about what is inside them.' It defines MessageGroup (Column, gap-2), Message (Row, gap-2, align via textDirection reverse), MessageAvatar (rounded well, min-w-8, self-end, optional lift), MessageContent (Column, gap-2.5, header/footer slots), MessageHeader/MessageFooter (both delegate to _MessageMeta).",
+      "web": "message.tsx exports the identical six: MessageGroup (data-slot=\"message-group\", flex min-w-0 flex-col gap-2), Message (data-slot=\"message\" data-align, group/message relative flex gap-2 data-[align=end]:flex-row-reverse), MessageAvatar (data-slot=\"message-avatar\", min-w-8 self-end rounded-full bg-muted), MessageContent (data-slot=\"message-content\", flex-col gap-2.5), MessageHeader/MessageFooter (px-3 text-xs font-medium text-muted-foreground) — the same six data-slots, one-to-one."
+    },
+    "api": {
+      "verdict": "platform-difference",
+      "flutter": "Message takes content, avatar, align (BubbleAlign), and ghost:bool as an explicit parameter; MessageAvatar takes a lifted:bool parameter. Both are documented as substitutes for a CSS :has() query the widget tree cannot express: 'A Flutter parent cannot ask that of a subtree after the fact, so Message takes the answers as parameters... Both are derived at the one place that already knows: the call site that composed the message.'",
+      "web": "message.tsx's MessageAvatar and MessageHeader/MessageFooter rely on CSS :has()-driven selectors — group-has-data-[slot=message-footer]/message:-translate-y-8 on the avatar and group-has-data-[variant=ghost]/message:px-0 on header/footer — computed automatically from sibling DOM structure, with no ghost or lifted prop anywhere in the file.",
+      "note": "This is the library's own documented reasoning for why the two APIs differ: CSS :has() lets the web derive 'does this row have a footer' / 'is the bubble ghost' from the live DOM, while Flutter has no equivalent runtime subtree query so Message.ghost and MessageAvatar.lifted must be passed explicitly by the caller who already built the tree. Both sides reach the identical visual output through different mechanisms, which is the correct answer for this platform gap rather than a defect."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "message.dart declares no interactive state anywhere — MessageGroup, Message, MessageAvatar, MessageContent, MessageHeader and MessageFooter are all StatelessWidget with no hover/focus/press handling of any kind.",
+      "web": "message.tsx's six components are all plain <div>s with data-slot attributes and layout classes only — no onClick, onMouseEnter, focus styles, or any interactive class (hover:/focus:/active:) anywhere in the file.",
+      "note": "Message is pure layout, not a control — the doc comment's own framing ('holding no state and knowing nothing about what is inside them') makes this dimension not applicable on either side; whatever is placed inside (a Bubble, an action) carries its own state matrix documented elsewhere."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No disabled concept exists anywhere in message.dart; none of its six widgets accept an enabled/disabled parameter.",
+      "web": "No disabled prop or data-disabled/aria-disabled class appears anywhere in message.tsx.",
+      "note": "A message row is a display container for a chat turn, not a control that can be disabled — this dimension does not apply to either implementation, consistent with the states finding above."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "message.dart wires no keyboard, pointer or focus handling — Message's Row and MessageContent's Column contain only layout widgets (Padding, Align, DefaultTextStyle, Transform.translate).",
+      "web": "message.tsx attaches no keyboard/pointer event handlers or tabIndex anywhere; every element is a plain div passing through **props.",
+      "note": "Layout-only composition has nothing to interact with directly; interaction belongs to whatever content (buttons, bubbles) is composed inside a Message, which this capability does not itself define."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Semantics widget appears in message.dart; text is rendered via plain StyledText with no semanticLabel or role override.",
+      "web": "No aria-* attribute or role appears in message.tsx beyond the plain data-slot markers used for styling hooks, not accessibility.",
+      "note": "Message relies on its contents (bubble text, avatar image alt text, action buttons) to carry their own accessible names; the row container itself asserts no role or label on either platform, so there is nothing here to verify parity on beyond confirming neither side silently adds one the other lacks."
+    }
+  }
+}

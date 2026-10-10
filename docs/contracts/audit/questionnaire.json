@@ -1,0 +1,50 @@
+{
+  "name": "questionnaire",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/questionnaire.dart"
+  ],
+  "webSources": [
+    "components/ui/questionnaire.tsx",
+    "components/docs/component-docs/questionnaire/page.tsx"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "Questionnaire(children) drives QuestionnaireController/_QScope over QuestionnaireProgress, QuestionnaireItem (fieldset+legend Title/Description), QuestionnaireChoices/QuestionnaireChoice (_RadioControl + _Dot), QuestionnaireInput, QuestionnaireError, and QuestionnaireActions with Previous/Skip/Next/Submit — one item visible at a time via `if (index != scope.controller.index) return const SizedBox.shrink();`.",
+      "web": "QuestionnairePrimitive.Root/Progress/Item/Title/Description/Choices/Choice/ChoiceInput/ChoiceLabel/ChoiceShortcut/Input/Error wrapped by Questionnaire/QuestionnaireProgress/QuestionnaireItem/.../QuestionnairePrevious/Skip/Next/Submit in components/ui/questionnaire.tsx, plus a web-only QuestionnaireChoiceDescription span not present as its own sub-widget in Flutter.",
+      "note": ""
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "QuestionnaireChoice(value, label, description, defaultChecked, disabled, disabledReason) where disabledReason is 'Why the choice is disabled. Shown as a tooltip while [disabled].', passed to Disabled(reason: widget.disabledReason); _RadioControl is hardcoded so every choice renders as a radio dot regardless of selection cardinality.",
+      "web": "CLOSED (disabledReason half only): QuestionnaireChoice now takes disabledReason?: string (components/ui/questionnaire.tsx). Choice's own render prop already owns the full <label> composition, so this is wired by hand in the same shape components/ui/disabled.tsx uses rather than through the Disabled wrapper itself: an always-on aria-describedby on the real hidden QuestionnairePrimitive.ChoiceInput (the element that actually receives focus) plus a click/tap-reachable popover trigger placed beside the label. The second half of this finding (checkbox vs radio-only choices) is unrelated to disabledReason and stands as originally recorded. ORIGINAL: QuestionnaireChoice forwards ComponentProps<typeof Primitive.Choice> with no dedicated disabledReason prop or tooltip rendering anywhere in components/ui/questionnaire.tsx; its indicator instead branches on `state.type === \"radio\" ? radioControlClassName : checkboxControlClassName`, so the primitive itself supports both single-select (radiogroup) and multi-select (checkbox group) items, confirmed by the doc's own API row 'role=\"radiogroup\" for single-select, a checkbox group for multiple.'",
+      "note": "CLOSED (part 1, disabledReason) 2026-09-11: measured in the dev server (http://localhost:3111, desktop-dark) — focusing a disabled QuestionnaireChoice with disabledReason set reads the reason via its aria-describedby association on the real input; the info button opens a Popover on click/Enter/Space without toggling the (inert) choice underneath it (its own click stops propagation to the enclosing <label>). Pinned by test/questionnaire.test.tsx and e2e/gaps-disabled.spec.ts. Part 2 (checkbox-choice support on Flutter's side) is not a web gap and is unchanged. ORIGINAL: Two real gaps: (1) Flutter's disabledReason/tooltip explanation for a disabled choice has no web counterpart — a disabled web choice only gets opacity-50/pointer-events-none with no explanatory text, confirmed against the doc's 'A disabled choice' panel and API table which list no reason prop. (2) In the other direction, web/the @shadcn/react/questionnaire primitive supports checkbox (multi-select) choices via state.type, which Flutter's QuestionnaireChoice cannot render at all because _RadioControl is unconditional — recorded here since it means the Dart port is narrower than its own dependency, not a defect in the web capability being audited."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "_QuestionnaireChoiceState computes fill/rim from `checked`, `_hovered` (MouseRegion onEnter/onExit), `item.invalid` (rim = theme.destructive), and wraps the row in Disabled(disabled: widget.disabled) which sets SurfaceOpacity.disabled (0.45 nominal) and blocks pointer input except the outer GestureDetector's own onTap gate.",
+      "web": "QuestionnaireChoice's className encodes the identical state matrix via data-attributes: `hover:bg-muted/50`, `data-checked:border-primary/40 data-checked:bg-muted`, `data-invalid:border-destructive`, `data-disabled:pointer-events-none data-disabled:cursor-not-allowed data-disabled:opacity-50`, plus a focus-visible ring on `has-[>input:focus-visible]`.",
+      "note": ""
+    },
+    "disabled": {
+      "verdict": "match",
+      "flutter": "Disabled(disabled: widget.disabled, blockPointer: false, reason: widget.disabledReason, child: ...) — a disabled choice keeps its explanation attached (reason) for the platform's disabled-affordance widget to surface, and QuestionnaireNext/Submit gate on _controller.validate() before advancing, matching the doc's own 'Required gating' claim.",
+      "web": "CLOSED: see the api dimension above — disabledReason is now present on QuestionnaireChoice, hand-wired in the shape components/ui/disabled.tsx uses. ORIGINAL: A disabled QuestionnaireChoice only receives `data-disabled:opacity-50 pointer-events-none cursor-not-allowed` from its className string — no reason/tooltip prop exists on the component, and the doc's 'A disabled choice' panel (page.tsx around the 'ex-tier'/'vault' example) renders `<QuestionnaireChoice value=\"vault\" disabled>` with no explanatory text anywhere in view or in the API Reference's `disabled` row.",
+      "note": "CLOSED 2026-09-11: same fix and evidence as the api dimension. ORIGINAL: The web disabled state offers no recovery or explanation path the way Flutter's disabledReason tooltip does — a user who tabs to or hovers a disabled web choice learns only that it is inert, not why, which is the exact 'disabled path explains itself' failure this dimension exists to catch."
+    },
+    "interaction": {
+      "verdict": "match",
+      "flutter": "_onKey (Focus.onKeyEvent, skipTraversal: true, scoped to the root form) handles Enter (submit), ArrowLeft (previous), ArrowRight (next), and per-choice letter/number shortcuts via QuestionnaireShortcuts.keyFor — the class doc states these rules were 'taken from its compiled source rather than from the wrapper's class list.'",
+      "web": "QuestionnairePrimitive.Root (from @shadcn/react/questionnaire) owns the equivalent onKeyDown handling; the Dart doc comment quotes it directly: 'The keyboard handler is onKeyDown on the root form, not the document — so the shortcut only fires while focus is inside this questionnaire' and QuestionnaireNext carries 'aria-keyshortcuts=\"Enter\"'.",
+      "note": ""
+    },
+    "semantics": {
+      "verdict": "platform-difference",
+      "flutter": "QuestionnaireProgress uses Semantics(label: 'Questionnaire progress', value: label) with no liveRegion flag; QuestionnaireError uses Semantics(liveRegion: true); QuestionnaireChoice's row (MouseRegion > GestureDetector > Disabled > AnimatedContainer) carries no explicit Semantics widget of its own, so its accessible name/role/checked state depend entirely on whatever the child Text widgets implicitly merge upward.",
+      "web": "Radix/@shadcn primitives render a real hidden <input type=radio|checkbox> per choice (QuestionnairePrimitive.ChoiceInput) giving native role/checked-state for free, QuestionnaireChoices gets 'role=\"radiogroup\" for single-select, a checkbox group for multiple', QuestionnaireError 'shares FieldError's role=\"alert\" contract', and QuestionnaireProgress is documented as 'A live region carrying \"Question X of Y\"'.",
+      "note": "Web achieves stronger semantics than the Flutter port through native form controls and ARIA roles; Flutter's own choice row appears to have no explicit Semantics node and its progress readout is not marked live (only Error is), which is an asymmetry worth flagging even though it does not constitute a gap on the web side being audited here."
+    }
+  }
+}

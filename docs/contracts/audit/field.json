@@ -1,0 +1,50 @@
+{
+  "name": "field",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/field.dart"
+  ],
+  "webSources": [
+    "components/ui/field.tsx",
+    "components/docs/component-docs/field/page.tsx"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "flutter-behind",
+      "flutter": "field.dart exports exactly seven widgets: FieldGroup, FieldSet, FieldLegend, Field, FieldLabel, FieldDescription, FieldError (plus internal FieldScope/FieldActivator). FieldLegend has no variant parameter at all — it hardcodes the 'label' rendering ('mb-1.5 font-medium text-sm').",
+      "web": "field.tsx exports ten parts: Field, FieldLabel, FieldDescription, FieldError, FieldGroup, FieldLegend, FieldSeparator, FieldSet, FieldContent, FieldTitle. FieldLegend takes `variant: 'legend' | 'label'` (defaultVariants: legend) with `data-[variant=label]:text-sm data-[variant=legend]:text-base`.",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: Flutter is missing three whole exported components the web ships and the field doc page actively demonstrates: FieldContent (a title+description column used inside FieldLabel — 'FieldContent — a title and description beside a control' example), FieldSeparator (a labelled rule between field groups, 'Or' divider example) and FieldTitle (the <div> used inside FieldLabel for a titled row). FieldLegend's 'legend' (text-base) variant is also entirely unimplemented in Flutter — only the 'label' (text-sm) size exists. File/line: components/ui/field.tsx:121-177 (FieldContent/FieldSeparator/FieldTitle) and :23-39 (FieldLegend variant); lib/src/components/ui/field.dart:258-301 (FieldLegend, no variant param) and its export list at top of file."
+    },
+    "api": {
+      "verdict": "flutter-behind",
+      "flutter": "FieldOrientation enum has exactly two members: `vertical` and `horizontal` (field.dart:162-170). Field's constructor takes orientation, label, description, errors, invalid, enabled, focusNode, disabledReason — no width/breakpoint concept anywhere in the file.",
+      "web": "fieldVariants (field.tsx:54-73) declares THREE orientation keys: `vertical`, `horizontal`, and `responsive` — the last using `@md/field-group:flex-row @md/field-group:items-center ...`, a container-query switch keyed on the nearest FieldGroup's width, documented at length in the field doc page's 'Responsive' section.",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: The web's `orientation=\"responsive\"` variant — which starts vertical and switches to horizontal via a `@container` query on FieldGroup rather than a viewport breakpoint — has no Flutter equivalent: FieldOrientation only has vertical/horizontal. A Flutter field field cannot reproduce the container-driven responsive layout the doc page describes as 'the one place Field's own layout changes across a viewport.' File/line: components/ui/field.tsx:61-66; lib/src/components/ui/field.dart:161-170."
+    },
+    "states": {
+      "verdict": "flutter-behind",
+      "flutter": "FieldLabel in field.dart is a plain text widget: `StyledText(text, spec ?? FieldLabel.medium)` optionally wrapped in a GestureDetector for tap-to-activate; there is no card/selectable-row styling, no border, no background change on any state.",
+      "web": "FieldLabel (field.tsx:104-119) carries `has-data-checked:border-primary/30 has-data-checked:bg-primary/5 has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border *:data-[slot=field]:p-2.5 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10` — a selectable-card visual state (border+tint) that activates when the label wraps a checked control or a nested `Field`.",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: The web's FieldLabel has a 'checked/selected card' visual state (a tinted, bordered wrapper triggered by `has-data-checked` and `has-[>[data-slot=field]]`) that Flutter's FieldLabel does not implement at all — Flutter's version only has the plain-text rest/opacity-50-disabled pair, with no equivalent to the selected-card highlight. File/line: components/ui/field.tsx:104-118; lib/src/components/ui/field.dart:537-656 (FieldLabel, no card/selected styling)."
+    },
+    "disabled": {
+      "verdict": "match",
+      "flutter": "Field.enabled cascades via FieldScope.enabled; FieldLabel wraps itself in `Disabled(disabled: true, blockPointer: false, child: label)` when not enabled, and Field.disabledReason is 'Shown as a tooltip on hover (pointer) or tap (touch) while disabled'.",
+      "web": "FieldLabel: `group-data-[disabled=true]/field:opacity-50` (field.tsx:112) and FieldTitle: same opacity-50 rule (field.tsx:126) — both driven off the enclosing Field's `data-disabled` via the `group/field` selector.",
+      "note": "n/a"
+    },
+    "interaction": {
+      "verdict": "platform-difference",
+      "flutter": "FieldLabel resolves a tap through an explicit precedence ladder documented in the file: onTap prop, then FieldScope.activator.callback, then FieldScope.focusNode.requestFocus(), then no recognizer at all — replacing the DOM's implicit `<label for>` activation behaviour with an id-graph-free callback registry (FieldActivator).",
+      "web": "FieldLabel renders a real `<Label>` (Radix, which is a native `<label>`); `<label for=id>` natively activates/focuses the associated control on click with zero JS, per the field doc page's Accessibility section: 'FieldLabel renders a real <label>; pass htmlFor matching the control's id.'",
+      "note": "Documented, deliberate platform difference: Flutter has no DOM id graph to build a native `<label for>` relationship, so field.dart substitutes a manual FieldActivator callback ladder (see field.dart:513-536 library doc, 'What a tap does, in order') to reproduce the same activation behaviour without an id system. This is the right mechanism for the platform, not a defect."
+    },
+    "semantics": {
+      "verdict": "flutter-behind",
+      "flutter": "Field.build wraps the whole field in one `Semantics(container: true, validationResult: isInvalid ? invalid : none)` node, and the doc comment states the wiring is deliberately COLLAPSED into 'one merged semantics node per field' because 'Flutter has no id graph and no way to grow one' — description+error text is concatenated into one `Semantics(hint:)` string.",
+      "web": "field.tsx itself sets no aria-describedby/aria-invalid at all (FieldDescription/FieldError are plain <p>/<div role=\"alert\">); the field doc page's Accessibility section states plainly: 'Not set by Field itself — it is the caller's job to point a control's aria-describedby at FieldDescription's and FieldError's ids... a hand-wired Field needs it set explicitly.' Only components/ui/form.tsx's FormControl wires that automatically via useId().",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: This is the field.dart file's own documented translation choice (inputs-map §7.2, forms-map §3.5), and it is defensible, but it is a real semantics-shape divergence worth recording: on the web, `Field` alone provides NO aria-describedby/aria-invalid wiring (that is form.tsx's job, and a hand-built Field must wire it itself per the doc page) — whereas Flutter's `Field` widget always merges label+description+error into one Semantics node unconditionally, with no opt-out. A Flutter caller cannot compose an unwired Field the way a web caller can compose a bare `<Field>` without any aria wiring; the accessible-name/hint merge always happens in Flutter, never optionally. File/line: lib/src/components/ui/field.dart:21-52 (wiring contract) and :495-509 (Semantics wrap); components/ui/field.tsx (no aria attributes anywhere in the file) and components/docs/component-docs/field/page.tsx accessibility block, 'aria-describedby' row."
+    }
+  }
+}

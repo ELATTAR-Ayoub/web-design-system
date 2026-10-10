@@ -1,0 +1,49 @@
+{
+  "name": "ai-artifact",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/artifact.tsx",
+    "components/docs/component-docs/ai-artifact/artifact-specimen.tsx",
+    "components/docs/component-docs/ai-artifact/page.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Artifact — origin: web-only, flutterSources is [].",
+      "web": "artifact.tsx is a set of thin parts: Artifact (div frame, rounded-lg border, shadow-e1), ArtifactHeader (flex row with a border-b and bg-muted/50), ArtifactTitle and ArtifactDescription (p elements), ArtifactActions (flex row), ArtifactAction and ArtifactClose (ghost icon-sm Buttons with a sr-only label span) and ArtifactContent (scrolling div).",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Artifact — origin: web-only, flutterSources is [].",
+      "web": "Every part takes the props of its host element (HTMLAttributes of a div or p, or ComponentProps of Button for the two buttons). ArtifactAction adds tooltip, label and icon (LucideIcon); both buttons default size to icon-sm and variant to ghost; there are no context, no state props and no required props.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Artifact — origin: web-only, flutterSources is [].",
+      "web": "The frame has no states of its own; hover, focus-visible and pressed come from the Button underneath ArtifactAction and ArtifactClose. ArtifactAction with a tooltip shows a Radix Tooltip on hover and focus.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Artifact — origin: web-only, flutterSources is [].",
+      "web": "The frame has no disabled state. ArtifactAction and ArtifactClose spread props onto Button, so disabled is forwarded and Button supplies the dimming and the blocked click.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Artifact — origin: web-only, flutterSources is [].",
+      "web": "Pointer and keyboard behaviour is only the two button parts: click or Enter or Space fires the caller's onClick, and a tooltip opens on hover or keyboard focus through TooltipTrigger asChild. ArtifactClose has no built-in close logic.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Artifact — origin: web-only, flutterSources is [].",
+      "web": "Both buttons are native button elements with type=button and an accessible name from a visually hidden span (label, then tooltip, or the fixed text Close). The frame, header, title and description carry no roles; ArtifactTitle is a p, not a heading.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

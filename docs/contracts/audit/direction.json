@@ -1,0 +1,45 @@
+{
+  "name": "direction",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": ["components/ui/direction.tsx", "components/docs/component-docs/direction/page.tsx"],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "Nothing bespoke — Flutter's own framework primitive is Directionality/TextDirection, an ambient InheritedWidget the framework ships, not a component this design system authors; theme_scope.dart only threads an optional TextDirection? textDirection field through StyledText/ThemeScope, it never defines a provider widget.",
+      "web": "DirectionProvider(dir, direction, children) wraps Radix's Direction.DirectionProvider in nine lines (direction.tsx lines 6-19), and useDirection re-exports Direction.useDirection directly — this is a real, if thin, component with a defined anatomy the Flutter side has no analogue for.",
+      "note": "Anatomy is n/a because DirectionProvider has a single anonymous slot (children passed straight to Radix's Direction.DirectionProvider) and no sub-widgets to enumerate, while Flutter's Directionality is a bare framework InheritedWidget this design system never wraps or re-authors."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No API exists to compare: grep of lib/src/design_system/foundation for Directionality/TextDirection/rtl finds only the framework's built-in TextDirection.ltr defaults in text_layout.dart and a passthrough textDirection? param on StyledText/ThemeScope — no direction/dir prop, no provider component, no useDirection-equivalent hook.",
+      "web": "direction.tsx exports DirectionProvider({dir, direction, children}) — direction is \"the preferred prop name\", dir is \"an alias ... kept for drop-in compatibility with Radix's own prop name\", both default to \"ltr\" via direction.tsx line 15 (dir={direction ?? dir ?? \"ltr\"}) — and useDirection returning \"ltr\"|\"rtl\".",
+      "note": "The web's dir/direction alias pair and the useDirection hook are pure React ergonomics with nothing to map onto in Dart: Flutter reads bidi direction through the ambient ancestor Directionality widget the framework itself supplies (defaulting to whatever MaterialApp/WidgetsApp sets), never through a design-system-authored provider or hook, so api is n/a rather than a gap."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "Nothing — a directionality signal has no rest/hover/focus/pressed/loading matrix; theme_scope.dart's TextDirection? field is a one-shot constructor value, not a stateful widget with an interaction lifecycle.",
+      "web": "DirectionProvider is a context provider with no interactive states either — it renders no DOM of its own (direction.tsx has no returned element beyond children), so the doc page's Preview section only demonstrates its effect on the Button/Row children it wraps.",
+      "note": "States is n/a on both sides: a direction value is read, not interacted with, so neither DirectionProvider nor Flutter's ambient Directionality has a rest/hover/focus/pressed/loading/success/error/empty matrix of its own to compare."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No disabled concept applies — text direction is not a control that can be enabled or disabled, and no Dart file in foundation/ models one.",
+      "web": "DirectionProvider accepts no disabled prop and direction.tsx has no conditional branch resembling one; the doc page's API Reference block lists only direction, dir and children.",
+      "note": "Disabled is n/a because a reading-direction value cannot be enabled or disabled — there is no interactive control here for either DirectionProvider or Flutter's Directionality to gate, unlike an actionable component such as a button or menu item."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "Nothing to interact with — a TextDirection value has no keyboard, pointer or touch surface; it only changes how Text/RichText lay out glyphs and how Row/Flex order children.",
+      "web": "DirectionProvider is inert at runtime too — it is consumed by every Radix primitive beneath it (Select, DropdownMenu, Tabs, Slider per the Usage snippet) which each own their own interaction models; DirectionProvider itself supplies no pointer/keyboard handling.",
+      "note": "Interaction is n/a for the same reason as states: DirectionProvider and Flutter's Directionality are both pure data-propagation layers with no keyboard, pointer or touch surface of their own — the primitives that consume the value own all interaction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "Nothing to compare — this is a web platform concern; checking whether Flutter's own Directionality wiring covers the same ground turns up only the framework's default TextDirection.ltr in text_layout.dart and an optional pass-through textDirection? field on StyledText/ThemeScope, never an app-shell Directionality(textDirection: rtl) call anywhere in foundation/.",
+      "web": "The doc page's Accessibility block self-documents a real boundary: \"This sets reading direction for the Radix primitives that consume it — it does not itself write a dir attribute to the DOM. Pair it with a real dir attribute on <html> ... for CSS logical properties to follow the same direction.\"",
+      "note": "n/a as a Flutter-vs-web comparison because there is no Flutter provider to hold this dimension against, but worth recording: the web component itself is candid that DirectionProvider only drives Radix's internal reading order, not the document's actual dir attribute or CSS logical properties, so a consumer who forgets to pair it gets Radix widgets flowing rtl inside an ltr-attributed page."
+    }
+  }
+}

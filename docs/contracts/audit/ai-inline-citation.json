@@ -1,0 +1,49 @@
+{
+  "name": "ai-inline-citation",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/inline-citation.tsx",
+    "components/docs/component-docs/ai-inline-citation/page.tsx",
+    "components/docs/component-docs/ai-inline-citation/inline-citation-specimen.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Inline Citation — origin: web-only, flutterSources is [].",
+      "web": "InlineCitation is a span grouping InlineCitationText and a card; InlineCitationCardTrigger is a secondary Badge showing the first source's hostname and '+n'; InlineCitationCardBody is a HoverCardContent w-80; inside it a Carousel with a header (Previous, Next and index Buttons), items, and InlineCitationSource and InlineCitationQuote for the content.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Inline Citation — origin: web-only, flutterSources is [].",
+      "web": "InlineCitationCardTrigger takes a required sources array of absolute URLs; InlineCitationCard takes HoverCard props with openDelay and closeDelay preset to 0; InlineCitationSource takes title, url and description; the carousel parts take Carousel, div and button props.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Inline Citation — origin: web-only, flutterSources is [].",
+      "web": "The badge shows 'hostname +n' or 'unknown' with no sources; hovering the badge or its text highlights the text with bg-accent; the card opens on hover or focus with no delay; the carousel index reads 'current/count' and updates on select.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Inline Citation — origin: web-only, flutterSources is [].",
+      "web": "No disabled state: a citation is always available. The carousel buttons are Buttons and could be given disabled by a caller; the component does not set it.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Inline Citation — origin: web-only, flutterSources is [].",
+      "web": "Hovering or focusing the badge (focusable by default, tabIndex 0) opens the card at once; Previous and Next call the carousel's scrollPrev and scrollNext; the index listens to the select event; a first source that does not parse as a URL is shown as itself instead of throwing.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Inline Citation — origin: web-only, flutterSources is [].",
+      "web": "The badge is a span, so it needs tabIndex 0 from the caller to take keyboard focus; the carousel buttons have aria-label 'Previous' and 'Next'; InlineCitationSource renders an h4 for the title and text for the url and description; InlineCitationQuote is a blockquote.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

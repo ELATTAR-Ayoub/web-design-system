@@ -1,0 +1,1339 @@
+/* ============================================================================
+   UTILITIES — the sanctioned effects, and the surfaces that are not components
+
+   Glow, the ramp chip, the glass family, the blooms, the value foil, the action
+   sheen, the aurora, the scrollbar rails, the sonner reclaim rules and the
+   starfield.
+
+   Time lives in motion.css; this file is paint. Where a surface here animates,
+   its `@keyframes` is defined there.
+   ========================================================================= */
+
+/* ============================================================================
+   EFFECT + MOTION UTILITIES
+   Glow is a restricted resource. Action = interactive/selected.
+   Value = rare/premium/reward. Nothing else glows.
+
+   The comments below name the ROLE, not the hue. They used to name the hue and
+   have now been wrong twice — written for purple-and-gold, left standing through
+   blue-and-lime, and wrong again for wine-and-amethyst. A comment that has to be
+   swept on every rebrand is a comment that will be missed on one.
+   ========================================================================= */
+@utility glow-action {
+  box-shadow: var(--shadow-glow-action);
+}
+
+@utility glow-value {
+  box-shadow: var(--shadow-glow-value);
+}
+
+/* A badge is a small solid shape, and a small solid shape with no ramp reads as
+   flat paint. This is the same light-from-above idea as `shadow-btn`'s inner
+   highlight, at chip scale: bright at the top, a touch of shade at the bottom.
+   Paired with `shadow-chip` it gives a 20px pill the same physicality as a
+   button without pretending to be pressable. */
+@utility ramp-chip {
+  background-image: linear-gradient(
+    to bottom,
+    rgb(255 255 255 / 0.18) 0%,
+    rgb(255 255 255 / 0.05) 48%,
+    rgb(0 0 0 / 0.14) 100%
+  );
+}
+
+/* ── Glass ────────────────────────────────────────────────────────────────────
+   A surface that is *in front of* the page rather than cut out of it.
+
+   Two utilities, one material, and the split is scale rather than taste. The
+   physics of frosted glass do not scale down: a 24px blur behind a 44px disc
+   samples almost nothing but the disc's own footprint and costs a compositor
+   layer to say so, and `--shadow-e2` under a control that small reads as grime.
+   So the panel blurs and floats; the control only tints and rims.
+
+   Both are built the same way and neither knows which theme it is in, because
+   both mix from `--foreground` and `--card`:
+
+     the FILL is the card colour held back, so the atmosphere behind shows
+     through and two panels over different parts of the page glow differently —
+     which is the entire reason to reach for this instead of `bg-card`;
+     the RIM is a hairline of the ink colour, so it is a light edge on dark and
+     a dark edge on light without a `dark:` variant anywhere;
+     the TOP HIGHLIGHT is `--rim-strong`, the same token every raised control
+     uses, which is what keeps a glass card in the same world as a button.
+
+   `overflow: hidden` is NOT set here. A panel that clips cannot carry a bloom
+   overhang or a badge that breaks its edge, and `bloom-cosmic` already sets its
+   own. The consumer clips if it needs to. */
+@utility glass-panel {
+  /* `@apply`, not a hand-written `backdrop-filter`.
+     Written by hand as `backdrop-filter: blur(calc(var(--spacing) * 5))` this
+     declaration was DROPPED ENTIRELY from the compiled stylesheet — no error,
+     no warning, and both guards green, because `check:tokens` looks for values
+     that should have been tokens and `check:refs` looks for names that resolve
+     to nothing. This was neither: a correct, token-derived declaration that the
+     CSS transformer would not carry through a `blur()` it could not statically
+     resolve. Trap 1's family, from a third direction, and the only reason it
+     was caught is that `getComputedStyle(card).backdropFilter` was read in the
+     browser and came back `none`.
+     Going through Tailwind's own utilities means the blur is emitted by the
+     machinery that owns `--tw-backdrop-*`, and it stays on the `--blur-*`
+     scale rather than on a number written here. */
+  @apply backdrop-blur-xl backdrop-saturate-150;
+
+  background-color: color-mix(in oklab, var(--card) 74%, transparent);
+  box-shadow:
+    inset 0 1px 0 var(--rim-strong),
+    inset 0 0 0 1px color-mix(in oklab, var(--foreground) 12%, transparent),
+    var(--shadow-e2);
+}
+
+/* The page-scale member. Same material, one step further off the page.
+
+   It exists because `glass-panel shadow-e4` DOES NOT WORK, and fails in the
+   quietest possible way: both own `box-shadow`, both are utilities, and the one
+   Tailwind emits later wins outright — so the glass rim and the top highlight
+   disappear and you are left with a translucent rectangle with a drop shadow.
+   Measured, not reasoned: `getComputedStyle(panel).boxShadow` came back with no
+   `inset` layer at all. Stacking any `shadow-*` on either glass utility has the
+   same result, which is why the elevation is chosen here rather than at the
+   call site.
+
+   `--shadow-e4` rather than `e2` because the surface this carries is the size
+   of the page. Elevation reads as a ratio of the object to its shadow, so the
+   ambient depth that floats a 400px dialog leaves a 1440px panel looking welded
+   down. */
+@utility glass-panel-deep {
+  @apply backdrop-blur-xl backdrop-saturate-150;
+
+  background-color: color-mix(in oklab, var(--card) 74%, transparent);
+  box-shadow:
+    inset 0 1px 0 var(--rim-strong),
+    inset 0 0 0 1px color-mix(in oklab, var(--foreground) 12%, transparent),
+    var(--shadow-e4);
+}
+
+/* The control-scale member. No blur and no ambient shadow — see above. */
+@utility glass-control {
+  background-color: color-mix(in oklab, var(--foreground) 7%, transparent);
+  box-shadow:
+    inset 0 1px 0 var(--rim-strong),
+    inset 0 0 0 1px color-mix(in oklab, var(--foreground) 16%, transparent);
+}
+
+/* Radial brand blooms for reveal stages and opening moments. */
+/* Mixed from the tokens rather than written as literals. These two used to hold
+   the brand's hex values inline, which meant they were the one pair of effects a
+   rebrand silently missed — the system moved and these did not. */
+@utility bloom-action {
+  background-image: radial-gradient(
+    ellipse 70% 60% at 50% 30%,
+    color-mix(in oklab, var(--color-action) 28%, transparent),
+    transparent 70%
+  );
+}
+
+@utility bloom-value {
+  background-image: radial-gradient(
+    ellipse 70% 60% at 50% 30%,
+    color-mix(in oklab, var(--color-value) 22%, transparent),
+    transparent 70%
+  );
+}
+
+/* ── Cosmic bloom ─────────────────────────────────────────────────────────────
+   The iridescence that lifts a toast or an alert off being a flat rectangle.
+   Same family as the rarity textures: a light source entering from the trailing
+   edge, colour-separated, drifting.
+
+   **Two layers, at different speeds — that is where the depth comes from.**
+   `::before` is the deep field: big, soft, slow (26s). `::after` is the near
+   field: tighter, brighter, faster (17s) and lit closer to white. Because they
+   travel at different rates the surface never repeats the same arrangement, and
+   the eye reads two distances instead of one flat wash. One layer alone looks
+   like a coloured smudge no matter how it is tuned.
+
+   Both blend on `screen`. Mixing a colour toward `transparent` over a near-black
+   surface only ever gets *darker* — screen adds light, which is what makes this
+   read as glow rather than as paint. The corollary bites: under screen a stop
+   mixed toward black contributes nothing, so a smaller core or a darker bed dims
+   the whole thing instead of focusing it. Keep the bright half of each gradient
+   wide and let it fall to black late.
+
+   Drive it with `--bloom-1` (the core) and `--bloom-2` (the companion). Set only
+   those two per variant; the geometry is written once, here.
+
+   The consumer supplies `overflow: hidden` and a containing block. It must not
+   be set here: sonner positions the live toast absolutely, and forcing
+   `position: relative` would drop it out of the stack sonner lays out. */
+@utility bloom-cosmic {
+  --bloom-1: var(--color-action-bright);
+  --bloom-2: var(--color-action);
+
+  /* The two layers' geometry, hoisted into variables so the live-toast override
+     further down can reclaim it from sonner without restating the numbers. See
+     `RECLAIMING THE BLOOM FROM SONNER`. */
+  --bloom-deep-inset: -95% -4.5rem -95% auto;
+  --bloom-deep-width: min(95%, 26rem);
+  --bloom-near-inset: -80% -3.5rem -80% auto;
+  --bloom-near-width: min(86%, 21rem);
+
+  /* The two hues the gradients actually paint with, derived from the pair above
+     through the theme's multipliers.
+
+     THIS BLOCK HAS TO BE HERE AND NOT AT `:root`. Custom properties are
+     substituted on the element the declaration sits on, so `--bloom-core`
+     written at `:root` would resolve `--bloom-2` against `:root` — where it does
+     not exist. `--bloom-peak` used to be exactly that: `var(--bloom-2)` declared
+     at `:root`, pointing at nothing. Declared here it computes on the toast,
+     which is where each type sets its own pair. */
+  --bloom-core: oklch(
+    from var(--bloom-2) calc(l * var(--bloom-l)) calc(c * var(--bloom-c)) h
+  );
+  --bloom-glow: oklch(
+    from var(--bloom-1) calc(l * var(--bloom-l)) calc(c * var(--bloom-c)) h
+  );
+  /* The hottest point of the core: lifted toward white on glass, pure pigment
+     on paper. One expression, two behaviours, chosen by the theme. */
+  --bloom-hot: oklch(
+    from var(--bloom-core) calc(l + (1 - l) * var(--bloom-lift))
+      calc(c * var(--bloom-hot-c)) h
+  );
+
+  /* The bloom overhangs its host on three sides, so the host must clip it or the
+     light spills past the rounded corner. Set here rather than left to the
+     consumer: forgetting it is silent and ugly, and nothing has ever wanted the
+     other behaviour. */
+  overflow: hidden;
+
+  /* The bloom must light *this* surface, not everything painted under it.
+     Without isolation the `screen` blend reaches down to whatever is behind the
+     card, so the same bloom looks different depending on what it happens to be
+     sitting on. */
+  isolation: isolate;
+
+  /* Grid and flex items honour z-index without being positioned, which is why
+     this does not set `position` — doing so would break `AlertAction`, which is
+     absolutely positioned inside an Alert. */
+  & > * {
+    z-index: 1;
+  }
+
+  /* The deep field. Large, dim, slow — this is the one that reads as distance. */
+  &::before {
+    content: "";
+    position: absolute;
+    /* Overhangs on three sides so only the falloff is ever visible. A bloom that
+       stops inside the box reads as a coloured rectangle, however soft. The
+       overhang also has to cover the rotation, or a corner of the layer swings
+       into view at the extremes.
+       The width is CAPPED, not a plain percentage. A toast is 356px and an alert
+       is 742px, so a bare 95% is 338px on one and 705px on the other — the same
+       rule floods the wider surface and the light ends up under the text. The cap
+       makes this a corner light of roughly fixed physical size, which is what it
+       is meant to be. Vertical overhang stays proportional because both surfaces
+       are about the same height. */
+    inset: var(--bloom-deep-inset);
+    width: var(--bloom-deep-width);
+    /* Load-bearing. Sonner owns `::before` and `::after` on a live toast and
+       sets a fixed `height` on both under certain states — `[data-swiping]` here,
+       `[data-expanded]` on the near layer. Our selector outranks its, but only
+       for properties we actually declare: leave `height` out and sonner's value
+       silently collapses the layer mid-interaction. `auto` hands the height back
+       to the inset above. */
+    height: auto;
+    z-index: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    filter: blur(calc(var(--spacing) * 4));
+    opacity: 0.75;
+    /* Both layers pivot on the bottom-right, so scale and rotation swirl the
+       field *around* the hot corner instead of carrying it away. */
+    transform-origin: 88% 82%;
+    background:
+      radial-gradient(
+        48% 58% at 74% 86%,
+        var(--bloom-core) 0%,
+        color-mix(in oklab, var(--bloom-core) 45%, var(--bloom-void)) 54%,
+        var(--bloom-void) 84%
+      ),
+      radial-gradient(
+        44% 54% at 94% 40%,
+        color-mix(in oklab, var(--bloom-glow) 60%, var(--bloom-core)) 0%,
+        var(--bloom-void) 78%
+      );
+    animation: cosmic-drift-deep var(--duration-cosmic-drift-deep) var(--ease-move) infinite alternate;
+  }
+
+  /* The near field. Tighter, brighter, lit toward --bloom-hot at the core. */
+  &::after {
+    content: "";
+    position: absolute;
+    /* Capped for the same reason as the deep layer above. */
+    inset: var(--bloom-near-inset);
+    width: var(--bloom-near-width);
+    /* See the deep layer. This is the one sonner actually breaks in practice:
+       hovering the stack sets `data-expanded="true"`, whose `::after` rule pins
+       the height to `calc(var(--gap) + 1px)` — about 15px — and the bloom
+       vanishes the moment you point at it. */
+    height: auto;
+    z-index: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    filter: blur(calc(var(--spacing) * 2.5));
+    /* The pivot sits on the hot core itself, so rotation and scale turn the
+       light in place rather than sweeping it out of the corner. */
+    transform-origin: 90% 86%;
+    background:
+      /* The hot core, pinned to the bottom-right. This is the brightest point on
+         the whole surface and it never leaves that corner — the drift turns and
+         breathes it, it does not carry it. */
+      radial-gradient(
+        42% 56% at 92% 84%,
+        color-mix(in oklab, var(--bloom-glow) 35%, var(--bloom-hot)) 0%,
+        var(--bloom-glow) 28%,
+        color-mix(in oklab, var(--bloom-glow) 45%, var(--bloom-void)) 56%,
+        var(--bloom-void) 82%
+      ),
+      /* The companion hue, thrown clear to the opposite diagonal. The separation
+         is the whole point — overlap the two and it collapses into one smudge */
+        radial-gradient(
+          44% 52% at 64% 12%,
+          color-mix(in oklab, var(--bloom-core) 60%, var(--bloom-hot)) 0%,
+          var(--bloom-core) 34%,
+          var(--bloom-void) 82%
+        ),
+      /* The bridge between them, so the corner does not read as a separate lamp
+         stuck onto a different colour */
+        radial-gradient(
+          46% 58% at 84% 46%,
+          color-mix(in oklab, var(--bloom-glow) 50%, var(--bloom-core)) 0%,
+          color-mix(in oklab, var(--bloom-core) 50%, var(--bloom-void)) 52%,
+          var(--bloom-void) 82%
+        );
+    /* Radial, not linear: a linear fade leaves hard top and bottom edges where
+       the light meets the surface. Centred low, so the falloff is gentlest
+       around the bottom-right corner and steepest away from it. */
+    mask-image: radial-gradient(
+      78% 108% at 96% 78%,
+      black 0%,
+      black 28%,
+      transparent 84%
+    );
+    animation: cosmic-drift-near var(--duration-cosmic-drift-near) var(--ease-move) infinite alternate;
+  }
+
+  /* ── Hover: the light swells ────────────────────────────────────────────────
+     Pointing at a toast or an alert pushes the bloom out to about half the
+     surface. It grows from the bottom-right, because that is where
+     `transform-origin` already is, so the hot corner stays put and the light
+     reaches inward rather than sliding across.
+
+     **This must use the standalone `scale` property, not `transform`.** Both
+     layers are running a `transform` animation, and an animation beats a plain
+     declaration — a `transform: scale()` here would be ignored outright. `scale`
+     is a separate property that composes with the animated `transform`, so the
+     drift keeps running underneath the growth.
+
+     A full second each way, on `duration-bloom`. This is atmosphere, not
+     feedback: at control speed it snaps and reads as a state change, which is
+     the opposite of light spreading. The same duration governs the return, so
+     the light recedes as slowly as it arrived. */
+  &::before,
+  &::after {
+    scale: 1;
+    transition: scale var(--duration-bloom) var(--ease-enter);
+  }
+  &:hover::before {
+    scale: 2.2;
+  }
+  &:hover::after {
+    scale: 2.5;
+  }
+}
+
+@utility foil-value {
+  position: relative;
+
+  /* 1 — the metal ramp
+     The band at 52% is the EDGE of the metal, and its depth is a per-brand
+     number rather than a constant. 42% of `--color-value-dark` is the lime
+     figure: lime is a high-luminance hue, so the worst-case stop still measures
+     comfortably above AA against the foil's ink.
+     A darker value ramp does not survive this depth. At 42% a low-luminance hue
+     rasterised at **4.11:1** — a premium button whose label fails AA across the
+     band running through its middle — and needed 30% instead. Measured on the
+     live button by pulling every stop out of `backgroundImage` and painting it
+     into a 1×1 canvas, because these stops are `color-mix(in oklab, …)` and
+     cannot be parsed as RGB (trap 7).
+     Re-measure this stop after ANY change to the value ramp. No guard can, and
+     the failure looks exactly like a design choice. */
+  background-image: linear-gradient(
+    176deg,
+    color-mix(in oklab, var(--color-value-bright) 94%, white) 0%,
+    var(--color-value-bright) 22%,
+    var(--color-value) 44%,
+    color-mix(in oklab, var(--color-value-dark) 42%, var(--color-value)) 52%,
+    var(--color-value) 62%,
+    var(--color-value-bright) 88%,
+    color-mix(in oklab, var(--color-value-bright) 90%, white) 100%
+  );
+
+  /* 3 — the glint */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background-image: linear-gradient(
+      104deg,
+      transparent 38%,
+      color-mix(in oklab, var(--color-value-bright) 45%, white) 46%,
+      color-mix(in oklab, var(--color-value-bright) 15%, white) 50%,
+      color-mix(in oklab, var(--color-value-bright) 45%, white) 54%,
+      transparent 62%
+    );
+    background-size: 260% 100%;
+    background-repeat: no-repeat;
+    background-position: 135% 50%;
+    mix-blend-mode: screen;
+    opacity: 0;
+    animation: value-glint var(--duration-glint) var(--ease-move) infinite;
+  }
+
+  /* 2 — the foil */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background-image:
+      repeating-linear-gradient(
+        104deg,
+        color-mix(in oklab, var(--color-value-bright) 80%, transparent) 0 1px,
+        transparent 1px 5px
+      ),
+      linear-gradient(
+        100deg,
+        transparent 30%,
+        color-mix(in oklab, var(--color-value-bright) 95%, white) 46%,
+        color-mix(in oklab, var(--color-value-bright) 60%, transparent) 54%,
+        transparent 70%
+      ),
+      radial-gradient(
+        130% 170% at 22% -10%,
+        color-mix(in oklab, var(--color-value-bright) 75%, white),
+        transparent 62%
+      );
+    background-size:
+      170% 100%,
+      210% 100%,
+      100% 100%;
+    background-repeat: no-repeat;
+    mix-blend-mode: soft-light;
+    opacity: 0.95;
+    animation: value-foil-drift var(--duration-foil-drift) linear infinite;
+  }
+
+  /* Hover pushes the metal: the glint runs more often and the foil brightens.
+     The speed-up is `--duration-glint-hover`, declared in motion.css beside
+     `--duration-glint` it modifies. It was a literal here with a note saying a
+     one-off needed no token; that reasoning does not survive the rule this
+     system actually keeps — motion.css owns every duration, and "used once" is
+     not an exemption, it is just a token with one reader. */
+  &:hover::before {
+    animation-duration: var(--duration-glint-hover);
+  }
+  &:hover::after {
+    opacity: 1;
+  }
+}
+
+@utility sheen-action {
+  position: relative;
+
+  background-image: linear-gradient(
+    176deg,
+    color-mix(in oklab, var(--color-action-bright) 20%, var(--color-action)) 0%,
+    var(--color-action) 44%,
+    color-mix(in oklab, var(--color-action-dark) 50%, var(--color-action)) 53%,
+    var(--color-action) 76%,
+    color-mix(in oklab, var(--color-action-bright) 10%, var(--color-action)) 100%
+  );
+
+  /* The beat — an ellipse expanding from the centre. */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(
+      ellipse 46% 130% at 50% 50%,
+      color-mix(in oklab, var(--color-action-bright) 85%, transparent),
+      color-mix(in oklab, var(--color-action-bright) 30%, transparent) 55%,
+      transparent 72%
+    );
+    mix-blend-mode: screen;
+    opacity: 0;
+    transform: scale(0.55);
+  }
+
+  &:hover::before {
+    animation: action-beat var(--duration-beat-hover) var(--ease-enter) infinite;
+  }
+  /* A press is one hard thump, not a rhythm. */
+  &:active::before {
+    animation: action-beat var(--duration-beat-press) var(--ease-enter) 1;
+  }
+
+  /* The texture — static. */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background-image:
+      repeating-linear-gradient(
+        104deg,
+        color-mix(in oklab, var(--color-action-bright) 34%, transparent) 0 1px,
+        transparent 1px 7px
+      ),
+      linear-gradient(
+        100deg,
+        transparent 28%,
+        color-mix(in oklab, var(--color-action-bright) 52%, transparent) 48%,
+        transparent 68%
+      ),
+      radial-gradient(
+        120% 150% at 24% -20%,
+        color-mix(in oklab, var(--color-action-bright) 45%, transparent),
+        transparent 60%
+      );
+    background-size:
+      100% 100%,
+      190% 100%,
+      100% 100%;
+    background-repeat: no-repeat;
+    mix-blend-mode: soft-light;
+    opacity: 0.75;
+  }
+}
+
+/* ── Toast ────────────────────────────────────────────────────────────────────
+   Sonner ships its own stylesheet: a 13px system font stack, a hardcoded
+   `rgba(0,0,0,.1)` shadow and its own radius. Left alone the toast is the one
+   surface in the product that is not made of our tokens.
+
+   Every rule below repeats the class three times on purpose. Sonner's own rules
+   are `[data-sonner-toast][data-styled="true"]` — specificity 0,2,0 — and it
+   injects them into <head> at runtime, *after* this stylesheet. A doubled class
+   ties at 0,2,0 and then loses on source order, which is exactly what it did:
+   silently nothing. Three classes is 0,3,0, which clears the container rules
+   and, with a descendant, clears sonner's 0,3,0 child rules too. The alternative
+   was `!important` on twenty declarations.
+
+   The same block styles the live toast and the static previews on the Feedback
+   page. The preview renders the identical markup minus `data-sonner-toast`, so
+   it picks up everything here and none of sonner's positioning. One definition,
+   two mounts — change a value and both move. */
+.cn-toast.cn-toast.cn-toast {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(var(--spacing) * 3);
+  /* Capped at the container. Sonner sets `--width` (356px) on its own `<ol>`,
+     which is at least that wide, so live toasts are unchanged. The preview on
+     the toaster page renders this `<li>` standalone with no `<ol>` above it,
+     and at 375 the 356px fallback overflowed a 325px stage by 31px — the one
+     horizontal scroll the visual review found across 107 pages. `100%` of a
+     narrow container is the right answer for a standalone toast too. */
+  width: min(var(--width, 22.25rem), 100%);
+  padding: calc(var(--spacing) * 4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  /* `background-color` rather than the `background` shorthand. The shorthand
+     resets `background-image` too, and while the starfield has since moved off
+     this element onto `[data-content]`, being explicit about which channel is
+     being set costs nothing and stops the next person reintroducing the clash. */
+  background-color: var(--popover);
+  box-shadow: var(--shadow-e3);
+  color: var(--popover-foreground);
+  font-family: var(--font-sans);
+  font-size: var(--text-small);
+  line-height: 1.5;
+  /* The bloom needs something to clip against. */
+  overflow: hidden;
+}
+
+/* ── RECLAIMING THE BLOOM FROM SONNER ────────────────────────────────────────
+   The live toast and its documentation preview render the same markup and share
+   the same `.cn-toast` block, so they must look identical. They did not, and
+   only on hover — the live toast's gradient jumped, shed its hot core and lost
+   colour, while the preview beside it behaved perfectly.
+
+   Hovering the stack sets `data-expanded="true"`, and sonner then owns the near
+   layer outright:
+
+     [data-sonner-toast][data-expanded='true']::after {
+       left: 0; bottom: 100%; width: 100%; height: calc(var(--gap) + 1px);
+     }
+
+   That is not a tweak. `bottom: 100%` with a ~15px height lifts the near field
+   clean off the toast and parks it in the gap ABOVE it, which is exactly the
+   layer carrying `--bloom-hot`. The deep field stays put, so what is left looks
+   like the bloom with its brightest half deleted.
+
+   OUR RULE LOST TWICE OVER, and both had to be fixed:
+
+     Specificity — sonner's selector is (0,2,1); `.bloom-cosmic::after`, which is
+     what `@utility` emits, is (0,1,1). Three classes here makes (0,3,1).
+
+     Layers — and this is the one that matters. `@utility` output lands in
+     Tailwind's `utilities` layer, and UNLAYERED CSS BEATS LAYERED CSS whatever
+     the specificity. Sonner injects its stylesheet into <head> at runtime,
+     unlayered, so no selector written inside the utility could ever have won.
+     This block sits at the top level of this file, unlayered, which is the only
+     reason it can compete at all. It is also why the rest of the `.cn-toast`
+     styling lives out here rather than in a component class.
+
+   The geometry is read from the variables the utility already sets, so these
+   two rules can never drift from the layer definitions they are defending.
+   `[data-swiping]` gets the same treatment on the deep layer — it sets `left`,
+   `right`, `height` and a `scaleY` transform on `::before` for the same reason.
+   ------------------------------------------------------------------------- */
+.cn-toast.cn-toast.cn-toast::before {
+  inset: var(--bloom-deep-inset);
+  width: var(--bloom-deep-width);
+  height: auto;
+}
+
+.cn-toast.cn-toast.cn-toast::after {
+  inset: var(--bloom-near-inset);
+  width: var(--bloom-near-width);
+  height: auto;
+}
+
+/* Sonner positions the live toast absolutely, and that already establishes a
+   containing block for the bloom. The preview is a static <li> in normal flow,
+   so it needs one — but scoping this to the preview is essential: setting
+   `position: relative` unconditionally would drop the live toast out of the
+   stack sonner lays out by transform. */
+.cn-toast.cn-toast.cn-toast:not([data-sonner-toast]) {
+  position: relative;
+}
+
+/* Per-type hues. The bloom itself lives in `@utility bloom-cosmic`, shared with
+   Alert, so the two surfaces can never drift apart. These two variables are all
+   a type ever sets. */
+.cn-toast.cn-toast.cn-toast[data-type="success"] {
+  --bloom-1: var(--color-success);
+  --bloom-2: var(--color-value);
+}
+
+/* Each type pairs its hue with its OWN ramp's partner — the shape success
+   already had (emerald + lime) and the one tone that read as its colour on
+   dark. A blue companion under a red or amber core won on near-black and the
+   toast glowed blue whatever it meant; `warning` was worse, still on the value
+   ramp entirely ("worked only by accident", as alert.tsx put it, and the toast
+   never got the fix until now). Same pairs as `components/ui/alert.tsx`. */
+.cn-toast.cn-toast.cn-toast[data-type="warning"] {
+  --bloom-1: var(--color-warning);
+  --bloom-2: var(--color-warning-deep);
+}
+
+.cn-toast.cn-toast.cn-toast[data-type="error"] {
+  --bloom-1: var(--destructive);
+  --bloom-2: var(--color-destructive-lifted);
+}
+
+.cn-toast.cn-toast.cn-toast[data-type="info"] {
+  --bloom-1: var(--color-info);
+  --bloom-2: var(--color-info-deep);
+}
+
+.cn-toast.cn-toast.cn-toast[data-type="loading"] {
+  --bloom-1: var(--color-action-bright);
+  --bloom-2: var(--color-value);
+}
+
+/* ===========================================================================
+   THE NAV PILL'S BLOOM HOLDS STILL
+
+   `bloom-cosmic` was built for a toast, which lives about eight seconds. The
+   sidebar's active row lives for the whole session, and four infinite
+   compositor animations sitting beside the content you are reading is
+   restlessness rather than life. So the travelling pill takes the same paint
+   and holds it still, and the row's hover wakes it.
+
+   Keyed off the MENU rather than the pill, because the pill is
+   `pointer-events-none` — deliberately, so the selection can never eat a click
+   meant for the row underneath it — and therefore can never be hovered itself.
+   `:has()` is what lets the menu ask "is my active row hovered".
+
+   Under `prefers-reduced-motion` the blanket rule further down already
+   collapses these to a single frame, so paused-versus-running stops mattering
+   there. That is the correct outcome rather than a gap.
+   ========================================================================= */
+.sidebar-pill::before,
+.sidebar-pill::after,
+.sidebar-pill .starfield::before,
+.sidebar-pill .starfield::after {
+  animation-play-state: paused;
+}
+
+[data-slot="sidebar-menu"]:has([data-active="true"]:hover) .sidebar-pill::before,
+[data-slot="sidebar-menu"]:has([data-active="true"]:hover) .sidebar-pill::after,
+[data-slot="sidebar-menu"]:has([data-active="true"]:hover)
+  .sidebar-pill
+  .starfield::before,
+[data-slot="sidebar-menu"]:has([data-active="true"]:hover)
+  .sidebar-pill
+  .starfield::after {
+  animation-play-state: running;
+}
+
+.cn-toast.cn-toast.cn-toast [data-icon] {
+  display: flex;
+  flex-shrink: 0;
+  /* Optically centres the 16px glyph on the first line of the title. */
+  margin-top: calc(var(--spacing) * 0.5);
+  color: var(--muted-foreground);
+}
+
+/* The one place a toast carries colour, and only on the glyph — the surface
+   stays neutral so a stack of toasts does not turn into a traffic light.
+
+   EVERY ONE OF THESE IS AN `-ink` TOKEN, and all five used to be the raw hue.
+   §1 rule 3 binds a `color:` declaration exactly as it binds `text-*`, and a
+   toast sits on `--popover` — `#fff` on light, where every raw state hue is
+   wrong, because all four were chosen against a near-black page. The glyph is the one
+   place a toast says what KIND of thing happened, so a glyph nobody can see on
+   light is the whole signal gone.
+
+   Rasterised against the live `.cn-toast` surface on
+   /design-system/components/base/feedback:
+
+     LIGHT      before    after        DARK       before    after
+     success    2.54:1 -> 5.48:1       error      3.67:1 -> 6.40:1
+     warning    1.67:1 -> 5.02:1       other four        unchanged
+     info       1.81:1 -> 5.36:1
+     loading    1.85:1 -> 10.58:1
+     error      4.83:1    unchanged
+
+   The loading glyph was `--color-action-bright`, which §1 rule 3 forbids on text
+   outright and which this file's own comment at the ramp definition names as the
+   thing nothing may write. RULES §5's toast section already documented it as the
+   ink; the prose was right and the CSS was wrong.
+
+   `check:tokens`' `state-colour-as-text` runs on this file for the declaration
+   form specifically, so this cannot come back silently. */
+.cn-toast.cn-toast.cn-toast[data-type="success"] [data-icon] {
+  color: var(--success-ink);
+}
+
+.cn-toast.cn-toast.cn-toast[data-type="warning"] [data-icon] {
+  color: var(--warning-ink);
+}
+
+.cn-toast.cn-toast.cn-toast[data-type="info"] [data-icon] {
+  color: var(--info-ink);
+}
+
+.cn-toast.cn-toast.cn-toast[data-type="error"] [data-icon] {
+  color: var(--destructive-ink);
+}
+
+.cn-toast.cn-toast.cn-toast[data-type="loading"] [data-icon] {
+  color: var(--action-ink);
+}
+
+.cn-toast.cn-toast.cn-toast [data-content] {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 1);
+  min-width: 0;
+}
+
+.cn-toast.cn-toast.cn-toast [data-title] {
+  font-size: var(--text-small);
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.cn-toast.cn-toast.cn-toast [data-description] {
+  font-size: var(--text-small);
+  color: var(--muted-foreground);
+}
+
+/* The action. Sonner renders this button itself, so it cannot be a real
+   `<Button>` — these declarations mirror `variant="secondary" size="sm"` exactly,
+   which is what an action inside a toast or an alert always is. Secondary, not
+   outline: the bloom sits directly behind it, and a bordered transparent control
+   over moving light reads as a hole rather than a button. A solid neutral fill
+   stays legible wherever the light happens to be. */
+.cn-toast.cn-toast.cn-toast [data-button] {
+  flex-shrink: 0;
+  margin-left: auto;
+  height: calc(var(--spacing) * 8);
+  padding-inline: calc(var(--spacing) * 3.5);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--secondary);
+  box-shadow: none;
+  color: var(--secondary-foreground);
+  font-size: var(--text-small);
+  font-weight: 500;
+  transition: background-color var(--duration-normal) var(--ease-enter);
+}
+
+.cn-toast.cn-toast.cn-toast [data-button]:hover {
+  background: var(--accent);
+}
+
+/* Native browser scrollbars. The root selector styles the page; the utility
+   gives nested overflow regions the same rail on every axis. Firefox reads
+   scrollbar-color/width, while Chromium and Safari read the WebKit parts. */
+/* `.prose table` and `.prose pre` join the utility rather than carrying a rail
+   of their own. They are the two things in authored long-form content that
+   scroll sideways, and neither has a call site anyone can put a class on — so
+   without this they would fall back to the browser's default scrollbar beside
+   the system's, which is the second control style §3 forbids. */
+@layer utilities {
+  html,
+  .scrollbar-thin,
+  :where(.prose) table,
+  :where(.prose) pre {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  html::-webkit-scrollbar,
+  .scrollbar-thin::-webkit-scrollbar,
+  :where(.prose) table::-webkit-scrollbar,
+  :where(.prose) pre::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  html::-webkit-scrollbar-track,
+  .scrollbar-thin::-webkit-scrollbar-track,
+  :where(.prose) table::-webkit-scrollbar-track,
+  :where(.prose) pre::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  html::-webkit-scrollbar-thumb,
+  .scrollbar-thin::-webkit-scrollbar-thumb,
+  :where(.prose) table::-webkit-scrollbar-thumb,
+  :where(.prose) pre::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 999px;
+  }
+
+  html::-webkit-scrollbar-thumb:hover,
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover,
+  :where(.prose) table::-webkit-scrollbar-thumb:hover,
+  :where(.prose) pre::-webkit-scrollbar-thumb:hover {
+    background: var(--muted-foreground);
+  }
+}
+
+/* The one chromatic moment a landing page gets.
+   §1 rations the brand and §3 rations glow; this spends both at once, so it is
+   allowed once per page and nowhere below the fold.
+
+   Mixed from `--color-value` and the action ramp rather than written as a set
+   of hues, for the reason every other gradient here is: the brand has moved
+   three times and the two that were written as literals are the two that were
+   missed. This sweeps ACROSS the brand — the value end, through the action
+   ramp's light, mid and dark steps — so it reads as a spectrum while containing
+   no colour the system does not already own.
+
+   Every stop is held at 20%. That is not a starting point to taste: above about
+   25% the blur stops reading as light behind the panel and starts reading as a
+   coloured shape, and the panel looks like it is sitting on a sticker. */
+@utility aurora-brand {
+  background-image: linear-gradient(
+    90deg,
+    color-mix(in oklab, var(--color-value) 20%, transparent) 0%,
+    color-mix(in oklab, var(--color-action-bright) 20%, transparent) 38%,
+    color-mix(in oklab, var(--color-action) 20%, transparent) 71%,
+    color-mix(in oklab, var(--color-action-dark) 20%, transparent) 100%
+  );
+}
+
+/* ============================================================================
+   THE BLOOM ON A LIGHT SURFACE
+
+   The bloom is built on `mix-blend-mode: screen`, and screen is not a style
+   choice — it is arithmetic. It ADDS light. On a near-black card that is
+   exactly right, and it is why the bloom reads as iridescence rather than as a
+   coloured smudge. On white it is invisible: anything screened onto white
+   stays white.
+
+   LIGHT NO LONGER MULTIPLIES. It did for a long time — the inverse of adding
+   light is removing it — and the opacity was tuned four separate times (0.14,
+   0.66, 0.55, 0.34) trying to make a multiplied ramp on white read as colour
+   rather than as a grey-brown wash. It never quite did, because multiply on a
+   surface at full luminance bites every channel out of the paper, and the
+   thing on screen was always a stain with a tint in it.
+
+   Flutter 0.0.3's `FeedbackSurface.blendFor` is the ruling this follows: on
+   light the ramp is painted STRAIGHT (`srcOver`, `normal` here), masked to the
+   corner by the surface's own overflow, at 0.9 — the same number the Flutter
+   side carries as `_lightOpacity`. What makes that work is the void: the ramps
+   fade to `--bloom-void`, which is `white` on light, and `--card` on light is
+   white too, so a normally-blended ramp disappears into the surface with no
+   edge. Dark keeps `screen` at 0.75, where the void is black and screen by
+   black is the identity.
+
+   The audit (`docs/contracts/audit/feedback-surface.json`) recorded this as the
+   one place the web had fallen behind a Flutter ruling rather than the other
+   way round. Measured after the change on the alert page in light mode: the
+   corner reads as colour, and the body copy underneath it is no longer sitting
+   on a darkened field.
+   ========================================================================= */
+:root .bloom-cosmic::before,
+:root .bloom-cosmic::after,
+.light .bloom-cosmic::before,
+.light .bloom-cosmic::after {
+  mix-blend-mode: normal;
+  opacity: 0.9;
+}
+
+.dark .bloom-cosmic::before,
+.dark .bloom-cosmic::after {
+  mix-blend-mode: screen;
+  opacity: 0.75;
+}
+
+:root .sheen-action::before,
+.light .sheen-action::before {
+  mix-blend-mode: multiply;
+}
+
+.dark .sheen-action::before {
+  mix-blend-mode: screen;
+}
+
+/* ============================================================================
+   THE STARFIELD
+
+   Two corner-anchored clusters of real four-point sparkles: a dense one in the
+   bottom-right where the bloom's hot core sits, and a thinner scatter across
+   the top-right. Nothing in the middle — the text lives there.
+
+   ANCHORED, NOT TILED. The first version repeated a tile 140–300px square,
+   which looked right on an Alert and produced almost nothing on a live toast:
+   a toast is about 70px tall, so most of every tile fell below the visible band
+   and the few sparkles that survived were spread thinly across 356px. Corner
+   anchoring is placement relative to the element's own edges, so it renders the
+   same on a 70px toast and a 742px alert. Both cluster viewBoxes are kept short
+   (96px and 64px) for the same reason.
+
+   WHERE THEY HANG. The bloom already owns both of the host's pseudo-elements,
+   so the clusters need their own box. Sonner renders its own toast markup, and
+   the one element it gives us is `[data-content]` — which the preview markup
+   also uses, so a single selector covers the live toast and its documentation
+   copy. An Alert has no equivalent full-bleed child, so it carries a
+   `.starfield` span; being absolutely positioned, it is out of grid flow and
+   the Alert's `has-[>svg]:grid-cols-*` layout never sees it.
+
+   ROTATION AND HOVER COMPOSE, they do not fight. The sway animates the `rotate`
+   longhand; the hover nudge animates `translate` and `scale`. Those are three
+   independent properties in modern CSS, so a single element can be mid-rotation
+   and mid-nudge at once. Written as one `transform` they would overwrite each
+   other and the hover would kill the sway.
+
+   The sway is an oscillation, not a full turn. Origin is the anchored corner,
+   so a complete revolution would swing the cluster out of the box for half its
+   cycle; ±6° keeps every sparkle in its corner while never being still.
+   ========================================================================= */
+.starfield {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Descendant, not child. Sonner owns the live toast's markup and is free to
+   wrap `[data-content]` — a child combinator here would work on the preview and
+   silently do nothing on the real toast, which is the exact failure this
+   replaced. */
+/* The dense bottom-right cluster. */
+.starfield::before,
+.bloom-cosmic [data-content]::before,
+/* The thin top-right scatter. */
+.starfield::after,
+.bloom-cosmic [data-content]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  /* `drop-shadow`, not `box-shadow`. The sparkles are alpha in a background
+     image, so a box shadow would trace the pseudo-element's rectangle; a filter
+     drop-shadow follows the alpha and haloes each individual point. Two passes
+     rather than one: the tight pass is the star's own light, the wide dim pass
+     is that light reaching the surface around it. One pass alone reads as a
+     blurred copy sitting behind the star instead of as emission. */
+  filter:
+    drop-shadow(0 0 var(--star-glow-size) var(--star-glow))
+    drop-shadow(0 0 calc(var(--star-glow-size) * 3) var(--star-glow));
+  transition:
+    translate var(--duration-bloom) var(--ease-enter),
+    scale var(--duration-bloom) var(--ease-enter);
+}
+
+.starfield::before,
+.bloom-cosmic [data-content]::before {
+  background-position: right bottom;
+  background-size: 260px 96px;
+  transform-origin: 100% 100%;
+  animation: star-sway var(--duration-sway) var(--ease-move) infinite alternate;
+}
+
+.starfield::after,
+.bloom-cosmic [data-content]::after {
+  background-position: right top;
+  background-size: 200px 64px;
+  transform-origin: 100% 0%;
+  animation: star-sway-alt var(--duration-sway-alt) var(--ease-move) infinite alternate;
+}
+
+/* Hover: the field leans. Small numbers on purpose — this is meant to be felt
+   rather than watched, and the two clusters move by different amounts so the
+   corner nearest the pointer reads as closer. */
+.bloom-cosmic:hover .starfield::before,
+.bloom-cosmic:hover [data-content]::before {
+  translate: -5px 3px;
+  scale: 1.06;
+}
+
+.bloom-cosmic:hover .starfield::after,
+.bloom-cosmic:hover [data-content]::after {
+  translate: -3px -2px;
+  scale: 1.04;
+}
+
+/* An SVG data URI cannot read a CSS variable, so the fill is a literal and the
+   literal has to differ per theme — white points on glass, slate on paper, and
+   the slate pulled back because a dark mark on white carries much further than
+   a light one on black. */
+/* ONE STARFIELD, BOTH THEMES. There used to be two: white sparkles on dark and
+   slate ones on light. The slate set was the mistake — a dark speck on paper is
+   not a star, it is dirt, and eight of them scattered across a toast read as
+   dust on the screen rather than as a galaxy. Stars emit light in both themes;
+   what changes is the glow beneath them and how much pigment the bloom puts
+   behind them. */
+.starfield::before,
+.bloom-cosmic [data-content]::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 260 96'%3E%3Cg fill='%23ffffff'%3E%3Cpath opacity='0.95' transform='translate(214,54) scale(0.46)' d='M12 0C12 6.6 17.4 12 24 12C17.4 12 12 17.4 12 24C12 17.4 6.6 12 0 12C6.6 12 12 6.6 12 0Z'/%3E%3Cpath opacity='0.78' transform='translate(240,24) scale(0.26)' d='M12 0C12 6.6 17.4 12 24 12C17.4 12 12 17.4 12 24C12 17.4 6.6 12 0 12C6.6 12 12 6.6 12 0Z'/%3E%3Cpath opacity='0.85' transform='translate(180,76) scale(0.32)' d='M12 0C12 6.6 17.4 12 24 12C17.4 12 12 17.4 12 24C12 17.4 6.6 12 0 12C6.6 12 12 6.6 12 0Z'/%3E%3Cpath opacity='0.66' transform='translate(248,72) scale(0.2)' d='M12 0C12 6.6 17.4 12 24 12C17.4 12 12 17.4 12 24C12 17.4 6.6 12 0 12C6.6 12 12 6.6 12 0Z'/%3E%3Cpath opacity='0.55' transform='translate(196,16) scale(0.18)' d='M12 0C12 6.6 17.4 12 24 12C17.4 12 12 17.4 12 24C12 17.4 6.6 12 0 12C6.6 12 12 6.6 12 0Z'/%3E%3Cpath opacity='0.58' transform='translate(146,40) scale(0.22)' d='M12 0C12 6.6 17.4 12 24 12C17.4 12 12 17.4 12 24C12 17.4 6.6 12 0 12C6.6 12 12 6.6 12 0Z'/%3E%3Cpath opacity='0.5' transform='translate(232,92) scale(0.16)' d='M12 0C12 6.6 17.4 12 24 12C17.4 12 12 17.4 12 24C12 17.4 6.6 12 0 12C6.6 12 12 6.6 12 0Z'/%3E%3Cpath opacity='0.42' transform='translate(112,66) scale(0.15)' d='M12 0C12 6.6 17.4 12 24 12C17.4 12 12 17.4 12 24C12 17.4 6.6 12 0 12C6.6 12 12 6.6 12 0Z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.starfield::after,
+.bloom-cosmic [data-content]::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 64'%3E%3Cg fill='%23ffffff'%3E%3Cpath opacity='0.78' transform='translate(168,18) scale(0.24)' d='M12 0C12 6.6 17.4 12 24 12C17.4 12 12 17.4 12 24C12 17.4 6.6 12 0 12C6.6 12 12 6.6 12 0Z'/%3E%3Cpath opacity='0.55' transform='translate(132,42) scale(0.17)' d='M12 0C12 6.6 17.4 12 24 12C17.4 12 12 17.4 12 24C12 17.4 6.6 12 0 12C6.6 12 12 6.6 12 0Z'/%3E%3Cpath opacity='0.6' transform='translate(190,46) scale(0.18)' d='M12 0C12 6.6 17.4 12 24 12C17.4 12 12 17.4 12 24C12 17.4 6.6 12 0 12C6.6 12 12 6.6 12 0Z'/%3E%3Cpath opacity='0.42' transform='translate(96,14) scale(0.13)' d='M12 0C12 6.6 17.4 12 24 12C17.4 12 12 17.4 12 24C12 17.4 6.6 12 0 12C6.6 12 12 6.6 12 0Z'/%3E%3Cpath opacity='0.38' transform='translate(150,60) scale(0.12)' d='M12 0C12 6.6 17.4 12 24 12C17.4 12 12 17.4 12 24C12 17.4 6.6 12 0 12C6.6 12 12 6.6 12 0Z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ── Safe area ─────────────────────────────────────────────────────────────
+   The system-bar contract, and the web half of Flutter's `safe-area` item.
+
+   Flutter's SafeArea reads the window's view padding — the notch, the rounded
+   corner, the home indicator, the on-screen keyboard shelf — and insets its
+   child by it. The browser exposes the same four numbers as `env()`
+   environment variables, so the capability arrives as CSS with nothing for a
+   component to do, which is why the contract classifies it `css-native`.
+
+   These were absent for the whole of the 0.0.3 convergence: the contract named
+   the item, `docs/architecture/platform-parity.md` said the utilities existed,
+   the documentation page said honestly that they did not, and the per-capability
+   audit is what made the three disagree in one place. A capability the system
+   names and does not ship is worse than one it never claimed.
+
+   `env()` is a browser function, not a hardcoded value — there is no token to
+   reach for, because the number comes from the device. The `, 0px` fallback is
+   required: on a display with no inset (every desktop browser, and any browser
+   predating the variable) a bare `env()` resolves to nothing and the whole
+   declaration is dropped.
+
+   Reach for these on anything that sits against a screen edge — a fixed
+   bottom bar, a full-height drawer, a floating action — and nowhere else.
+   Padding a component that is already inside a padded page adds the notch
+   twice. */
+
+@utility pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+@utility pr-safe {
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@utility pl-safe {
+  padding-left: env(safe-area-inset-left, 0px);
+}
+
+/* The two axes and the whole box, because a bottom bar wants one class and not
+   two, and a full-screen overlay wants one and not four. */
+@utility px-safe {
+  padding-right: env(safe-area-inset-right, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+}
+
+@utility py-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@utility p-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+}
+
+/* ── Media scrim ──────────────────────────────────────────────────────────
+   Bottom-up media contrast: transparent through the upper half, rising to a
+   readable edge, so a title composed directly on a photograph or a video
+   stays legible without an opaque card under it.
+
+   The web half of Flutter's `media-scrim`. It was the last capability in the
+   contract with no implementation — the migration doc recorded it as "the same
+   word for a different capability", because `bg-scrim` is a flat dim behind a
+   drawer, not a ramp over media.
+
+   Apply it to the element that covers the media's full bounds (an absolutely
+   positioned overlay is the usual shape) and compose the title and actions
+   inside it. It sets the foreground too, because the ink pair is
+   theme-independent — see the tokens — and a caller who reaches for
+   `text-foreground` on top of a photograph gets black on black in dark mode. */
+@utility media-scrim {
+  background-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    color-mix(in srgb, var(--media-ink) var(--media-scrim-mid), transparent)
+      var(--media-scrim-mid-stop),
+    color-mix(in srgb, var(--media-ink) var(--media-scrim-end), transparent) 100%
+  );
+  color: var(--media-foreground);
+}
+
+/* ── Code highlighting ───────────────────────────────────────────────────────
+   `CodeBlock` (`components/ds/code-block.tsx`) renders `SyntaxHighlighter`
+   with `useInlineStyles={false}`, so a token carries only its Prism class
+   (`.token.keyword`, `.token.string`, …) and no inline colour — this is the one
+   place those classes resolve. The eight roles are the `--code-*` tokens in
+   `styles/tokens.css`, each an existing `-ink`-grade token (§1.3), so the fence
+   reads the theme instead of a baked-in palette. One rule, both themes — the
+   `vscDarkPlus` theme object this replaced had no light-mode counterpart at
+   all.
+
+   Every class listed below is one the ten grammars `code-block.tsx` registers
+   (bash, css, javascript, json, jsx, markdown, python, sql, tsx, typescript)
+   actually emit — `code-block.tsx`'s exported `STYLED_PRISM_TOKEN_CLASSES` is
+   the same list, kept there so a test can assert nothing here has drifted out
+   of sync with what real code produces. Fix round 1 added everything past
+   `punctuation`: the first pass styled six classes and left ~21 others (a
+   class name, a JSX tag, a CSS selector, a regex literal…) to fall back to
+   plain `--foreground`, which is how real JS/TS/JSX/CSS rendered mostly
+   monochrome. Each of those groups onto whichever existing role it reads
+   closest to, except two: a name for a KIND of thing (`--code-type`) and a
+   name for a SPECIFIC thing (`--code-variable`) — see the tokens.css note. */
+@utility code-highlight {
+  /* keyword-like: control flow, declarations, meta directives, decorators */
+  & .token.keyword,
+  & .token.atrule,
+  & .token.important,
+  & .token.decorator {
+    color: var(--code-keyword);
+  }
+
+  /* string-like: literal text, quoted attribute values, URLs, CDATA, and a
+     JSX tag's own literal text content */
+  & .token.string,
+  & .token.attr-value,
+  & .token.url,
+  & .token.cdata,
+  & .token.plain-text {
+    color: var(--code-string);
+  }
+
+  /* comment-like: prose the engine ignores */
+  & .token.comment,
+  & .token.prolog,
+  & .token.doctype {
+    color: var(--code-comment);
+    font-style: italic;
+  }
+
+  & .token.function {
+    color: var(--code-function);
+  }
+
+  /* number-like: literal values — including CSS's "px" unit and its literal
+     colour keywords ("red"), which Prism's CSS grammar tokenises separately
+     from `number`/`string` */
+  & .token.number,
+  & .token.boolean,
+  & .token.constant,
+  & .token.regex,
+  & .token.unit,
+  & .token.color {
+    color: var(--code-number);
+  }
+
+  /* punctuation-like: structural marks with no meaning of their own */
+  & .token.punctuation,
+  & .token.operator,
+  & .token.entity {
+    color: var(--code-punctuation);
+  }
+
+  /* type-like: names of a KIND of thing — a class, a built-in, a tag, a
+     CSS selector, or Prism's own unresolved guess at a type identifier */
+  & .token.class-name,
+  & .token.builtin,
+  & .token.tag,
+  & .token.selector,
+  & .token.maybe-class-name {
+    color: var(--code-type);
+  }
+
+  /* identifier-like: names of a SPECIFIC thing — a property, a parameter,
+     a variable, an HTML/JSX attribute name, or an imported binding */
+  & .token.property,
+  & .token.parameter,
+  & .token.variable,
+  & .token.attr-name,
+  & .token.imports {
+    color: var(--code-variable);
+  }
+}
+
+/* ============================================================================
+   xy-tokens — React Flow on our tokens
+
+   `@xyflow/react/dist/style.css` (imported by `components/ai-elements/canvas.tsx`)
+   colours everything it draws itself — the edge stroke and its arrowheads, the
+   selected edge, the live connection line, the handle dot, the drag-selection
+   rectangle, edge labels, the dot pattern, the attribution — through `--xy-*`
+   custom properties whose defaults are fixed light-theme greys. Canvas carries
+   this class, so each of those reads a role instead and follows the theme.
+   The names here are the UN-suffixed ones: xyflow's own stylesheet is
+   unlayered and declares every `--xy-*-default`, which would beat this
+   layered utility; it only ever reads `var(--xy-X, var(--xy-X-default))` and
+   never declares `--xy-X`, so setting that wins. The
+   node, minimap and resizer variables are set too, for a consumer that uses
+   xyflow's built-in node types or adds a MiniMap / NodeResizer.
+   ========================================================================= */
+@utility xy-tokens {
+  --xy-edge-stroke: var(--color-border);
+  --xy-edge-stroke-width: 1;
+  --xy-edge-stroke-selected: var(--color-ring);
+  --xy-connectionline-stroke: var(--color-ring);
+  --xy-handle-background-color: var(--color-muted-foreground);
+  --xy-handle-border-color: var(--color-card);
+  --xy-selection-background-color: color-mix(in oklab, var(--color-action) 12%, transparent);
+  --xy-selection-border: 1px dotted var(--color-action);
+  --xy-edge-label-background-color: var(--color-card);
+  --xy-edge-label-color: var(--color-foreground);
+  --xy-background-pattern-dots-color: var(--color-border);
+  --xy-background-pattern-lines-color: var(--color-border);
+  --xy-background-pattern-cross-color: var(--color-border);
+  --xy-attribution-background-color: var(--color-card);
+  --xy-node-color: var(--color-foreground);
+  --xy-node-border: 1px solid var(--color-border);
+  --xy-node-background-color: var(--color-card);
+  --xy-node-group-background-color: var(--color-muted);
+  --xy-node-boxshadow-hover: var(--shadow-e1);
+  --xy-node-boxshadow-selected: 0 0 0 2px var(--color-ring);
+  --xy-node-border-radius: var(--radius-md);
+  --xy-minimap-background-color: var(--color-card);
+  --xy-minimap-mask-background-color: color-mix(in oklab, var(--color-muted) 60%, transparent);
+  --xy-minimap-node-background-color: var(--color-secondary);
+  --xy-controls-button-background-color: var(--color-card);
+  --xy-controls-button-background-color-hover: var(--color-secondary);
+  --xy-controls-button-color: var(--color-foreground);
+  --xy-controls-button-color-hover: var(--color-foreground);
+  --xy-controls-button-border-color: var(--color-border);
+  --xy-resize-background-color: var(--color-action);
+}
+
+/* ============================================================================
+   terminal-ansi — a command's ANSI colours on our tokens
+
+   `components/ai-elements/terminal.tsx` renders output through ansi-to-react
+   with `useClasses`, so a coloured span carries a class (`ansi-red-fg`,
+   `ansi-bright-green-bg`, `ansi-bold`, …) and no inline rgb() — this is where
+   those classes resolve. Foregrounds are `-ink` roles, so coloured output
+   stays readable in both themes; backgrounds are the same hue as a quiet
+   tint. Bright variants share their base role — the theme already tunes each
+   ink for contrast, and a second brighter ramp would only fail it. 256-colour
+   and truecolor output carry a class but no colour, and fall back to the
+   terminal's own foreground.
+   ========================================================================= */
+@utility terminal-ansi {
+  & .ansi-black-fg, & .ansi-bright-black-fg { color: var(--color-muted-foreground); }
+  & .ansi-red-fg, & .ansi-bright-red-fg { color: var(--color-destructive-ink); }
+  & .ansi-green-fg, & .ansi-bright-green-fg { color: var(--color-success-ink); }
+  & .ansi-yellow-fg, & .ansi-bright-yellow-fg { color: var(--color-warning-ink); }
+  & .ansi-blue-fg, & .ansi-bright-blue-fg { color: var(--color-action-ink); }
+  & .ansi-magenta-fg, & .ansi-bright-magenta-fg { color: var(--color-value-ink); }
+  & .ansi-cyan-fg, & .ansi-bright-cyan-fg { color: var(--color-info-ink); }
+  & .ansi-white-fg, & .ansi-bright-white-fg { color: var(--color-foreground); }
+
+  & .ansi-black-bg, & .ansi-bright-black-bg { background-color: var(--color-muted); }
+  & .ansi-red-bg, & .ansi-bright-red-bg { background-color: color-mix(in oklab, var(--color-destructive) 20%, transparent); }
+  & .ansi-green-bg, & .ansi-bright-green-bg { background-color: color-mix(in oklab, var(--color-success) 20%, transparent); }
+  & .ansi-yellow-bg, & .ansi-bright-yellow-bg { background-color: color-mix(in oklab, var(--color-warning) 20%, transparent); }
+  & .ansi-blue-bg, & .ansi-bright-blue-bg { background-color: color-mix(in oklab, var(--color-action) 20%, transparent); }
+  & .ansi-magenta-bg, & .ansi-bright-magenta-bg { background-color: color-mix(in oklab, var(--color-value) 20%, transparent); }
+  & .ansi-cyan-bg, & .ansi-bright-cyan-bg { background-color: color-mix(in oklab, var(--color-info) 20%, transparent); }
+  & .ansi-white-bg, & .ansi-bright-white-bg { background-color: var(--color-secondary); }
+
+  & .ansi-bold { font-weight: 600; }
+  & .ansi-dim { color: var(--color-muted-foreground); }
+  & .ansi-italic { font-style: italic; }
+  & .ansi-underline { text-decoration: underline; }
+  & .ansi-strikethrough { text-decoration: line-through; }
+  & .ansi-hidden { visibility: hidden; }
+}
+
+/* ── streamdown-chrome — the reply's markdown parts that keep their behaviour ──
+   A reply (AI Elements' MessageResponse) is `.prose`, and its plain text
+   elements render without Streamdown's classes, so typeset.css sets them. The
+   parts that carry behaviour stay Streamdown's own — a link (the "open this
+   link?" check), a code block (copy, download), a table (copy, fullscreen) —
+   and still wear its Tailwind type classes. This utility puts them back on
+   the system: a link reads as `.prose a`, a code block's header as
+   `type-small` and its body as `type-code`. It sits in the utilities layer
+   with one more class of specificity than those classes, which is what lets
+   it win; keyed on Streamdown's own `data-streamdown` names. */
+@utility streamdown-chrome {
+  & [data-streamdown="link"] {
+    font-weight: inherit;
+    color: var(--color-action-ink);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+  & [data-streamdown="code-block-header"] {
+    font-family: var(--font-sans);
+    font-size: var(--text-small);
+    line-height: var(--leading-small);
+    font-weight: 400;
+    color: var(--color-muted-foreground);
+  }
+  & [data-streamdown="code-block-body"],
+  & [data-streamdown="code-block-body"] :is(pre, code) {
+    font-family: var(--font-mono);
+    font-size: var(--text-code);
+    line-height: var(--leading-code);
+  }
+}

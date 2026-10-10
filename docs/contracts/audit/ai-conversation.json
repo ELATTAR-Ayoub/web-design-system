@@ -1,0 +1,49 @@
+{
+  "name": "ai-conversation",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/conversation.tsx",
+    "components/docs/component-docs/ai-conversation/page.tsx",
+    "components/docs/component-docs/ai-conversation/conversation-specimen.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Conversation — origin: web-only, flutterSources is [].",
+      "web": "Conversation is use-stick-to-bottom's StickToBottom with role log and relative flex-1 overflow-y-hidden; ConversationContent is the scrolling flex column with gap-8 p-4; ConversationEmptyState is a centred column with an optional icon, an h3 title and a description; ConversationScrollButton and ConversationDownload are absolutely positioned Buttons.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Conversation — origin: web-only, flutterSources is [].",
+      "web": "Conversation and ConversationContent take StickToBottom props; ConversationEmptyState takes title, description, icon and children; ConversationScrollButton takes Button props; ConversationDownload takes messages, filename and formatMessage plus Button props except onClick; messagesToMarkdown is exported.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Conversation — origin: web-only, flutterSources is [].",
+      "web": "The log sticks to the bottom with smooth initial and resize behaviour; ConversationEmptyState is the empty state, with the defaults 'No messages yet' and 'Start a conversation to see messages here'; ConversationScrollButton renders only when the log is not at the bottom.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Conversation — origin: web-only, flutterSources is [].",
+      "web": "Neither the log nor its two buttons have a disabled state of their own. The buttons are Button, so a caller may pass disabled, but nothing in the component sets it.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Conversation — origin: web-only, flutterSources is [].",
+      "web": "Scrolling away from the bottom stops following and shows the scroll button; clicking it calls scrollToBottom; ConversationDownload builds a Markdown Blob from the messages, clicks a temporary anchor with the filename and revokes the object URL.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Conversation — origin: web-only, flutterSources is [].",
+      "web": "Conversation sets role log, a polite live region, and takes aria-label from the caller; the empty state title is an h3; ConversationScrollButton and ConversationDownload are icon-only Buttons with default names \"Scroll to the latest message\" and \"Download conversation\", which a caller aria-label overrides.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

@@ -1,0 +1,18 @@
+/**
+ * Documentation metadata for `ai-prompt-input`.
+ *
+ * Paired with `page.tsx` in this directory: `lib/ds/docs/catalog.ts` imports
+ * this file. Family, ownership and delivery come from
+ * `lib/ds/platform-contract.ts`.
+ */
+
+import type { ComponentDocMeta } from "@/lib/ds/docs/types";
+
+export const meta: ComponentDocMeta = {
+  name: "ai-prompt-input",
+  description:
+    "The message box of a chat surface: a form of textarea, attachment chips, a tools row and a submit button that reads Send, Stop or a spinner from the chat status.",
+  dependencies: ["source-foundation"],
+  exports: ["AttachmentsContext","TextInputContext","PromptInputControllerProps","usePromptInputController","useProviderAttachments","PromptInputProviderProps","PromptInputProvider","usePromptInputAttachments","ReferencedSourcesContext","LocalReferencedSourcesContext","usePromptInputReferencedSources","PromptInputActionAddAttachmentsProps","PromptInputActionAddAttachments","PromptInputActionAddScreenshotProps","PromptInputActionAddScreenshot","PromptInputMessage","PromptInputProps","PromptInput","PromptInputBodyProps","PromptInputBody","PromptInputTextareaProps","PromptInputTextarea","PromptInputHeaderProps","PromptInputHeader","PromptInputFooterProps","PromptInputFooter","PromptInputToolsProps","PromptInputTools","PromptInputButtonTooltip","PromptInputButtonProps","PromptInputButton","PromptInputActionMenuProps","PromptInputActionMenu","PromptInputActionMenuTriggerProps","PromptInputActionMenuTrigger","PromptInputActionMenuContentProps","PromptInputActionMenuContent","PromptInputActionMenuItemProps","PromptInputActionMenuItem","PromptInputSubmitProps","PromptInputSubmit","PromptInputSelectProps","PromptInputSelect","PromptInputSelectTriggerProps","PromptInputSelectTrigger","PromptInputSelectContentProps","PromptInputSelectContent","PromptInputSelectItemProps","PromptInputSelectItem","PromptInputSelectValueProps","PromptInputSelectValue","PromptInputHoverCardProps","PromptInputHoverCard","PromptInputHoverCardTriggerProps","PromptInputHoverCardTrigger","PromptInputHoverCardContentProps","PromptInputHoverCardContent","PromptInputTabsListProps","PromptInputTabsList","PromptInputTabProps","PromptInputTab","PromptInputTabLabelProps","PromptInputTabLabel","PromptInputTabBodyProps","PromptInputTabBody","PromptInputTabItemProps","PromptInputTabItem","PromptInputCommandProps","PromptInputCommand","PromptInputCommandInputProps","PromptInputCommandInput","PromptInputCommandListProps","PromptInputCommandList","PromptInputCommandEmptyProps","PromptInputCommandEmpty","PromptInputCommandGroupProps","PromptInputCommandGroup","PromptInputCommandItemProps","PromptInputCommandItem","PromptInputCommandSeparatorProps","PromptInputCommandSeparator"],
+  sourcePath: "components/ai-elements/prompt-input.tsx",
+};

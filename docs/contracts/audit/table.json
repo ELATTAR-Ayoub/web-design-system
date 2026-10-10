@@ -1,0 +1,46 @@
+{
+  "name": "table",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/table.dart"
+  ],
+  "webSources": [
+    "components/ui/table.tsx"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "flutter-behind",
+      "flutter": "Table(header: List<TableCellSpec>, rows: List<TableRowSpec>, caption) builds one flutter.Table with a header TableRow of _HeaderCell plus body TableRows of _BodyCell, and an optional trailing caption Text — five slots: header cell, body row, body cell, span row, caption.",
+      "web": "table.tsx exports eight slots: Table, TableHeader (<thead>), TableBody (<tbody>), TableFooter (<tfoot>, border-t bg-muted/50 font-medium), TableRow, TableHead (<th>), TableCell (<td>), TableCaption (<caption>).",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: The Dart file's own doc comment states outright: 'Not ported: TableFooter (border-t bg-muted/50 font-medium) — no table in the corpus has one; and has-aria-expanded:bg-muted/50 on the row, which needs a row that expands and there is none.' So TableFooter and the has-aria-expanded row-hover rule exist on web (table.tsx lines 42-53 and line 60) with no Flutter counterpart at all — a real anatomy gap, documented as intentional but unbuilt rather than fixed."
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "TableCellSpec(child, align: TableAlign{start,end}, checkbox: bool) and TableRowSpec(cells, selected) / TableRowSpec.span(span, spanHeight) cover text-left/text-right alignment, the [&:has([role=checkbox])]:pr-0 checkbox-column padding drop, and the colSpan empty-state row.",
+      "web": "TableHead/TableCell accept className overrides for text-right alignment and rely on the same [&:has([role=checkbox])]:pr-0 selector for checkbox columns; TableRow's data-[state=selected]:bg-muted maps to TableRowSpec.selected; a colSpan={columns.length} TableCell is the empty-state row Flutter's TableRowSpec.span reproduces."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "_TableState tracks _hovered per row index and TweenAnimationBuilder<Color?> fades each _BodyCell's fill toward theme.muted.withValues(alpha: 0.5) on hover, theme.muted at full strength when TableRowSpec.selected — selection beats hover per _fill's own ordering.",
+      "web": "TableRow: 'border-b transition-colors hover:bg-muted/50 has-aria-expanded:bg-muted/50 data-[state=selected]:bg-muted', with data-[state=selected] written after hover in source order so it wins at equal specificity — the same precedence _TableState.build documents."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "Table/TableRowSpec/TableCellSpec expose no enabled/disabled field anywhere in the file — a table is a passive data display, not a control that can be disabled.",
+      "web": "table.tsx's exported slots carry no disabled: variant on any element; a table has no on/off state of its own to disable.",
+      "note": "Neither Flutter nor the web models a table as a control with a disabled state, which is the correct behaviour for a read-only data grid — nothing to compare."
+    },
+    "interaction": {
+      "verdict": "match",
+      "flutter": "MouseRegion(onExit) at the whole-table level plus a per-cell onEnter callback (_BodyCell.onEnter) drives the hover row highlight; there is no keyboard navigation model in the file — a table is not itself a tab stop.",
+      "web": "TableRow's hover fill is pointer-only (hover:bg-muted/50); the native <table>/<tr>/<td> elements carry no built-in keyboard navigation either — any interactive content inside a cell (a button, a checkbox) is reached by ordinary Tab order through the DOM, not through the table structure."
+    },
+    "semantics": {
+      "verdict": "flutter-behind",
+      "flutter": "table.dart wraps no Semantics node anywhere in the file — the flutter.Table's cells carry only DefaultTextStyle for their text content, with no table/row/columnHeader semantics roles applied to the structure at all.",
+      "web": "The web renders a real <table>/<thead>/<tbody>/<tr>/<th>/<td> DOM structure, which every browser and screen reader already exposes with native table, row, columnheader and cell accessibility roles for free — no extra ARIA authoring required.",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: Because table.dart never wraps its flutter.Table in a Semantics(table: ...) or per-row/per-cell semantics, a screen reader on the Flutter side has no way to know the grid is a table with rows and columns — it would read the cell text as a flat sequence of Text nodes with no structural announcement, where the web's native <table> markup announces row/column position automatically."
+    }
+  }
+}

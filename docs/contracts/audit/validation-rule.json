@@ -1,0 +1,45 @@
+{
+  "name": "validation-rule",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": ["lib/src/components/ui/validation_rule.dart"],
+  "webSources": ["components/docs/component-docs/validation-rule/page.tsx"],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "platform-difference",
+      "flutter": "ValidationRule<T>(test: ValidationTest<T>, message: String) is a plain data class with named static constructors (minLength, maxLength, pattern, email, accepted, oneOf<T>) plus a Validators class with static check()/dedupe() — validation_rule.dart lines 41-53, 62-98, 138-175. No widget, no build method, no sub-parts.",
+      "web": "There is no ValidationRule component on the web — the doc page's own title says so: it is Zod 4 (z.object({...}) schemas) composed with react-hook-form's zodResolver, both already-installed dependencies (package.json: zod ^4.4.3, react-hook-form ^7.84.0, @hookform/resolvers ^5.7.1), per components/docs/component-docs/validation-rule/page.tsx lines 4-18, 41-79.",
+      "note": "Deliberate and documented on both sides. Flutter authored a dependency-free ValidationRule<T> list type (validation_rule.dart lines 1-31, 'Ruling F7') specifically because the web reference has no component of its own to port — it uses an existing schema library. The doc page devotes an entire section, 'Why this is not a component', to explaining that wrapping Zod in a component 'would ship a file with no behaviour in it' (lines 144-172). This is the correct outcome: a validator layer exists on both platforms, in the idiomatic shape for each."
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "ValidationRule.minLength(min, message), .maxLength(max, message), .pattern(RegExp, message), .email(message) using the verbatim Zod-4 email regex (validation_rule.dart lines 100-121), .accepted(message) for a boolean refine, .oneOf<T>(allowed, message) for enum-style checks — validation_rule.dart lines 62-98.",
+      "web": "The web schema composes the same primitive checks through Zod's chainable API: z.string().min(3, msg), .regex(/^[a-z0-9_]+$/, msg), z.email(msg) shown in the accountSchema usage snippet (components/docs/component-docs/validation-rule/page.tsx lines 41-79), and the 'What maps to what' table names z.boolean().refine(...) for the required-checkbox case and z.enum([...]) for radio groups (lines 84-143).",
+      "note": "Per-rule mapping is 1:1 and explicitly documented in the page's own Meta table (lines 88-138): minLength->min(), maxLength->max(), pattern->regex(), email->z.email(), accepted->boolean().refine(), oneOf->z.enum()."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "Validators.check<T>() walks every rule in declaration order without aborting and collects all issues, then truncates to the first entry only when IssueMode.first is passed (the default) — validation_rule.dart lines 18-26, 124-135, 147-160 — reproducing 'Zod 4 runs every string check in declaration order without aborting' and RHF's criteriaMode.",
+      "web": "The doc page's mapping table states the 'Error surface' explicitly: fieldState.error.message from React Hook Form (driven by criteriaMode: firstError by default, or 'all') flows into FieldError, which RULES §7 requires alongside aria-invalid/aria-describedby (components/docs/component-docs/validation-rule/page.tsx lines 128-137).",
+      "note": "Not a component with rest/hover/focus states — 'states' here means the pass/fail/first-vs-all issue behaviour, which both platforms reproduce identically per the Dart doc comment's own two called-out Zod-4 behaviours (lines 15-30)."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "ValidationRule and Validators are pure data/functions with no disabled concept anywhere in validation_rule.dart — a rule either exists and is checked, or is not in the list.",
+      "web": "The web equivalent (a Zod schema) has no disabled state either — validation belongs to the field layer, not the schema, per the doc page's own scoping: 'See form... for the accessible-wiring layer... that consumes whatever a schema like the one below produces' (components/docs/component-docs/validation-rule/page.tsx lines 15-18, 163-172).",
+      "note": "Correctly n/a on both sides: a validation rule is not a widget/control with a disabled state; that concept belongs to the field component consuming it (documented as the form/field capability, out of scope here)."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "validation_rule.dart defines no widget, so there is no keyboard, pointer, touch or focus-management surface — Validators.check() is a pure synchronous function call (lines 147-160).",
+      "web": "z.object(...).parse()/zodResolver() are likewise pure synchronous evaluation with no interactive surface of their own; interaction (typing, blur, submit) belongs to the form/field layer that calls the resolver, per the doc page's explicit scoping note (lines 15-18).",
+      "note": "Neither side renders anything interactive — validation is invoked by the surrounding form component, which is a separate catalog item (form)."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No accessible node exists in validation_rule.dart — ValidationRule.issue(value) returns a String? message with no widget to attach a semantic label to.",
+      "web": "The schema itself produces plain message strings with no ARIA of its own; the doc page states the accessible wiring (aria-invalid, aria-describedby, FieldError) is 'not part of validation at all — that is form's job' (components/docs/component-docs/validation-rule/page.tsx lines 128-137).",
+      "note": "Both sides agree accessible naming/announcement is out of scope for the rule layer and lives in the form/field capability instead — correctly n/a here rather than a gap."
+    }
+  }
+}

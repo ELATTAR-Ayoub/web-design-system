@@ -1,0 +1,45 @@
+{
+  "name": "use-reduced-motion",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": ["hooks/use-reduced-motion.ts", "components/docs/component-docs/use-reduced-motion/page.tsx"],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "Nothing — origin: web-only, flutterSources []. Flutter's own MediaQuery.disableAnimationsOf(context) / maybeDisableAnimationsOf(context) is the platform's reduced-motion signal (this exact API is used inside voice_indicator.dart line 366 and voice.dart line 271 to stop tickers), so a JS-style rAF-driven React hook has no separate Dart shape to port.",
+      "web": "export function usePrefersReducedMotion() is a single function: React.useSyncExternalStore(subscribe, () => window.matchMedia(QUERY).matches, () => false), per hooks/use-reduced-motion.ts lines 33-39, QUERY = \"(prefers-reduced-motion: reduce)\" (line 3).",
+      "note": "A hook has no sub-parts to compare on either side — the doc page confirms 'no Preview, States, Accessibility or Keyboard section applies' (components/docs/component-docs/use-reduced-motion/page.tsx lines 4-5)."
+    },
+    "api": {
+      "verdict": "platform-difference",
+      "flutter": "No Dart port exists — flutterSources []. Flutter code that needs to know reduced-motion reads MediaQuery.maybeDisableAnimationsOf(context) directly at the point of use (see voice_indicator.dart line 366: 'final bool stilled = MediaQuery.maybeDisableAnimationsOf(context) ?? false;'), which is the idiomatic equivalent of this hook's job, built into the framework rather than authored as a package-level utility.",
+      "web": "usePrefersReducedMotion(): boolean returns true when matchMedia(\"(prefers-reduced-motion: reduce)\").matches, with a false server snapshot for SSR-safety, per hooks/use-reduced-motion.ts lines 33-39.",
+      "note": "This is exactly the case the RULES contract calls out: 'most components in this system never need this' because the blanket CSS rule in globals.css already collapses animation for CSS-driven motion (hooks/use-reduced-motion.ts lines 14-19); it exists only for JS-driven motion (canvas, rAF loops), a browser-specific escape hatch with a native Flutter equivalent (MediaQuery), not a missing capability."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Flutter source — flutterSources []. No interaction/state matrix exists for a capability with no Dart port.",
+      "web": "usePrefersReducedMotion subscribes to the media query's change event (hooks/use-reduced-motion.ts lines 5-9, 34-38) and has no rest/hover/focus states — it is a boolean, not a rendered surface.",
+      "note": "The doc page states 'A hook, not a component — no Preview, States, Accessibility or Keyboard section applies' (components/docs/component-docs/use-reduced-motion/page.tsx lines 4-5)."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Flutter source — flutterSources []. Nothing to disable on a hook that has no Dart port.",
+      "web": "usePrefersReducedMotion has no disabled concept of its own — it always evaluates the current media query state, per hooks/use-reduced-motion.ts lines 33-39.",
+      "note": "A pure boolean-returning hook with no rendered control has no disabled path."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Flutter source — flutterSources []. No keyboard/pointer/touch surface for a capability with no Dart equivalent hook.",
+      "web": "usePrefersReducedMotion has no interaction surface itself; TextPressure, the consumer named in its own doc comment, reads the boolean to decide whether to start a requestAnimationFrame loop at all (hooks/use-reduced-motion.ts lines 20-24, and the usage snippet in the doc page lines 34-49).",
+      "note": "The hook itself has no keyboard, pointer or touch behaviour; any interaction belongs to the consuming component."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Flutter source — flutterSources []. No accessible node exists to check naming, roles or target size against.",
+      "web": "usePrefersReducedMotion renders no DOM node and carries no accessible name or role; the doc page has no Accessibility section (sections: install, usage, api, when-not-to-use-it, source).",
+      "note": "No rendered surface on either side for accessible naming, announcements, roles or the 44x44 target-size floor to apply to."
+    }
+  }
+}

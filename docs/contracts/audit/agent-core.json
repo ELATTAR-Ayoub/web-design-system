@@ -1,0 +1,54 @@
+{
+  "name": "agent-core",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/agent_core.dart"
+  ],
+  "webSources": [
+    "components/agent/core/types.ts",
+    "components/agent/core/states.ts",
+    "components/agent/core/resolve-state.ts",
+    "components/agent/core/conversations.ts",
+    "components/agent/core/attachments.ts",
+    "components/agent/core/timeline.ts",
+    "components/agent/core/use-blur-switch.ts",
+    "components/docs/component-docs/agent-core/page.tsx"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "agent_core.dart is one library with no widget defined anywhere in it and nothing that imports a widget — pure data classes (AgentAttachment, AgentDelivery, AgentTurn variants, AgentSignals) and pure functions (formatBytes, stripProtocol, resolveAgentState, serialiseAttachments) — merging what the reference splits across seven files into one, per the doc comment's explicit statement that 'the port's file unit is the family, not the reference's directory.'",
+      "web": "components/agent/core/types.ts imports nothing — not React, not an SDK, not a component — and the docs page states this outright: 'This item has no UI of its own: it is the transport-agnostic contract every agent surface renders from.' The same vocabulary is spread across types.ts/states.ts/resolve-state.ts/conversations.ts/attachments.ts/timeline.ts/use-blur-switch.ts."
+    },
+    "api": {
+      "verdict": "flutter-behind",
+      "flutter": "agent_core.dart declares AgentAttachment/AgentDelivery/AgentTurn variants/AgentState (with label/wire/isBusy/isNarrating/icon)/ToolStateMap/stateForTool/AgentSignals/resolveAgentState/formatBytes/maxFileBytes/serialiseAttachments/stripProtocol/BlurSwitchController, but the doc comment states outright: 'reduceEvent and the rest of timeline.ts build a timeline out of an event stream. No page in the port runs one... The reducer is recorded, not built.'",
+      "web": "components/agent/core/timeline.ts (228 lines) exports reduceEvent and the AgentEvent-to-AgentTurn[] reduction machinery that turns a raw wire event stream into the turn list AgentTransport.turns holds.",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: The event-stream reducer (reduceEvent and timeline.ts's supporting functions) has no Flutter port at all — it is a deliberate, explicitly-recorded omission rather than an oversight ('The reducer is recorded, not built' — agent_core.dart lines 36-40), justified because every Flutter specimen is driven by a scripted transport that already owns its own turn list. This is still a real capability gap: a Flutter consumer that wanted to point AgentConsole at a transport delivering a raw AgentEvent stream (the shape mock-transport.ts and a real backend would send) has no equivalent of the web's reduceEvent to turn events into turns, and would have to write it from scratch."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "AgentState enum lists all twenty values with .label ('Ready', 'Queued', 'Planning', ... 'Done'), .wire (snake_case ids like 'awaiting_approval', 'calling_tools'), .isBusy and .isNarrating derived sets, and a per-state Lucide icon — resolveAgentState() implements the same precedence chain (declared signal wins, then fatal error, then held-for-approval, then running tool/attempt>1 retrying, then running action, then awaitingFirstEvent queued, then isLoading thinking, then settled done, else idle).",
+      "web": "core/states.ts defines the matching twenty-value AgentState union with AGENT_STATE_LABEL and wire ids; core/resolve-state.ts's resolveState implements the identical precedence chain the docs API section describes, consumed by the agent-avatar page's closed twenty-state vocabulary."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "agent_core.dart has no widgets and therefore no disabled concept of its own — it is pure data/functions.",
+      "web": "Docs Installation note: 'there is nothing to install on its own, and nothing to render: this item is types.'",
+      "note": "Both sides agree this capability is a type-level contract with no interactive surface, so disabled does not apply on either side."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No pointer, keyboard or focus handling exists in agent_core.dart — BlurSwitchController is a ChangeNotifier for coordinating a crossfade, not an input handler.",
+      "web": "core/use-blur-switch.ts and the rest of core/ are hooks and pure functions with no DOM event wiring of their own; interaction belongs to the components that consume this vocabulary (the prompt input, transcript, workspace).",
+      "note": "agent-core is the shared vocabulary/types layer; interaction is documented on the consuming components (agent-workspace) rather than here on either side."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Semantics widgets or accessible labels are declared in agent_core.dart — it produces data (e.g. AgentState.label is a display string used by consumers for aria-label/Semantics.label, not itself an accessibility API).",
+      "web": "AGENT_STATE_LABEL is consumed by agent-avatar's role=\"img\" aria-label and by other renderers, but core/types.ts and core/states.ts themselves declare no DOM elements or ARIA attributes.",
+      "note": "Accessible naming built from this vocabulary is documented on the consuming components (agent-avatar, agent-workspace); agent-core supplies the strings, not the semantics wiring, identically on both sides."
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "name": "ai-question",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/question.tsx",
+    "components/docs/component-docs/ai-question/page.tsx",
+    "components/docs/component-docs/ai-question/question-specimen.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Question — origin: web-only, flutterSources is [].",
+      "web": "Question is a form providing a context of selected values and text; QuestionPrompt and QuestionDescription are p elements; QuestionOptions is a div with role radiogroup or group holding QuestionOption Buttons with role radio or checkbox; QuestionInput is a Textarea; QuestionActions is a right-aligned row holding QuestionSubmit, a submit Button.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Question — origin: web-only, flutterSources is [].",
+      "web": "Question takes selectionMode (single or multiple, default single), defaultValue, value, onValueChange, onSubmit (called with selectedValues and trimmed optional text) and disabled; QuestionOption requires value and takes Button props; QuestionSubmit defaults its label to Submit; QuestionInput forwards Textarea props except value.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Question — origin: web-only, flutterSources is [].",
+      "web": "Unanswered (Submit disabled), answered (a chosen option switches from outline to default variant and carries aria-checked), disabled (every control inert and submit returns early), and single or multiple selection; no loading, success or error state exists in the form.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Question — origin: web-only, flutterSources is [].",
+      "web": "The disabled prop on Question reaches QuestionOption, QuestionInput and QuestionSubmit through context and the submit handler returns early; each part also accepts its own disabled, and Submit disables itself while there is no choice and no non-blank text.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Question — origin: web-only, flutterSources is [].",
+      "web": "Clicking an option toggles it (in single mode it replaces the choice, and clicking the chosen option clears it); typing updates the text; submitting (Enter on the button or form submit) calls onSubmit unless unanswered or disabled; value and onValueChange make it controlled.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Question — origin: web-only, flutterSources is [].",
+      "web": "A form element; QuestionOptions is a radiogroup or group (named by a caller aria-label) and each option is a button with role radio or checkbox and aria-checked, named by its text; the textarea needs a caller-supplied label.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

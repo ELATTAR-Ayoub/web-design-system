@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-latest",
+  "title": "Use Latest",
+  "description": "Ref hook that always holds the latest value of a prop or callback across renders.",
+  "registryDependencies": [
+    "@elattar/source-foundation"
+  ],
+  "files": [
+    {
+      "path": "hooks/use-latest.ts",
+      "content": "import { useEffect, useRef, type RefObject } from \"react\";\r\n\r\n/**\r\n * The latest value, readable from a callback that outlives the render that\r\n * made it.\r\n *\r\n * Animation loops are the case this exists for. A `requestAnimationFrame` loop\r\n * is started once in an effect and then runs for the life of the component; if\r\n * it closed over `analyser` directly it would keep reading whichever analyser\r\n * existed when the effect ran, and re-subscribing on every change would tear the\r\n * loop down and restart it sixty times a second. Reading through a ref lets the\r\n * loop stay up and still see current values.\r\n *\r\n * **The assignment belongs in an effect, not in the render body.** Writing\r\n * `ref.current = value` during render is the older form of this idiom and it is\r\n * now a lint error: it mutates during render, which breaks under concurrent\r\n * rendering, where a render can be started and thrown away. Effects run after\r\n * commit, so a value written there is one React has actually committed to.\r\n *\r\n * The consequence is that this ref is one commit behind *during* a render — so\r\n * never read it while rendering. Read it from a frame callback, an event\r\n * handler or a timer, all of which run after the commit that set it.\r\n */\r\nexport function useLatest<T>(value: T): RefObject<T> {\r\n  const ref = useRef(value);\r\n  useEffect(() => {\r\n    ref.current = value;\r\n  }, [value]);\r\n  return ref;\r\n}\r\n",
+      "type": "registry:hook"
+    }
+  ],
+  "type": "registry:hook"
+}

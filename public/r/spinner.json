@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "spinner",
+  "title": "Spinner",
+  "description": "The `spinner` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "@elattar/source-foundation"
+  ],
+  "files": [
+    {
+      "path": "components/ui/spinner.tsx",
+      "content": "import { cn } from \"@/lib/utils\"\r\nimport { Loader2Icon } from \"lucide-react\"\r\nimport { Icon } from \"@/components/ui/icon\"\r\n\r\nfunction Spinner({\r\n  className,\r\n  \"aria-label\": ariaLabel,\r\n  \"aria-hidden\": ariaHidden,\r\n  ...props\r\n}: React.ComponentProps<\"span\">) {\r\n  const decorative = ariaHidden === true || ariaHidden === \"true\"\r\n  const label = ariaLabel ?? \"Loading\"\r\n\r\n  return (\r\n    <span\r\n      data-slot=\"spinner\"\r\n      role={decorative ? undefined : \"status\"}\r\n      aria-label={decorative ? undefined : label}\r\n      aria-hidden={decorative || undefined}\r\n      className={cn(\r\n        \"inline-flex size-4 shrink-0 items-center justify-center\",\r\n        className,\r\n      )}\r\n      {...props}\r\n    >\r\n      <Icon icon={Loader2Icon} className=\"size-full anim-spin\" />\r\n      {!decorative && <span className=\"sr-only\">{label}</span>}\r\n    </span>\r\n  )\r\n}\r\n\r\nexport { Spinner }\r\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

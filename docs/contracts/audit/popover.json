@@ -1,0 +1,47 @@
+{
+  "name": "popover",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/popover.dart"
+  ],
+  "webSources": [
+    "components/ui/popover.tsx",
+    "components/docs/component-docs/popover/page.tsx"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "flutter-behind",
+      "flutter": "popover.dart's own doc comment scopes the widget per 'ruling L11: side / align / sideOffset and a real collision flip; no arrow, no nested portals.' Popover(open, anchor, content, side, align, sideOffset, collisionPadding, animate, animateOut, origin, slideSides, anchorPoint, barrier, onDismiss) is the whole class — there is no PopoverSurface header/title/description slot exported for consumer use beyond the anchor/content pair.",
+      "web": "components/ui/popover.tsx exports Popover, PopoverTrigger, PopoverContent, PopoverAnchor, plus PopoverHeader, PopoverTitle and PopoverDescription — three slots with no equivalent anywhere in popover.dart.",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: PopoverHeader/PopoverTitle/PopoverDescription are real, exported anatomy on the web with no Flutter counterpart at all — not a class, not a parameter, not a doc-comment mention across the file. This is a genuine anatomy gap, not a documented platform choice: nothing in popover.dart's own scoping comment (which enumerates side/align/offset/collision/arrow/portals) anticipates or excludes a naming slot, so a Flutter Popover caller has no way to compose the equivalent of PopoverTitle/PopoverDescription at all."
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "Popover's full parameter list — side (PopoverSide enum top/bottom/left/right), align (PopoverAlign start/center/end), sideOffset, collisionPadding, animate, animateOut, origin (PopoverAnchorMode), slideSides (Set<PopoverSide>), anchorPoint (Offset?), barrier (PopoverBarrier), onDismiss — is documented knob-by-knob against Radix's own props ('[Popover.origin] Radix and base-ui write different transform origins', etc.).",
+      "web": "PopoverContent takes align=\"center\", sideOffset=4 as its only explicit defaults, inheriting the rest of Radix PopoverPrimitive.Content's full prop surface (side, collisionPadding, avoidCollisions, etc.) — the same knob set the Dart file's per-knob table cross-references."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "Popover.animate/animateOut model the documented enter/exit matrix: 'PopoverContent and ComboboxContent animate at 320ms, and SelectContent ships the identical class list and cancels every line of it with data-[align-trigger=true]:animate-none... False is that cancellation.' The doc's table also records 'exit | opacity 1→0, scale 1→0.95. No slide: slide-in-from-* is an entrance utility and the class list writes no exit twin.'",
+      "web": "PopoverContent's className carries data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 plus one entrance slide (data-[side=bottom]:slide-in-from-top-2, etc. per side) with no matching exit slide utility — exactly the asymmetric enter/exit set the Dart doc quotes verbatim."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "Popover has no enabled/disabled concept — it is a positioning/overlay primitive, not a control; its open:bool is a visibility state, not a disabled one.",
+      "web": "popover.tsx has no disabled prop anywhere; PopoverPrimitive.Root has no disabled concept in Radix's own API either.",
+      "note": "A popover is a container, not an actionable control — disabling is a property of whatever renders the PopoverTrigger (typically a Button), not of the popover kernel itself, on either platform."
+    },
+    "interaction": {
+      "verdict": "match",
+      "flutter": "Doc comment: 'Focus is the content's business. Nothing here steals it... What this widget does supply is the Escape key when focus is already inside the popup... The same restraint holds for Tab: the content's Focus installs no FocusScope/FocusTraversalGroup of its own, so a plain, non-modal popover does not trap it.' barrier:PopoverBarrier models Radix's modal/DismissableLayer nesting for outside-pointer dismissal.",
+      "web": "Radix's PopoverPrimitive supplies the identical behavior out of the box — Escape closes when focus is inside the content, Tab is not trapped by a plain popover, and modal/non-modal dismissal-layer nesting is Radix's own DismissableLayer — which is exactly the mechanism the Dart doc comment describes reproducing rather than reimplementing from scratch."
+    },
+    "semantics": {
+      "verdict": "flutter-behind",
+      "flutter": "No Semantics widget, role, or label of any kind appears anywhere in popover.dart (grepped the full file) — PopoverSurface and _PopoverState render purely visual widgets with no accessible name, description, or dialog role wired up at all.",
+      "web": "popover.tsx's own top-of-file comment states the problem and the fix directly: 'Radix gives PopoverContent role=\"dialog\" and gives us no Title or Description primitive to name it with... So every popover in this system was an ARIA dialog with no accessible name at all, which axe reports as aria-dialog-name... This context is the missing wiring. PopoverTitle and PopoverDescription claim the generated ids on mount; PopoverContent points aria-labelledby / aria-describedby at them only once they exist.'",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: This is a live accessibility gap, not a documented platform difference: the web explicitly built PopoverNamingContext to fix an axe-reported aria-dialog-name violation across every popover in the system, and that entire mechanism (plus its consequence — 'a popover with no PopoverTitle must carry its own aria-label') has no equivalent anywhere in popover.dart. Every Flutter Popover is therefore in the same unnamed-dialog state the web comment says it used to fix, with no PopoverTitle/PopoverDescription slot to reach for and no fallback aria-label-equivalent parameter on the Popover constructor itself."
+    }
+  }
+}

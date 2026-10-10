@@ -1,0 +1,45 @@
+{
+  "name": "attachment",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/attachment.dart"
+  ],
+  "webSources": [
+    "components/ui/attachment.tsx"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "Attachment(media, content?, actions?, state, size, orientation) laid out via AttachmentScope (InheritedWidget) into a Row/Column of [media, content?, actions?] inside a _DashedBorderBox; sub-widgets AttachmentMedia, AttachmentContent, AttachmentTitle, AttachmentDescription, AttachmentActions, AttachmentAction, AttachmentTrigger, AttachmentGroup all exist as named classes reading AttachmentScope.of(context).",
+      "web": "Attachment (div, data-slot=\"attachment\", cva size/orientation variants) composes AttachmentMedia, AttachmentContent, AttachmentTitle, AttachmentDescription, AttachmentActions, AttachmentAction, AttachmentTrigger, AttachmentGroup, all driven by group/attachment + data-state/data-size/data-orientation selectors rather than an explicit scope object."
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "AttachmentState enum {idle, uploading, processing, error, done}; AttachmentSize enum {md, sm, xs} (label getter maps md->'default'); AttachmentOrientation {horizontal, vertical}; AttachmentMediaVariant {icon, image}; AttachmentAction(child?, onPressed?, label?, downloadName?, onDownload?).",
+      "web": "Attachment state prop: \"idle\"|\"uploading\"|\"processing\"|\"error\"|\"done\"; size: \"default\"|\"sm\"|\"xs\" via cva; orientation: \"horizontal\"|\"vertical\"; AttachmentMedia variant: \"icon\"|\"image\"; AttachmentAction(href?, download=true, downloadName?, onClick?) with an href-driven save-control default."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "AttachmentState drives border style (dashed for idle), fill/ink of the media well (destructive tint on error), and AttachmentTitle shimmer (uploading/processing via AttachmentStatusText, a 2s ShaderMask sweep, stilled under prefers-reduced-motion).",
+      "web": "data-state=idle|uploading|processing|error|done drives data-[state=idle]:border-dashed, data-[state=error]:border-destructive/30, group-data-[state=error]/attachment:bg-destructive/10, and group-data-[state=processing|uploading]/attachment:shimmer on AttachmentTitle."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "Attachment has no disabled concept; its five states (idle/uploading/processing/error/done) are progress states, not an enabled/disabled toggle. AttachmentAction is a ghost Button that can be disabled by omitting onPressed, inheriting Button's own disabled path.",
+      "web": "Attachment itself declares no disabled prop; AttachmentAction is a Button under the hood and inherits the native disabled attribute/opacity-50 path when no onClick/href is wired.",
+      "note": "The card as a whole has no disabled state on either platform -- only its nested action buttons can be disabled, and that is Button's contract, not Attachment's, so this dimension does not apply to the capability itself."
+    },
+    "interaction": {
+      "verdict": "flutter-behind",
+      "flutter": "Comment block item 2 records: 'has-[>a,>button]:hover:bg-muted/50 is unreachable... not one [of eighteen attachments probed] has a direct <a> or <button> child'; item 3 records the vertical spinner group-data selector 'never matches' because icon.tsx drops data-slot=\"spinner\" before it reaches the DOM, so the silent-spinner drift (ruling B9) is reproduced rather than fixed; item 4 records vertical w-full losing to the later size rules on sm/xs.",
+      "web": "attachment.tsx L24 declares `has-[>a,>button]:hover:bg-muted/50` (dead, no direct anchor/button child in the corpus), and attachmentMediaVariants L64 declares `group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6!` which never matches because Icon strips the spinner's data-slot before it renders.",
+      "note": "RECLASSIFIED after it was measured. The finding was that two web class lists were dead — `has-[>a,>button]:hover:bg-muted/50` and the vertical spinner's `*:data-[slot=spinner]:size-6!`. Both were read out of `spinner.dart`'s own doc comment, which describes an EARLIER state of `spinner.tsx` in which `Icon` swallowed `data-slot`. It has since been rewritten to host the slot on the wrapping span. Measured in the browser on the attachment page: both selectors are present in the built stylesheet with the correct compiled form, and the two spinners inside vertical attachments compute to exactly 24px — the rule fires. The web is correct here and Flutter reproduces a bug the web no longer has. ORIGINAL: These are pre-existing web-side authoring defects (dead CSS selectors and a broken spinner-sizing rule) that the Flutter port has faithfully reproduced rather than corrected, per its own doc comment ('Four class lists that never fire'). Recorded as a gap because the interaction/visual outcome (vertical spinners rendering 16px instead of the intended 24px) is broken on the web original and the port did not fix it; both sides need the same correction. File: components/ui/attachment.tsx lines 24 and 64."
+    },
+    "semantics": {
+      "verdict": "match",
+      "flutter": "AttachmentTrigger is Semantics(button: true, label: label) over a MouseRegion+GestureDetector at 'Open $name full size'; the preview panel is Semantics(container: true, label: '$name. $description') standing in for the sr-only DialogHeader; AttachmentAction always resolves an aria-label-equivalent via widget.label ?? 'Download $name'.",
+      "web": "AttachmentTrigger renders aria-label={`Open ${previewName ?? ...} full size`} on the overlay button; DialogHeader is wrapped sr-only for the preview dialog; AttachmentAction's <a> gets aria-label = props['aria-label'] ?? `Download ${name}` / `Open ${name}`."
+    }
+  }
+}

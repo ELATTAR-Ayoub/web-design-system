@@ -1,0 +1,49 @@
+{
+  "name": "ai-mic-selector",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/mic-selector.tsx",
+    "components/docs/component-docs/ai-mic-selector/page.tsx",
+    "components/docs/component-docs/ai-mic-selector/mic-selector-specimen.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Mic Selector — origin: web-only, flutterSources is [].",
+      "web": "mic-selector.tsx builds a Popover around a Command: MicSelector (Popover plus a context holding devices, value, open and the trigger width), MicSelectorTrigger (an outline Button ending in a muted up-down chevron, watched by a ResizeObserver), MicSelectorContent (PopoverContent min-w-64 p-0 holding the Command), MicSelectorInput, MicSelectorList (render function over devices), MicSelectorEmpty, MicSelectorItem, MicSelectorLabel and MicSelectorValue.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Mic Selector — origin: web-only, flutterSources is [].",
+      "web": "MicSelector takes value, defaultValue, onValueChange, open, defaultOpen (false) and onOpenChange, plus Popover props. MicSelectorContent takes popoverOptions for the PopoverContent. MicSelectorList takes children as (devices: MediaDeviceInfo[]) => ReactNode, MicSelectorLabel takes device, and the useAudioDevices hook returns devices, loading, error, hasPermission and loadDevices.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Mic Selector — origin: web-only, flutterSources is [].",
+      "web": "MicSelectorValue shows the chosen device label or Select microphone... when none is chosen; the list shows MicSelectorEmpty (No microphone found.) when there are no devices or the search matches none. useAudioDevices tracks loading and error state, but no visual is drawn for them. MicSelectorLabel splits a trailing (vid:pid) into a muted suffix.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Mic Selector — origin: web-only, flutterSources is [].",
+      "web": "No disabled prop of its own: the trigger is a Button, which takes disabled, and a row is a Command item, which takes disabled.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Mic Selector — origin: web-only, flutterSources is [].",
+      "web": "Opening the popover with no permission calls loadDevices, which asks for microphone access once so labels are filled in; the device list refreshes on the browser's devicechange event. Typing filters; choosing a MicSelectorItem sets the value to its device id and closes the popover. The content is as wide as the trigger but never narrower than min-w-64, so a bare chevron trigger does not draw a sliver.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Mic Selector — origin: web-only, flutterSources is [].",
+      "web": "The trigger is a button that opens a popover and is named by its content, so a chevron-only trigger needs an aria-label (the workspace composer uses Choose microphone); the list is a Command listbox with a search combobox; only audioinput devices are passed to the render function.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

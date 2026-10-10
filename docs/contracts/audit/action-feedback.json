@@ -1,0 +1,40 @@
+{
+  "name": "action-feedback",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": ["lib/src/components/ui/action_feedback.dart"],
+  "webSources": ["styles/utilities.css", "components/docs/component-docs/action-feedback/page.tsx"],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "ActionFeedback wraps a child in a Stack of exactly three layers in paint order: outer shadows, the ramp (linear-gradient(176deg,...) as five OklabColor.mix stops), the Surface (inset shadows, border, label), then two Positioned.fill pseudo-layers (texture, beat), matching CSS's fixed box/background/border/content/pseudo order.",
+      "web": "@utility sheen-action in styles/utilities.css declares position:relative, background-image ramp on the host, ::before (the beat, radial-gradient ellipse, mix-blend-mode) and ::after (the static texture, three background layers at opacity 0.75, mix-blend-mode: soft-light) — three parts, one host class, documented identically in the doc page's 'One class, three parts' block."
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "ActionFeedback({spec, radius, border, hovered=false, pressed=false, child}) — spec is the ShadowStyle (--shadow-btn-primary/--shadow-btn-down equivalent), hovered/pressed booleans drive which CSS pseudo-rule (:hover::before vs :active::before) is emulated.",
+      "web": "sheen-action is a bare CSS class applied to any host (button.tsx's default variant is the only real consumer today); it has no props of its own — state comes from the host's native :hover/:active pseudo-classes, exactly as the docs 'Usage' section describes (host only needs a background colour and overflow-hidden)."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "_SheenActionState drives a Ticker-based elapsed-time clock (not a phase-preserving AnimationController) so that changing hovered/pressed re-divides the same elapsed time by a new period exactly like a CSS animation-duration change — documented and measured against the live reference to 4 significant figures (phaseAt/_beatStep).",
+      "web": "&:hover::before runs animation: action-beat var(--duration-beat-hover) infinite (2600ms loop, a double thump then rest); &:active::before runs the same keyframes with animation-iteration-count 1 on --duration-beat-press (620ms) and outranks hover per CSS specificity/source order, per the doc page's Hover/Press rows."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "action_feedback.dart declares no disabled parameter or branch anywhere in ActionFeedback or _SheenActionState — the effect only reads hovered/pressed.",
+      "web": "sheen-action is a decorative CSS class with no disabled variant of its own; the docs' Accessibility section states the beat 'never gates comprehension: nothing about what the control does or whether it is enabled depends on seeing the animation.'",
+      "note": "action-feedback is a paint effect layered on a host control (Button), not an interactive control itself, so it carries no independent disabled state on either side — disabled styling belongs to the host, not to this utility."
+    },
+    "interaction": {
+      "verdict": "match",
+      "flutter": "The beat clock starts/stops off hovered/pressed transitions supplied by the caller (Button's Press/Surface plumbing), and the Ticker is only created in initState / running while an animation exists, matching CSS's 'hover-out deletes the animation outright (animation-name: none within 1.4ms of pointerout, measured)'.",
+      "web": "&:hover::before / &:active::before are native CSS pseudo-class-driven animations with no JS event handling — pointer hover and mouse/touch press activate them directly through the host element's own state, with :active outranking :hover in the cascade the same way _Beat.press outranks _Beat.hover in phaseAt's repeats:false branch."
+    },
+    "semantics": {
+      "verdict": "match",
+      "flutter": "No semantic label or role is attached by ActionFeedback itself — it is a painting-only StatefulWidget wrapped around child, leaving accessibility to the host Button.",
+      "web": "Docs Accessibility section: 'Purely decorative... It never gates comprehension: nothing about what the control does or whether it is enabled depends on seeing the animation' — the effect is unannounced by design on both sides, and reduced motion is a documented n/a-preserving freeze-at-rest (0.01ms, one iteration, falls back to frame 0/opacity:0) rather than a semantics concern."
+    }
+  }
+}

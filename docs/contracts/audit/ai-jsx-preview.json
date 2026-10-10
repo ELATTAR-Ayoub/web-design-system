@@ -1,0 +1,49 @@
+{
+  "name": "ai-jsx-preview",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/jsx-preview.tsx",
+    "components/docs/component-docs/ai-jsx-preview/jsx-preview-specimen.tsx",
+    "components/docs/component-docs/ai-jsx-preview/page.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI JSX Preview — origin: web-only, flutterSources is [].",
+      "web": "jsx-preview.tsx exports JSXPreview (a memoised relative div that provides a context with the jsx, the repaired jsx, the error and the parser options), JSXPreviewContent (a div around react-jsx-parser's JsxParser with renderInWrapper off) and JSXPreviewError (a bordered destructive div with an alert Icon and the message, or caller children), plus the useJSXPreview hook.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI JSX Preview — origin: web-only, flutterSources is [].",
+      "web": "JSXPreview takes jsx (required), isStreaming, components, bindings and onError beside div props; JSXPreviewContent takes div props minus children; JSXPreviewError takes div props and children as a node or a function of the error; useJSXPreview returns the context and throws outside the provider.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI JSX Preview — origin: web-only, flutterSources is [].",
+      "web": "Four visible conditions: parsed output, a streaming repair (completeJsxTag closes open tags and strips a trailing partial tag, with a fallback to the last good JSX if a step errors), the error block when a non-streaming string fails to parse, and nothing for an empty string. A changed jsx value clears a stored error.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI JSX Preview — origin: web-only, flutterSources is [].",
+      "web": "No disabled concept: the component has no input and no controls of its own.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI JSX Preview — origin: web-only, flutterSources is [].",
+      "web": "No pointer or keyboard behaviour of its own. Parse failures are reported once per string through onError, and during streaming they are suppressed and the previous good render is shown.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI JSX Preview — origin: web-only, flutterSources is [].",
+      "web": "No roles or names are added; the output carries only the semantics of the markup in the string. JSXPreviewError is a plain div (not a live region), with the message as text and a decorative alert icon.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

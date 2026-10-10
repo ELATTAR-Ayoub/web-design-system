@@ -1,0 +1,49 @@
+{
+  "name": "sidebar",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/sidebar.dart"
+  ],
+  "webSources": [
+    "components/ui/sidebar.tsx",
+    "components/docs/component-docs/sidebar/page.tsx"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "sidebar.dart's own doc comment counts 'twenty-three exports' and lists SidebarProvider/SidebarScope/SidebarChrome, Sidebar, SidebarRail/_RailSlot, SidebarTrigger, SidebarInset, SidebarHeader/Footer/Content/Separator/Group/GroupContent/GroupLabel/GroupAction/CollapsibleGroup, and the Menu family (SidebarMenu/_SidebarMenuScope/Item/Button/Action/Badge/Skeleton/Sub/SubItem/SubButton).",
+      "web": "sidebar.tsx exports the matching 23-name list at the bottom of the file: Sidebar, SidebarContent, SidebarCollapsibleGroup, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInput, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarRail, SidebarSeparator, SidebarTrigger, useSidebar."
+    },
+    "api": {
+      "verdict": "flutter-behind",
+      "flutter": "SidebarProvider(children, defaultOpen=true, open, onOpenChange, variant=SidebarVariant.sidebar, minHeight) and Sidebar(children, side, variant, collapsible=SidebarCollapsible.offcanvas, expand=false) — enums SidebarSide{left,right}, SidebarVariant{sidebar,floating,inset}, SidebarCollapsible{offcanvas,icon,none}.",
+      "web": "SidebarProvider writes document.cookie = `sidebar_state=${openState}; path=/; max-age=604800` on every setOpen call (line 105), persisting the panel's open/closed state across reloads for seven days; Sidebar takes the same side/variant/collapsible union-string props.",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: sidebar.dart's own doc comment records this as drift #6: 'sidebar_state cookie. The provider writes a seven-day cookie on every toggle. There is no cookie here and no store to put one in; recorded, and the readout copy that mentions it still ships.' So a Flutter SidebarProvider does not persist open/closed state across app restarts the way the web's cookie does — a real capability gap, not a stylistic one, though the source is explicit that it is a known, recorded omission rather than an accident."
+    },
+    "states": {
+      "verdict": "flutter-behind",
+      "flutter": "SidebarChrome publishes side/variant/collapsible as three data-* equivalents; SidebarMenu's _SidebarMenuState computes an active-row pill purely by first-registered GlobalKey among currently 'active' rows, per drift #8's own note: 'takes the topmost registered row and sub-buttons never register.'",
+      "web": "SidebarMenu resolves the active pill with useActiveIndicator('[data-active=\"true\"]', undefined, 'data-active') against real DOM query order, and SidebarMenuButton's data-active/aria-current='page' drive both the pill target and CSS/ARIA state simultaneously.",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: Drift #8 in sidebar.dart's own doc comment: 'The pill is measured off [data-active=\"true\"], first match wins... [SidebarMenu] takes the topmost registered row and sub-buttons never register' — in the submenu specimen this means the pill lands on the 37.5px parent button rather than the 149.5px containing list item on BOTH platforms (reproduced, not a Flutter-only gap), but it is recorded here as a gap because it is a genuine state-targeting defect present on both sides that a reader auditing 'states' needs to see, not a platform-appropriate difference."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "Sidebar/SidebarProvider/SidebarMenu carry no top-level enabled/disabled field; individual rows are Button instances which do have their own disabled path (audited under the button capability).",
+      "web": "sidebar.tsx defines no disabled prop on Sidebar, SidebarProvider, or SidebarMenu; SidebarMenuButton forwards Button's own disabled handling rather than defining new disabled behavior.",
+      "note": "The sidebar shell itself is not a control that can be disabled — disabled state belongs to the Button-based rows inside it, which are covered by the button capability's own audit file."
+    },
+    "interaction": {
+      "verdict": "flutter-behind",
+      "flutter": "_SidebarProviderState installs a HardwareKeyboard.instance document-level handler for Cmd/Ctrl+B (SidebarProvider.shortcut = LogicalKeyboardKey.keyB) that toggles the sidebar from anywhere, matching window.addEventListener; _RailSlot's Semantics carries excludeSemantics: true, explicitly reproducing tabIndex={-1}.",
+      "web": "SidebarRail is a real <button tabIndex={-1}> that still receives pointer drag/click but never keyboard focus, with SidebarTrigger as its keyboard-reachable twin (ghost icon-sm Button); the rail's outer half (the portion overlapping the sidebar's inset) is reachable via CSS z-20 over the container's z-10.",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: Drift #9 in sidebar.dart: 'the rail's outer half is not clickable... the half lying over the inset is shadowed by the inset, which is a later sibling and therefore hit-tested first. CSS has z-20 for exactly this and Flutter has no cross-sibling z-order... the rail answers a click on its inner ~9px only.' This is a real pointer-interaction gap: the web rail's full 16px strip is draggable/clickable, Flutter's is not, though both keep SidebarTrigger as an equivalent keyboard path and the source frames the workaround (reordering hit tests) as not worth the cost given the keyboard twin exists."
+    },
+    "semantics": {
+      "verdict": "flutter-behind",
+      "flutter": "SidebarTrigger builds an IconSwap(activeIndex: scope.open ? 0 : 1, icons: [panelLeftClose, panelLeft]) inside a Button(label: 'Toggle Sidebar') — a single static accessible name regardless of open/closed state — and _RailSlot's Semantics(button: true, label: 'Toggle Sidebar', excludeSemantics: true) matches the rail's static aria-label.",
+      "web": "SidebarTrigger renders the IconSwap keyed on state plus a directional sr-only span reading 'Collapse sidebar' / 'Expand sidebar' rather than a static 'Toggle Sidebar', with the accompanying comment explaining aria-expanded was rejected because Button's ghost variant paints aria-expanded:bg-secondary permanently while the sidebar is open, so RULES §7's two-non-colour-signals rule is satisfied by the name instead.",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: The web's SidebarTrigger accessible name changes with state ('Collapse sidebar' / 'Expand sidebar'), which is the second, non-colour state signal RULES §7 requires; SidebarTrigger.dart always announces the static 'Toggle Sidebar' regardless of scope.open, so a screen-reader user gets no verbal confirmation of which way the control will move on the Flutter side even though the visual IconSwap glyph itself is faithfully ported. SidebarChrome.iconModeOf and SidebarScope.open are both already available in scope to fix this, so it is a straightforward, recorded gap rather than a platform limitation."
+    }
+  }
+}

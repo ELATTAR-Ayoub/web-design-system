@@ -1,0 +1,39 @@
+{
+  "name": "toggle",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": ["lib/src/components/ui/toggle.dart"],
+  "webSources": ["components/ui/toggle.tsx"],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "Toggle builds one _TransitionAllColors-driven Surface(child) wrapped in SizedBox/ConstrainedBox for target sizing, GestureDetector, MouseRegion, Focus and Disabled — a single control surface with one content slot, no sub-widgets.",
+      "web": "TogglePrimitive.Root renders one <button data-slot=\"toggle\"> carrying the whole toggleVariants(variant,size) class list with its children passed straight through — the same single-slot anatomy."
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "Toggle(child, pressed, onChanged, variant: ToggleVariant{standard,outline}, size: ToggleSize{sm,md,lg}, label, focusNode, pressedFill, pressedInk, inExclusiveGroup, disabledReason) — pressed/onChanged map to data-state=on/aria-pressed and onPressedChange.",
+      "web": "Toggle({className, variant='default'|'outline', size='default'|'sm'|'lg', ...TogglePrimitive.Root props}) via toggleVariants' cva, forwarding Radix's own pressed/onPressedChange/disabled/aria-label — the same two-variant, three-size matrix (ToggleVariant.standard named because 'default' is a Dart keyword, per the file's own doc)."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "_ToggleState._skin fills widget.pressed ? (pressedFill ?? theme.muted) : (_hovered ? theme.muted : transparent) — grey on both hover and pressed, animated via _TransitionAllColors at MotionDurations.normal with no separate :active/press feedback, exactly reproducing the doc's own drift note: 'No press feedback at all... The on-state is grey, not blue.'",
+      "web": "toggleVariants' base class carries 'transition-all ... hover:bg-muted hover:text-foreground ... aria-pressed:bg-muted data-[state=on]:bg-muted' with no :active rule and no `press` utility — the identical grey on-fill and absent press feedback the Dart doc quotes verbatim from this file."
+    },
+    "disabled": {
+      "verdict": "match",
+      "flutter": "Toggle.dart's own doc table records the target as 'disabled:pointer-events-none disabled:opacity-50 — 50%, deliberately not the Button's 45% (drift 12)', and _ToggleState wraps the control in Disabled(disabled: !_enabled, reason: widget.disabledReason), which the file states makes onEnter unreachable so hover cannot fire on a disabled toggle.",
+      "web": "toggleVariants' base class carries 'disabled:pointer-events-none disabled:opacity-50' — the same 50% figure, deliberately different from Button's 45%."
+    },
+    "interaction": {
+      "verdict": "match",
+      "flutter": "_ToggleState._onKey hand-wires Enter/NumpadEnter/Space to _toggle(), with the doc noting this is 'the identical hand-wiring Button carries, for the identical reason: a focus ring on a control that cannot be operated from the keyboard is a lie' — Flutter has no native activation for a bare pointer surface.",
+      "web": "Radix TogglePrimitive.Root renders a real <button>, which the browser already activates on Enter and Space natively, with Tab focus and :focus-visible handled for free."
+    },
+    "semantics": {
+      "verdict": "match",
+      "flutter": "Semantics(button: true, enabled: _enabled, label: widget.label, excludeSemantics: widget.label != null, toggled: inExclusiveGroup ? null : pressed, selected: inExclusiveGroup ? pressed : null, inMutuallyExclusiveGroup: inExclusiveGroup ? true : null) — a standalone toggle reports aria-pressed-equivalent toggled state; a grouped one reports selected/exclusive-group membership instead.",
+      "web": "Radix TogglePrimitive.Root renders role=\"button\" aria-pressed on a standalone Toggle; ToggleGroupItem instead composes ToggleGroupPrimitive.Item, which Radix gives radio-shaped role/aria-checked-equivalent semantics for type=\"single\" — the same standalone-vs-grouped semantics split Toggle.dart's inExclusiveGroup flag documents explicitly (its own doc: 'Radix draws the same distinction')."
+    }
+  }
+}

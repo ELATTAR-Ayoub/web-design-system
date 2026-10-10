@@ -1,0 +1,49 @@
+{
+  "name": "ai-checkpoint",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/checkpoint.tsx",
+    "components/docs/component-docs/ai-checkpoint/page.tsx",
+    "components/docs/component-docs/ai-checkpoint/checkpoint-specimen.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Checkpoint — origin: web-only, flutterSources is [].",
+      "web": "Checkpoint is a flex div that renders its children and then a Separator; CheckpointIcon renders a BookmarkIcon through Icon (or its children); CheckpointTrigger is a Button, wrapped in a Tooltip with TooltipContent (align start, side bottom) when a tooltip string is given.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Checkpoint — origin: web-only, flutterSources is [].",
+      "web": "Checkpoint takes div props; CheckpointIcon takes Icon props except icon (tone default muted, size default md) and optional children; CheckpointTrigger takes Button props with variant default ghost, size default sm, and an optional tooltip string.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Checkpoint — origin: web-only, flutterSources is [].",
+      "web": "The marker is stateless; the trigger shows Button's rest, hover, focus-visible, pressed and disabled states and, with a tooltip, opens it on hover or focus. There is no loading, success or error state: restoring is the caller's onClick.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Checkpoint — origin: web-only, flutterSources is [].",
+      "web": "CheckpointTrigger forwards disabled to Button, which dims it and removes it from the tab order; the marker itself has no disabled state.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Checkpoint — origin: web-only, flutterSources is [].",
+      "web": "Click, Enter or Space on the trigger calls the caller's onClick; the tooltip opens on pointer hover and on keyboard focus; the trigger always has type button.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Checkpoint — origin: web-only, flutterSources is [].",
+      "web": "The trigger is a native button named by its visible label, or by the aria-label the workspace sets (Restore to <label>); the bookmark Icon is aria-hidden and the Separator is decorative.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "name": "ai-sandbox",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/sandbox.tsx",
+    "components/docs/component-docs/ai-sandbox/sandbox-specimen.tsx",
+    "components/docs/component-docs/ai-sandbox/page.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Sandbox — origin: web-only, flutterSources is [].",
+      "web": "sandbox.tsx composes Sandbox (a Collapsible root, defaultOpen, rounded-md border), SandboxHeader (CollapsibleTrigger holding a code Icon, the title in type-nav, the shared status badge and a rotating chevron Icon), SandboxContent (CollapsibleContent), and Tabs wrappers: SandboxTabs, SandboxTabsBar, SandboxTabsList (line variant), SandboxTabsTrigger and SandboxTabContent.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Sandbox — origin: web-only, flutterSources is [].",
+      "web": "Sandbox takes Collapsible props; SandboxHeader takes state (a ToolUIPart state, required), title and className and spreads the rest onto the trigger; the content and tab parts take the props of the Collapsible, Tabs, TabsList, TabsTrigger and TabsContent they wrap, plus ComponentProps of a div for SandboxTabsBar.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Sandbox — origin: web-only, flutterSources is [].",
+      "web": "The card is open or closed (Radix data-state drives the chevron rotation and the height animation). The header badge shows the pending, running, completed or error tool state through getStatusBadge, and the active tab shows the line indicator.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Sandbox — origin: web-only, flutterSources is [].",
+      "web": "No disabled handling of its own. Collapsible and Tabs props pass through, so disabled would reach Radix, but nothing in the component or the workspace sets it.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Sandbox — origin: web-only, flutterSources is [].",
+      "web": "Click, Enter or Space on the header toggles the region. In the tab list the arrow keys move focus and selection, and Home and End jump to the first and last tab; clicking a trigger selects its panel.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Sandbox — origin: web-only, flutterSources is [].",
+      "web": "The header is a button with aria-expanded and aria-controls from Radix; the tab list, tabs and panels carry tablist, tab and tabpanel roles with aria-selected from Radix Tabs. The header's accessible name is the title and badge text.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

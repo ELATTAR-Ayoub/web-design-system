@@ -1,0 +1,54 @@
+/* ============================================================================
+   DOCS-ONLY MOTION — this website's, not the design system's
+
+   Two things live here and nowhere else:
+
+   1. The landing hero's staged intro (`anim-intro-rise`, `anim-intro-panel`,
+      `anim-intro-glow`) — one move replayed at offsets counted in
+      `--duration-tick`s via `--intro-stage`.
+   2. The Motion page's two instrument keyframes (`ds-sweep`, `ds-travel`) that
+      draw every duration and easing token on screen.
+
+   Imported once by app/layout.tsx. Not in any registry item, so a consumer
+   never receives it. Every duration and curve is read from the scale in
+   styles/motion.css — nothing is timed by hand here either.
+   ========================================================================= */
+
+@keyframes ds-intro-rise {
+  from { opacity: 0; filter: blur(calc(var(--spacing) * 2.5)); transform: translateY(20%); }
+  to { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+@keyframes ds-intro-focus {
+  from { opacity: 0; filter: blur(calc(var(--spacing) * 2.5)); }
+  to { opacity: 1; filter: blur(0); }
+}
+@keyframes ds-sweep { from { width: 0; } to { width: 100%; } }
+@keyframes ds-travel { from { transform: translateX(0); } to { transform: translateX(calc(100% - 1.5rem)); } }
+
+/* Plain classes, not `@utility`: this file is outside Tailwind's `@theme`
+   pipeline. The hero never needs a variant on these. */
+.anim-intro-rise {
+  animation: ds-intro-rise var(--duration-slow) var(--ease-enter) both;
+  animation-delay: calc(var(--intro-stage, 0) * var(--duration-tick));
+}
+.anim-intro-panel {
+  animation: ds-intro-focus var(--duration-slow) var(--ease-enter) both;
+  animation-delay: calc(var(--intro-stage, 0) * var(--duration-tick));
+}
+.anim-intro-glow {
+  animation: ds-intro-focus var(--duration-bloom) var(--ease-enter) both;
+  animation-delay: calc(var(--duration-tick) * 2.5);
+}
+
+/* The global reduced-motion rule collapses durations but not delays, and the
+   intro is built from delays. Restated at rest, including `filter`. */
+@media (prefers-reduced-motion: reduce) {
+  .anim-intro-rise,
+  .anim-intro-panel,
+  .anim-intro-glow {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}

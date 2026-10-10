@@ -1,0 +1,45 @@
+{
+  "name": "use-latest",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": ["hooks/use-latest.ts", "components/docs/component-docs/use-latest/page.tsx"],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "Nothing — origin: web-only. Flutter has no useLatest port; ValueListenable/AnimationController state already gives a widget a stable, mutable handle to read in a ticker callback, so the ref-through-effect idiom this hook exists for has no reason to be reinvented in Dart.",
+      "web": "useLatest<T>(value: T): RefObject<T> is a single function, not a component — it has no sub-parts, slots or composition to name; it wraps useRef + useEffect from hooks/use-latest.ts lines 24-30.",
+      "note": "A hook has no anatomy dimension on either side: the doc page itself says so explicitly ('no live specimen to render... because none of those apply to a value that is never drawn on screen')."
+    },
+    "api": {
+      "verdict": "platform-difference",
+      "flutter": "No Dart equivalent exists in the Flutter checkout for this capability — origin is web-only, so flutterSources is []. Flutter code reads current values through a StatefulWidget field, an AnimationController, or a ValueListenable that a ticker already closes over directly, with no stale-closure problem to solve.",
+      "web": "export function useLatest<T>(value: T): RefObject<T> — one generic parameter, one argument, returns a RefObject<T> whose .current is written inside useEffect(() => { ref.current = value }, [value]), per hooks/use-latest.ts lines 24-29.",
+      "note": "React's closures are the reason this hook exists at all: a requestAnimationFrame loop started once in an effect closes over whatever `analyser` was current at mount unless read through a ref (doc comment, hooks/use-latest.ts lines 6-12). Flutter widgets don't have that closure-staleness problem the same way, so there is nothing on the Flutter side to be missing — this is a correct web-only response to a web-only problem."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "Nothing to compare — origin: web-only, flutterSources is []. There is no Flutter analogue with an interaction/state matrix because nothing renders.",
+      "web": "useLatest has no interaction state at all: it is a value container updated post-commit in an effect, per hooks/use-latest.ts lines 24-30, with no rest/hover/focus/etc. states because it draws nothing on screen.",
+      "note": "The doc page states this directly: 'no live specimen to render... no States... section, because none of those apply to a value that is never drawn on screen' (components/docs/component-docs/use-latest/page.tsx lines 4-9)."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Flutter source exists for this web-only capability, so there is no disabled path to compare — flutterSources is [].",
+      "web": "useLatest<T>(value: T): RefObject<T> takes no disabled/enabled concept; it always tracks value in an effect, per hooks/use-latest.ts lines 24-30, with no branch that stops updating.",
+      "note": "A hook that only stores a ref has nothing to disable — there is no interactive surface for a disabled state to apply to."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "Nothing on the Flutter side — origin: web-only, flutterSources is []. Reading the current value from a callback is done in Dart through closures over widget state directly, not through a ref pattern.",
+      "web": "useLatest exposes only ref.current for reading; per its own doc comment (hooks/use-latest.ts lines 20-22) it must be read from a frame callback, an event handler, or a timer — never during render — but there is no pointer, keyboard or touch surface since nothing is rendered.",
+      "note": "No UI means no keyboard, pointer, touch or focus-management surface to audit on either side."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Flutter source — origin: web-only, flutterSources is []. There is no accessible node to name because nothing is drawn.",
+      "web": "useLatest renders no DOM node, so it carries no accessible name, role, announcement or target size; the doc page has no Accessibility section for this reason (components/docs/component-docs/use-latest/page.tsx sections list: install, usage, api, why, source only).",
+      "note": "There is no rendered surface on either side for accessible naming, roles, announcements or the 44x44 target-size floor to apply to."
+    }
+  }
+}

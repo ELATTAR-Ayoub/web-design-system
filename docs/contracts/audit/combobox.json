@@ -1,0 +1,47 @@
+{
+  "name": "combobox",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/combobox.dart"
+  ],
+  "webSources": [
+    "components/ui/combobox.tsx",
+    "components/docs/component-docs/combobox/page.tsx"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "Combobox builds InputGroupInput wrapped in a Listener (pointerdown opens), Popover(anchor=input, content=_ComboboxPopup) holding _ComboboxRow items, _ComboboxEmpty, and an InputGroupButton _ComboboxTriggerButton in the endAddon.",
+      "web": "ComboboxInput renders InputGroup > ComboboxPrimitive.Input + InputGroupAddon(ComboboxTrigger/ComboboxClear); ComboboxContent renders Portal > Positioner > Popup holding ComboboxList > ComboboxItem+ItemIndicator and ComboboxEmpty, matching the Dart slot list part-for-part."
+    },
+    "api": {
+      "verdict": "flutter-behind",
+      "flutter": "Combobox<T>'s constructor is single-select only: items, value: T?, onChanged: ValueChanged<T>?, placeholder, emptyLabel, enabled, invalid, filter — there is no multiple-selection parameter anywhere in the class.",
+      "web": "base-ui's Combobox.Root exposes multiple: boolean (default false) which, per the API Reference block and Examples section, switches value/defaultValue to an array and unlocks ComboboxChips/ComboboxChip/ComboboxChipsInput/ComboboxClear for a removable-pill multi-select UI.",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: The web ships a full chips/multi-select composition (ComboboxChips, ComboboxChip with showRemove, ComboboxChipsInput, useComboboxAnchor) documented in the doc page's 'Multi-select chips' panel; Combobox<T> in combobox.dart has no multiple flag, no chip row widget and no array-valued onChanged, so nothing on the Flutter side can be checked against that surface."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "_highlighted starts at -1 (autoHighlight:false), _typed gates filtering, and _visible bypasses the query for a single-selection reopen exactly per the doc comment's AriaCombobox.js:198 citation, matching collatorContains' sensitivity:'base' folding in _fold/_accented/_folded.",
+      "web": "base-ui's Combobox.Root ships the same autoHighlight-false resting highlight, data-highlighted row state, and the documented Intl.Collator contains() filter with the identical single-selection reopen bypass the Flutter doc comment calls DIVERGENCE-recorded and reproduces deliberately."
+    },
+    "disabled": {
+      "verdict": "match",
+      "flutter": "Per-row disabling passes through Disabled(disabled: !item.enabled, blockPointer: false, reason: item.disabledReason, child: row) in _ComboboxRow, so a disabled option can carry an explanatory reason surfaced as a tooltip.",
+      "web": "CLOSED: ComboboxItem now takes disabledReason?: string (components/ui/combobox.tsx). When given, the item is wrapped in components/ui/disabled.tsx's Disabled (mode=\"aria\", since Base UI's Combobox.Item is a role=\"option\" div with no native disabled attribute to carry) — an always-on aria-describedby merges the reason onto the row for a screen reader regardless of whether the popover is ever opened, and a small info affordance beside the row makes it click/tap-reachable. ORIGINAL: ComboboxItem's className only applies data-disabled:pointer-events-none data-disabled:opacity-50 — there is no reason/description prop or tooltip anywhere in ComboboxItem, ComboboxPrimitive.Item, or the doc page's API Reference block for it.",
+      "note": "CLOSED 2026-09-11: measured in the dev server (http://localhost:3111, desktop-dark) — focusing a disabled ComboboxItem with disabledReason set reads the reason via its aria-describedby association, and the info button opens a Popover on click/Enter/Space without disturbing the row's own roving highlight. Pinned by a new unit test (test/combobox.test.tsx) asserting the aria-describedby wiring and by e2e/gaps-disabled.spec.ts (keyboard reachability + announcement). ORIGINAL: Flutter's Disabled widget gives a disabled combobox row a reason string rendered as a tooltip (item.disabledReason); the web ComboboxItem has no equivalent slot or prop, so a disabled option there is only dimmed with no way to explain why it can't be picked."
+    },
+    "interaction": {
+      "verdict": "match",
+      "flutter": "_onKey handles ArrowDown/ArrowUp to open-or-move, Enter to commit the highlighted row, Escape to close, and _onFocusChanged closes on blur — loop:true wraps the ring through the input per _move's count+1 ring, matching openOnInputClick via the Listener's onPointerDown.",
+      "web": "base-ui's Combobox.Root implements the same ArrowDown/ArrowUp-opens-or-moves, Enter-commits, Escape-closes, blur-closes and loopFocus(default on) behavior the doc page's Keyboard section lists, plus openOnInputClick opening on a pointerdown in the input."
+    },
+    "semantics": {
+      "verdict": "match",
+      "flutter": "Combobox.itemHeight and _ComboboxTriggerButton are explicitly floored at TouchTargets.minimum via math.max(...) — the TARGET SIZING comment states the py-1 reading 'is well below the platform's 44px touch-target floor, so the floor is applied to the row's own layout height'.",
+      "web": "CLOSED: ComboboxItem, ComboboxTrigger and ComboboxClear all now carry min-h-(--size-target-min) (44px) in components/ui/combobox.tsx, per the 2026-09-11 decision recorded in docs/audits/web-component-audit.md that rows inside grouped controls get the 44px floor. The label stays centred in the taller row; font size is unchanged. ORIGINAL: The doc page's Accessibility block admits: 'The trigger and clear buttons inside the input use InputGroupButton's icon-xs size, matching the input's own 40px row rather than each carrying their own 44px box' — combobox.dart's own doc comment separately measures ComboboxItem rows at 26.571px, well under 44. REVISED 2026-09-12: the trigger and clear button are back at their 24px box — the requirement is that the combobox be level with a 40px Input — and reclaim a 44×44 target through `::after` per RULES §7; ComboboxItem rows keep the 44px min-height.",
+      "note": "REVISED on the requirement that the combobox matches the Input's height: the min-height floor on the trigger and clear made the group 44+; both now keep the nested-control shape (visual 24, hit 44 via ::after), measured with elementFromPoint 20px off centre in every direction. CLOSED 2026-09-11: measured in the dev server (http://localhost:3111, desktop-dark) with computed getBoundingClientRect() on ComboboxItem, ComboboxTrigger and ComboboxClear — each reads >= 44px tall. Pinned by e2e/gaps-disabled.spec.ts, which asserts the measured heights and would fail with min-h-(--size-target-min) removed (confirmed: removing it dropped the reading back to the pre-fix ~26.6px/24px and the assertion failed). ORIGINAL: Flutter enforces the 44px target-size floor (--size-target-min) on both the trigger button and every item row; the web trigger/clear buttons are documented as staying at 24x24 inside a 40px input row and ComboboxItem rows measure ~26.6px, so neither web control meets the floor Flutter guarantees."
+    }
+  }
+}

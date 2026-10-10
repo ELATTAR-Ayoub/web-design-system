@@ -1,0 +1,592 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "elattar",
+  "homepage": "https://elattar-design-system.dev",
+  "registryUrl": "http://127.0.0.1:3200/r",
+  "items": [
+    {
+      "name": "source-foundation",
+      "type": "registry:style",
+      "title": "Source Foundation",
+      "description": "Elattar Design System foundation: the four canonical stylesheets (tokens, typeset, motion, utilities), the globals.css entry, the tailwind-merge config, the stylesheet-driven spring/duration reader, and the Icon/IconSwap primitives every component depends on.",
+      "endpoint": "source-foundation.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/source-foundation.json"
+    },
+    {
+      "name": "accordion",
+      "type": "registry:ui",
+      "title": "Accordion",
+      "description": "The `accordion` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "accordion.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/accordion.json"
+    },
+    {
+      "name": "active-indicator",
+      "type": "registry:ui",
+      "title": "Active Indicator",
+      "description": "The `active-indicator` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "active-indicator.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/active-indicator.json"
+    },
+    {
+      "name": "alert-dialog",
+      "type": "registry:ui",
+      "title": "Alert Dialog",
+      "description": "The `alert-dialog` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "alert-dialog.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/alert-dialog.json"
+    },
+    {
+      "name": "alert",
+      "type": "registry:ui",
+      "title": "Alert",
+      "description": "The `alert` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "alert.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/alert.json"
+    },
+    {
+      "name": "aspect-ratio",
+      "type": "registry:ui",
+      "title": "Aspect Ratio",
+      "description": "The `aspect-ratio` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "aspect-ratio.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/aspect-ratio.json"
+    },
+    {
+      "name": "attachment",
+      "type": "registry:ui",
+      "title": "Attachment",
+      "description": "The `attachment` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "attachment.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/attachment.json"
+    },
+    {
+      "name": "avatar",
+      "type": "registry:ui",
+      "title": "Avatar",
+      "description": "The `avatar` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "avatar.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/avatar.json"
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "The `badge` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "badge.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/badge.json"
+    },
+    {
+      "name": "breadcrumb",
+      "type": "registry:ui",
+      "title": "Breadcrumb",
+      "description": "The `breadcrumb` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "breadcrumb.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/breadcrumb.json"
+    },
+    {
+      "name": "bubble",
+      "type": "registry:ui",
+      "title": "Bubble",
+      "description": "The `bubble` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "bubble.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/bubble.json"
+    },
+    {
+      "name": "button-group",
+      "type": "registry:ui",
+      "title": "Button Group",
+      "description": "The `button-group` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "button-group.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/button-group.json"
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "The `button` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "button.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/button.json"
+    },
+    {
+      "name": "calendar",
+      "type": "registry:ui",
+      "title": "Calendar",
+      "description": "The `calendar` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "calendar.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/calendar.json"
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "The `card` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "card.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/card.json"
+    },
+    {
+      "name": "carousel",
+      "type": "registry:ui",
+      "title": "Carousel",
+      "description": "The `carousel` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "carousel.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/carousel.json"
+    },
+    {
+      "name": "chart",
+      "type": "registry:ui",
+      "title": "Chart",
+      "description": "The `chart` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "chart.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/chart.json"
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "title": "Checkbox",
+      "description": "The `checkbox` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "checkbox.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/checkbox.json"
+    },
+    {
+      "name": "collapsible",
+      "type": "registry:ui",
+      "title": "Collapsible",
+      "description": "The `collapsible` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "collapsible.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/collapsible.json"
+    },
+    {
+      "name": "combobox",
+      "type": "registry:ui",
+      "title": "Combobox",
+      "description": "The `combobox` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "combobox.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/combobox.json"
+    },
+    {
+      "name": "command",
+      "type": "registry:ui",
+      "title": "Command",
+      "description": "The `command` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "command.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/command.json"
+    },
+    {
+      "name": "content-change",
+      "type": "registry:ui",
+      "title": "Content Change",
+      "description": "The `content-change` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "content-change.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/content-change.json"
+    },
+    {
+      "name": "context-menu",
+      "type": "registry:ui",
+      "title": "Context Menu",
+      "description": "The `context-menu` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "context-menu.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/context-menu.json"
+    },
+    {
+      "name": "dialog",
+      "type": "registry:ui",
+      "title": "Dialog",
+      "description": "The `dialog` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "dialog.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/dialog.json"
+    },
+    {
+      "name": "direction",
+      "type": "registry:ui",
+      "title": "Direction",
+      "description": "The `direction` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "direction.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/direction.json"
+    },
+    {
+      "name": "disabled",
+      "type": "registry:ui",
+      "title": "Disabled",
+      "description": "The `disabled` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "disabled.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/disabled.json"
+    },
+    {
+      "name": "drawer",
+      "type": "registry:ui",
+      "title": "Drawer",
+      "description": "The `drawer` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "drawer.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/drawer.json"
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "registry:ui",
+      "title": "Dropdown Menu",
+      "description": "The `dropdown-menu` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "dropdown-menu.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/dropdown-menu.json"
+    },
+    {
+      "name": "empty",
+      "type": "registry:ui",
+      "title": "Empty",
+      "description": "The `empty` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "empty.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/empty.json"
+    },
+    {
+      "name": "field",
+      "type": "registry:ui",
+      "title": "Field",
+      "description": "The `field` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "field.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/field.json"
+    },
+    {
+      "name": "form",
+      "type": "registry:ui",
+      "title": "Form",
+      "description": "The `form` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "form.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/form.json"
+    },
+    {
+      "name": "hover-card",
+      "type": "registry:ui",
+      "title": "Hover Card",
+      "description": "The `hover-card` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "hover-card.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/hover-card.json"
+    },
+    {
+      "name": "input-group",
+      "type": "registry:ui",
+      "title": "Input Group",
+      "description": "The `input-group` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "input-group.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/input-group.json"
+    },
+    {
+      "name": "input-otp",
+      "type": "registry:ui",
+      "title": "Input Otp",
+      "description": "The `input-otp` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "input-otp.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/input-otp.json"
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Input",
+      "description": "The `input` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "input.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/input.json"
+    },
+    {
+      "name": "item",
+      "type": "registry:ui",
+      "title": "Item",
+      "description": "The `item` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "item.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/item.json"
+    },
+    {
+      "name": "kbd",
+      "type": "registry:ui",
+      "title": "Kbd",
+      "description": "The `kbd` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "kbd.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/kbd.json"
+    },
+    {
+      "name": "label",
+      "type": "registry:ui",
+      "title": "Label",
+      "description": "The `label` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "label.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/label.json"
+    },
+    {
+      "name": "marker",
+      "type": "registry:ui",
+      "title": "Marker",
+      "description": "The `marker` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "marker.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/marker.json"
+    },
+    {
+      "name": "menubar",
+      "type": "registry:ui",
+      "title": "Menubar",
+      "description": "The `menubar` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "menubar.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/menubar.json"
+    },
+    {
+      "name": "message-scroller",
+      "type": "registry:ui",
+      "title": "Message Scroller",
+      "description": "The `message-scroller` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "message-scroller.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/message-scroller.json"
+    },
+    {
+      "name": "message",
+      "type": "registry:ui",
+      "title": "Message",
+      "description": "The `message` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "message.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/message.json"
+    },
+    {
+      "name": "native-select",
+      "type": "registry:ui",
+      "title": "Native Select",
+      "description": "The `native-select` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "native-select.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/native-select.json"
+    },
+    {
+      "name": "navigation-menu",
+      "type": "registry:ui",
+      "title": "Navigation Menu",
+      "description": "The `navigation-menu` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "navigation-menu.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/navigation-menu.json"
+    },
+    {
+      "name": "pagination",
+      "type": "registry:ui",
+      "title": "Pagination",
+      "description": "The `pagination` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "pagination.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/pagination.json"
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "title": "Popover",
+      "description": "The `popover` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "popover.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/popover.json"
+    },
+    {
+      "name": "progress",
+      "type": "registry:ui",
+      "title": "Progress",
+      "description": "The `progress` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "progress.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/progress.json"
+    },
+    {
+      "name": "prose",
+      "type": "registry:ui",
+      "title": "Prose",
+      "description": "The `prose` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "prose.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/prose.json"
+    },
+    {
+      "name": "questionnaire",
+      "type": "registry:ui",
+      "title": "Questionnaire",
+      "description": "The `questionnaire` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "questionnaire.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/questionnaire.json"
+    },
+    {
+      "name": "radio",
+      "type": "registry:ui",
+      "title": "Radio",
+      "description": "The `radio` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "radio.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/radio.json"
+    },
+    {
+      "name": "resizable",
+      "type": "registry:ui",
+      "title": "Resizable",
+      "description": "The `resizable` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "resizable.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/resizable.json"
+    },
+    {
+      "name": "scroll-area",
+      "type": "registry:ui",
+      "title": "Scroll Area",
+      "description": "The `scroll-area` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "scroll-area.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/scroll-area.json"
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "Select",
+      "description": "The `select` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "select.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/select.json"
+    },
+    {
+      "name": "separator",
+      "type": "registry:ui",
+      "title": "Separator",
+      "description": "The `separator` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "separator.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/separator.json"
+    },
+    {
+      "name": "sheet",
+      "type": "registry:ui",
+      "title": "Sheet",
+      "description": "The `sheet` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "sheet.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/sheet.json"
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:ui",
+      "title": "Sidebar",
+      "description": "The `sidebar` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "sidebar.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/sidebar.json"
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "Skeleton",
+      "description": "The `skeleton` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "skeleton.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/skeleton.json"
+    },
+    {
+      "name": "slider",
+      "type": "registry:ui",
+      "title": "Slider",
+      "description": "The `slider` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "slider.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/slider.json"
+    },
+    {
+      "name": "spinner",
+      "type": "registry:ui",
+      "title": "Spinner",
+      "description": "The `spinner` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "spinner.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/spinner.json"
+    },
+    {
+      "name": "stat",
+      "type": "registry:ui",
+      "title": "Stat",
+      "description": "The `stat` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "stat.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/stat.json"
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "title": "Switch",
+      "description": "The `switch` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "switch.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/switch.json"
+    },
+    {
+      "name": "table",
+      "type": "registry:ui",
+      "title": "Table",
+      "description": "The `table` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "table.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/table.json"
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "Tabs",
+      "description": "The `tabs` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "tabs.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/tabs.json"
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "Textarea",
+      "description": "The `textarea` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "textarea.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/textarea.json"
+    },
+    {
+      "name": "toaster",
+      "type": "registry:ui",
+      "title": "Toaster",
+      "description": "The `toaster` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "toaster.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/toaster.json"
+    },
+    {
+      "name": "toggle-group",
+      "type": "registry:ui",
+      "title": "Toggle Group",
+      "description": "The `toggle-group` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "toggle-group.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/toggle-group.json"
+    },
+    {
+      "name": "toggle",
+      "type": "registry:ui",
+      "title": "Toggle",
+      "description": "The `toggle` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "toggle.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/toggle.json"
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "Tooltip",
+      "description": "The `tooltip` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "tooltip.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/tooltip.json"
+    },
+    {
+      "name": "user-menu",
+      "type": "registry:ui",
+      "title": "User Menu",
+      "description": "The `user-menu` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+      "endpoint": "user-menu.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/user-menu.json"
+    },
+    {
+      "name": "use-mobile",
+      "type": "registry:hook",
+      "title": "Use Mobile",
+      "description": "Media-query hook that reports whether the viewport is at the mobile breakpoint.",
+      "endpoint": "use-mobile.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/use-mobile.json"
+    },
+    {
+      "name": "use-latest",
+      "type": "registry:hook",
+      "title": "Use Latest",
+      "description": "Ref hook that always holds the latest value of a prop or callback across renders.",
+      "endpoint": "use-latest.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/use-latest.json"
+    },
+    {
+      "name": "use-reduced-motion",
+      "type": "registry:hook",
+      "title": "Use Reduced Motion",
+      "description": "Hook that reads the user's prefers-reduced-motion setting reactively.",
+      "endpoint": "use-reduced-motion.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/use-reduced-motion.json"
+    },
+    {
+      "name": "agent-workspace",
+      "type": "registry:block",
+      "title": "Agent Workspace",
+      "description": "The agent workspace: thread, composer, history, outputs, settings and workflow dialog, built on the AI Elements primitives (Apache-2.0, NOTICE.md ships with them) with the cube avatar and a mock transport — product-agnostic.",
+      "endpoint": "blocks/agent-workspace.json",
+      "addCommand": "npx shadcn@latest add http://127.0.0.1:3200/r/blocks/agent-workspace.json"
+    }
+  ]
+}

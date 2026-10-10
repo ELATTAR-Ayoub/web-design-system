@@ -1,0 +1,45 @@
+{
+  "name": "hover-card",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": ["lib/src/components/ui/hover_card.dart"],
+  "webSources": ["components/ui/hover-card.tsx"],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "HoverCard(trigger, content, width, openDelay, closeDelay) built on OverlayPortal + MouseRegion(trigger)/MouseRegion(card), composing `popoverPlacement`/`PopoverSurface` from popover.dart: 'the geometry is a popover's, so the placement comes from [popoverPlacement] and the paint from [PopoverSurface] ... What it cannot borrow is [Popover] itself: that widget lays a full-screen opaque GestureDetector under its popup.'",
+      "web": "hover-card.tsx wraps Radix's `HoverCardPrimitive.Root/Trigger/Portal/Content` directly — three thin components (HoverCard, HoverCardTrigger, HoverCardContent), with HoverCardContent's className declaring `rounded-lg bg-popover p-2.5 text-sm text-popover-foreground shadow-md ring-1 ring-foreground/10`.",
+      "note": "n/a"
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "HoverCard.defaultWidth = space(72) = 288 ('w-72 — 288, the dialogs page's override and the only one in the corpus. The component's own w-64 (256) is never rendered anywhere in the port, so it is recorded here and not defaulted to.'); sideOffset = space(1) = 4; openDelay/closeDelay default to MotionDurations.hoverCardShowDelay/HideDelay.",
+      "web": "HoverCardContent defaults: `align = 'center', sideOffset = 4`, className base `w-64` (256, Radix/shadcn stock default) which every call site overrides to `w-72` per the Flutter doc comment's own measurement note (measured open on the dialogs page, 2026-08-16).",
+      "note": "n/a — verdict is match; Flutter deliberately defaults its own `defaultWidth` to the OVERRIDDEN 288px value actually used everywhere rather than to the component's unused 256px stock default, which is a documented, intentional default-value choice rather than a divergence in the rendered result."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "_HoverCardState times _scheduleOpen (Future.delayed(openDelay)) and _scheduleClose (Future.delayed(closeDelay), aborted while `_insideCard`), animating `_animation` (AnimationController, duration MotionDurations.overlayEnter) between 0 and 1 for enter/exit, matching the measured table: 'open 728.3ms from pointer entry ... Radix's openDelay default of 700' / 'close 329.3ms ... the closeDelay default of 300'.",
+      "web": "Radix HoverCardPrimitive.Content defaults `openDelay`/`closeDelay` (700ms/300ms respectively, not overridden anywhere in hover-card.tsx) and applies `data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 ... data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95` plus per-side `slide-in-from-*-2`.",
+      "note": "n/a"
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "HoverCard has no `enabled`/disabled parameter anywhere in hover_card.dart — it is a hover-triggered overlay, not a form control.",
+      "web": "HoverCardTrigger forwards Radix's own Trigger props verbatim with no disabled-specific styling added in hover-card.tsx.",
+      "note": "A hover card is a supplementary preview overlay, not an interactive control with its own enabled/disabled contract on either platform; disabling it would mean disabling whatever trigger element it wraps, which is out of this file's scope."
+    },
+    "interaction": {
+      "verdict": "match",
+      "flutter": "MouseRegion(onEnter -> _scheduleOpen, onExit -> _scheduleClose) on the trigger, and a second MouseRegion on the overlay card itself sets `_insideCard = true` on enter (cancelling the pending close) and re-schedules close on exit — 'The close delay is what makes it usable at all — the 300ms is the window in which the pointer crosses the 4px gap between the trigger and the card, and the card keeps itself open while the pointer is inside it.'",
+      "web": "Radix's HoverCardPrimitive handles the same open/close-delay dwell logic internally (openDelay/closeDelay props, defaulting to 700/300ms), including keeping the card open while the pointer is over the content itself — the standard Radix hover-card contract hover-card.tsx inherits by using the primitive unmodified.",
+      "note": "n/a"
+    },
+    "semantics": {
+      "verdict": "match",
+      "flutter": "hover_card.dart mounts no explicit Semantics of its own on HoverCardContent — it composes PopoverSurface (a plain Padding + paint surface) and leaves the trigger's own semantics untouched, matching a hover preview being supplementary rather than primary content.",
+      "web": "Radix's HoverCardPrimitive.Content/Trigger apply no additional ARIA role beyond what the primitive itself sets (a hover card is a supplementary, non-modal preview by the Radix/WAI-ARIA pattern, with the trigger keeping its own native semantics and no aria-describedby link forced onto it).",
+      "note": "n/a"
+    }
+  }
+}

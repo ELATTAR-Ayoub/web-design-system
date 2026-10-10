@@ -1,0 +1,49 @@
+{
+  "name": "ai-stack-trace",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/stack-trace.tsx",
+    "components/docs/component-docs/ai-stack-trace/stack-trace-specimen.tsx",
+    "components/docs/component-docs/ai-stack-trace/page.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Stack Trace — origin: web-only, flutterSources is [].",
+      "web": "StackTrace is a bordered div with a parsed-trace context; StackTraceHeader is a Collapsible and a div trigger row holding StackTraceError (alert Icon, StackTraceErrorType, StackTraceErrorMessage) and StackTraceActions (a role=group div) with StackTraceCopyButton and StackTraceExpandButton (a chevron div); StackTraceContent is the CollapsibleContent and StackTraceFrames lists each frame with function name and a FilePathButton.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Stack Trace — origin: web-only, flutterSources is [].",
+      "web": "StackTrace takes trace (string, required), open, defaultOpen, onOpenChange and onFilePathClick(filePath, line?, column?); StackTraceContent takes maxHeight (default 400); StackTraceFrames takes showInternalFrames (default true); StackTraceCopyButton takes onCopy, onError and timeout.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Stack Trace — origin: web-only, flutterSources is [].",
+      "web": "Open or closed (controllable), frames inside node_modules, node: or internal/ are dimmed as internal and can be hidden, a trace with no frames shows No stack frames, file paths are disabled buttons without onFilePathClick, and copy swaps to a success check for timeout ms.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Stack Trace — origin: web-only, flutterSources is [].",
+      "web": "The only disabled element is a file-path button when onFilePathClick is not provided; the component as a whole has no disabled state.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Stack Trace — origin: web-only, flutterSources is [].",
+      "web": "A pointer click on the header toggles open; StackTraceActions stops click and Enter or Space propagation so copy does not toggle it; copy writes the raw trace to the clipboard; a path button calls onFilePathClick with the path, line and column.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Stack Trace — origin: web-only, flutterSources is [].",
+      "web": "Copy stack trace is an icon-only Button with an aria-label and file paths are buttons named by their text; the header is a focusable element with role=button, tabIndex 0 and aria-expanded that toggles on Enter and Space (it holds buttons, so it cannot be a <button>; keys on those stay theirs).",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

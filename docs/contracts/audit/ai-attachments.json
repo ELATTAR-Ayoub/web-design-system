@@ -1,0 +1,49 @@
+{
+  "name": "ai-attachments",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/attachments.tsx",
+    "components/docs/component-docs/ai-attachments/page.tsx",
+    "components/docs/component-docs/ai-attachments/attachments-specimen.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Attachments — origin: web-only, flutterSources is [].",
+      "web": "attachments.tsx exports Attachments (a flex container that sets the variant for its children), Attachment (a div per item: a 96px square in grid, a filled h-8 chip with bg-secondary in inline, a bordered row in list), AttachmentPreview (the image or video, else a category icon), AttachmentInfo (name and optional media type, hidden in grid), AttachmentRemove (a ghost icon Button), AttachmentHoverCard with Trigger and Content, and AttachmentEmpty.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Attachments — origin: web-only, flutterSources is [].",
+      "web": "Attachments takes variant (grid, inline or list; default grid). Attachment takes data (a FileUIPart or SourceDocumentUIPart with an id) and onRemove. AttachmentPreview takes fallbackIcon, AttachmentInfo takes showMediaType, AttachmentRemove takes label (default Remove), and AttachmentHoverCard takes openDelay and closeDelay (both 0). Helpers: getMediaCategory, getAttachmentLabel, useAttachmentsContext and useAttachmentContext.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Attachments — origin: web-only, flutterSources is [].",
+      "web": "Rest is the variant's own layout; hover fills an inline chip with the accent and a list row with accent/50, and reveals the remove button in grid and inline through group-hover opacity; AttachmentEmpty is the empty state, muted No attachments. Media with no URL falls back to a muted category icon. There is no loading, error or success visual: those belong to the code that stages files.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Attachments — origin: web-only, flutterSources is [].",
+      "web": "There is no disabled state. Without an onRemove on the Attachment, AttachmentRemove returns null, which is how a read-only chip is made. The chip itself is not an interactive control.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Attachments — origin: web-only, flutterSources is [].",
+      "web": "Pressing the remove Button calls onRemove with stopPropagation so the click does not reach the chip or a hover card trigger around it. The remove button is invisible until the chip is hovered in grid and inline, and shows on keyboard focus through the Button focus ring. AttachmentHoverCard opens a larger preview on hover with no delay.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Attachments — origin: web-only, flutterSources is [].",
+      "web": "A chip is a plain div with no role; images have alt text from the file name, or Image; the remove Button is named by its label prop and a screen-reader-only copy of it, and the documented use names the file (Remove pack-shot.jpg). The inline and grid remove buttons are nested controls: a 20px or 24px visual inside a 40px hit area.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

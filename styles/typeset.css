@@ -1,0 +1,476 @@
+/* ============================================================================
+   TYPESET — the type roles, and the long-form prose flow
+
+   Every `.type-*` class in the system is defined here and nowhere else, and
+   `.prose` reuses those same declaration blocks through a second
+   `:where(.prose)` selector so a heading in prose and a `.type-h2` cannot
+   drift apart.
+
+   Roles own SHAPE ONLY — family, size, line height, weight, tracking. Colour,
+   case and product meaning belong to the component that uses the role.
+
+   Cascade layer is unchanged from the file this came out of: both blocks stay
+   inside `@layer components`.
+   ========================================================================= */
+
+/* ============================================================================
+   THE SEVENTEEN ROLES
+
+   Public typography is exactly seventeen names, and this file is where all
+   seventeen are written. Two faces: Inter (`--font-sans`) sets words, Geist
+   Mono (`--font-mono`) sets code, identifiers and figures.
+
+   A ROLE OWNS SHAPE ONLY — family, size, line height, weight, tracking. It
+   never sets colour, case, opacity or a product meaning, and
+   `test/foundation/typography-ownership.test.ts` fails the build if one does.
+   That rule is why `.type-small` no longer carries `--muted-foreground`: an
+   element that wanted the smaller step was getting a colour it never asked
+   for, and the call sites that wanted the foreground were writing
+   `text-foreground` beside the class to take it back.
+
+   THERE ARE NO LITERAL SIZES IN THIS FILE, and there used to be thirty-six of
+   them. Each role reads `var(--text-<role>)` and `var(--leading-<role>)`, and
+   `styles/tokens.css` redefines those two properties at 768px and 1024px. That
+   is the entire responsive mechanism, and moving it there bought two things
+   this file could not give:
+
+     1. ALL SEVENTEEN ROLES SCALE. Nine did before — the display step, the four
+        headings, the lead and the three large numerics — and the other eight
+        held one size at every width. Flutter 0.0.3 makes every role
+        responsive, and this is the file that was in the way.
+     2. `text-<role>` SCALES WITH `.type-<role>`. Tailwind compiles both to the
+        same `var(--text-<role>)`, so a `cva()` string that needs a size
+        without a whole role, and the sixty vendored shadcn components written
+        in `text-sm`, now walk the same three steps the class does. Writing the
+        steps here as literals moved the class and left the utility behind.
+
+   BREAKPOINTS. Two, and only two: `(width >= 768px)` and `(width >= 1024px)`,
+   both now declared in `tokens.css` beside the values they move. No `clamp()`.
+   Fluid type cannot be asserted at a value, only at a viewport, and every one
+   of these roles is asserted at 320, 767, 768, 1023, 1024 and 1440.
+
+   TRACKING. Nine roles are tracked and eight are `normal`; the contract is in
+   `lib/ds/platform-contract.ts` and the tokens are in `tokens.css`. No role
+   writes an `em` value by hand.
+   ========================================================================= */
+@layer components {
+  /* Once per screen. A second display headline is a heading that has not
+     decided what it is. */
+  .type-display {
+    font-family: var(--font-sans);
+    font-size: var(--text-display);
+    line-height: var(--leading-display);
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+  }
+
+  /* Each heading role carries a second selector for `.prose`, so authored
+     long-form content — MDX, a CMS body, a markdown renderer — lands on the
+     type scale without a class on every element, and WITHOUT a second set of
+     sizes that can drift from these.
+
+     One declaration block, two selectors, is the whole mechanism. It is not a
+     preference: `@apply type-h2` inside `.prose h2` FAILS THE BUILD —
+     "Cannot apply unknown utility class `type-h2`" — because `@apply` reaches
+     Tailwind utilities and `@utility` registrations, and these live in
+     `@layer components`. Verified by building it. `[&_h2]:type-h2` at the call
+     site is the same wall from the other side and fails silently instead, which
+     is §2.1's rule and the worse of the two failures.
+
+     `:where()` zeroes the class's specificity, so `:where(.prose) h2` weighs
+     exactly one element selector (0,0,1). Any explicit `.type-*` class on a
+     heading inside prose therefore still wins, which is what keeps `.prose` a
+     default rather than a cage. */
+  .type-h1,
+  :where(.prose) h1 {
+    font-family: var(--font-sans);
+    font-size: var(--text-h1);
+    line-height: var(--leading-h1);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+  }
+  .type-h2,
+  :where(.prose) h2 {
+    font-family: var(--font-sans);
+    font-size: var(--text-h2);
+    line-height: var(--leading-h2);
+    font-weight: 650;
+    letter-spacing: var(--tracking-snug);
+  }
+  .type-h3,
+  :where(.prose) h3 {
+    font-family: var(--font-sans);
+    font-size: var(--text-h3);
+    line-height: var(--leading-h3);
+    font-weight: 600;
+    letter-spacing: var(--tracking-num);
+  }
+  .type-h4,
+  :where(.prose) h4,
+  :where(.prose) h5,
+  :where(.prose) h6 {
+    font-family: var(--font-sans);
+    font-size: var(--text-h4);
+    line-height: var(--leading-h4);
+    font-weight: 600;
+    letter-spacing: normal;
+  }
+
+  /* The standfirst under a heading. Colour is the component's: a lead that is
+     always muted cannot be used for a lead that is not. */
+  .type-lead {
+    font-family: var(--font-sans);
+    font-size: var(--text-lead);
+    line-height: var(--leading-lead);
+    font-weight: 400;
+    letter-spacing: normal;
+  }
+
+  .type-body,
+  :where(.prose) p,
+  :where(.prose) li,
+  :where(.prose) td,
+  :where(.prose) blockquote {
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    font-weight: 400;
+    letter-spacing: normal;
+  }
+
+  /* The secondary step: 12 on a phone, 14 on a desktop. `figcaption` and `th`
+     join it for size; their muting lives in the prose flow below.
+
+     This role used to be the floor of a system that admitted nothing below
+     14px, and the note here said so. The retired furniture roles that ran 13,
+     11.5, 11, 10.5 and 10 are still retired — each of them existed to carry a
+     colour or a case rather than a size — but 12 is no longer off the table:
+     it is where `small` starts on a phone, and `badge` starts at 10. A phone
+     is read at a shorter distance than a laptop. */
+  .type-small,
+  :where(.prose) figcaption,
+  :where(.prose) th {
+    font-family: var(--font-sans);
+    font-size: var(--text-small);
+    line-height: var(--leading-small);
+    font-weight: 400;
+    letter-spacing: normal;
+  }
+
+  /* Navigation items — sidebar rows, top nav, tab triggers, group labels. One
+     role, because a dense nav row and a wide one are the same thing at
+     different paddings, and the size ladder was never what told them apart. */
+  .type-nav {
+    font-family: var(--font-sans);
+    font-size: var(--text-nav);
+    line-height: var(--leading-nav);
+    font-weight: 500;
+    letter-spacing: normal;
+  }
+
+  /* Badges, chips, pills and tags. The CASE IS NOT HERE: an uppercase badge is
+     a decision Badge makes, and the roles the uppercase used to live in
+     (`tag`, `badge`, `label`, `micro`) were four sizes of the same idea.
+
+     The smallest role in the system, and the only one that starts below 12.
+     It is also the one role whose accessible target never depends on its type
+     size: a badge is a label on something, not a control. */
+  .type-badge {
+    font-family: var(--font-sans);
+    font-size: var(--text-badge);
+    line-height: var(--leading-badge);
+    font-weight: 600;
+    letter-spacing: normal;
+  }
+
+  /* Literal code — a token name, a snippet, a fenced block. */
+  .type-code,
+  :where(.prose) code,
+  :where(.prose) pre {
+    font-family: var(--font-mono);
+    font-size: var(--text-code);
+    line-height: var(--leading-code);
+    font-weight: 400;
+    letter-spacing: normal;
+  }
+
+  /* Strings people read back or type in: invite codes, serials, order numbers,
+     hashes. Mono so the characters cannot be confused. Case belongs to the
+     component — a serial that is printed uppercase is uppercase in the data or
+     in the component that renders it, not in the type scale. */
+  .type-identifier {
+    font-family: var(--font-mono);
+    font-size: var(--text-identifier);
+    line-height: var(--leading-identifier);
+    font-weight: 400;
+    letter-spacing: var(--tracking-num);
+  }
+
+  /* Numerics — prices, balances, XP, odds, ranks, timestamps, counters.
+     Tabular so a column of them aligns and a live figure does not jitter.
+
+     All five are tracked now, which is the one shared decision this block used
+     to state the opposite of: the note here said the contract gave the
+     numerics none. Flutter 0.0.3 gives the four smaller steps -0.01em and
+     `number-xl` -0.02em, on the same reasoning as the headings — the tighter
+     fit is an optical correction that only shows up at size, and mono figures
+     are wide to begin with. */
+  .type-number-sm,
+  .type-number-base,
+  .type-number-md,
+  .type-number-lg,
+  .type-number-xl {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    letter-spacing: var(--tracking-num);
+  }
+  .type-number-sm {
+    font-size: var(--text-number-sm);
+    line-height: var(--leading-number-sm);
+  }
+  .type-number-base {
+    font-size: var(--text-number-base);
+    line-height: var(--leading-number-base);
+  }
+  .type-number-md {
+    font-size: var(--text-number-md);
+    line-height: var(--leading-number-md);
+  }
+  .type-number-lg {
+    font-size: var(--text-number-lg);
+    line-height: var(--leading-number-lg);
+  }
+  .type-number-xl {
+    font-size: var(--text-number-xl);
+    line-height: var(--leading-number-xl);
+    letter-spacing: var(--tracking-tight);
+  }
+}
+
+
+/* ============================================================================
+   LONG-FORM PROSE
+
+   One class for authored body content — a policy, a help article, an MDX page,
+   the output of a markdown renderer — where putting a `.type-*` class on every
+   element is not possible because nobody is writing the elements by hand.
+
+   THE SIZES ARE NOT HERE. Every role above carries a second `:where(.prose)`
+   selector in its own declaration block, so a heading in prose and a
+   `.type-h2` are literally the same rule and cannot drift. This file owns the
+   rhythm, the marks and the chrome — the things a type role has no opinion
+   about. `@apply type-h2` was tried first and fails the build outright;
+   `[&_h2]:type-h2` at the call site fails silently, which is worse. See the
+   comment on `.type-h1`.
+
+   TWO THINGS `.prose` DELIBERATELY DOES NOT DO:
+
+   1. It sets no `max-width`. The measure belongs to the page container, which
+      is the one place a width is chosen, and two owners for one number is how
+      the 1320 above spent months as prose.
+   2. It does not restore the browser's own margins wholesale. Tailwind's
+      preflight strips list markers and heading margins, and every rule below
+      puts back exactly one thing on the 8-point scale rather than reaching for
+      a plugin that ships its own type scale beside this one.
+
+   Spacing reads `calc(var(--spacing) * n)` rather than a rem, so every gap here
+   is visibly a step on the scale in §3: 8, 12, 16, 24, 32, 40.
+   ========================================================================= */
+@layer components {
+  .prose {
+    color: var(--foreground);
+  }
+
+  /* ── Rhythm ─────────────────────────────────────────────────────────────
+     Blocks declare their own spacing (§3): a type class creates none, and
+     line-height is not separation. Headings take more air above than below so
+     a section reads as belonging to the heading that opens it, not to the
+     paragraph that closed the last one. */
+  :where(.prose) p,
+  :where(.prose) ul,
+  :where(.prose) ol,
+  :where(.prose) blockquote,
+  :where(.prose) figure,
+  :where(.prose) pre,
+  :where(.prose) table {
+    margin-block: calc(var(--spacing) * 4); /* 16 */
+  }
+  :where(.prose) h1,
+  :where(.prose) h2 {
+    margin-block: calc(var(--spacing) * 10) calc(var(--spacing) * 4); /* 40 / 16 */
+  }
+  :where(.prose) h3 {
+    margin-block: calc(var(--spacing) * 8) calc(var(--spacing) * 3); /* 32 / 12 */
+  }
+  :where(.prose) h4,
+  :where(.prose) h5,
+  :where(.prose) h6 {
+    margin-block: calc(var(--spacing) * 6) calc(var(--spacing) * 2); /* 24 / 8 */
+  }
+  :where(.prose) hr {
+    margin-block: calc(var(--spacing) * 10); /* 40 */
+    border: 0;
+    border-block-start: 1px solid var(--border);
+  }
+  /* The block owns its outer edges, so a caller can put `.prose` inside a
+     padded container without a leading 40px of nothing above the first
+     heading. */
+  .prose > :first-child {
+    margin-block-start: 0;
+  }
+  .prose > :last-child {
+    margin-block-end: 0;
+  }
+
+  /* ── Headings ───────────────────────────────────────────────────────────
+     Colour only. There is deliberately NO `scroll-margin-block-start` here:
+     `html` already carries `scroll-padding-block-start: var(--scroll-offset)`,
+     and the two ADD. Measured with both in place, a linked heading came to rest
+     192px down a 64px header — the offset applied twice, which looks like a
+     generous design choice rather than a bug and is why it is written down.
+     One owner, and it is the scroller. */
+  :where(.prose) h1,
+  :where(.prose) h2,
+  :where(.prose) h3,
+  :where(.prose) h4 {
+    color: var(--foreground);
+  }
+
+  /* ── Lists ──────────────────────────────────────────────────────────────
+     Preflight removes the marker and the indent; both come back here rather
+     than at the call site, because authored content has no call site. */
+  :where(.prose) ul {
+    list-style-type: disc;
+    padding-inline-start: calc(var(--spacing) * 6); /* 24 */
+  }
+  :where(.prose) ol {
+    list-style-type: decimal;
+    padding-inline-start: calc(var(--spacing) * 6); /* 24 */
+  }
+  :where(.prose) li::marker {
+    color: var(--muted-foreground);
+  }
+  :where(.prose) li + li {
+    margin-block-start: calc(var(--spacing) * 2); /* 8 */
+  }
+  /* A nested list is part of its parent item, not a new block, so it takes the
+     interior step rather than the 16 every top-level block gets. */
+  :where(.prose) li > ul,
+  :where(.prose) li > ol {
+    margin-block: calc(var(--spacing) * 2); /* 8 */
+  }
+
+  /* ── Inline ─────────────────────────────────────────────────────────────
+     `--color-action-ink` and never a ramp end: a link is text, it does not know
+     which theme it is on, and `-ink` is the only shade that reads in both
+     (§1.3). The underline is the second signal and is present at rest — a link
+     identified by hue alone is one signal, which §7 does not accept. */
+  :where(.prose) a {
+    color: var(--color-action-ink);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    transition: text-decoration-color var(--duration-fast) var(--ease-enter);
+  }
+  :where(.prose) a:hover {
+    text-decoration-color: transparent;
+  }
+  :where(.prose) strong {
+    font-weight: var(--font-weight-semibold);
+    color: var(--foreground);
+  }
+  :where(.prose) em {
+    font-style: italic;
+  }
+  /* Matches `Code` in `components/ds/kit.tsx` — 6px / 2px — so an inline token
+     name reads identically whether it was authored in prose or placed by hand.
+     `:not(pre) >` keeps it off fenced code, which brings its own surface. */
+  :where(.prose) :not(pre) > code {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: calc(var(--spacing) * 0.5) calc(var(--spacing) * 1.5); /* 2 / 6 */
+    color: var(--muted-foreground);
+  }
+  :where(.prose) pre {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: calc(var(--spacing) * 4); /* 16 */
+    overflow-x: auto;
+  }
+  :where(.prose) pre code {
+    background: none;
+    border: 0;
+    padding: 0;
+    color: var(--foreground);
+  }
+
+  /* ── Blocks ─────────────────────────────────────────────────────────────
+     `--input` rather than `--border` on the quote rule: §1.1 gives this system
+     two hairlines and the quieter one disappears at 2px against `--card`. */
+  :where(.prose) blockquote {
+    border-inline-start: 2px solid var(--input);
+    padding-inline-start: calc(var(--spacing) * 4); /* 16 */
+    color: var(--muted-foreground);
+    font-style: italic;
+  }
+  /* A table scrolls inside itself rather than widening the page or being
+     clipped by whatever contains it.
+
+     `display: block` is what makes the `<table>` element its own scroll port;
+     its rows and cells still generate an anonymous table box inside, so the
+     layout is unchanged. `width: max-content` capped at `100%` is the pair that
+     makes it work in both directions — it takes only the width it needs, and
+     when that exceeds the column it scrolls instead of overflowing.
+
+     Measured at 375px before this rule: a 294px table inside a 277px prose
+     column, clipped by the panel's `overflow-hidden` with the last column
+     unreachable and no cue that it existed. §3 is explicit that the scrollbar
+     must not be hidden when it is the only sign more content is there. */
+  :where(.prose) table {
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+  }
+  :where(.prose) th,
+  :where(.prose) td {
+    border-block-end: 1px solid var(--border);
+    padding: calc(var(--spacing) * 3) calc(var(--spacing) * 4); /* 12 / 16 */
+    text-align: start;
+    vertical-align: top;
+  }
+  /* The header row takes its SIZE from `.type-small` above and everything else
+     from here. Weight and colour are deliberately not in that role: a role that
+     carried them would impose them on every 14px label in the system, which is
+     the exact failure the ownership test now guards. */
+  :where(.prose) th {
+    background: var(--muted);
+    color: var(--muted-foreground);
+    font-weight: var(--font-weight-semibold);
+  }
+  /* A caption sits back from the copy it describes. `.type-small` gives it the
+     size; the muting is the prose flow's, not the role's. */
+  :where(.prose) figcaption {
+    color: var(--muted-foreground);
+  }
+  /* Nothing authored may widen the page. A wide table still needs a scrolling
+     wrapper, which is the `Prose` component's job rather than this file's —
+     these three only stop an image or a fenced block doing it. */
+  :where(.prose) img,
+  :where(.prose) video,
+  :where(.prose) iframe {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg);
+  }
+  :where(.prose) figure {
+    margin-inline: 0;
+  }
+  :where(.prose) figcaption {
+    margin-block-start: calc(var(--spacing) * 2); /* 8 */
+  }
+}

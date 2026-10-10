@@ -1,0 +1,49 @@
+{
+  "name": "sheet",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/sheet.dart"
+  ],
+  "webSources": [
+    "components/ui/sheet.tsx",
+    "components/docs/component-docs/sheet/page.tsx"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "flutter-behind",
+      "flutter": "SheetOverlay(trigger, content, side) > OverlayPortal > SheetTransition > SheetContent(children, side, showCloseButton, onClose, width, fill) which composes SheetHeader/SheetFooter/SheetTitle/SheetDescription and its own Positioned close Button — no separate SheetBody widget in the file.",
+      "web": "Sheet > SheetTrigger/SheetClose > SheetPortal > SheetOverlay + SheetContent > SheetHeader, SheetBody, SheetFooter, SheetTitle, SheetDescription — SheetBody is exported and is 'the only part of a sheet that scrolls' via min-h-0 flex-1 overflow-y-auto.",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: components/ui/sheet.tsx exports a SheetBody component (lines 132-140) added specifically because 'nothing in between was allowed to scroll... the footer sat below the fold' at 375x812. Flutter's SheetContent has no equivalent scrollable middle-zone widget — its Column of children has no min-h-0/overflow wrapper, so a Flutter sheet with tall content has no documented mechanism to keep its footer on screen the way the web's SheetBody guarantees."
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "SheetContent(children, side: SheetSide{top,right,bottom,left}, showCloseButton=true, onClose, width, fill) with SheetSide.isHorizontal deciding width-vs-height sizing, plus the standalone Sheet.showLeft(context, builder, width, showCloseButton) for the mobile nav route.",
+      "web": "SheetContent({className, children, side='right', showCloseButton=true, ...props}: side?: 'top'|'right'|'bottom'|'left') spread onto SheetPrimitive.Content, with Sheet/SheetTrigger/SheetClose/SheetPortal thin wrappers around Radix Dialog.Root/Trigger/Close/Portal."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "_LeftSheetRoute and SheetOverlay drive open/opening/closing entirely through Animation<double> (PopupRoute transitionDuration/reverseTransitionDuration at MotionDurations.overlayEnter/overlayExit) with no separate loading/error/disabled state on the sheet itself.",
+      "web": "SheetOverlay/SheetContent read data-open/data-closed via animate-in/animate-out + fade-in-0/fade-out-0 and per-side slide-in-from-*/slide-out-to-* classes, timed by the same --duration-overlay bridge the Flutter doc comment quotes verbatim from globals.css.",
+      "note": "n/a is not used because both platforms genuinely model the same two-state (open/closed) transition matrix with matching enter/exit timing; a sheet has no loading/error/disabled state of its own on either side."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "Sheet/SheetContent/SheetOverlay carry no enabled/disabled parameter anywhere in sheet.dart.",
+      "web": "sheet.tsx defines no disabled prop on Sheet, SheetContent, or any exported part.",
+      "note": "A sheet is a container/overlay, not a control that can itself be disabled; disabled state belongs to the controls placed inside it, which is out of scope for this capability."
+    },
+    "interaction": {
+      "verdict": "flutter-behind",
+      "flutter": "_LeftSheetRoute sets barrierDismissible: true and barrierLabel: 'Close', dismissing via ModalBarrier tap and the explicit close Button; there is no documented Escape-key handler in sheet.dart itself (PopupRoute's default handles system back/pop, not a named Escape binding).",
+      "web": "SheetPrimitive.Content is a Radix Dialog.Content, which natively closes on Escape, traps focus within the panel while open, and restores focus to the trigger on close — none of this is re-implemented in sheet.tsx because Radix supplies it.",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: The gap is Escape-key dismissal and focus-trap/focus-restore: Radix's Dialog primitive gives the web sheet these for free, while Flutter's PopupRoute relies on the platform back gesture/button and the visible close icon, with no FocusScope-based trap or explicit Escape KeyEventResult wired in sheet.dart's _LeftSheetRoute or SheetContent."
+    },
+    "semantics": {
+      "verdict": "match",
+      "flutter": "SheetPanel and the mobile Sidebar._mobile() branch apply Semantics(label: 'Sidebar', hint: 'Displays the mobile sidebar.', container: true) mirroring the web's sr-only SheetHeader/SheetTitle/SheetDescription pairing, and the close Button carries label: 'Close'.",
+      "web": "Sidebar's mobile SheetContent wraps a sr-only SheetHeader containing SheetTitle 'Sidebar' and SheetDescription 'Displays the mobile sidebar.', and the close button renders an XIcon plus sr-only 'Close' text at 32px drawn / 44px hit via after:-inset-1.5.",
+      "note": "Both close affordances are drawn smaller than their hit target and both restore the accessible name/description pairing for the mobile drawer identically."
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "name": "accordion",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/accordion.dart"
+  ],
+  "webSources": [
+    "components/ui/accordion.tsx",
+    "components/docs/component-docs/accordion/page.tsx"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "Accordion(items, openIndex, onChanged) builds a Column of Container-bordered rows, each holding a _AccordionTrigger (Press+Surface+Row of label+Icon) and an Unfold-wrapped Padding content box.",
+      "web": "AccordionPrimitive.Root > AccordionItem > AccordionPrimitive.Header > AccordionTrigger (two Icon chevrons swapped via group-aria-expanded) and AccordionPrimitive.Content > inner div, exactly mirroring the Dart slot list."
+    },
+    "api": {
+      "verdict": "flutter-behind",
+      "flutter": "Accordion only exposes items: List<AccordionItem>{title,content}, openIndex: int?, onChanged: ValueChanged<int?> — one open index or null, no per-item disabled field and no multi-open mode.",
+      "web": "AccordionPrimitive.Root takes type=\"single\"|\"multiple\", collapsible, defaultValue/value/onValueChange (string or string[]), and AccordionItem takes value + disabled (demoed in the 'A disabled item' example and documented in the API Reference block).",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: The Flutter Accordion widget implements only the single-open, index-keyed case (the doc comment calls this out: keyed by index rather than Radix's string value). It has no equivalent of type=\"multiple\" (several panels open at once, demoed on the web variants section with defaultValue={[\"fees\",\"limits\"]}) and AccordionItem carries no disabled bool at all, so the web's disabled-item example (components/docs/component-docs/accordion/page.tsx lines 150-166) and the disabled:pointer-events-none/opacity-50 styling on AccordionTrigger (components/ui/accordion.tsx line 46) have no Flutter counterpart to stay in parity with."
+    },
+    "states": {
+      "verdict": "flutter-behind",
+      "flutter": "_AccordionTriggerState tracks only _hovered and _focused locally; Press supplies press/hover/focus plumbing but the widget has no disabled branch and no loading/success/error handling (doc comment marks those n/a for a synchronous disclosure).",
+      "web": "AccordionTrigger's className carries disabled:pointer-events-none disabled:opacity-50 alongside hover:underline and focus-visible:ring-3/border-ring, and the docs States section lists rest/hover/focus-visible/open/disabled explicitly as the full matrix.",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: Because the Dart AccordionItem has no disabled flag (see api dimension), the disabled state the web docs demonstrate and style has nothing on the Flutter side to be verified against — the state exists only on the web half of the pair."
+    },
+    "disabled": {
+      "verdict": "flutter-behind",
+      "flutter": "No disabled path exists in accordion.dart — AccordionItem's only fields are title and content, and _AccordionTrigger has no disabled parameter or branch anywhere in its build method.",
+      "web": "AccordionItem disabled renders a real <button disabled> per the Accessibility section ('The trigger stays in the tree but is inert — removed from the interactive path without disappearing from the accessibility tree') with copy explaining unavailability ('Insurance claims — opens Monday' / 'Not available yet.').",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: This is the same gap as api/states: Flutter's Accordion cannot represent a disabled row at all, so there is no 'both sides' to compare — only the web explains itself and offers recovery context; parity is missing, not just unverified."
+    },
+    "interaction": {
+      "verdict": "match",
+      "flutter": "Press wires Tab focus, Enter/Space activation and a 44px target per its own contract; the doc comment states 'Tab, Enter, Space, a named and expanded button, and a 44px target under a 40.56px row.'",
+      "web": "Docs Keyboard section lists Tab/Shift+Tab, Up/Down wrapping between triggers, Home/End, Enter/Space toggling, and native <button disabled> removing disabled items from the Tab sequence."
+    },
+    "semantics": {
+      "verdict": "match",
+      "flutter": "Press is given semanticLabel: widget.title and expanded: widget.expanded, so the platform-level semantics tree reports the label and expanded/collapsed state the way a native toggle button would.",
+      "web": "Docs Accessibility section: 'A real <button>, wrapped in an h3-equivalent AccordionPrimitive.Header, with aria-expanded reflecting open state' and the panel is associated to its trigger via Radix's id wiring; chevron is decorative/muted-intent."
+    }
+  }
+}

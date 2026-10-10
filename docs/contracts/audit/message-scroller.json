@@ -1,0 +1,41 @@
+{
+  "name": "message-scroller",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": ["lib/src/components/ui/message_scroller.dart"],
+  "webSources": ["components/ui/message-scroller.tsx", "components/docs/component-docs/message-scroller/page.tsx"],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "message_scroller.dart's doc comment: 'From @shadcn/react, not Radix: a provider, a viewport, per-item message ids, a scroll anchor, and a button that hides itself once that direction has nowhere left to go.' It defines MessageScrollerController (ChangeNotifier), MessageScrollerProvider (InheritedNotifier), MessageScroller (Stack of viewport+button), MessageScrollerViewport (scrolling element with ScrollFade), MessageScrollerContent, MessageScrollerItem, MessageScrollerButton.",
+      "web": "message-scroller.tsx imports MessageScrollerPrimitive from '@shadcn/react/message-scroller' and re-exports Provider, Root (data-slot=\"message-scroller\"), Viewport (data-slot=\"message-scroller-viewport\", scroll-fade-b), Content (data-slot=\"message-scroller-content\"), Item (data-slot=\"message-scroller-item\", scrollAnchor), Button (data-slot=\"message-scroller-button\", data-direction) — the same six-part anatomy the Dart doc comment names one-to-one."
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "MessageScrollerController({autoScroll=false, defaultScrollPosition=ScrollPosition.end, scrollEdgeThreshold=8}); ScrollPosition enum {start, end, lastAnchor}; ScrollDirection enum {start, end}; methods scrollToEnd(), scrollToStart(), scrollToMessage(id), followNewContent() and scrollable(direction) — all named to match, per the doc comment, `defaultScrollPosition`, `scrollEdgeThreshold`, `scrollToMessage(id)` and `useMessageScrollerScrollable` on the reference.",
+      "web": "message-scroller.tsx re-exports useMessageScroller, useMessageScrollerScrollable and useMessageScrollerVisibility hooks from @shadcn/react/message-scroller unchanged, plus MessageScrollerButton takes direction=\"start\"|\"end\", variant and size (defaulting variant=\"secondary\" size=\"icon-sm\"), and MessageScrollerItem takes scrollAnchor=false — the exact same parameter names and defaults the Dart file quotes."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "MessageScrollerController.scrollable(direction) computes data-active via scrollEdgeThreshold (default 8, documented as 'Measured as a >=: at 8px from the end the button is still data-active=\"true\", at 4px it is false'); _autoscrolling flag drives thumbColor transparency 'measured going fully transparent for the length of a programmatic scroll'.",
+      "web": "MessageScrollerButton's className encodes the same active/inactive matrix: data-[active=false]:pointer-events-none data-[active=false]:scale-95 data-[active=false]:opacity-0 ... data-[active=true]:translate-y-0 data-[active=true]:scale-100 data-[active=true]:opacity-100, and the Viewport carries data-autoscrolling:scrollbar-thumb-transparent data-autoscrolling:scrollbar-track-transparent for the same autoscroll-hides-thumb state."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "MessageScrollerButton has no enabled/disabled parameter; instead onPressed is set to null when !active, which is a visibility/reachability state (data-active) rather than a disabled control — the doc comment frames it as 'a button that hides itself,' not one that disables.",
+      "web": "message-scroller.tsx's Button similarly has no disabled prop; data-[active=false]:pointer-events-none removes it from the hit-test path and data-[active=false]:opacity-0 hides it, matching the Flutter IgnorePointer(child: button) wrapper used when !active.",
+      "note": "Both sides model 'nowhere left to scroll' as a hide/ignore-pointer state rather than a classic disabled affordance, so there is no disabled dimension to compare — this is consistent on both platforms and is why n/a rather than gap."
+    },
+    "interaction": {
+      "verdict": "platform-difference",
+      "flutter": "The doc comment's 'content-visibility: auto — recorded, not reproduced' section states: 'Flutter has no off-screen skip with a remembered size, so the port renders the second state always... Probed both ways: with the scroller off the browser viewport every one of the eleven items reports the placeholder 160px... with it on screen they report their real 39.13.' MessageScrollerItem.assumedOffscreenHeight records the number without acting on it.",
+      "web": "MessageScrollerItem's className carries [content-visibility:auto] and [contain-intrinsic-size:auto_calc(var(--spacing)*40)] — a real browser paint-skip optimization for off-screen transcript items, described in the doc comment as 'a paint optimisation with a visible failure mode (a wrong guess makes the scrollbar jump).'",
+      "note": "This is a deliberate, correctly-recorded platform gap rather than an oversight: content-visibility is a CSS/browser rendering-pipeline feature with no Flutter analogue (no equivalent of an off-screen element reporting a placeholder intrinsic size), and the doc comment explains exactly why the port always renders the fully-measured state instead of simulating the placeholder-then-jump behavior. The web's real transcript is never worse off; only the browser paint-cost optimization itself has no port, which is the right call for a widget tree that always measures every child."
+    },
+    "semantics": {
+      "verdict": "match",
+      "flutter": "MessageScrollerViewport wraps its scroller in Semantics(container: true, label: widget.semanticsLabel) with semanticsLabel defaulting to 'Messages,' documented as the port of 'role=\"region\" aria-label=\"Messages\"' on the live element; MessageScrollerButton's label is 'Scroll to end' / 'Scroll to start' depending on direction.",
+      "web": "The button's visible label is screen-reader-only (<span className=\"sr-only\">{direction === \"end\" ? \"Scroll to end\" : \"Scroll to start\"}</span>), matching the Dart string values exactly; the underlying @shadcn/react/message-scroller Viewport primitive supplies the region role and aria-label the Dart Semantics wrapper quotes."
+    }
+  }
+}

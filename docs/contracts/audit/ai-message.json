@@ -1,0 +1,49 @@
+{
+  "name": "ai-message",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/message.tsx",
+    "components/docs/component-docs/ai-message/page.tsx",
+    "components/docs/component-docs/ai-message/message-specimen.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Message — origin: web-only, flutterSources is [].",
+      "web": "Message is a flex-column div with is-user or is-assistant; MessageContent is the bubble div (bg-secondary for a user); MessageResponse is Streamdown rendered as .prose with streamdown-chrome; MessageToolbar holds MessageActions (Button ghost icon-sm, with an optional Tooltip) and the MessageBranch selector, which is a ButtonGroup of Previous, an 'n of total' text and Next.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Message — origin: web-only, flutterSources is [].",
+      "web": "Message takes from (UIMessage role) plus div props; MessageAction takes tooltip, label and every Button prop; MessageBranch takes defaultBranch and onBranchChange; MessageResponse takes Streamdown's props, with plugins, shikiTheme, linkSafety and mermaid preset by the system, and is memoised on children and isAnimating.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Message — origin: web-only, flutterSources is [].",
+      "web": "Rest is a user bubble or a plain assistant block; MessageResponse shows streaming through isAnimating; MessageAction takes Button's loading and disabled; the branch buttons disable and the selector disappears below two versions; inside a reply a failed diagram becomes a destructive Alert and a link opens an AlertDialog check.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Message — origin: web-only, flutterSources is [].",
+      "web": "Message and MessageContent are not interactive and have no disabled state. MessageAction forwards disabled to Button, and MessageBranchPrevious and MessageBranchNext set disabled when there are fewer than two branches.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Message — origin: web-only, flutterSources is [].",
+      "web": "Every control is a Button, so Tab and Enter or Space work; MessageBranch Previous and Next wrap around at the ends and call onBranchChange; a link in a reply opens an AlertDialog asking 'Open this link?' with Cancel and Open link; hover on a MessageAction shows its Tooltip.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Message — origin: web-only, flutterSources is [].",
+      "web": "Message and MessageContent are plain divs with no role; MessageAction's accessible name is an sr-only span with label or tooltip; the branch buttons carry aria-label 'Previous branch' and 'Next branch'; markdown renders real heading, list, table and code elements.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "name": "input",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/input.dart"
+  ],
+  "webSources": [
+    "components/ui/input.tsx"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "Input is a StatefulWidget wrapping EditableText plus an IgnorePointer'd placeholder Text in a Stack (the `line`), which _Socket/FieldSurfaceRecipe paints inside when `bare` is false, all inside FieldVisibility for keyboard avoidance.",
+      "web": "A bare <input data-slot=\"input\"> carrying the full class list itself — min-h-10 rounded-pill border bg-card px-4 py-1 shadow-pressed — with no wrapper element; the socket is the input's own box rather than a separate painted layer."
+    },
+    "api": {
+      "verdict": "flutter-behind",
+      "flutter": "Input(controller, initialValue, focusNode, placeholder, onChanged, onSubmitted, enabled, readOnly, invalid, obscureText, keyboardType, autofillHints, textSpec, label, hint, bare, padding, boxHeight, fill, flat, radius, disabledReason) covers value, placeholder, disabled/invalid, type and the InputGroup strip overrides; `boxHeight` overrides `Input.height` inside a fixed-size SizedBox(height: widget.boxHeight ?? Input.height, child: field) — always a fixed height.",
+      "web": "<input type, className, ...props> is a thin React.ComponentProps<\"input\"> passthrough — value/defaultValue/onChange/disabled/aria-invalid/type/placeholder all arrive as native HTML attributes rather than named props. The class list is `min-h-10`, not `h-10`, with a JSDoc explaining the change on purpose: \"a fixed height is a ceiling as well as a floor, and it is what stops a field growing when a consumer needs it to (a larger type step, a taller touch target)\".",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: The web input.tsx JSDoc (lines 28-33) documents a deliberate change from a fixed h-10 to a min-h-10 floor so the field can grow past 40px for a larger type step or touch target, while Flutter's Input still wraps the socket in `SizedBox(height: widget.boxHeight ?? Input.height, ...)` — an exact fixed height with no growth path at all. A caller that needs a taller Flutter Input must pass `boxHeight` explicitly; there is no equivalent of the web's organic min-height growth. This is a real behavioral gap, not just a comment/class mismatch — Flutter's Input.dart doc comment at lines 8-27 still describes the field as `h-10` and has not been updated to reflect the web's min-height change."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "_InputState tracks _focused via a FocusNode listener and rebuilds; FieldSurfaceRecipe reads invalid/focused to pick border+ring colors, and Disabled(disabled: !enabled) wraps the field for the disabled path — no hover state exists on either side.",
+      "web": "Class list carries focus-visible:border-primary/50 focus-visible:ring-3 focus-visible:ring-ring/35, aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20, and disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 — rest/focus/invalid/disabled, no hover, matching the Dart state set exactly."
+    },
+    "disabled": {
+      "verdict": "match",
+      "flutter": "Disabled(disabled: !enabled, reason: widget.disabledReason ?? scope?.disabledReason, child: field) shows a tooltip explaining why when disabled, per the Disabled widget's own contract referenced in the doc comment.",
+      "web": "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 on the native <input disabled> — a real HTML disabled control with no tooltip/reason mechanism of its own; recovery text is a Field-level concern (FieldDescription), not this component's."
+    },
+    "interaction": {
+      "verdict": "match",
+      "flutter": "GestureDetector(onTap: () => _editableKey.currentState?.requestKeyboard()) plus MouseRegion(cursor: SystemMouseCursors.text) wires tap-to-focus and caret-at-end; EditableText itself handles all keyboard text editing and IME.",
+      "web": "A native <input> gets the browser's built-in text-field keyboard handling (typing, selection, IME, arrow keys, Tab focus order) for free — no custom interaction code is needed because the element itself is the input mechanism."
+    },
+    "semantics": {
+      "verdict": "match",
+      "flutter": "Semantics(textField: true, label:, hint:, readOnly:, enabled:, validationResult: invalid ? SemanticsValidationResult.invalid : SemanticsValidationResult.none) is applied when label/hint/invalid are set, mirroring aria-invalid without an aria-invalid=\"false\" announcement.",
+      "web": "The bare <input> relies on aria-invalid (only present via the aria-invalid: variant styling, driven by the caller setting the attribute) and whatever htmlFor/aria-label the surrounding Field/Label supplies — no built-in accessible name of its own, same division of responsibility as Semantics(label:) needing FieldScope."
+    }
+  }
+}

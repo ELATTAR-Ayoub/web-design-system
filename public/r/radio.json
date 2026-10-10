@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "radio",
+  "title": "Radio",
+  "description": "The `radio` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "registryDependencies": [
+    "@elattar/content-change",
+    "@elattar/disabled",
+    "@elattar/source-foundation"
+  ],
+  "files": [
+    {
+      "path": "components/ui/radio.tsx",
+      "content": "\"use client\"\r\n\r\nimport * as React from \"react\"\r\nimport { RadioGroup as RadioGroupPrimitive } from \"radix-ui\"\r\n\r\nimport { cn } from \"@/lib/utils\"\r\nimport { useReplayOnStateChange } from \"@/components/ui/content-change\"\r\nimport { Disabled } from \"@/components/ui/disabled\"\r\n\r\nconst radioControlClassName =\r\n  \"relative flex aspect-square size-5 shrink-0 items-center justify-center rounded-full border border-input bg-card shadow-pressed outline-none transition-[background-color,border-color,box-shadow] duration-fast ease-out\"\r\n\r\nfunction RadioIndicator({ className }: { className?: string }) {\r\n  return (\r\n    <span\r\n      data-slot=\"radio-group-indicator\"\r\n      className={cn(\"flex items-center justify-center\", className)}\r\n    >\r\n      <span className=\"anim-change block size-2 rounded-full bg-primary-foreground shadow-e1\" />\r\n    </span>\r\n  )\r\n}\r\n\r\nfunction RadioGroup({\r\n  className,\r\n  ...props\r\n}: React.ComponentProps<typeof RadioGroupPrimitive.Root>) {\r\n  return (\r\n    <RadioGroupPrimitive.Root\r\n      data-slot=\"radio-group\"\r\n      className={cn(\"grid w-full gap-2\", className)}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nfunction RadioGroupItem({\r\n  className,\r\n  disabled,\r\n  disabledReason,\r\n  ...props\r\n}: React.ComponentProps<typeof RadioGroupPrimitive.Item> & {\r\n  disabledReason?: string\r\n}) {\r\n  const ref = useReplayOnStateChange<HTMLButtonElement>()\r\n\r\n  const item = (\r\n    <RadioGroupPrimitive.Item\r\n      ref={ref}\r\n      data-slot=\"radio-group-item\"\r\n      disabled={disabled}\r\n      className={cn(\r\n        \"group/radio-group-item peer\",\r\n        radioControlClassName,\r\n        \"after:absolute after:-inset-x-3 after:-inset-y-2\",\r\n        \"focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50\",\r\n        \"disabled:cursor-not-allowed disabled:opacity-50\",\r\n        \"aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20\",\r\n        \"data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:shadow-btn-primary\",\r\n        className\r\n      )}\r\n      {...props}\r\n    >\r\n      <RadioGroupPrimitive.Indicator asChild>\r\n        <RadioIndicator />\r\n      </RadioGroupPrimitive.Indicator>\r\n    </RadioGroupPrimitive.Item>\r\n  )\r\n\r\n  if (!disabledReason) return item\r\n\r\n  return (\r\n    <Disabled disabled={!!disabled} reason={disabledReason}>\r\n      {item}\r\n    </Disabled>\r\n  )\r\n}\r\n\r\nexport { RadioGroup, RadioGroupItem, RadioIndicator, radioControlClassName }\r\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

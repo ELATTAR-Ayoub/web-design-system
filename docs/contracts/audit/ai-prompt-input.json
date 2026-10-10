@@ -1,0 +1,49 @@
+{
+  "name": "ai-prompt-input",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/prompt-input.tsx",
+    "components/docs/component-docs/ai-prompt-input/page.tsx",
+    "components/docs/component-docs/ai-prompt-input/prompt-input-specimen.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Prompt Input — origin: web-only, flutterSources is [].",
+      "web": "prompt-input.tsx composes a form (PromptInput) holding one Input Group: PromptInputHeader (an addon ordered first, for chips), PromptInputBody with PromptInputTextarea (name=message), and PromptInputFooter with PromptInputTools on the left and PromptInputSubmit on the right; a hidden file input labelled Upload files sits beside the form. Optional parts: PromptInputActionMenu with Trigger, Content, Item, AddAttachments and AddScreenshot, PromptInputSelect, HoverCard, Tabs and Command parts.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Prompt Input — origin: web-only, flutterSources is [].",
+      "web": "PromptInput takes onSubmit(message, event) with { text, files }, accept, multiple, globalDrop, syncHiddenInput, maxFiles, maxFileSize and onError(code max_files, max_file_size or accept). PromptInputProvider takes initialInput and exposes usePromptInputController, useProviderAttachments and usePromptInputAttachments; PromptInputSubmit takes status (ready, submitted, streaming, error) and onStop; PromptInputButton takes tooltip, variant and size.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Prompt Input — origin: web-only, flutterSources is [].",
+      "web": "The submit button shows the chat status as an icon: corner-down-left at ready, a Spinner at submitted, a stop square at streaming and an X at error; the textarea shows its placeholder when empty, and the Input Group carries the focus ring. Success is the draft clearing after onSubmit resolves; a rejected onSubmit keeps the draft; hover and pressed come from the Input Group buttons.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Prompt Input — origin: web-only, flutterSources is [].",
+      "web": "The form has no disabled prop of its own: disabled is passed to PromptInputTextarea, the tool buttons and PromptInputSubmit (Input Group controls). Enter in the textarea does not submit while the submit button is disabled, which the textarea checks by querying button[type=submit].",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Prompt Input — origin: web-only, flutterSources is [].",
+      "web": "Enter submits unless an IME composition is running or the submit button is disabled, Shift+Enter inserts a newline, Backspace on an empty textarea removes the last staged file, pasting files stages them, and dropping files stages them (anywhere on the document with globalDrop). While submitted or streaming with onStop set, the submit button calls onStop instead of submitting. Blob URLs are converted to data URLs before onSubmit.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Prompt Input — origin: web-only, flutterSources is [].",
+      "web": "The wrapper is a form; the file input is named Upload files; PromptInputSubmit is named Submit, or Stop while generating; the textarea takes the caller's aria-label (the documented use is Message); icon-only PromptInputButton and the action menu trigger need the caller's aria-label, since a tooltip is not a name; PromptInputTabLabel renders an h3.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

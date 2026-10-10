@@ -1,0 +1,49 @@
+{
+  "name": "ai-controls",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/controls.tsx",
+    "components/docs/component-docs/ai-controls/controls-specimen.tsx",
+    "components/docs/component-docs/ai-controls/page.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Controls — origin: web-only, flutterSources is [].",
+      "web": "components/ai-elements/controls.tsx exports Controls and ControlsProps: React Flow's Controls with className gap-px overflow-hidden rounded-md border bg-card p-1 shadow-none! and a selector that sets each child button to size-(--size-target-min), rounded-md, no border, transparent with a secondary hover fill.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Controls — origin: web-only, flutterSources is [].",
+      "web": "ControlsProps is the props of React Flow's Controls: showZoom, showFitView, showInteractive, fitViewOptions, onZoomIn, onZoomOut, onFitView, onInteractiveChange, position, orientation, aria-label, style, children and className; the wrapper only merges className.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Controls — origin: web-only, flutterSources is [].",
+      "web": "Rest is a card with transparent buttons; hover fills a button with the secondary surface; zoom in and zoom out are disabled by React Flow at the maximum and minimum zoom. There is no pressed or loading treatment.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Controls — origin: web-only, flutterSources is [].",
+      "web": "React Flow sets the disabled attribute on zoom in at maxZoom and zoom out at minZoom; the wrapper adds no disabled styling beyond the native one.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Controls — origin: web-only, flutterSources is [].",
+      "web": "Each button is a native button: click, Enter or Space zooms in or out by React Flow's step, fits the view (with fitViewOptions), or toggles interactivity, then fires the matching callback.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Controls — origin: web-only, flutterSources is [].",
+      "web": "The container is a Panel with aria-label (React Flow's controls label by default); each button has an aria-label and title (Zoom In, Zoom Out, Fit View, Toggle Interactivity) and an svg icon without text.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "name": "ai-shimmer",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/shimmer.tsx",
+    "components/docs/component-docs/ai-shimmer/page.tsx",
+    "components/docs/component-docs/ai-shimmer/shimmer-specimen.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Shimmer — origin: web-only, flutterSources is [].",
+      "web": "Shimmer is a single element, a p unless 'as' says otherwise, built with createElement and given the anim-shimmer-text and inline-block classes; the gradient from muted-foreground through agent and back is painted onto the text by background-clip.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Shimmer — origin: web-only, flutterSources is [].",
+      "web": "Shimmer takes children (a string), 'as' (ElementType) and className; duration and spread are deprecated, accepted and unused.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Shimmer — origin: web-only, flutterSources is [].",
+      "web": "One state, running: the CSS animation anim-shimmer-text loops indefinitely on --duration-shimmer-text until the caller unmounts it; there is no still version.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Shimmer — origin: web-only, flutterSources is [].",
+      "web": "No disabled state: it is not interactive and only appears while work is in progress.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Shimmer — origin: web-only, flutterSources is [].",
+      "web": "None: no pointer or keyboard behaviour, no tab stop, no event handlers.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Shimmer — origin: web-only, flutterSources is [].",
+      "web": "It renders the element named by 'as' with real text, no role, no aria-live and no aria-busy, so a screen reader reads the text but is not told work has started or stopped.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

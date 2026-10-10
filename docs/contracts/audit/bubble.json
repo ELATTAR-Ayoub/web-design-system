@@ -1,0 +1,45 @@
+{
+  "name": "bubble",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/bubble.dart"
+  ],
+  "webSources": [
+    "components/ui/bubble.tsx"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "BubbleGroup(children) -> Column(gap 8); Bubble(child, variant, align, reactions?) owns the box (w-fit, 80% max-width cap via _MaxWidthFraction, gap-1 column, self-alignment) and publishes _BubbleScope; BubbleContent(child, onPressed?, semanticsLabel?) is the only widget that paints a variant's fill, reading _BubbleScope; BubbleReactions(side, align, reactions|children, showCount, onReact) is the absolutely-positioned rail via a custom _ReactionStack.",
+      "web": "BubbleGroup (flex flex-col gap-2); Bubble (relative flex, cva variant classes scoped via *:data-[slot=bubble-content]:* descendant selectors) + BubbleContent (the painted div/Slot surface, w-fit max-w-full, px-3 py-2, rounded-xl); BubbleReactions (absolute rail, cva side/align variants) rendering either data-driven <button> pills or bare children."
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "BubbleVariant enum {normal, secondary, muted, tinted, outline, ghost, destructive} (7, normal renamed from 'default'); BubbleAlign {start, end}; BubbleSide {top, bottom}; ShowCount {hover, always}; BubbleReaction(emoji, count, label, mine=false).",
+      "web": "bubbleVariants variant keys: default, secondary, muted, tinted, outline, ghost, destructive (7, matching 1:1 with Flutter's rename); align: \"start\"|\"end\"; BubbleReactions side: \"top\"|\"bottom\", align: \"start\"|\"end\", showCount: \"hover\"|\"always\"; reactions[]: {emoji: ReactNode, count, label, mine?}."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "BubbleContent only recolours on hover/focus when widget.onPressed != null (the asChild-equivalent, interactive form) -- _fill()/_ink() switch on hovered only inside that branch, at MotionDurations.normal/MotionCurves.enter (250ms) matching the doc's measured trace; a plain (div-equivalent) bubble runs Duration.zero, reproducing the measured 'transition-property: all at 0s' no-op.",
+      "web": "bubbleVariants' hover rules are all scoped `[&>[data-slot=bubble-content]:is(button,a):hover]:*` -- i.e. only fire when BubbleContent is rendered asChild as a button/anchor; a plain div bubble has no hover rule to match, matching the measured 0s/250ms split the Flutter doc records."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "Bubble/BubbleContent have no disabled concept -- BubbleContent is either non-interactive (div-equivalent) or an active press target with onPressed always callable when non-null.",
+      "web": "Neither Bubble nor BubbleContent declare a disabled prop; the asChild interactive form relies on whatever the caller renders (button/a) to supply its own disabled semantics if needed.",
+      "note": "A message surface is not a form control on either platform and has no disabled state to compare."
+    },
+    "interaction": {
+      "verdict": "flutter-behind",
+      "flutter": "_ReactionStack/_RenderReactionStack is a custom RenderStack overriding hitTest specifically because 'Flutter bounds-checks EVERY render object before it asks a child, so a plain Stack -- even at Clip.none -- rejects the pointer' for the three-quarters of the reactions rail that hangs outside the bubble's own box; the doc states this was measured broken ('the reveal never fired and the press never landed') until the custom hit-test was added.",
+      "web": "BubbleReactions is `absolute z-10` with `top-0 -translate-y-3/4` / `bottom-0 translate-y-3/4` against a `relative` Bubble ancestor -- CSS costs nothing here since nothing in the ancestor chain clips and hit-testing an overflowing absolutely-positioned element works natively.",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: Not a defect in either implementation -- recorded because a reader comparing interaction contracts needs to know this is a real, non-obvious platform divergence: Flutter needed bespoke hitTest/RenderStack code (bubble.dart lines 161-251) to reproduce behaviour CSS gives away for free, and any future edit to the reactions rail's positioning must preserve _ReactionStack's override or silently reintroduce the dead-pointer regression the comment describes."
+    },
+    "semantics": {
+      "verdict": "match",
+      "flutter": "BubbleContent's interactive form wraps in Semantics(button: true, label: widget.semanticsLabel); each reaction pill carries Semantics(button: true, toggled: r.mine, label: '${r.count} reacted with ${r.label}') -- present at rest regardless of showCount, matching the doc's note that 'the accessible name carries it either way.'",
+      "web": "Each reaction <button> carries aria-pressed={r.mine ?? false} and a visually-hidden `sr-only` span reading \"{r.count} reacted with {r.label}\" present at rest in both showCount modes, per the component's own doc comment quoting RULES §7."
+    }
+  }
+}

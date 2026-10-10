@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "toaster",
+  "title": "Toaster",
+  "description": "The `toaster` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+  "dependencies": [
+    "lucide-react",
+    "next-themes",
+    "sonner"
+  ],
+  "registryDependencies": [
+    "@elattar/source-foundation"
+  ],
+  "files": [
+    {
+      "path": "components/ui/toaster.tsx",
+      "content": "\"use client\"\r\n\r\nimport { useTheme } from \"next-themes\"\r\nimport { Toaster as Sonner, type ToasterProps } from \"sonner\"\r\nimport {\r\n  CircleCheckIcon,\r\n  InfoIcon,\r\n  TriangleAlertIcon,\r\n  OctagonXIcon,\r\n  Loader2Icon,\r\n} from \"lucide-react\"\r\n\r\nexport const TOAST_ICONS = {\r\n  success: CircleCheckIcon,\r\n  info: InfoIcon,\r\n  warning: TriangleAlertIcon,\r\n  error: OctagonXIcon,\r\n  loading: Loader2Icon,\r\n} as const\r\n\r\nexport type ToastType = keyof typeof TOAST_ICONS | \"default\"\r\n\r\nconst Toaster = ({ ...props }: ToasterProps) => {\r\n  const { resolvedTheme } = useTheme()\r\n\r\n  return (\r\n    <Sonner\r\n      // resolvedTheme: follow the theme the document actually wears.\r\n      theme={resolvedTheme === \"light\" ? \"light\" : \"dark\"}\r\n      className=\"toaster group\"\r\n      icons={Object.fromEntries(\r\n        Object.entries(TOAST_ICONS).map(([k, Icon]) => [\r\n          k,\r\n          <Icon key={k} className=\"size-4\" />,\r\n        ]),\r\n      )}\r\n      toastOptions={{\r\n        // pointer-events-auto: an open modal sets pointer-events:none on body; keep toast actions pressable.\r\n        classNames: { toast: \"cn-toast bloom-cosmic pointer-events-auto\" },\r\n      }}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nexport { Toaster }\r\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

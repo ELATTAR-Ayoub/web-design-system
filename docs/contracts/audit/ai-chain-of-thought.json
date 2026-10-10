@@ -1,0 +1,49 @@
+{
+  "name": "ai-chain-of-thought",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/chain-of-thought.tsx",
+    "components/docs/component-docs/ai-chain-of-thought/page.tsx",
+    "components/docs/component-docs/ai-chain-of-thought/chain-of-thought-specimen.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Chain of Thought — origin: web-only, flutterSources is [].",
+      "web": "ChainOfThought is a div with a context provider; ChainOfThoughtHeader is a Collapsible trigger row with a brain Icon, a label and a chevron; ChainOfThoughtContent is the collapsible body; ChainOfThoughtStep is a row with an icon, a connecting line, the label, a description and children; SearchResults is a wrapping row of Badge; ChainOfThoughtImage is a framed figure with a caption.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Chain of Thought — origin: web-only, flutterSources is [].",
+      "web": "ChainOfThought takes open, defaultOpen and onOpenChange plus div props; ChainOfThoughtStep takes icon, label, description and status ('complete', 'active' or 'pending'); ChainOfThoughtSearchResult takes Badge props; ChainOfThoughtImage takes caption.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Chain of Thought — origin: web-only, flutterSources is [].",
+      "web": "The container is closed by default and animates open with anim-expand; a step is complete (muted), active (full foreground) or pending (half strength), and steps arrive with anim-enter; the status changes only the text colour.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Chain of Thought — origin: web-only, flutterSources is [].",
+      "web": "No disabled state: the header always opens and a step is not interactive. A step's own children, such as a retry button, carry their own.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Chain of Thought — origin: web-only, flutterSources is [].",
+      "web": "Click, Enter or Space on the header toggles the list; the open state can be controlled with open and onOpenChange; controls inside a step are ordinary tab stops.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Chain of Thought — origin: web-only, flutterSources is [].",
+      "web": "The header is a button with aria-expanded from Radix Collapsible, named by its text; steps are plain divs, not a list, and their status is shown by colour only; the search-result badges can be links through asChild.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

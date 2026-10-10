@@ -1,0 +1,40 @@
+{
+  "name": "textarea",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": ["lib/src/components/ui/textarea.dart"],
+  "webSources": ["components/ui/textarea.tsx"],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "Textarea builds a Stack (EditableText plus a placeholder Align when empty) inside a FieldSurfaceRecipe (border/shadow/focus/invalid socket) with min-h-20 enforced by an outer ConstrainedBox, then wrapped in GestureDetector/MouseRegion, Disabled, optional Semantics, and finally FieldVisibility — one field surface, no sub-slots.",
+      "web": "A single <textarea data-slot=\"textarea\"> element carrying the whole class list itself — field-sizing-content, min-h-20, border-input, bg-card, shadow-pressed — with no child slots, matching Flutter's single-surface anatomy."
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "Textarea(controller, initialValue, focusNode, placeholder, onChanged, enabled, readOnly, invalid, label, hint, disabledReason) asserts controller/initialValue are mutually exclusive, mirroring defaultValue vs a controlled value on the web.",
+      "web": "<textarea> forwards every native prop (value/defaultValue, onChange, placeholder, disabled, readOnly, aria-invalid) via React.ComponentProps<\"textarea\">, with min-h-20/rounded-lg/px-3.5 py-2.5/leading-relaxed matching Textarea.minHeight/Radii.lg/Textarea.insets."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "_TextareaState tracks _focused via a FocusNode listener and feeds it into FieldSurfaceRecipe alongside invalid (widget.invalid || scope?.invalid), the same focused/invalid state pair the socket recipe shares with Input.",
+      "web": "focus-visible:border-primary/50 focus-visible:ring-3 focus-visible:ring-ring/35 and aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 with no dark: variant — textarea.dart's own doc table confirms these are shared verbatim with Input."
+    },
+    "disabled": {
+      "verdict": "platform-difference",
+      "flutter": "Textarea wraps its whole surface in Disabled(disabled: !enabled, ...) with blockPointer's default of true — the doc comment flags that this diverges from the web class list's own omission of pointer-events-none: 'this system blocks the pointer on every disabled control uniformly, so Disabled's default (blockPointer: true) is used rather than following that omission.'",
+      "web": "textarea.tsx's disabled: variant is only 'disabled:cursor-not-allowed disabled:opacity-45' — no pointer-events-none — because the native disabled attribute on a real <textarea> already makes the browser refuse focus and input without any extra CSS.",
+      "note": "Both sides end up non-interactive when disabled — the web gets it for free from the native disabled attribute, and Flutter has no such platform primitive so it reaches the same end state with an explicit IgnorePointer via Disabled(blockPointer: true). This is a deliberate, documented divergence in mechanism with matching observable behaviour, not a defect."
+    },
+    "interaction": {
+      "verdict": "match",
+      "flutter": "GestureDetector(onTap: () => _editableKey.currentState?.requestKeyboard()) plus SystemMouseCursors.text/forbidden per enabled state, with EditableText itself supplying native text-editing keyboard behaviour (arrows, selection, IME).",
+      "web": "A real <textarea> gets every native keyboard and pointer behaviour (click-to-focus, text-cursor selection, arrow-key caret movement) for free from the browser with zero custom wiring."
+    },
+    "semantics": {
+      "verdict": "match",
+      "flutter": "Semantics(textField: true, multiline: true, label, hint, readOnly, enabled, validationResult: invalid ? invalid : none) is only attached when label/hint/invalid is set, mirroring a native <textarea>'s implicit textbox role plus aria-label/aria-describedby/aria-invalid.",
+      "web": "A native <textarea> carries the implicit ARIA textbox role automatically; label/hint/invalid are wired through aria-invalid and whatever aria-label/aria-describedby the Field wrapper (outside this file) supplies."
+    }
+  }
+}

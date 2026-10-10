@@ -1,0 +1,43 @@
+{
+  "name": "keyframes",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": ["lib/src/components/ui/keyframes.dart"],
+  "webSources": ["styles/motion.css", "components/docs/component-docs/keyframes/page.tsx"],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "keyframes.dart is a library of standalone motion-table classes (EntranceMotion, StateChangeMotion, SpringEntranceMotion, OpenMotion, DiscreteProgressMotion, TextRevealMotion, RevealMotion, LoadingShimmerMotion, LivePulseMotion, SweepMotion, TravelMotion, CheckmarkDrawMotion, DashDrawMotion, DotSelectionMotion, ContentSwapMotion) plus the shared Keyframes.track/doubles/offsets converter and KeyframePlayer/StepCurve/KeyframeFill machinery — no widget, only data + a player.",
+      "web": "styles/motion.css declares the raw @keyframes blocks directly (ds-enter, ds-exit, ds-open, ds-close, ds-expand, ds-change, ds-spin, ds-shimmer, ds-progress-indeterminate, ds-pulse, ds-caret, plus the seven surface timelines value-foil-drift, value-glint, action-beat, cosmic-drift-deep, cosmic-drift-near, star-sway, star-sway-alt) and the doc page's own comment states the rule this composition follows: 'A @keyframes block is never applied to an element directly ... it is always reached through the utility that names it' (anim-* classes are the only thing a component ever writes)."
+    },
+    "api": {
+      "verdict": "platform-difference",
+      "flutter": "Every table is consumed as typed static Animatable<T>/constant data (e.g. EntranceMotion.opacity, EntranceMotion.scale) that a widget drives explicitly through KeyframePlayer(duration:, fill:, repeat:, builder:) — the API is a set of Dart classes and a player widget.",
+      "web": "A component never references a @keyframes name directly — it applies the anim-* utility class (anim-enter, anim-exit, anim-open, anim-close, anim-expand, anim-collapse, anim-change, anim-spin, anim-shimmer, anim-shimmer-text, anim-progress-indeterminate, anim-pulse, anim-caret) which bundles the keyframe name with its own duration/easing/fill-mode, per the doc page's explicit Right/Wrong usage snippet.",
+      "note": "This is a pass, not a defect: CSS's animation-shorthand utility (one class carrying keyframe+duration+easing+fill) and Flutter's explicit AnimationController-driven player are the idiomatic mechanism on each platform for the same effect, and the doc page itself states the rule (\"never reference a @keyframes name directly ... reach it through the anim-* utility\") that the Dart port's KeyframePlayer/Motion-class split honors from the other direction."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "KeyframeFill.both vs KeyframeFill.none models exactly which stop a stilled/reduced-motion run freezes to, table by table (e.g. EntranceMotion.fill = both, DiscreteProgressMotion.fill = none, LoadingShimmerMotion.fill = none, LivePulseMotion.fill = none) — matching every other table's fill = both.",
+      "web": "The utilities' own animation shorthand carries `both` (anim-enter, anim-open, anim-change, etc.) or omits fill entirely for the loopers (anim-progress-indeterminate: linear infinite with no fill keyword, anim-shimmer, anim-pulse) — verified directly against styles/motion.css's @utility blocks, one-for-one with the Dart KeyframeFill enum values per table."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "keyframes.dart is a motion-table library, not a control — there is no enabled/disabled concept anywhere in the file.",
+      "web": "@keyframes/anim-* utilities have no disabled state either; disabling an animated element is a concern of the component wearing the utility (e.g. Button's own disabled: class), not of the animation table itself.",
+      "note": "A keyframe timeline has no operable state to disable on either platform — disabled is a property of the component consuming the animation, out of scope for this capability."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No pointer/keyboard/touch handling exists in keyframes.dart — it is purely a set of Animatable tables and a passive AnimatedBuilder-driven player.",
+      "web": "@keyframes blocks and anim-* utilities carry no interaction handling of their own; they are declarative CSS the browser's compositor animates.",
+      "note": "Motion tables are inert data on both platforms — interaction, if any, belongs to whatever component triggers replay (a KeyedSubtree remount in Flutter, a re-key/class-toggle on the web), which is out of this capability's scope."
+    },
+    "semantics": {
+      "verdict": "match",
+      "flutter": "KeyframePlayer resolves duration through effectiveMotionDuration and freezes to fill's stop under reduced motion by stopping the controller and setting its value outright (KeyframePlayer._play, keyframes.dart:354-363) rather than running a zero-length animation — reproducing the blanket prefers-reduced-motion collapse per-table via KeyframeFill.",
+      "web": "globals.css's blanket prefers-reduced-motion rule (cited throughout keyframes.dart's doc comments as L2534-2565) collapses every duration to 0.01ms and every loop to one iteration but never touches fill-mode, so a `both` animation holds its final stop and a fill-less looper reverts to the element's own resting style — the exact per-table distinction KeyframeFill encodes.",
+      "note": "The doc comment records DRIFT (motion-map D10): the source page's own reduced-motion copy claims 'Looping animations run exactly once, then hold' when that is only true of both/forwards fills — the three loopers actually revert to stop 0. This is a documentation-vs-mechanism drift already captured verbatim in keyframes.dart's own doc comment (not a fresh finding of this audit) and both platforms ship the same (correct) mechanism despite the page's copy being imprecise, so semantics itself is recorded as match."
+    }
+  }
+}

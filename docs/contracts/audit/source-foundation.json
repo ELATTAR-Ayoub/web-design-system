@@ -1,0 +1,53 @@
+{
+  "name": "source-foundation",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": ["registry/foundations/source.json"],
+  "webSources": [
+    "styles/tokens.css",
+    "styles/typeset.css",
+    "styles/motion.css",
+    "styles/utilities.css",
+    "app/globals.css",
+    "lib/utils.ts",
+    "components/ui/icon.tsx",
+    "components/ui/icon-swap.tsx",
+    "components/docs/component-docs/source-foundation/page.tsx"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "registry/foundations/source.json's files array lists ten foundation Dart files (colors.dart, date_format.dart, media.dart, motion.dart, shadows.dart, spacing.dart, surfaces.dart, theme.dart, typography.dart, text_layout.dart, theme_scope.dart) plus two font assets (InterVariable.ttf as 'InterLocal', GeistMono-Variable.ttf as 'GeistMono'), exporting 33 named symbols including ThemeTokens, TextStyles, Shadows, MotionDurations/MotionCurves/MotionTransforms, Radii, Palette, StyledText.",
+      "web": "AGENTS.md states the system is exactly four files — styles/tokens.css, styles/typeset.css, styles/motion.css, styles/utilities.css — plus app/globals.css as the entry that imports them in that order and holds nothing else, mirroring the Dart side's one-file-per-concern split (colors/typography/motion/shadows+spacing) under a single foundation package."
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "source.json's exports list names ThemeTokens/ResolvedColorMode/ColorMode/Palette for color, TextStyles/TextStyleToken/TextColorRole/Fonts for typography, MotionCurves/MotionDurations/MotionTransforms for motion, Shadows/ShadowStyle/ShadowLayer for elevation, and Radii/BorderWidths/Breakpoints/Containers/LayoutWidths/LayoutHeights/Fluid for spacing/layout — a typed Dart API surface over the same concerns.",
+      "web": "styles/tokens.css defines the CSS custom properties (--color-*, --radius-*, --spacing-*) consumed via Tailwind v4's @theme directive, and lib/utils.ts's cn() (clsx+tailwind-merge) plus components/ui/icon.tsx/icon-swap.tsx are the JS-side API surface referenced by the packet's registryFiles alongside the four styles/*.css files, giving a CSS-variable-plus-utility-function API in place of Dart's typed classes."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "source.json is a registry manifest for a Dart package — a files/exports/dependencies list with no runtime widget and therefore no interaction state of its own.",
+      "web": "styles/tokens.css and its sibling files are stylesheets and utility modules, not interactive components; they define tokens consumed by every other component's own state matrix rather than owning states themselves.",
+      "note": "A foundation/token layer has no rest/hover/focus/pressed matrix of its own on either platform — states belong to the components built on top of it."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "registry/foundations/source.json carries no disabled concept — it is a manifest of files, exports and font/license assets.",
+      "web": "The four styles/*.css files and app/globals.css define tokens and utilities, not a disableable control.",
+      "note": "Disabled state applies to individual components (buttons, inputs, etc.), which consume this foundation's tokens (e.g. opacity-50, --muted-foreground) rather than the foundation defining disabled behavior itself."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "source.json declares no widget and therefore no keyboard/pointer/touch/dismissal behavior.",
+      "web": "styles/*.css and app/globals.css contain no interactive markup; lib/utils.ts's cn() is a pure string-merging helper and icon.tsx/icon-swap.tsx render presentational SVG wrappers with no interaction handling of their own beyond what a parent component wires.",
+      "note": "Interaction is owned by the components that consume these tokens, not by the token/utility layer itself."
+    },
+    "semantics": {
+      "verdict": "platform-difference",
+      "flutter": "source.json's fonts array bundles InterVariable.ttf (family 'InterLocal') and GeistMono-Variable.ttf (family 'GeistMono') as first-class package assets with sha256-pinned licenses (Inter-OFL-1.1.txt, Geist-Mono-OFL-1.1.txt) — Flutter has no browser font-loading API, so fonts ship as binary assets registered in the package manifest.",
+      "web": "styles/tokens.css and app/globals.css reference font families through CSS custom properties and @font-face-style declarations resolved by the browser's own font loading, with no equivalent sha256-pinned asset manifest — RULES §6 documents which of the four files owns which concern instead.",
+      "note": "This is a platform difference rather than a gap: Flutter's package format requires fonts to be declared as versioned, hash-verified assets because there is no browser font-loading mechanism to fall back on, while the web's font strategy is a CSS-level concern resolved by the browser; both achieve the same visual typography (InterLocal/GeistMono) through the mechanism appropriate to their platform, and licensing is tracked in both (OFL files pinned in the Dart manifest; the web's licensing is out of scope for styles/*.css itself)."
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "alert",
+  "title": "Alert",
+  "description": "The `alert` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "registryDependencies": [
+    "@elattar/source-foundation"
+  ],
+  "files": [
+    {
+      "path": "components/ui/alert.tsx",
+      "content": "import * as React from \"react\"\r\nimport { cva, type VariantProps } from \"class-variance-authority\"\r\n\r\nimport { cn } from \"@/lib/utils\"\r\n\r\nconst alertVariants = cva(\r\n  \"group/alert relative grid w-full gap-1 overflow-hidden rounded-lg border border-border bg-card px-4 py-3.5 text-left text-sm text-card-foreground bloom-cosmic has-data-[slot=alert-action]:pr-20 has-[>svg]:grid-cols-[auto_1fr] has-[>svg]:gap-x-3 *:[svg]:row-span-2 *:[svg]:translate-y-0.5 *:[svg:not([class*='size-'])]:size-4\",\r\n  {\r\n    variants: {\r\n      variant: {\r\n        default:\r\n          \"*:[svg]:text-muted-foreground [--bloom-1:var(--color-action-bright)] [--bloom-2:var(--color-action)]\",\r\n        destructive:\r\n          \"*:[svg]:text-destructive-ink [--bloom-1:var(--destructive)] [--bloom-2:var(--color-destructive-lifted)]\",\r\n        success:\r\n          \"*:[svg]:text-success-ink [--bloom-1:var(--color-success)] [--bloom-2:var(--color-value)]\",\r\n        warning:\r\n          \"*:[svg]:text-warning-ink [--bloom-1:var(--color-warning)] [--bloom-2:var(--color-warning-deep)]\",\r\n        info: \"*:[svg]:text-info-ink [--bloom-1:var(--color-info)] [--bloom-2:var(--color-info-deep)]\",\r\n      },\r\n    },\r\n    defaultVariants: {\r\n      variant: \"default\",\r\n    },\r\n  }\r\n)\r\n\r\nconst ASSERTIVE_VARIANTS = new Set([\"destructive\", \"warning\"])\r\n\r\nfunction Alert({\r\n  className,\r\n  variant,\r\n  children,\r\n  ...props\r\n}: React.ComponentProps<\"div\"> & VariantProps<typeof alertVariants>) {\r\n  return (\r\n    <div\r\n      data-slot=\"alert\"\r\n      role={ASSERTIVE_VARIANTS.has(variant ?? \"default\") ? \"alert\" : \"status\"}\r\n      className={cn(alertVariants({ variant }), className)}\r\n      {...props}\r\n    >\r\n      <span data-slot=\"alert-stars\" className=\"starfield\" aria-hidden />\r\n      {children}\r\n    </div>\r\n  )\r\n}\r\n\r\nfunction AlertTitle({ className, ...props }: React.ComponentProps<\"div\">) {\r\n  return (\r\n    <div\r\n      data-slot=\"alert-title\"\r\n      className={cn(\r\n        \"font-medium group-has-[>svg]/alert:col-start-2 [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground\",\r\n        className\r\n      )}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nfunction AlertDescription({\r\n  className,\r\n  ...props\r\n}: React.ComponentProps<\"div\">) {\r\n  return (\r\n    <div\r\n      data-slot=\"alert-description\"\r\n      className={cn(\r\n        \"text-sm text-balance text-muted-foreground md:text-pretty [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4\",\r\n        className\r\n      )}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nfunction AlertAction({ className, ...props }: React.ComponentProps<\"div\">) {\r\n  return (\r\n    <div\r\n      data-slot=\"alert-action\"\r\n      className={cn(\"absolute top-2 right-2\", className)}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nexport { Alert, AlertTitle, AlertDescription, AlertAction }\r\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

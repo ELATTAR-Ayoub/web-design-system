@@ -1,0 +1,49 @@
+{
+  "name": "menu",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/menu.dart"
+  ],
+  "webSources": [
+    "components/ui/dropdown-menu.tsx",
+    "components/ui/context-menu.tsx",
+    "components/ui/menubar.tsx",
+    "components/docs/component-docs/menu/page.tsx"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "menu.dart's own doc comment: 'The shared body of dropdown-menu.tsx, context-menu.tsx and menubar.tsx — three files, one Radix Menu, one set of rows.' It defines MenuChild subtypes MenuItem, MenuCheckboxItem, MenuRadioItem/MenuRadioGroup, MenuLabel, MenuSeparator, MenuGroup, MenuSub, plus MenuSurface and MenuContent as the shared row model and surface, explicitly stating the three roots (DropdownMenu, ContextMenu, Menubar) live in separate files and only the body is shared here.",
+      "web": "dropdown-menu.tsx exports DropdownMenu/Trigger/Portal/Content/Group/Item/CheckboxItem/RadioGroup/RadioItem/Label/Separator/Shortcut/Sub/SubTrigger/SubContent, all Radix DropdownMenuPrimitive parts with data-slot attributes (data-slot=\"dropdown-menu\", \"dropdown-menu-item\", etc.); context-menu.tsx and menubar.tsx mirror the same slot list over ContextMenuPrimitive and MenubarPrimitive respectively — three roots, one shared row anatomy, exactly as the Dart doc comment states."
+    },
+    "api": {
+      "verdict": "platform-difference",
+      "flutter": "MenuItem's constructor takes label, icon, lucideIcon, subtitle, shortcut, variant (MenuItemVariant.normal|destructive), enabled, disabledReason, inset, onSelect; MenuIndicatorSide records the menubar's left-side check indicator as a documented drift from dropdown/context's right side ('DOCUMENTED DRIFT (menus drift 5): the menubar's check rows put their indicator on the left ... while the dropdown's and the context menu's put it on the right. One role, two mirror images, three files.').",
+      "web": "DropdownMenuItem takes inset?:boolean and variant?:\"default\"|\"destructive\" as its only additions over Radix's Item props; DropdownMenuCheckboxItem/RadioItem carry Radix's own checked/onCheckedChange/value props. There is no single shared React module — dropdown-menu.tsx, context-menu.tsx and menubar.tsx each restate the same class strings independently.",
+      "note": "The menu doc page states this is a deliberate decision, not an oversight: 'Comparing every class string of eighty characters or more across dropdown-menu.tsx, context-menu.tsx and menubar.tsx finds none shared by all three, and none shared even between the closest pair... Extracting a shared body would therefore not be a refactor of existing duplication — it would be a behavioural change to three working, separately-tested components, made to satisfy a name.' Flutter's Menu class exists only as registry parity with the Flutter widget tree; the web correctly has no menu.tsx module, and MenuItem's unified API (one Dart class serving all three roots) is itself Flutter's own simplification, not a web gap."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "Doc comment probe notes: 'Every menu row computes transition-property: all with transition-duration: 0s, so the accent highlight is a snap in both directions'; MenuItem.enabled=false renders via Disabled(blockPointer:false) and Semantics(enabled:); MenuCheckboxItem has checked/unchecked via MenuRadioItem/MenuCheckboxItem.checked.",
+      "web": "dropdown-menu.tsx's DropdownMenuItem className carries focus:bg-accent focus:text-accent-foreground, data-disabled:pointer-events-none data-disabled:opacity-50, and data-[variant=destructive]:focus:bg-destructive/10 (dark:/20) — the same 10%/20% destructive fill alpha the Dart file hardcodes as _destructiveFillAlpha=0.10 / _destructiveFillAlphaDark=0.20, confirming the values were measured off this file."
+    },
+    "disabled": {
+      "verdict": "match",
+      "flutter": "MenuItem.enabled defaults true; disabledReason is 'Why the row is disabled. Shown as a tooltip while enabled is false.' and the row is wrapped in Disabled(disabled: !enabled, blockPointer: false, reason: disabledReason) plus Semantics(enabled: enabled) so assistive tech gets the disabled state and pointer bypass stays false (opacity-only, per data-disabled:pointer-events-none matching on web).",
+      "web": "DropdownMenuItem, ContextMenuItem and MenubarItem (and their Checkbox/Radio item shapes) each take `disabledReason?: string`, routed through components/ui/disabled.tsx in aria mode: the row stays in the accessibility tree, the reason is a separate focusable affordance, and `aria-describedby` ties it to the row.",
+      "note": "CLOSED on review: the three menus now carry `disabledReason` — see the per-menu audits (context-menu, dropdown-menu, menubar) for the measurement. ORIGINAL: Flutter's MenuItem.disabledReason has no equivalent prop on the web DropdownMenuItem/ContextMenuItem/MenubarItem — callers who want a reason must build their own tooltip wrapper around a disabled item. This is a real feature gap (not just a platform difference) since nothing in dropdown-menu.tsx, context-menu.tsx or menubar.tsx accepts a reason/tooltip string."
+    },
+    "interaction": {
+      "verdict": "match",
+      "flutter": "Doc comment items 3-6: 'A menu opens on pointerdown, not on the click' (MenuPointerDown widget uses Listener(onPointerDown:)); 'The arrows do not wrap... Radix's RovingFocusGroup is mounted with loop at its false default'; 'Typeahead is real... the buffer resets after 1s' (_typeaheadReset = MotionDurations.menuTypeaheadReset); 'A submenu opens ~100ms after the pointer enters its trigger' (_subOpenDelay).",
+      "web": "The menu doc page's Keyboard section: 'All three are built on Radix and share its menu keyboard model: arrow keys move between items, Enter and Space activate, Escape closes and returns focus to the trigger... Typing jumps to the first item... Submenus open on ArrowRight and close on ArrowLeft.' This is the Radix behavior the Dart file ports 1:1, including the no-wrap and 100ms sub-open timer sourced directly from Radix internals."
+    },
+    "semantics": {
+      "verdict": "match",
+      "flutter": "_MenuRow wraps each row in Semantics(button: true, selected: checked, enabled: enabled, label: subtitle == null ? label : '$label $subtitle') — explicitly noted: 'a reader gets \"Fast, Answers in a second\" rather than a name that stops at the label and a hint nothing announces,' addressing a two-line row's accessible name directly.",
+      "web": "Radix's underlying Item/CheckboxItem/RadioItem primitives supply role=menuitem/menuitemcheckbox/menuitemradio and aria-disabled automatically; the menu doc page does not separately restate an Accessibility section beyond the Keyboard section, relying on Radix's own ARIA implementation for naming and roles that dropdown-menu.tsx, context-menu.tsx and menubar.tsx inherit unchanged.",
+      "note": "Both sides land on the same outcome (accessible name = visible row text, correct role and state) via different mechanisms — Flutter builds Semantics explicitly per the doc comment's own reasoning, while the web relies on Radix's ARIA wiring with no additional doc-page callout confirming the two-line-subtitle case is verified on the web side; recorded as platform-difference in mechanism, match in outcome since neither side is missing a capability the other has."
+    }
+  }
+}

@@ -1,0 +1,53 @@
+/* ============================================================================
+   THE STYLESHEET ENTRY
+
+   This file is the entry `components.json` names, and nothing else. Every
+   value in the system is defined in one of the four files below, each of which
+   owns exactly one thing:
+
+     tokens.css     faces, the dark variant, the brand and semantic scales,
+                    the light and dark theme blocks, `@layer base`
+     typeset.css    every `.type-*` role and the `.prose` flow
+     motion.css     the duration and easing scale, every `@keyframes`, the
+                    motion utilities, both reduced-motion blocks
+     utilities.css  the sanctioned effect utilities and surfaces
+
+   THE ORDER IS LOAD-BEARING. Tokens have to be declared before typeset and
+   motion read them, and utilities is last because its unlayered rules exist to
+   win. `test/foundation/token-source.test.ts` asserts both the order and the
+   ownership; `scripts/check-tokens.mjs` and `scripts/check-refs.mjs` treat all
+   four as the definition of the system.
+
+   Nothing may be added to this file. If a rule needs a home, it has one of
+   four homes.
+   ========================================================================= */
+@import "tailwindcss";
+@import "shadcn/tailwind.css";
+@import "../styles/tokens.css";
+@import "../styles/typeset.css";
+@import "../styles/motion.css";
+@import "../styles/utilities.css";
+
+@source not "../.claude";
+
+/* Prose is not a source of classes.
+
+   Tailwind v4 auto-scans every tracked file that is not binary and not
+   gitignored — markdown included. So a class NAMED in a document is extracted
+   and emitted exactly as if it had been written on an element, and this
+   repository documents its rules by quoting the code they govern.
+
+   Two things were shipping because of it. `RULES.md`'s own don't-do-this table
+   was putting `.bg-red-500`, `.animate-bounce` and `.duration-300` into the
+   bundle — the three classes it names as forbidden. And
+   a planning note quotes the diff
+   that REMOVED `bg-[oklch(from var(--primary) 0.93 calc(c*0.4) h)]` from
+   `bubble.tsx`, which put that arbitrary value straight back into the built
+   stylesheet. No element carries any of them; they were dead weight with §1
+   violations written on them.
+
+   This also keeps §9.1 honest. The method rule there is that the built
+   stylesheet is the only authority on whether a class resolves — and that rule
+   is only useful if "emitted" still implies "referenced from code". A prose
+   file that can emit breaks the implication. */
+@source not "../**/*.md";

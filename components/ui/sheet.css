@@ -1,0 +1,22 @@
+@keyframes sheet-slide-in {
+  from { translate: var(--sheet-from); }
+  to { translate: 0 0; }
+}
+
+@keyframes sheet-slide-out {
+  from { translate: 0 0; }
+  to { translate: var(--sheet-from); }
+}
+
+[data-sheet][data-side="left"] { --sheet-from: -100% 0; }
+[data-sheet][data-side="right"] { --sheet-from: 100% 0; }
+[data-sheet][data-side="top"] { --sheet-from: 0 -100%; }
+[data-sheet][data-side="bottom"] { --sheet-from: 0 100%; }
+
+[data-sheet][data-state="open"] {
+  animation: sheet-slide-in var(--duration-overlay-enter) var(--ease-enter) both;
+}
+
+[data-sheet][data-state="closed"] {
+  animation: sheet-slide-out var(--duration-normal) var(--ease-exit) both;
+}

@@ -1,0 +1,1296 @@
+/* ============================================================================
+   TOKENS — the foundation, and the only place a value is chosen
+
+   Faces, the dark variant, the brand ramps (`@theme static`), the shadcn
+   semantic mapping (`@theme inline`), the light and dark theme blocks, and the
+   `@layer base` document defaults.
+
+   THIS FILE IS THE ONLY DECLARING CONTEXT. There is no `@theme` block and no
+   bare `:root` / `.light` / `.dark` block anywhere else in the system — with
+   one stated exception: motion.css carries a second `@theme static` holding the
+   duration and easing scale, so time is defined beside the keyframes that
+   spend it. Everything else reads these by `var()` or by a token utility.
+
+   Imported by `app/globals.css`, which is the entry `components.json` names.
+   ========================================================================= */
+
+@font-face {
+  font-family: "Inter Local";
+  src: url("/fonts/inter-variable.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================================================
+   ELATTAR'S DESIGN SYSTEM — BRAND TOKENS
+
+   The palette itself: theme-independent, because a blue is a blue whichever
+   surface it lands on. What changes between light and dark is which member of
+   a ramp a given ROLE points at, and that lives in the theme blocks below.
+
+   Two roles, and the whole colour story is in their names:
+     `action`  the thing that acts — buttons, links, focus, selection, the agent
+     `value`   the thing that is worth something — money, premium, reward, rarity
+
+   They are named for what they mean rather than for what they look like, which
+   is the difference between rebranding this system in five lines and rebranding
+   it in seven hundred. This ramp has already been purple-and-gold, and it went
+   to wine-and-amethyst and back; it is blue-and-lime today. No component knew
+   or had to change on any of those moves — which is the claim this file exists
+   to keep true.
+
+   Balance target: ~70% neutral surfaces / ~20% action / ~10% value.
+   ========================================================================= */
+/* `static` is load-bearing, not a preference. Tailwind v4 tree-shakes @theme
+   tokens that no utility class references — and the shadcn block below points at
+   these by var(). A brand token used only by a derived alias would be shaken
+   out, leaving e.g. `--accent` resolving to nothing. `static` emits them all. */
+@theme static {
+  /* Drop Tailwind's stock scales for the two hues we now occupy, so
+     `text-blue-500` cannot resolve to an off-brand blue beside our own. Purple
+     goes too: it was this system's action ramp two brands ago and a stock
+     purple is the drift that would read as a survivor of it.
+     Must precede our own keys. */
+  --color-blue-*: initial;
+  --color-lime-*: initial;
+  --color-purple-*: initial;
+
+  /* ── The two ramps — the ONLY colours outside shadcn's token set ──────────
+     Three blues, three limes. Nothing else. Monochrome comes from zinc via the
+     shadcn semantic tokens below.
+
+     EACH RAMP HAS EXACTLY ONE TEXT-SAFE SHADE PER THEME, and it is not the same
+     shade in both. `-bright` clears AA on the dark background; `-dark` clears it
+     on the light one. Neither is safe on the other. That is why no component
+     ever writes `text-action-bright` — it writes `text-action-ink`, which the
+     theme blocks point at whichever end is legible here.
+     `npm run dev` → /design-system/colors measures every one of them live, in
+     whichever theme you are looking at.
+
+     BLUE PUTS THE ACTION RAMP CLEAR OF EVERY STATE HUE, which is the thing the
+     wine brand could not do: wine shared a hue family with `--destructive` and
+     had to buy its separation with chroma and lightness. Here §1.5's clearance
+     comes back for free — blue is 143° off amber, 158° off crimson, and the one
+     hue it does sit near is `info`, which is why `info` is cyan rather than the
+     blue 400 it started as. */
+  /* The hexes are what these actually rasterise to, read off the live page.
+     They were annotated #93C5FD / #2563EB / #1D4ED8 — Tailwind's blue 300 / 600
+     / 700 — which is where the ramp was sampled from, but the `hsl()` values
+     were never exactly those and the comment said otherwise for three brands. */
+  --color-action-bright: hsl(213 94% 78%); /* #92C2FC · ink on dark   */
+  --color-action: hsl(217 91% 53%); /* #1A6EF4 · the fill      */
+  --color-action-dark: hsl(224 76% 33%); /* #143694 · ink on light  */
+
+  --color-value-bright: #d9f99d; /* lime, lifted   */
+  --color-value: #a3e635; /* lime, the fill */
+  --color-value-dark: #4d7c0f; /* lime, ink on light */
+
+  /* The ink that sits ON the value foil — and the one foreground in this system
+     that deliberately does NOT flip with the theme.
+     Everything else pairs a foreground to a surface that changes: text on
+     `--background` inverts because the background inverts. The foil does not.
+     It is an opaque metal ramp mixed from the three limes above, so it is the
+     same lime on a white page as on a black one, and its label has to be dark
+     in both.
+     `text-background` was doing this job, which was correct in a dark-only
+     system and became a contrast failure the moment light mode existed: on
+     light, `--background` is white, so the premium button rendered white on
+     lime.
+     Measured against every stop of the foil by rasterising each one — the
+     `color-mix(in oklab, …)` stops compute to `oklab()` and have to be painted
+     to read honestly, not parsed. Lime is a high-luminance hue, so every stop
+     clears AAA with room to spare; the live figures are printed on
+     /design-system/colors. */
+  --color-value-foreground: hsl(240 10% 8%);
+
+  /* ── State ────────────────────────────────────────────────────────────────
+     shadcn ships only --destructive, so these three are ours. Each is chosen to
+     clear WCAG AA as text in BOTH themes — the colours page proves it by
+     measuring them live rather than asserting it here.
+
+     Two of the three sit where they do because of the action ramp, not in spite
+     of it:
+
+       `info` was blue 400. Once `action` became blue, an informational alert and
+       the brand were the same colour, so a notice read as a promotion. It is
+       cyan — still cool, still obviously "here is a fact", no longer the brand.
+
+       `success` was green 400, which sat a few degrees from lime. A completed
+       action and a valuable one must not be confusable when both appear in the
+       same row, so success is a deeper emerald and the gap is open.
+
+     `warning` has not moved through two rebrands and does not need to: amber is
+     forty degrees off lime, which is §1.5's working clearance, and 143° off the
+     action ramp. */
+  --color-success: #10b981; /* emerald 500 */
+  --color-warning: #fbbf24; /* amber 400   */
+  --color-info: #22d3ee; /* cyan 400    */
+
+  /* The deep end of each state hue.
+     The three above were picked for near-black and are correct there. On white
+     they are decorative, not legible: amber 400 measures about 1.7:1 and cyan
+     400 about 1.9:1, so `text-warning` on a light surface was unreadable and
+     nothing said so. The brand ramps solved this with `-ink`; the state colours
+     never got the same treatment, which is the gap these close. */
+  --color-success-deep: #047857; /* emerald 700 */
+  --color-warning-deep: #b45309; /* amber 700   */
+  --color-info-deep: #0e7490; /* cyan 700    */
+  /* shadcn's `--destructive` is one red in both themes, and on near-black it
+     measures about 3.1:1 — fine as a fill, too weak as a glyph or a label. This
+     is its lifted counterpart, used only where destructive has to carry text. */
+  --color-destructive-lifted: #f87171; /* red 400 */
+  --color-destructive-deep: hsl(0 72.2% 46%); /* light-theme ink on red washes */
+
+  /* ── Typography ───────────────────────────────────────────────────────────
+     TWO FACES, AND ONLY TWO. Inter owns words — body, headings, navigation,
+     labels, the display step. Geist Mono owns code, identifiers and figures.
+
+     There is no third. `--font-heading` was Inter written out a second time
+     under another name, so a heading and a paragraph could silently disagree
+     about their face; `--font-accent` was Redaction, a display serif carried
+     for exactly one word on one page, and both it and the `.type-accent` role
+     it served are gone.
+
+     Inter is loaded by the `@font-face` at the top of this file rather than by
+     `next/font/local` in `app/layout.tsx`, and that is a deliberate choice: the
+     stylesheet is what a consumer installs, so a system whose sans face is
+     wired up in an app's root layout arrives at that consumer without one.
+     Geist Mono is the exception and has to be — `--font-geist-mono` is written
+     onto <html> by the `geist` package at runtime. */
+  --font-sans: "Inter Local", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* Tailwind's `font-*` utilities are part of the component vocabulary, so
+     their values belong here too. Without these aliases, `font-medium` in a
+     primitive follows the framework default rather than this type system. */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  /* ── Tracking ─────────────────────────────────────────────────────────────
+     NINE OF THE SEVENTEEN ROLES ARE TRACKED, and this comment used to say the
+     contract specified none. Flutter 0.0.3 tightens everything at the top of
+     the scale and everything set in mono: `display` -0.03, `h1` and
+     `number-xl` -0.02, `h2` -0.015, and `h3`, `identifier` and the four
+     smaller numerics -0.01. `h4`, `lead`, `body`, `small`, `nav`, `badge` and
+     `code` stay `normal`. `styles/typeset.css` is where each role spends one
+     of these; the mapping is asserted, role by role, in
+     `test/foundation/typography-contract.test.ts`.
+
+     `--tracking-snug` is new and exists for exactly one role, `h2`. It is not
+     furniture: the contract asks for -0.015em there and a literal in
+     `typeset.css` would be a hardcoded value in a file whose whole job is to
+     stop those.
+
+     `--tracking-num` is no longer unspent — it is the tightening the five
+     numeric roles and `identifier` now take. The four that are gone — tag,
+     badge, label, micro, running 0.12em to 0.18em — were the furniture
+     ladder's wide-tracked uppercase steps, and they went with the roles that
+     spent them. `--tracking-cta` stays because Button's `emphasis="caps"`
+     variant is a component decision about one control, which is exactly where
+     case and tracking now live. */
+  --tracking-display: -0.03em;
+  --tracking-tight: -0.02em;
+  --tracking-snug: -0.015em;
+  --tracking-num: -0.01em;
+  --tracking-cta: 0.09em;
+
+  /* ── Type sizes and line heights ─────────────────────────────────────────
+     TWO TOKENS PER ROLE, holding that role's PHONE step. The tablet and
+     desktop steps redefine these same names in the two media blocks below
+     this `@theme`, so a role has exactly ONE owner for each of its values and
+     both readers of that value move together.
+
+     THE TWO READERS ARE WHY THE STEPS ARE TOKENS AND NOT LITERALS.
+     `styles/typeset.css` used to write the tablet and desktop sizes itself as
+     literal rem, on the reasoning that a token only one media block can read
+     is a name with no second reader. That reasoning stopped holding once
+     Flutter 0.0.3 made every role responsive. Tailwind v4 compiles
+     `text-small` to `font-size: var(--text-small)` — verified in the built
+     stylesheet, which is the only authority on what a class emits — so the
+     utility and the `.type-*` class read the SAME custom property. Redefining
+     the property under a media query moves both; writing literals in
+     `typeset.css` would have moved only the class, and left every
+     `text-sm` in the vendored shadcn components frozen at the phone step.
+
+     THERE IS NOW A STEP BELOW 14px, and this comment used to say there was
+     not. The old ladder's 10px-to-13px furniture roles were removed because
+     each one existed to carry a colour or a case some component did not want,
+     not because 12px is indefensible. Flutter 0.0.3 sets the shared contract:
+     `body` starts at 14 on a phone and reaches 16 on a desktop, `small`
+     starts at 12 and reaches 14, and `badge` starts at 10. A phone reads at a
+     shorter distance than a laptop; the role keeps its meaning and grows with
+     the viewport instead of holding one size everywhere. `test/foundation/
+     typography-contract.test.ts` asserts all seventeen against
+     `lib/ds/platform-contract.ts`, at all three widths.
+
+     Sizes are `rem`, never `px`, so browser text zoom and a user's own root
+     size keep working. The pixel comments are the contract's numbers at a
+     16px root. */
+  --text-display: 2.25rem; /* 36 */
+  --text-h1: 1.875rem; /* 30 */
+  --text-h2: 1.625rem; /* 26 */
+  --text-h3: 1.25rem; /* 20 */
+  --text-h4: 1.125rem; /* 18 */
+  --text-lead: 1.125rem; /* 18 */
+  --text-body: 0.875rem; /* 14 */
+  --text-small: 0.75rem; /* 12 */
+  --text-nav: 0.75rem; /* 12 */
+  --text-badge: 0.625rem; /* 10 */
+  --text-code: 0.75rem; /* 12 */
+  --text-identifier: 0.75rem; /* 12 */
+  --text-number-sm: 0.75rem; /* 12 */
+  --text-number-base: 0.875rem; /* 14 */
+  --text-number-md: 1.25rem; /* 20 */
+  --text-number-lg: 1.875rem; /* 30 */
+  --text-number-xl: 2.25rem; /* 36 */
+
+  --leading-display: 2.5rem; /* 40 */
+  --leading-h1: 2.25rem; /* 36 */
+  --leading-h2: 2rem; /* 32 */
+  --leading-h3: 1.75rem; /* 28 */
+  --leading-h4: 1.5rem; /* 24 */
+  --leading-lead: 1.75rem; /* 28 */
+  --leading-body: 1.25rem; /* 20 */
+  --leading-small: 1rem; /* 16 */
+  --leading-nav: 1rem; /* 16 */
+  --leading-badge: 0.875rem; /* 14 */
+  --leading-code: 1.125rem; /* 18 */
+  --leading-identifier: 1.125rem; /* 18 */
+  --leading-number-sm: 1rem; /* 16 */
+  --leading-number-base: 1.25rem; /* 20 */
+  --leading-number-md: 1.75rem; /* 28 */
+  --leading-number-lg: 2.25rem; /* 36 */
+  --leading-number-xl: 2.5rem; /* 40 */
+
+  /* Tailwind's own steps, repointed at ours.
+     Without this the product runs TWO type scales side by side, and the sixty
+     vendored shadcn components are written in `text-sm` / `text-xs`. Rewriting
+     them all would fight the "one vocabulary, and it is shadcn's" rule, so the
+     scale is aliased instead.
+
+     These four now track the responsive roles they point at, which is the
+     second thing the media blocks below bought. `text-sm` used to be frozen at
+     the one size `--text-small` ever had; it is 12 / 13 / 14 now, the same
+     three steps `.type-small` walks. The aliases are also finally honest about
+     Tailwind's own intent — its `xs` means 12 and its `base` means 16, and at
+     the ends of the range each one now lands there. */
+  --text-xs: var(--text-small); /* 12 → 14 */
+  --text-sm: var(--text-small); /* 12 → 14 */
+  --text-base: var(--text-body); /* 14 → 16 */
+  --text-lg: var(--text-lead); /* 18 → 20 */
+
+  /* ── Radius ─────────────────────────────────────────────────────────────
+     `xs` exists for tips and swatches only — a tooltip arrow, a chart legend
+     key. Nothing with content in it should ever be this sharp. */
+  /* ── Content width ──────────────────────────────────────────────────────
+     The two measures the documentation shell is built on, and the only two
+     widths in this system that are neither a component's size nor a fraction
+     of the viewport. `shell` is the outer frame the sidebar and main column
+     share; `content` is the reading column inside it, held to roughly 90
+     characters at the body size so a paragraph never runs past a comfortable
+     line. They were inline pixel values until the guard learned to look for
+     them. */
+  --width-shell: 1680px;
+  --width-content: 1080px;
+  /* The documentation stage's code view, capped so a page stays a reference.
+
+     `PreviewCode` swaps source into the same frame the specimen occupies. An
+     eighty-line specimen uncapped pushes every following section below the
+     fold, and the reader scrolls through code they did not ask for to reach
+     the next component. 28rem is roughly twenty-two lines at `--text-code`,
+     which is enough to read a whole small specimen without scrolling and
+     enough of a large one to see what shape it is. */
+  --height-doc-code: 28rem;
+  /* The Preview stage's floor. A component page opens on its specimen, and a
+     stage that shrinks to a lone 36px button reads as an empty page; the
+     owner's call is 640px so the opening frame is a real stage whatever is
+     on it. Only the Preview section's stage — a state grid further down is
+     sized by its content. */
+  --height-doc-stage: 40rem;
+  /* How much of the viewport a pinned documentation rail may occupy.
+
+     Both rails are desktop-only by construction, so this is only ever applied
+     to a desktop viewport. A rail that fits inside it never notices. It is the
+     long ones — the component family lists, a component page's outline — that
+     stop short of the fold instead of running the eye to the bottom edge of
+     the screen, so the rail reads as a panel with room around it rather than a
+     column of text poured into the window.
+
+     The `min()` is the short-viewport case: below about 500px of height, 80dvh
+     is MORE than what is left under the sticky header, and the rail's bottom
+     would fall off the screen carrying its last few rows with it. The second
+     term is what is actually available; whichever is smaller wins. */
+  --height-doc-rail: min(80dvh, calc(100dvh - var(--height-site-header)));
+  /* The site measure, and the reading measure inside it.
+
+     `--width-page` is the cap for customer-facing pages — FAQ, about, contact,
+     help, legal. `/design-system/spacing` has documented this number as prose
+     since the grid section was written ("Product pages cap at 1320px") while no
+     token existed, so a page container had nothing to read and `max-w-[1320px]`
+     fails §0's guard. Written down here, it is one edit instead of a claim.
+
+     `--width-prose` is narrower than `--width-content` on purpose and they are
+     not interchangeable. 1080 is a documentation column carrying specimens,
+     panels and tables beside the copy; 720 is a column carrying nothing but
+     sentences, and a terms-of-service paragraph at 1080 loses its place on the
+     return sweep. The number is a measured character count on the live page at
+     `--text-body`, not a ratio — remeasure it if the body face or size moves. */
+  --width-page: 1200px;
+  --width-prose: 720px;
+  /* The reading rail: a table of contents, an anchor list, an article's
+     metadata column. 240px, the same measure the documentation sidebar
+     already uses, and on the 8-point scale. It is not `--width-sidebar`:
+     that one is the app shell's navigation panel and collapses to an icon
+     rail, which a rail beside prose never does. */
+  --width-rail: 15rem;
+  /* The call-to-action banner's floor.
+     A CTA is the one panel on a secondary page that is allowed to take a
+     screenful: it is the thing the page is for, and a 200px strip at the foot
+     of a long document reads as a footnote. Viewport-relative rather than a
+     spacing step because what it is claiming is a proportion of the screen,
+     not a distance — and it is a token rather than a `min-h-[60vh]` because §0
+     does not care how reasonable an arbitrary value looks. */
+  --height-cta: 60vh;
+  /* The landing showcase — the product surface a hero shows off.
+
+     Wider than `--width-shell` on purpose, and that is the entire effect. The
+     panel is meant to be BIGGER THAN THE PAGE it sits on: it runs past the
+     right gutter and gets clipped, which reads as a window onto something that
+     continues rather than as a screenshot that happens to be large. Cap it at
+     the shell width and the illusion is gone — you get a picture of an app
+     instead of a piece of one.
+
+     The two heights are a floor for the same reason a CTA has one: a product
+     surface showing three rows of a list demonstrates nothing. `rem` rather
+     than a spacing step because these are the size of an object, not the
+     distance between two, and `--spacing * 160` is a number pretending to be a
+     rhythm. */
+  --width-showcase: 1440px;
+  --height-showcase: 40rem;
+  --height-showcase-lg: 50rem;
+  /* The showcase's backdrop blur, on the `--blur-*` scale so it is reachable as
+     `backdrop-blur-showcase`. It exists as a token because §3's rule is that
+     this blur MUST go through `@apply backdrop-blur-*` — a hand-written
+     `backdrop-filter: blur(…)` is dropped from the compiled stylesheet without
+     an error, which has happened before and was caught by reading the served
+     CSS. Tailwind's own
+     ladder has 16px and 24px and nothing between, so 20px needs a name. */
+  --blur-showcase: 20px;
+  /* The site header's own height, so an anchor can be scrolled clear of it.
+     `scroll-padding-top` on `html` reads this (see @layer base), which is why
+     it is a token rather than a number repeated in a sticky header, a sticky
+     sidebar's `100dvh -` and a `scroll-mt-*` three files apart. It was all
+     three of those before this line existed. */
+  --height-site-header: 4rem;
+  /* Where an anchored heading comes to rest: clear of the header, plus one
+     32px step of air so the heading is not welded to the chrome above it.
+     6rem = 96px, which is exactly the `scroll-mt-24` that `DsSection` used to
+     hand-set — the same number, now derived from the header it was guessing
+     at, and in one place instead of on every section element. */
+  --scroll-offset: calc(var(--height-site-header) + var(--spacing) * 8);
+
+  /* ── App-shell sidebar ──────────────────────────────────────────────────
+     The three measures `ui/sidebar.tsx` is built on. They were module-level
+     string constants inside that component — 16rem, 18rem and 3rem, written
+     by hand — which is the one thing §0 does not allow, and which the guard
+     never caught because a bare string in a `.tsx` file is not a class.
+
+     All three land on the 8-point scale: 256, 288 and 48. The mobile measure
+     is wider than the desktop one on purpose — a sheet has no rail beside it
+     competing for the eye, so it can afford the extra 32px, and a touch
+     target inside it wants the room. The icon measure is the collapsed rail:
+     48px, which is the hit-target floor from §7, not a smaller number that
+     happens to fit an icon. */
+  --width-sidebar: 16rem;
+  --width-sidebar-mobile: 18rem;
+  --width-sidebar-icon: 3rem;
+
+  /* ── The hit-target floor ───────────────────────────────────────────────
+     44 CSS pixels, the minimum effective size of anything a finger can hit.
+
+     The number was real and written down — RULES §7, and `TouchTargets.minimum`
+     in the Flutter counterpart — but it was not a token, so a control declaring
+     its own minimum had nothing to read. What that produces is `min-h-11`: the
+     right measurement, on the 8-point scale, saying nothing about WHY it is
+     eleven steps rather than ten. A named token is the difference between a
+     number that happens to be correct and a number that is correct on purpose,
+     and it is the one the next person raising the floor has to edit.
+
+     It is a floor on the target, not on the drawing. A control may look smaller
+     — a 20px checkbox, a nested dismiss ✕ — and reclaim the area with negative
+     margin (§7); the default `Button` is a stated 40px exception, because it
+     has to sit level with a 40px `Input`. */
+  --size-target-min: 2.75rem; /* 44 */
+
+  --radius-xs: 2px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-3xl: 24px;
+  /* The soft-slab step. Not part of the container ladder's normal range — it
+     exists for the one shape that is a *panel of content* rather than a box
+     around it: a full-width metric slab on a narrow column, where 24px still
+     reads as a rectangle with the corners taken off. 32px is on the 8-point
+     scale and is the last step before a 180px-tall card starts reading as a
+     lozenge. Do not reach for it on anything that sits in a grid with `lg`
+     cards; two radii on one screen is a drift, not a hierarchy. */
+  --radius-4xl: 32px;
+  --radius-pill: 999px;
+
+  /* ── Elevation ──────────────────────────────────────────────────────────
+     Two families. e1–e4 are ambient depth. The rest are MACHINE surfaces:
+     things that look like they can be physically pressed. That is why a
+     button here has an inner top highlight and an inner bottom shade rather
+     than a flat fill.
+
+     THE GEOMETRY IS FIXED; THE INK IS NOT. Every colour below is a `--ink-*` or
+     `--rim` variable that the theme blocks set, because a shadow that works on
+     near-black is wrong on white twice over: pure black at 60% on a light
+     surface reads as dirt rather than depth, and the inner top highlight that
+     makes a dark button look lit does nothing at all against white. Light mode
+     gets weaker, cooler, tighter ink and an inverted rim — same shapes, same
+     names, same components. */
+  --shadow-e1: 0 1px 1px var(--ink-2), 0 1px 3px var(--ink-1);
+  --shadow-e2: 0 1px 2px var(--ink-2), 0 4px 10px -2px var(--ink-2);
+  --shadow-e3: 0 2px 4px var(--ink-2), 0 14px 28px -8px var(--ink-3);
+  --shadow-e4: 0 4px 8px var(--ink-3), 0 28px 56px -14px var(--ink-4);
+
+  /* Raised key with a side wall — travels down into its socket when pressed. */
+  --shadow-key: 0 4px 0 var(--wall), 0 7px 12px var(--ink-3);
+  --shadow-key-down: 0 1px 0 var(--wall), inset 0 2px 5px var(--ink-3);
+  /* Sunken socket. Inputs sit in one of these. */
+  --shadow-pressed: inset 0 2px 5px var(--ink-3), inset 0 1px 2px var(--ink-4);
+
+  /* Control depth. btn-primary carries the action cast. */
+  --shadow-btn:
+    inset 0 1px 0 var(--rim), inset 0 -2px 4px var(--ink-2), 0 1px 2px var(--ink-2),
+    0 3px 8px -2px var(--ink-2);
+  --shadow-btn-primary:
+    inset 0 1px 0 var(--rim-strong), inset 0 -2px 5px var(--ink-2),
+    0 1px 2px var(--ink-2),
+    0 4px 10px -2px color-mix(in oklab, var(--color-action) 55%, transparent);
+  --shadow-btn-value:
+    inset 0 1px 0 var(--rim-strong), inset 0 -2px 5px var(--ink-1),
+    0 1px 2px var(--ink-2),
+    0 4px 10px -2px color-mix(in oklab, var(--color-value) 45%, transparent);
+  --shadow-btn-down: inset 0 2px 4px var(--ink-3), 0 1px 1px var(--ink-1);
+  --shadow-chip:
+    inset 0 1px 0 var(--rim), inset 0 -1px 2px var(--ink-2), 0 1px 2px var(--ink-2);
+
+  /* Rationed glows — selection and reward only. */
+  --shadow-glow-action:
+    0 0 0 1px color-mix(in oklab, var(--color-action-bright) 45%, transparent),
+    0 10px 34px -8px color-mix(in oklab, var(--color-action) 60%, transparent);
+  --shadow-glow-value:
+    0 0 0 1px color-mix(in oklab, var(--color-value) 45%, transparent),
+    0 10px 34px -8px color-mix(in oklab, var(--color-value) 42%, transparent);
+}
+
+/* ============================================================================
+   TYPE SCALE — THE TABLET AND DESKTOP STEPS
+
+   The `@theme static` block above holds every role's PHONE step. These two
+   blocks redefine the same custom properties at the two breakpoints, which is
+   the whole responsive mechanism: `.type-body` and `text-base` and
+   `leading-body` all compile to `var(--text-body)` / `var(--leading-body)`, so
+   moving the property moves every reader at once and none of them can drift.
+
+   PLAIN `:root`, NOT `@theme`. Tailwind's `@theme` may only appear at the top
+   level — it is a compile-time declaration, not a cascade participant — so the
+   steps are written as ordinary custom-property declarations. They win on
+   source order at equal specificity, which is why these blocks sit after the
+   `@theme static` block and not before it.
+
+   TWO BREAKPOINTS, and there is no third. Phone is below 768, tablet is 768
+   through 1023, desktop is 1024 and up — the same three bands Flutter 0.0.3
+   uses, and the same two `(width >= …)` queries `styles/typeset.css` has
+   always used. No `clamp()`: fluid type cannot be asserted at a value, only at
+   a viewport, and every one of these seventeen roles is asserted at all three.
+
+   Values are Flutter 0.0.3's, copied exactly. `lib/ds/platform-contract.ts`
+   holds the same table as data and `test/foundation/typography-contract.test.ts`
+   fails on any drift between the two.
+   ========================================================================= */
+
+/* ── Tablet — 768px through 1023px ───────────────────────────────────────── */
+@media (width >= 768px) {
+  :root {
+    --text-display: 2.625rem; /* 42 */
+    --text-h1: 2rem; /* 32 */
+    --text-h2: 1.75rem; /* 28 */
+    --text-h3: 1.375rem; /* 22 */
+    --text-h4: 1.1875rem; /* 19 */
+    --text-lead: 1.1875rem; /* 19 */
+    --text-body: 0.9375rem; /* 15 */
+    --text-small: 0.8125rem; /* 13 */
+    --text-nav: 0.8125rem; /* 13 */
+    --text-badge: 0.6875rem; /* 11 */
+    --text-code: 0.8125rem; /* 13 */
+    --text-identifier: 0.8125rem; /* 13 */
+    --text-number-sm: 0.8125rem; /* 13 */
+    --text-number-base: 0.9375rem; /* 15 */
+    --text-number-md: 1.375rem; /* 22 */
+    --text-number-lg: 2rem; /* 32 */
+    --text-number-xl: 2.625rem; /* 42 */
+
+    --leading-display: 2.75rem; /* 44 */
+    --leading-h1: 2.375rem; /* 38 */
+    --leading-h2: 2.125rem; /* 34 */
+    --leading-h3: 1.875rem; /* 30 */
+    --leading-h4: 1.625rem; /* 26 */
+    --leading-lead: 1.75rem; /* 28 */
+    --leading-body: 1.375rem; /* 22 */
+    --leading-small: 1.125rem; /* 18 */
+    --leading-nav: 1.125rem; /* 18 */
+    --leading-badge: 0.875rem; /* 14 */
+    --leading-code: 1.125rem; /* 18 */
+    --leading-identifier: 1.125rem; /* 18 */
+    --leading-number-sm: 1.125rem; /* 18 */
+    --leading-number-base: 1.375rem; /* 22 */
+    --leading-number-md: 1.875rem; /* 30 */
+    --leading-number-lg: 2.375rem; /* 38 */
+    --leading-number-xl: 2.75rem; /* 44 */
+  }
+}
+
+/* ── Desktop — 1024px and wider ──────────────────────────────────────────── */
+@media (width >= 1024px) {
+  :root {
+    --text-display: 3rem; /* 48 */
+    --text-h1: 2.25rem; /* 36 */
+    --text-h2: 1.875rem; /* 30 */
+    --text-h3: 1.5rem; /* 24 */
+    --text-h4: 1.25rem; /* 20 */
+    --text-lead: 1.25rem; /* 20 */
+    --text-body: 1rem; /* 16 */
+    --text-small: 0.875rem; /* 14 */
+    --text-nav: 0.875rem; /* 14 */
+    --text-badge: 0.75rem; /* 12 */
+    --text-code: 0.875rem; /* 14 */
+    --text-identifier: 0.875rem; /* 14 */
+    --text-number-sm: 0.875rem; /* 14 */
+    --text-number-base: 1rem; /* 16 */
+    --text-number-md: 1.5rem; /* 24 */
+    --text-number-lg: 2.25rem; /* 36 */
+    --text-number-xl: 3rem; /* 48 */
+
+    --leading-display: 3rem; /* 48 */
+    --leading-h1: 2.5rem; /* 40 */
+    --leading-h2: 2.25rem; /* 36 */
+    --leading-h3: 2rem; /* 32 */
+    --leading-h4: 1.75rem; /* 28 */
+    --leading-lead: 1.75rem; /* 28 */
+    --leading-body: 1.5rem; /* 24 */
+    --leading-small: 1.25rem; /* 20 */
+    --leading-nav: 1.125rem; /* 18 */
+    --leading-badge: 1rem; /* 16 */
+    --leading-code: 1.25rem; /* 20 */
+    --leading-identifier: 1.25rem; /* 20 */
+    --leading-number-sm: 1.25rem; /* 20 */
+    --leading-number-base: 1.5rem; /* 24 */
+    --leading-number-md: 2rem; /* 32 */
+    --leading-number-lg: 2.5rem; /* 40 */
+    --leading-number-xl: 3rem; /* 48 */
+  }
+}
+
+/* ============================================================================
+   SHADCN SEMANTIC MAPPING
+   Every base component reads these. Remapping them here is what makes stock
+   shadcn look like this system without patching each component.
+   ========================================================================= */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* The agent family. Three tokens, so `bg-agent/8`, `text-agent` and
+     `bg-agent-muted` are utilities like any other rather than inline colour. */
+  --color-agent: var(--agent);
+  --color-agent-muted: var(--agent-muted);
+  --color-scrim: var(--scrim);
+
+  /* The text-safe end of each brand ramp, resolved per theme.
+
+     This is the token a glyph names. `--color-action-bright` is legible on
+     near-black and illegible on white; `--color-action-dark` is the reverse. A
+     component cannot know which surface it is on, so it does not choose — it
+     writes `text-action-ink` and the theme block answers.
+
+     This is the one piece of the colour system with no shadcn equivalent and no
+     dark-only shortcut, and it is what made light mode possible without editing
+     a single component. */
+  --color-action-ink: var(--action-ink);
+  --color-value-ink: var(--value-ink);
+  /* Same contract for the three state hues: the token a glyph or a label names,
+     resolved to whichever end is legible in this theme. */
+  --color-success-ink: var(--success-ink);
+  --color-warning-ink: var(--warning-ink);
+  --color-info-ink: var(--info-ink);
+  --color-destructive-ink: var(--destructive-ink);
+
+  /* The tinted chat bubble's surface, and what it becomes when the bubble is
+     itself a button or a link.
+
+     It is a token rather than an inline `oklch(from …)` for the reason §1.7
+     gives: it needed a `dark:` twin, and a colour that needs a `dark:` variant
+     is a token that has not been written yet. The lightness stops differ per
+     theme — a 0.93 wash is a pale blue on white and a glare on zinc 950 — so
+     the theme block answers and the component never asks. */
+  --color-bubble-tinted: var(--bubble-tinted);
+  --color-bubble-tinted-hover: var(--bubble-tinted-hover);
+}
+
+/* ============================================================================
+   SHADCN SEMANTIC TOKENS — THE ONE VOCABULARY
+   There is a single naming system in this project and it is shadcn's. The page
+   is `--background`, a container is `--card`, an overlay or fill is
+   `--popover`, a hover surface is `--accent`, text is `--foreground` and
+   `--muted-foreground`, hairlines are `--border`. These hold the literal
+   values; nothing restates them under a second name.
+
+   Brand tokens exist ONLY where shadcn has no equivalent — the action and value
+   ramps, the rarity ladder, semantic states, the tints, `--color-sunken`,
+   `--color-border-mid` / `-strong`, and the
+   on-accent foregrounds. Each of those is named for its role, never numbered.
+   ========================================================================= */
+/* ── LIGHT ────────────────────────────────────────────────────────────────
+   `:root` is light because that is what an unstyled document is, and because
+   next-themes adds `.dark` rather than removing a class. `.light` is listed
+   alongside it so an explicit light island inside a dark page — a printable
+   panel, an embedded preview — resolves the same way.
+
+   Light is not dark with the numbers flipped. Three things genuinely change
+   rather than invert:
+
+     Ink gets weaker and cooler. Pure black at 60% over white reads as grime;
+     the same depth on paper comes from a slate-tinted shadow at a fifth of the
+     opacity, spread tighter.
+
+     The rim inverts its job. On dark, the inner top highlight is white and it
+     is what makes a button look lit from above. On light there is no light to
+     add, so the rim becomes near-white at high alpha purely to keep the top
+     edge from muddying, and the bottom inner shade does the shaping instead.
+
+     The ramps swap which end is text. `--action-ink` is the bright blue on
+     dark and the deep blue on light; nothing that renders a glyph ever names
+     an end of the ramp directly.
+   ------------------------------------------------------------------------ */
+:root,
+.light {
+  /* ── Monochrome: zinc, read upward ─────────────────────────────────────── */
+  --background: hsl(0 0% 100%);
+  --foreground: hsl(240 10% 3.9%);
+
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(240 10% 3.9%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(240 10% 3.9%);
+
+  --secondary: hsl(240 4.8% 95.9%); /* zinc 100 */
+  --secondary-foreground: hsl(240 5.9% 10%);
+  --muted: hsl(240 4.8% 95.9%);
+  /* Muted text is the one place light mode cannot mirror dark. On dark,
+     --muted-foreground is zinc 300 at 12:1; the mirror image would be zinc 400
+     on white, which measures 3.1:1 and fails.
+     It is NOT zinc 500 either, which is what this line held for most of this
+     system's life: zinc 500 cleared AA on `--background` at 4.83:1 and MISSED
+     it on `--muted` at 4.40:1 — and `--muted-foreground` on `--muted` is the
+     most repeated foreground/surface pair in the whole file. The failure was
+     found during the wine brand and it is not a wine problem, so the deeper
+     step carries back. Both pairs measured live on /design-system/colors. */
+  --muted-foreground: hsl(240 4% 40%);
+  --accent: hsl(240 4.8% 95.9%);
+  --accent-foreground: hsl(240 5.9% 10%);
+
+  --border: hsl(240 5.9% 90%);
+  --input: hsl(240 5.9% 90%);
+
+  /* The page's light source. See the `body` rule in @layer base. On paper the
+     raise is almost nothing — a cool centre on a white page — because a visible
+     gradient on white reads as a stain rather than as light. */
+  --page-glow: hsl(240 30% 98%);
+
+  /* ── Brand ─────────────────────────────────────────────────────────────── */
+  --primary: var(--color-action);
+  --primary-foreground: hsl(0 0% 100%);
+  --ring: var(--color-action);
+
+  /* The text-safe end of each ramp, for this theme. Nothing writes
+     `text-action-bright` — it writes `text-action-ink`, and this is where the
+     answer differs between the two modes. */
+  --action-ink: var(--color-action-dark);
+  --value-ink: var(--color-value-dark);
+  --success-ink: var(--color-success-deep);
+  --warning-ink: var(--color-warning-deep);
+  --info-ink: var(--color-info-deep);
+  --destructive-ink: var(--color-destructive-deep);
+
+  --destructive: hsl(0 72.2% 50.6%);
+  --destructive-foreground: hsl(0 0% 98%);
+
+  /* The tinted bubble, derived from the action ramp so it follows a rebrand.
+     On white the tint has to be a pale wash: high lightness, chroma cut to
+     40% so it reads as tinted paper rather than as a second brand colour. */
+  --bubble-tinted: oklch(from var(--primary) 0.93 calc(c * 0.4) h);
+  --bubble-tinted-hover: oklch(from var(--primary) 0.88 calc(c * 0.5) h);
+
+  --radius: 10px;
+
+  /* ── Shadow ink ────────────────────────────────────────────────────────
+     Slate rather than black, and roughly a fifth of dark mode's opacity. The
+     geometry in @theme static does not change; only what colour fills it. */
+  --ink-1: hsl(240 20% 20% / 0.04);
+  --ink-2: hsl(240 20% 20% / 0.07);
+  --ink-3: hsl(240 20% 20% / 0.11);
+  --ink-4: hsl(240 20% 20% / 0.16);
+  --rim: hsl(0 0% 100% / 0.85);
+  --rim-strong: hsl(0 0% 100% / 0.4);
+  --wall: hsl(240 6% 82%);
+
+  /* The same rule as `-ink`, mirrored: on paper the LEGIBLE end of every ramp
+     is the deep one. `--color-action-bright` sat at `--chart-3` here for most of
+     this system's life and measured 1.81:1 on white — a chart line you cannot
+     see. That is a legibility bug rather than a brand choice, so this ordering
+     survives the return to blue and lime. §1.3 already sanctions a raw state hue
+     as a chart mark: the shape carries the meaning, not the colour. */
+  --chart-1: var(--color-action);
+  --chart-2: var(--color-value-dark);
+  --chart-3: var(--color-info-deep);
+  --chart-4: var(--color-action-dark);
+  --chart-5: var(--color-success-deep);
+
+  /* ── Sidebar ───────────────────────────────────────────────────────────
+     Eight tokens that all resolve to something else.
+
+     This was the last stock shadcn left in the file — literal zinc, written
+     out by hand, sitting between two blocks that had both been reasoned
+     about. It survived because nothing imported `ui/sidebar.tsx`, so nobody
+     ever saw it in either theme.
+
+     Every value already existed under a name that means something, and the
+     roles come from the sidebar this system already ships (`DsSidebar`): a
+     resting nav item is `--muted-foreground`, hovering or activating it takes
+     it to `--foreground`, and a hairline separates it from the page rather
+     than a fill. Six of the eight were numerically identical to the token
+     that now names them; only the surface and the resting text actually move.
+
+     The block is repeated verbatim in the dark theme on purpose. It could be
+     declared once here — every referent already answers per theme, so
+     substitution would do the rest — but that only holds while `.dark` sits
+     on the same element as `:root`. The moment a SUBTREE is themed, which is
+     exactly what a side-by-side light/dark specimen does, a `:root`-only
+     declaration would inherit the wrong theme's surface into it. */
+  --sidebar: var(--card);
+  --sidebar-foreground: var(--muted-foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+
+  /* ── Agent ─────────────────────────────────────────────────────────────── */
+  /* `-dark`, not the fill — the same answer `--action-ink` gives on this theme,
+     and for the same reason.
+
+     §1.3 is absolute: only the text-safe end of a ramp may carry a glyph. The
+     dark block obeys it and says so in a comment (`--agent` resolves to the
+     lifted end because it is read as a foreground far more often than as a
+     fill: eleven `text-agent` uses against two marks about a pixel and a half
+     across). This line did NOT obey it, and pointed at the fill — the one shade
+     §1.3 names as never text — for the whole life of the light theme.
+
+     Measured rather than reasoned: with the fill here, a `text-agent` link
+     inside the user's own bubble rasterised at **4.25:1** on `--agent-muted`,
+     and the slash palette's active row at **4.17:1** on `--accent`. Both under
+     4.5. On `--color-action-dark` they are **9.80** and **9.62**. The two marks that
+     use it as a fill — the streaming caret and the active-conversation dot —
+     only get more visible on paper for the change. */
+  --agent: var(--color-action-dark);
+  --agent-muted: hsl(213 100% 97%);
+  --scrim: hsl(240 10% 3.9% / 0.28);
+  /* ── Media scrim ────────────────────────────────────────────────────────
+     The readability ramp over a photograph or a video, so a title placed
+     directly on media stays legible without an opaque card under it. The web
+     half of Flutter's `media-scrim`, and the one capability the convergence
+     audit found with no implementation at all — `--scrim` above is a flat
+     panel dim behind a drawer, which is a different thing wearing a similar
+     name.
+
+     THEME-INDEPENDENT ON PURPOSE. Media does not change when the application
+     flips theme, so the ink over it must not either: these four are declared
+     once, here, and there is no dark-mode redefinition. The ink is black and
+     the foreground is white regardless of `.dark`, because the thing being
+     contrasted against is a photograph.
+
+     The numbers are Flutter's `MediaScrimTokens`, copied rather than tuned:
+     transparent through the upper half, a restrained bridge at 58%, and enough
+     at the bottom edge for white title copy without becoming a slab. */
+  --media-ink: hsl(0 0% 0%);
+  --media-foreground: hsl(0 0% 100%);
+  --media-scrim-mid-stop: 58%;
+  --media-scrim-mid: 18%;
+  --media-scrim-end: 82%;
+
+  /* ── Bloom neutrals ─────────────────────────────────────────────────────
+     The two values that make the cosmic bloom a different painting in each
+     theme, and the reason it looked like grey smoke here until now.
+
+     A blend mode has an IDENTITY — the colour that changes nothing. For
+     `screen` that is black; for `multiply` it is white. The bloom's gradients
+     fade out to `--bloom-void`, so on dark they fade to black and vanish under
+     screen, and on light they fade to white and vanish under multiply. Fading
+     to black on a white card, which is what they used to do, paints actual grey
+     across the surface: not a dim bloom, a dirty one.
+
+     `--bloom-hot` is the opposite end — the hottest point of the core, derived
+     in the utility rather than declared here. On dark "hot" means lifted toward
+     white. On light there is no light to add, so hot means the most PIGMENT:
+     the core stays fully chromatic and the falloff does the fading. */
+  --bloom-void: white;
+
+  /* HOW MUCH PIGMENT THE BLOOM CARRIES, as multipliers rather than colours.
+
+     This is the fix for a light-mode bloom that read as a weak wash no matter
+     how far the opacity was pushed. `--bloom-1` and `--bloom-2` are the LIFTED
+     ends of their ramps — `--color-action-bright` is a pale blue — which is
+     correct on dark, where hot means lifted toward white. Multiply that pale
+     blue over a white card and almost nothing happens: multiply darkens BY the
+     colour, so a colour that is already near-white cannot darken anything. The
+     opacity was never the lever; the hue was.
+
+     So light mode takes each bloom hue down in lightness and up in chroma
+     before it reaches a gradient stop. Same hue, far more pigment.
+
+     They are multipliers and not two more colour tokens on purpose: the five
+     toast types and every Alert variant each set their own `--bloom-1` /
+     `--bloom-2`, so a fixed pair here would have to be repeated per type and
+     would fall out of step the first time one changed. */
+  --bloom-l: 0.6; /* lightness  x */
+  --bloom-c: 1.55; /* chroma     x */
+  /* The core's hottest point. On paper there is no light to add, so hot simply
+     means the most saturated the hue gets — no raise at all. */
+  --bloom-lift: 0;
+  --bloom-hot-c: 1;
+  /* The halo under each sparkle, and the whole reason white stars work on a
+     white panel. A bare white star on paper is invisible; the same star with a
+     coloured bloom under it reads as a point of light with air around it.
+     Chromatic on light, because the glow has to do the separating that the
+     surface cannot.
+
+     This replaced `--star-ink`, which was declared in both themes and read by
+     nothing — an SVG data URI cannot resolve a CSS variable, so it could never
+     have driven the fill it was named for. */
+  --star-glow: color-mix(in oklab, var(--bloom-2) 85%, transparent);
+  --star-glow-size: 3px;
+
+  /* The avatar is the one part of the system that cannot be re-derived from
+     the semantic tokens: the handoff draws these cubes for paper, and the dark
+     set is already an inversion of that original. This is the original. */
+  --agent-cube-top: hsl(240 20% 99%);
+  --agent-cube-left: hsl(240 15% 94%);
+  --agent-cube-right: hsl(240 14% 90%);
+  --agent-cube-stroke: hsl(240 10% 79%);
+  --agent-cube-accent: var(--color-action);
+  --agent-cube-error-top: hsl(0 70% 88%);
+  --agent-cube-error-left: hsl(0 65% 82%);
+  --agent-cube-error-right: hsl(0 60% 75%);
+  --agent-cube-error-stroke: hsl(0 55% 69%);
+  --agent-cube-back: hsl(240 14% 86%);
+  --agent-cube-ghost-ink: hsl(240 5% 54%);
+  --agent-cube-accent-shade: hsl(217 45% 72%);
+
+  /* ── Code highlighting ─────────────────────────────────────────────────
+     `CodeBlock` (`parts/code-block.tsx`) used to paint every fence with
+     `vscDarkPlus`, a theme object with its own baked-in colours — legible on
+     the near-black surface `vscDarkPlus` was drawn for, and never re-read for
+     light mode, which is why a code block stayed dark inside a paper page.
+     These eight read the same `-ink`-grade tokens every other coloured glyph
+     in the system does (§1.3), so the fence follows the theme instead of
+     carrying one. Each is measured against `--muted` — the fence's own
+     surface (`code-block.tsx` wraps `SyntaxHighlighter` in `bg-muted`) — in
+     both themes; the ratios are recorded in the commits that added this
+     block (the original six, then `--code-type`/`--code-variable` in fix
+     round 1) and on `/design-system/components/code-block`.
+
+     `--code-type` and `--code-variable` are the two added in fix round 1,
+     when review found the first six covered only 6 of the ~27 Prism token
+     classes the ten registered grammars actually emit — everything else
+     (`class-name`, `tag`, `property`, `regex`, `boolean`…) fell back to
+     plain `--foreground`, so real JS/TS/JSX/CSS rendered mostly monochrome.
+     Rather than inventing 21 new tokens for 21 new Prism classes, each was
+     grouped onto whichever of these eight roles it reads closest to —
+     `code-block.tsx`'s `STYLED_PRISM_TOKEN_CLASSES` and
+     `styles/utilities.css`'s `code-highlight` both list the full grouping;
+     this file only had two roles missing entirely: a name for a KIND of
+     thing (a class, a built-in, a tag, a CSS selector) and a name for a
+     SPECIFIC thing (a property, a parameter, a variable, an attribute
+     name). The two unused `-ink` tokens were sitting right there. */
+  --code-keyword: var(--action-ink); /* control flow: if, return, const, @media, decorators */
+  --code-string: var(--success-ink); /* quoted literals, URLs, CDATA        */
+  --code-comment: var(--muted-foreground); /* already tuned as body text    */
+  --code-function: var(--info-ink); /* calls and declarations               */
+  --code-number: var(--value-ink); /* numeric/boolean/constant literals, regex */
+  --code-punctuation: var(--foreground); /* structural marks, operators     */
+  --code-type: var(--warning-ink); /* class-name, builtin, tag, CSS selector */
+  --code-variable: var(--destructive-ink); /* property, parameter, variable, attr-name */
+}
+
+/* ── Shiki's CSS-variables theme, on the code roles ──────────────────────
+   lib/code-theme.ts highlights every Shiki code block (AI Elements'
+   CodeBlock, the fences inside a Streamdown reply) with Shiki's
+   CSS-variables theme, which colours a token `var(--shiki-token-keyword)`
+   rather than baking in a palette. These aliases put those names on the
+   same eight `--code-*` roles the Prism highlighter uses, so code reads the
+   same everywhere and follows the theme: declared on `:root`, which carries
+   the theme class, so each alias resolves that theme's role. The ANSI names
+   match the terminal's own mapping (`terminal-ansi`, styles/utilities.css). */
+:root {
+  --shiki-foreground: var(--foreground);
+  --shiki-background: transparent;
+  --shiki-token-keyword: var(--code-keyword);
+  --shiki-token-string: var(--code-string);
+  --shiki-token-string-expression: var(--code-string);
+  --shiki-token-link: var(--code-string);
+  --shiki-token-comment: var(--code-comment);
+  --shiki-token-function: var(--code-function);
+  --shiki-token-constant: var(--code-number);
+  --shiki-token-punctuation: var(--code-punctuation);
+  --shiki-token-parameter: var(--code-variable);
+  --shiki-token-inserted: var(--success-ink);
+  --shiki-token-deleted: var(--destructive-ink);
+  --shiki-token-changed: var(--warning-ink);
+  --shiki-ansi-black: var(--muted-foreground);
+  --shiki-ansi-bright-black: var(--muted-foreground);
+  --shiki-ansi-red: var(--destructive-ink);
+  --shiki-ansi-bright-red: var(--destructive-ink);
+  --shiki-ansi-green: var(--success-ink);
+  --shiki-ansi-bright-green: var(--success-ink);
+  --shiki-ansi-yellow: var(--warning-ink);
+  --shiki-ansi-bright-yellow: var(--warning-ink);
+  --shiki-ansi-blue: var(--action-ink);
+  --shiki-ansi-bright-blue: var(--action-ink);
+  --shiki-ansi-magenta: var(--value-ink);
+  --shiki-ansi-bright-magenta: var(--value-ink);
+  --shiki-ansi-cyan: var(--info-ink);
+  --shiki-ansi-bright-cyan: var(--info-ink);
+  --shiki-ansi-white: var(--foreground);
+  --shiki-ansi-bright-white: var(--foreground);
+}
+
+/* ── DARK ─────────────────────────────────────────────────────────────────
+   The mode this system was designed in, and still its default. Seventy per
+   cent neutral, twenty action, ten value.
+   ------------------------------------------------------------------------ */
+.dark {
+  /* ── Monochrome: zinc ─────────────────────────────────────────────────────
+     Four dark steps and four light steps, mapped onto shadcn's semantic
+     tokens. There is no parallel naming system — the page is --background, a
+     container is --card, a fill is --muted, text is --foreground. */
+  --background: hsl(240 10% 3.9%); /* zinc 950 */
+  --foreground: hsl(0 0% 98%); /* zinc 50  */
+
+  --card: hsl(240 5.9% 10%); /* zinc 900 */
+  --card-foreground: hsl(0 0% 98%);
+  --popover: hsl(240 5.9% 10%);
+  --popover-foreground: hsl(0 0% 98%);
+
+  --secondary: hsl(240 3.7% 15.9%); /* zinc 800 */
+  --secondary-foreground: hsl(0 0% 98%);
+  --muted: hsl(240 3.7% 15.9%);
+  --muted-foreground: hsl(240 4.9% 83.9%); /* zinc 300 */
+  --accent: hsl(240 5.3% 26.1%); /* zinc 700 */
+  --accent-foreground: hsl(0 0% 98%);
+
+  --border: hsl(240 3.7% 15.9%);
+  --input: hsl(240 5.3% 26.1%);
+
+  /* The page's light source. See the `body` rule in @layer base. A wide,
+     off-centre raise two steps up the neutral from `--background`, so a zinc-950
+     page reads as a deep room rather than as flat black paint. The falloff
+     reveals `--background` itself, which is why the vignette can never go
+     muddy — it is the absence of the glow, not a second gradient. */
+  --page-glow: hsl(240 8% 10%);
+
+  /* ── Brand ────────────────────────────────────────────────────────────── */
+  --primary: var(--color-action);
+  /* Pure white, not zinc 50 — the one value in this block that is NOT what it
+     was before the wine brand. Zinc 50 on the action fill rasterises at
+     **4.39:1**, which misses AA by 0.11 on the most-used control in the system,
+     and it missed it for the whole life of the blue brand because nothing
+     measured it. Pure white is 4.58:1. Light mode was already pure white here;
+     this is the two themes agreeing rather than a new idea. */
+  --primary-foreground: hsl(0 0% 100%);
+  --ring: var(--color-action-bright);
+
+  /* The text-safe end of each ramp, for this theme. On near-black that is the
+     lifted end of both ramps: the fills measure ~3:1 and cannot carry a glyph. */
+  --action-ink: var(--color-action-bright);
+  /* `-bright`, not the mid — which is what §1.3's table says, and this line did
+     not obey it for most of this system's life.
+     It pointed at `--color-value` for as long as the value ramp was lime and got
+     away with it: lime 400 has a luminance around 0.66, so even the mid shade
+     cleared 10:1 on every dark surface. A darker value hue at the same lightness
+     step carries a fraction of that luminance, and the same line rasterised at
+     **4.13:1** on a dropdown row — measured on the live Navigation and Selection
+     specimens, on the money figures those pages exist to show.
+     Lime makes the mid safe again, and it is still not what the rule says. This
+     stays on `-bright`: the point of the table is that the theme block answers
+     with the end that is safe on ANY value ramp, so the next rebrand cannot
+     reintroduce a failure nothing can catch. `check:tokens` has no opinion about
+     which end of a ramp a theme block points at. */
+  --value-ink: var(--color-value-bright);
+  --success-ink: var(--color-success);
+  --warning-ink: var(--color-warning);
+  --info-ink: var(--color-info);
+  --destructive-ink: var(--color-destructive-lifted);
+
+  /* shadcn's own error token — the one non-monochrome state colour it ships */
+  --destructive: hsl(0 72.2% 50.6%);
+  --destructive-foreground: hsl(0 0% 98%);
+
+  /* The same tint, inverted. On zinc 950 a wash has to be a deep one — the
+     light stops would be a glare — so lightness drops and chroma stays cut.
+     The component names one class for both; this is where they differ. */
+  --bubble-tinted: oklch(from var(--primary) 0.3 calc(c * 0.4) h);
+  --bubble-tinted-hover: oklch(from var(--primary) 0.35 calc(c * 0.5) h);
+
+  --radius: 10px;
+
+  /* ── Shadow ink ────────────────────────────────────────────────────────
+     Black, and heavy. On a zinc-950 page a shadow has to be darker than the
+     surface it falls on or it is invisible, which is why these run three to
+     four times light mode's opacity. */
+  --ink-1: rgb(0 0 0 / 0.35);
+  --ink-2: rgb(0 0 0 / 0.5);
+  --ink-3: rgb(0 0 0 / 0.6);
+  --ink-4: rgb(0 0 0 / 0.75);
+  --rim: rgb(255 255 255 / 0.14);
+  --rim-strong: rgb(255 255 255 / 0.28);
+  --wall: hsl(240 6% 8%);
+
+  /* Charts read action → value, matching the accent story — but every member
+     has to be a LEGIBLE MARK first, and that is what decides the ordering.
+     A chart line is a 2px stroke with no foreground of its own, so §1.3's rule
+     about marks applies to it exactly as it does to a progress fill. The
+     original ordering ran down each ramp — action, action-bright, action-dark,
+     value, value-dark — and put two deep shades on a zinc-900 card where they
+     could not be seen; `--color-action-dark` is the worst of them. It survived
+     because only one member failed outright under blue and lime, and three did
+     once the brand went darker, which is when it was finally measured.
+     So each token names the end of its ramp that reads HERE — the same answer
+     `-ink` gives — and the two state hues that clear it fill the tail rather
+     than a third unreadable deep shade. §1.3 already sanctions a raw state hue
+     as a chart mark: the shape carries the meaning, not the colour.
+     Every member is measured live against `--card` on /design-system/colors. */
+  --chart-1: var(--color-action-bright);
+  --chart-2: var(--color-value);
+  --chart-3: var(--color-info);
+  --chart-4: var(--color-value-bright);
+  --chart-5: var(--color-success);
+
+  /* The same eight as the light block, and identical by design — see the note
+     there for why they are repeated rather than declared once in `:root`.
+
+     Dark had drifted less than light. Seven of these were already numerically
+     what the token now naming them resolves to, including the two that DO
+     move on light: `--sidebar` was `--card` written out as zinc 900, and
+     `--sidebar-foreground` was `--muted-foreground` written out as zinc 300.
+
+     One value genuinely changes here. `--sidebar-accent` was zinc 800 — the
+     `--muted` / `--secondary` step — and is now `--accent`, zinc 700. That is
+     a deliberate correction rather than a side effect: §1.1 gives `--accent`
+     one job, which is a hover surface, and hovering a nav item is what this
+     token is for. It lifts the hover one step, which is the direction it
+     should have gone in a theme this dark. */
+  --sidebar: var(--card);
+  --sidebar-foreground: var(--muted-foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+
+  /* ── Agent ────────────────────────────────────────────────────────────────
+     The agent acts, so the agent is the action colour (§0) — value would have
+     read as a paid feature and competed with the wallet.
+
+     `--agent` resolves to the ramp's lifted end rather than the fill, because
+     it is read as a foreground far more often than as one: eleven `text-agent`
+     uses — links, tool glyphs, the slash prefix, the listening mic — against
+     two solid marks, the streaming caret and the active-conversation dot, each
+     about a pixel and a half across. §1's rule is absolute for the first group
+     and harmless for the second, so there is one token rather than two. */
+  --agent: var(--color-action-bright);
+  /* Screen's identity is black, so the bloom fades to black and disappears.
+     See the light block for why this is the one value that could not simply be
+     shared between the two themes. */
+  --bloom-void: black;
+  /* Untouched. On near-black the ramp's lifted end is already exactly right —
+     screen adds light, and the hue arrives as hot as it needs to be. */
+  --bloom-l: 1;
+  --bloom-c: 1;
+  /* Hot means lifted almost to white, and desaturating as it goes, which is
+     what makes the core read as a light source rather than as a bright patch
+     of paint. */
+  --bloom-lift: 0.85;
+  --bloom-hot-c: 0.5;
+  /* On glass the star is already the brightest thing in its corner, so the
+     halo only has to soften the edge — white, and half the spread. */
+  --star-glow: rgb(255 255 255 / 0.5);
+  --star-glow-size: 2px;
+  /* The agent's own turn in the transcript. One step off --card toward the
+     action hue: enough that whose turn it is survives a squint, not so much
+     that a long answer becomes a coloured slab. The user's turn stays on
+     --card. */
+  --agent-muted: hsl(217 40% 13%);
+  /* The dim a panel drops over the console it belongs to — --background, held
+     back enough that the transcript stays legible underneath it. */
+  --scrim: hsl(240 10% 3.9% / 0.66);
+
+  /* ── Agent avatar: the isometric cube scene ─────────────────────────────
+     Twenty scenes are drawn from these twelve values. The faces are the zinc
+     ramp so the cube sits on the product's own surfaces, and
+     `--agent-cube-accent` is the single knob — the accent's top and right faces
+     are mixed from it in oklab, so re-pointing this one line recolours every
+     scene without touching a component. */
+  --agent-cube-top: hsl(240 5% 21%);
+  --agent-cube-left: hsl(240 5% 17%);
+  --agent-cube-right: hsl(240 5% 14%);
+  --agent-cube-stroke: hsl(240 5% 31%);
+  --agent-cube-accent: var(--color-action-bright);
+  /* Error is the one state that leaves the accent, because it has to: a blue
+     failure looks like a blue success. These are --destructive, lit for the
+     three faces the way the accent is. */
+  --agent-cube-error-top: hsl(0 60% 46%);
+  --agent-cube-error-left: hsl(0 62% 39%);
+  --agent-cube-error-right: hsl(0 63% 33%);
+  --agent-cube-error-stroke: hsl(0 68% 58%);
+  /* The sixth face of the idle cube — the one plane the isometric scenes never
+     show, so it has no counterpart above. */
+  --agent-cube-back: hsl(240 6% 10%);
+  /* Mixed into the dashed cube's stroke to grey it back from the accent. */
+  --agent-cube-ghost-ink: hsl(240 5% 45%);
+  /* Mixed into the accent's right face to shade it. */
+  --agent-cube-accent-shade: hsl(217 40% 32%);
+
+  /* ── Code highlighting ─────────────────────────────────────────────────
+     Same eight roles as the light block, resolved through the same `-ink`
+     tokens — see the note there. On dark these are the lifted ends of each
+     ramp, which is what `--action-ink`/`--value-ink`/etc. already resolve to
+     in this theme block. */
+  --code-keyword: var(--action-ink);
+  --code-string: var(--success-ink);
+  --code-comment: var(--muted-foreground);
+  --code-function: var(--info-ink);
+  --code-number: var(--value-ink);
+  --code-punctuation: var(--foreground);
+  --code-type: var(--warning-ink);
+  --code-variable: var(--destructive-ink);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  /* Declared per theme rather than pinned, so form controls, scrollbars and
+     the caret — all of which the UA paints, not us — follow the toggle. */
+  html {
+    @apply font-sans;
+    color-scheme: light;
+    /* One owner for where an anchor lands. Every sticky header in this system
+       is `--height-site-header` tall, so a `#section` link cannot park a
+       heading underneath it — and no component needs a `scroll-mt-*` of its
+       own to say so. */
+    scroll-padding-block-start: var(--scroll-offset);
+    /* Already gated: the `prefers-reduced-motion: reduce` block below forces
+       `scroll-behavior: auto !important` on every element, so this line is off
+       for anyone who asked for it to be. Travelling to an anchor is the one
+       place motion carries information — it shows you the document moved
+       rather than replaced itself, which is what tells you where you came
+       from in a table of contents. */
+    scroll-behavior: smooth;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+  /* The page has a light source.
+     One off-centre radial raise over `--background`, fixed to the viewport so it
+     behaves like light in the room rather than like a very tall image that
+     scrolls. It fades to `transparent`, which means the falloff reveals
+     `--background` itself — so the vignette is the *absence* of the glow rather
+     than a second dark gradient painted on top, and it can never go muddy.
+
+     This is a foundation, not a decoration: a flat fill at zinc 950 reads as
+     black paint, and the same fill under a wide, slightly lifted glow reads as
+     a deep room. Every page in the product sits on it. Opaque panels — a
+     sidebar, a dialog, an inset — paint over it on purpose; the atmosphere
+     belongs to the page, not to the furniture.
+
+     No animation. RULES §4 allows exactly two perpetual motions and this is
+     neither; it is weather that has already settled. */
+  body {
+    @apply bg-background text-foreground;
+    background-image: radial-gradient(
+      120% 90% at 62% 34%,
+      var(--page-glow) 0%,
+      transparent 64%
+    );
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* Focus is always visible and always the action colour — never removed. */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  /* Numerical values render tabular so columns align and live updates do not jitter. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+  /* A wash of the action colour rather than the browser's own blue. Mixed from
+     the token so it follows a rebrand, and kept as a tint rather than a fill so
+     the selected glyphs stay at full contrast in both themes. */
+  ::selection {
+    background: color-mix(in oklab, var(--color-action) 35%, transparent);
+    color: var(--foreground);
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "name": "premium-surface",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": ["lib/src/components/ui/premium_surface.dart"],
+  "webSources": ["styles/utilities.css", "components/ui/button.tsx", "components/docs/component-docs/premium-surface/page.tsx"],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "premium_surface.dart's doc comment quotes the utility's own framing verbatim: 'The premium button's surface, in whatever the value ramp currently is — lime today. Three parts, because real metal has three.' It names the three layers explicitly: '1. The metal ramp — the element's background-image, a seven-stop linear-gradient(176deg, …)... 2. The foil (::after) — striations plus a broad sheen... 3. The glint (::before) — one narrow, very bright band.' PremiumSurface composes a Stack of shadow/ramp/surface/foil/glint layers in that painted order.",
+      "web": "@utility foil-value in styles/utilities.css (line ~358) declares position:relative plus a background-image seven-stop linear-gradient(176deg, …) directly on the element, then &::before (the glint, mix-blend-mode:screen, animation:value-glint) and &::after (the foil, mix-blend-mode:soft-light, animation:value-foil-drift) — the same three-part ramp/foil/glint anatomy the Dart doc comment quotes."
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "PremiumSurface({spec, radius, border, hovered=false, child}) — hovered is the class's one interaction-facing knob, driving the same speed-up/brighten pair the CSS :hover selector applies.",
+      "web": "foil-value has no props of its own — it is a CSS class applied directly to a <button>, per the doc page: 'Reserve this for money and reward moments... foil-value sets position: relative itself; the host needs overflow-hidden so the foil and glint layers stay inside the shape.' Its only state-driven variation is the &:hover::before / &:hover::after block, matching PremiumSurface.hovered's one axis exactly."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "Doc comment: 'Both loops run off ONE elapsed clock, and the glint's hover retiming therefore JUMPS — measured... premium-surface:hover::before changes nothing but the duration — 5.5s → 2.4s — so the glint teleports to wherever the same elapsed time lands on the shorter timeline. The port used to resume the controller from its current phase, which continues smoothly and is a different animation' — i.e. the Dart port deliberately reproduces the CSS's phase-jump bug rather than smoothing it.",
+      "web": "styles/utilities.css's &:hover::before sets animation-duration: var(--duration-glint-hover) with no animation changes elsewhere, which is exactly the CSS elapsed-currentTime-re-division behavior ('CSS keeps an animation's elapsed currentTime across a change to animation-duration and re-divides it; it does not preserve the phase') the Dart doc comment names as the source of the jump it reproduces bit-for-bit."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "premium_surface.dart has no enabled/disabled concept — PremiumSurface is a paint effect wrapped around whatever child button is passed to it, not a control with its own interactive state.",
+      "web": "foil-value is a CSS utility class with no disabled variant of its own; button.tsx's premium variant inherits Button's own disabled:opacity-50 disabled:pointer-events-none the same way every other variant does.",
+      "note": "Disabling is the host Button's responsibility on both platforms, not this effect's — consistent with the doc page's own framing that foil-value is 'the premium button's metal,' applied to a button rather than a control in its own right."
+    },
+    "interaction": {
+      "verdict": "match",
+      "flutter": "Doc comment's 'Reduced motion' section: 'Both loops re-read their period through effectiveMotionDuration on each build, so under MediaQuery.disableAnimations they get Duration.zero, stop, and paint frame 0 — the glint invisible at opacity: 0, the foil at the drift's opening offsets... that rule collapses every animation on the page to 0.01ms at animation-iteration-count: 1... Frame 0 is what freezes here, because \"the first frame of the animation\" is the honest still of an animation.'",
+      "web": "The premium-surface doc page's Reduced motion section states: 'value-glint is listed as DECORATIVE: it spends most of its cycle at opacity: 0, so freezing it under prefers-reduced-motion leaves the button looking like it does for most of every cycle anyway... value-foil-drift is not in the ledger because it never reaches zero opacity — it only shifts background-position — so freezing it at one frame loses nothing.' Both platforms land on the identical outcome: frame 0 frozen, verified independently against motion.css's vanishing-keyframe ledger on the web side and MediaQuery.disableAnimations on the Flutter side."
+    },
+    "semantics": {
+      "verdict": "match",
+      "flutter": "The doc comment addresses AA contrast directly and by number: 'Re-measure this stop after ANY change to the value ramp... 42% of --color-value-dark is the lime figure... A darker value ramp does not survive this depth. At 42% a low-luminance hue rasterised at 4.11:1 — a premium button whose label fails AA across the band running through its middle.' This mirrors the exact AA-contrast reasoning and mix-depth (42%) the CSS comment carries.",
+      "web": "The premium-surface doc page's Accessibility section: 'The label text sits on the ramp's darkest band roughly a third of the way down; that band is deliberately mixed deep enough to clear AA against text-value-foreground, and needs re-measuring on any value-ramp change (see foil-value's own comment in utilities.css for the method — the stops are color-mix() and cannot be parsed as plain RGB).' The utilities.css comment at the 42% stop states the same finding almost verbatim, confirming both sources were derived from the same measurement."
+    }
+  }
+}

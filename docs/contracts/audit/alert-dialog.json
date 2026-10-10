@@ -1,0 +1,51 @@
+{
+  "name": "alert-dialog",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/alert_dialog.dart"
+  ],
+  "webSources": [
+    "components/ui/alert-dialog.tsx",
+    "components/docs/component-docs/alert-dialog/page.tsx",
+    "components/docs/component-docs/alert-dialog/meta.ts"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "flutter-behind",
+      "flutter": "AlertDialog(trigger, content) -> AlertDialogContent(header, footer, size) -> AlertDialogHeader(title, description) + AlertDialogFooter(cancel, action). No AlertDialogMedia widget exists in the file at all; AlertDialogSize.sm only narrows maxWidth to Containers.xs — AlertDialogFooter's build() is a single unconditional Row(mainAxisAlignment: MainAxisAlignment.end) with no branch on `size`.",
+      "web": "Exports include AlertDialogMedia (`mb-2 inline-flex size-10 ... sm:group-data-[size=default]/alert-dialog-content:row-span-2`), and AlertDialogFooter has `group-data-[size=sm]/alert-dialog-content:grid group-data-[size=sm]/alert-dialog-content:grid-cols-2` turning the footer into a 2-column grid when size=\"sm\".",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: Self-documented in the Flutter file's own library doc: \"Not built: AlertDialogMedia and the size=\"sm\" two-column footer. Both are real exports with no consumer in the corpus... [AlertDialogSize] records the second so a caller can ask for it.\" The enum value exists but AlertDialogFooter never reads it, so requesting the sm two-column footer on Flutter silently gets the normal end-aligned row instead — a genuine, acknowledged anatomy gap, not merely undocumented."
+    },
+    "api": {
+      "verdict": "flutter-behind",
+      "flutter": "enum AlertDialogSize { normal, sm } is accepted by AlertDialogContent.size but, per the anatomy gap above, `sm` only affects ConstrainedBox(maxWidth: Containers.xs) and does not reach AlertDialogFooter, which has no size parameter at all.",
+      "web": "AlertDialogContent({size = \"default\"}: {size?: \"default\" | \"sm\"}) sets data-size on the content AND AlertDialogFooter reads group-data-[size=sm]/alert-dialog-content:grid-cols-2 off that same data attribute, so size drives both the width and the footer layout.",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: Same underlying issue as anatomy: the `sm` size value is a partial reproduction on Flutter (width-only) versus a full two-axis prop on web (width + footer grid)."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "AlertDialogAction.loading swaps in presumably a spinner via Button(loading:true) and sets onPressed: loading ? null : onPressed, per the file's own reasoning about Button asChild's silent no-op on the web being why loading is declared locally.",
+      "web": "AlertDialogAction sets data-loading, aria-busy={loading || undefined}, disabled={disabled || loading}, and renders <Spinner aria-hidden/> before ButtonLabel when loading.",
+      "note": "Both sides independently declare `loading` on the Action component (rather than inheriting Button's, for the identical asChild/Slot reasoning stated in both files' comments) and use it to block a second press."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "AlertDialogContent/Header/Footer carry no disabled field; only AlertDialogAction's loading indirectly disables via onPressed: null.",
+      "web": "The alert-dialog doc page's States grid marks a \"disabled trigger\" only at the Button level (audited separately) and marks success/error/empty N/A on the dialog itself.",
+      "note": "The dialog shell itself has no disabled state on either platform; disabling belongs to the trigger Button (a separately audited component) or to AlertDialogAction's loading path, already covered under states."
+    },
+    "interaction": {
+      "verdict": "flutter-behind",
+      "flutter": "AlertDialogAction/Cancel unconditionally wrap the button in `Tooltip(label: tooltip ?? label, child: Button(...))` with no truncation check anywhere in alert_dialog.dart or tooltip.dart (grep for truncat/scrollWidth in tooltip.dart returns nothing) — every non-null label always shows a tooltip on hover/focus.",
+      "web": "useLabelIsTruncated() measures `label.scrollWidth > label.clientWidth + 1` via a ResizeObserver on the button's own [data-slot=\"button-label\"], and `mayOpen = tooltip != null || truncated` gates the automatic label-as-tooltip so it opens only when the label is genuinely clipped (the explicit `tooltip` prop still always shows).",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: The alert-dialog doc page itself documents this as a fixed bug: \"That tooltip attaches only when the label is actually clipped... Radix focuses Cancel automatically when an alert dialog opens, so attaching the tooltip unconditionally meant a tooltip repeating the button's own words appeared before the user did anything, and swallowed the first Escape.\" Flutter's alert_dialog.dart top-of-file doc even records this as a known, deliberately-reproduced drift (\"on this page nothing truncates, and it fires anyway\") rather than the truncation-gated behaviour the current web source actually implements — so Flutter over-triggers the automatic tooltip (and correspondingly swallows an extra Escape) on every non-truncated label, which the web no longer does."
+    },
+    "semantics": {
+      "verdict": "match",
+      "flutter": "_Dialog wraps its content in Semantics(label: '$title. $description', container: true); AlertDialog.build uses OverlayPortal(..., dismissOnOverlayTap: false, ...) — measured refusing overlay-tap dismissal per the library doc.",
+      "web": "role=\"alertdialog\" aria-modal=\"true\" set by Radix's AlertDialogPrimitive.Content; aria-labelledby/aria-describedby wired to AlertDialogTitle/Description; onPointerDownOutside and onInteractOutside both call preventDefault() so overlay clicks do nothing.",
+      "note": "Combined accessible name/description and the disabled-overlay-dismissal behaviour both match; Flutter folds title+description into one Semantics label rather than separate labelledby/describedby nodes, which is a reasonable platform difference given Flutter's Semantics tree has no direct aria-describedby equivalent, and does not change what is ultimately announced."
+    }
+  }
+}

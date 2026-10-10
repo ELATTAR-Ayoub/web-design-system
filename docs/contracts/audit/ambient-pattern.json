@@ -1,0 +1,48 @@
+{
+  "name": "ambient-pattern",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/ambient_pattern.dart"
+  ],
+  "webSources": [
+    "styles/utilities.css",
+    "styles/motion.css",
+    "components/docs/component-docs/ambient-pattern/page.tsx",
+    "components/docs/component-docs/ambient-pattern/meta.ts"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "ambient_pattern.dart's doc comment names the web target explicitly as '.starfield — thirteen hand-placed sparkles and two slow sways (app/globals.css L3364-3488)'; StarfieldCluster models the two pseudo-elements (dense bottom-right, thin top-right) each as tile + corner + sway + sparkles list.",
+      "web": "styles/utilities.css lines 975-1059 define .starfield (position:absolute, inset:0, pointer-events:none) plus .starfield::before/.bloom-cosmic [data-content]::before (dense cluster, 260x96, bottom-right) and ::after/[data-content]::after (thin cluster, 200x64, top-right), each a background-image data URI SVG with drop-shadow filter."
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "StarfieldCluster exposes tile: Size, corner: Alignment, sway: Duration (MotionDurations.sway/swayAlt = 44s/33s), fromDegrees/toDegrees (-6/6), hoverTranslate, hoverScale (1.06/1.04) — the Dart equivalent of CSS custom properties and class modifiers, since there are no component props.",
+      "web": "No React props exist (sourcePath: null in meta.ts); the 'API' is CSS custom properties --star-glow, --star-glow-size, --duration-sway (44s), --duration-sway-alt (33s), plus modifier classes .starfield vs .bloom-cosmic [data-content] selecting which host mounts the effect, and hover values translate -5px 3px / scale 1.06 (before) and -3px -2px / scale 1.04 (after) in utilities.css lines 1029-1039."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "AmbientPattern/StarfieldCluster has no rest/hover/focus/pressed/loading/error/empty state matrix of its own; matrixFor(swayT, hoverT) only composes a continuous sway animation with a discrete hover lean, not an interaction state machine.",
+      "web": ".starfield defines no interactive states itself; only :hover on the ancestor .bloom-cosmic host triggers the translate/scale transition (utilities.css lines 1029-1039), and the sway animation runs unconditionally regardless of any state.",
+      "note": "n/a: this is a decorative, non-interactive CSS effect with aria-hidden and pointer-events:none on both platforms, so the standard interaction-state matrix (rest/hover/focus/pressed/loading/success/error/disabled/empty) does not apply; only an ancestor-driven hover lean exists, not a state of the effect itself."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "ambient_pattern.dart has no enabled/disabled concept — the effect is always painted when mounted by a host such as Alert or Toast.",
+      "web": "The .starfield class and its pseudo-elements have no disabled variant; the doc page (ambient-pattern/page.tsx lines 55-66) states explicitly 'There is no ambient-pattern component ... the whole capability is a class and two pseudo-elements.'",
+      "note": "n/a: a purely decorative always-on CSS effect has no disabled state to explain or recover from on either platform — there is nothing to disable."
+    },
+    "interaction": {
+      "verdict": "match",
+      "flutter": "matrixFor() composes translate, then rotate (sway), then scale (hover) about originIn(box) per CSS Transforms 2 order, explicitly noting the hover nudge is the outermost factor so it is not itself rotated by the sway — documented as the reason a single Matrix4 must be hand-composed.",
+      "web": "utilities.css lines 1005-1039 animates the `rotate` longhand via @keyframes star-sway independently of the `translate`/`scale` longhands transitioned on :hover — three independent CSS properties that compose automatically in the browser, which is the mechanism the Flutter matrixFor() was built to reproduce by hand."
+    },
+    "semantics": {
+      "verdict": "match",
+      "flutter": "stilledMatrixFor() documents the reduced-motion contract: 'star-sway declares no animation-fill-mode, and the blanket rule collapses its duration to 0.01ms and its iteration count to 1 — so it finishes rather than freezing, and reverts to the element's own rotate, which is 0 degrees, not the keyframe's -6 degrees', with hover transitions collapsed but not removed.",
+      "web": "styles/motion.css lines 763-771 define the blanket `@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; ... } }` rule that collapses .starfield's star-sway keyframe exactly as the Flutter doc describes; the doc page's 'Reduced motion' section (ambient-pattern/page.tsx lines 197-214) confirms sparkles stay visible at their resting arrangement rather than vanishing to opacity:0, both aria-hidden and pointer-events:none for accessibility."
+    }
+  }
+}

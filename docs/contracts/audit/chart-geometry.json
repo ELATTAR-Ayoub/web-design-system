@@ -1,0 +1,50 @@
+{
+  "name": "chart-geometry",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/chart_geometry.dart"
+  ],
+  "webSources": [
+    "node_modules/recharts (scale, tickCount, domain, curve types, PolarGrid)",
+    "components/ui/chart.tsx"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "platform-difference",
+      "flutter": "chart_geometry.dart is a pure-maths library shared by CartesianChart and the three polar charts: chartNiceTicks/chartNiceDomain (recharts getNiceTickValues.js port), BandScale/PointScale/LinearScale, barSlots (bar layout), barRRect, curvePath/areaPath with CurveType.linear/natural/monotone/step (d3-shape curve ports), and polarToCartesian/polarMaxRadius/sectorPath/sectorWithCornerPath/polarPolygonPath. It exports no widget and renders nothing itself.",
+      "web": "Delivery is `package-native`: the scale / nice-tick / curve / polar-arc maths under every web chart is recharts' own (`XAxis scale`, `tickCount`, `domain`, `Line type=\"monotone\"`, `PolarGrid`, `PolarAngleAxis`), reached through `ChartContainer`. There is no module of ours, and the contract no longer claims one.",
+      "note": "CLOSED on review: the collision is resolved by telling the truth about delivery. Flutter's chart_geometry.dart is a maths engine because Flutter has no charting package; the web has one, and its geometry is recharts'. The contract row moved from `react` to `package-native`, the page documents which recharts primitives carry each piece of geometry, and the two hand-drawn specimens (`UnitActivityChart`, `ConversionFunnelChart`, under components/ds/charts) are shown as documentation specimens of \"when the geometry is the component\", not as the capability. ORIGINAL: This is the exact trap the audit brief warns about (the ambient-pattern/.starfield case): the name `chart-geometry` refers to two unrelated things on the two platforms. On Flutter it is the shared coordinate-maths engine underneath every cartesian and polar chart (scales, nice-ticks, curve interpolation, polar sector paths) with no visual identity of its own. On the web it is two specific non-Recharts UI components (a 12-row activity grid and a proportional funnel strip) that were grouped into the registry as 'chart-geometry' precisely BECAUSE they draw geometry by hand instead of going through a scale function -- the opposite of what the Flutter file does. Neither side has a component that does what the other's `chart-geometry` does: the web has no UnitActivityChart/ConversionFunnelChart port in Flutter, and Flutter's scale/curve maths has no standalone web module (it lives inside the recharts dependency, not in this repo). Recorded as a gap on anatomy because the web platform-contract row for `chart-geometry` cannot be verified against this Flutter source at all -- they are different capabilities that happen to share a slug."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "chart_geometry.dart's public API is a set of top-level functions and value classes (chartNiceTicks, LinearScale.nice, curvePath, sectorPath, etc.), consumed internally by chart_cartesian.dart and chart_polar.dart rather than by an app-facing widget.",
+      "web": "No corresponding internal-maths module exists in this repository to compare props against; UnitActivityChart/ConversionFunnelChart's actual props (title, value, comparison, total, stages) are a different capability's API and not a meaningful comparison point.",
+      "note": "Because the two sides are different capabilities (see anatomy), there is no shared API surface to hold to match/gap -- recorded n/a rather than forcing a false comparison."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "Pure functions and immutable value classes; no state.",
+      "web": "Not applicable for the same reason as api -- no comparable web module exists.",
+      "note": "A maths library has no interaction/state matrix on either side of a real comparison; recorded n/a."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No disabled concept -- these are coordinate/geometry functions, not controls or even renderable widgets.",
+      "web": "UnitActivityChart/ConversionFunnelChart render a <figure> of static, non-interactive bars/cells with no disabled prop, no onClick, and no focusable elements anywhere in their markup.",
+      "note": "Disabled does not apply to a maths library on the Flutter side, and the web capability sharing this slug (UnitActivityChart/ConversionFunnelChart) is a static figure with nothing to disable either."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No pointer/keyboard handling -- consumed by chart_cartesian.dart's and chart_polar.dart's own MouseRegion/hover code, which are audited separately under chart-cartesian and chart-polar.",
+      "web": "UnitActivityChart's per-cell `title` attribute is the only interaction surface (a native tooltip on hover of a single grid cell); ConversionFunnelChart has no interaction at all.",
+      "note": "Interaction is owned by the consuming chart widgets on the Flutter side (audited under chart-cartesian/chart-polar), and the web capability sharing this slug is almost entirely static aside from one native title-attribute tooltip."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No text, no widget tree, no Semantics node -- purely numeric.",
+      "web": "UnitActivityChart's own doc page states the accessible name is 'a plain aria-label built from the same numbers the figure draws', literally figure aria-label={`${title}: ${value}. ${comparison}`} with the grid itself aria-hidden.",
+      "note": "Flutter's chart_geometry.dart has no widget tree at all so accessibility is n/a to it, while the web capability sharing this slug does carry real semantics (an aria-label summarising the figure) worth noting for whoever eventually audits UnitActivityChart/ConversionFunnelChart as their own Flutter-side capability."
+    }
+  }
+}

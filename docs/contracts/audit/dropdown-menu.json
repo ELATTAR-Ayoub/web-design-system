@@ -1,0 +1,49 @@
+{
+  "name": "dropdown-menu",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/dropdown_menu.dart"
+  ],
+  "webSources": [
+    "components/ui/dropdown-menu.tsx"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "platform-difference",
+      "flutter": "DropdownMenu(trigger, children: List<MenuChild>, width, align, side, enabled, disabledReason) is one StatefulWidget composing Popover + MenuPointerDown + MenuTriggerScope + MenuContent from the shared menu.dart, whose own doc comment says its row rendering is 'the same element ... in the three files' (dropdown-menu/context-menu/menubar).",
+      "web": "dropdown-menu.tsx exports fourteen separate parts (DropdownMenu, DropdownMenuPortal, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuCheckboxItem, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuSubContent), each its own thin wrapper over radix-ui's DropdownMenuPrimitive.*, not shared with context-menu.tsx or menubar.tsx.",
+      "note": "Flutter shares one menu.dart module for row rendering across DropdownMenu/ContextMenu/Menubar, while the dropdown-menu docs page explains web deliberately does NOT share a module because 'DropdownMenu, ContextMenu and Menubar share zero identical class strings of eighty characters or more' (measured) — both are internally consistent, intentional architectural choices for each platform's own constraints."
+    },
+    "api": {
+      "verdict": "platform-difference",
+      "flutter": "DropdownMenu is documented as 'the *uncontrolled* spelling — it owns the boolean itself ... a caller that wants control can drive Popover and MenuContent directly'; it has no open/onOpenChange params, only enabled/disabledReason/align/side/width.",
+      "web": "DropdownMenu forwards `React.ComponentProps<typeof DropdownMenuPrimitive.Root>` directly, so callers can pass Radix's `open`/`onOpenChange`/`modal` for fully controlled usage without dropping to a lower-level primitive.",
+      "note": "Web's high-level DropdownMenu supports controlled open state out of the box; Flutter's equivalent is uncontrolled-only by design, and the file doc comment names the escape hatch (compose Popover + MenuContent directly) for a caller that needs control — a documented capability split, not a silent omission."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "`_isOpen = _open && widget.enabled` — 'a disabled menu is a closed one' — and each row from menu.dart wraps in `Disabled(disabled: !enabled, blockPointer: false, reason: disabledReason)`, matching the item-level disabled affordance.",
+      "web": "The docs StateGrid enumerates rest, hover, focus-visible, pressed, disabled (trigger), open (aria-expanded=true), plus item-level disabled/checked/destructive rows, with loading/success/error/empty marked N/A because 'the outcome belongs to whatever the selected item does'.",
+      "note": "Both model trigger rest/hover/focus/pressed/disabled/open and per-item disabled/checked states identically in substance; loading/success/error/empty are correctly absent on both sides for the same synchronous-chooser reasoning."
+    },
+    "disabled": {
+      "verdict": "match",
+      "flutter": "`_DropdownMenuState._triggerSelfDims` checks `trigger is Button && trigger.onPressed == null` to avoid double-fading a Button trigger that already dims itself, only wrapping in `Disabled(disabled: !widget.enabled, reason: widget.disabledReason, ...)` when the trigger does not self-dim.",
+      "web": "DropdownMenuItem's className carries `data-disabled:pointer-events-none data-disabled:opacity-50` sourced from Radix's own `disabled` prop on DropdownMenuPrimitive.Item; the trigger's disabled state is the caller's own control (e.g. `<Button disabled>`), never re-wrapped by dropdown-menu.tsx itself. ADDED 2026-09-11 (gaps-closing pass, for menu-family parity): DropdownMenuItem, DropdownMenuCheckboxItem and DropdownMenuRadioItem now also take disabledReason?: string, wired the same way as ContextMenuItem/MenubarItem — components/ui/disabled.tsx's Disabled in mode=\"aria\" (Radix's menu Item has no native disabled attribute to carry), giving an always-on aria-describedby plus a click/tap-reachable popover beside the row.",
+      "note": "Both explicitly avoid double-applying a disabled fade: Flutter checks `_triggerSelfDims` before wrapping, web simply never wraps the trigger and relies on Radix's `data-disabled` for items — same anti-double-dim intent, different mechanism. ADDED 2026-09-11: this dimension never scored dropdown-menu's disabled handling against Flutter's disabledReason the way context-menu.json and radio.json did, even though Flutter's menu.dart is one shared module under ContextMenu/DropdownMenu/Menubar — a reason wired on one sibling and not another is exactly the drift the gaps brief calls out. disabledReason is now present on all three. Measured in the dev server (http://localhost:3111, desktop-dark): focusing a disabled item with disabledReason reads the reason via aria-describedby, and the info button opens a Popover on click/Enter/Space. Pinned by test/dropdown-menu.test.tsx and e2e/gaps-disabled.spec.ts."
+    },
+    "interaction": {
+      "verdict": "platform-difference",
+      "flutter": "`anchor: MenuPointerDown(enabled: widget.enabled, onPointerDown: _toggle, child: trigger)` — the file doc comment states the trigger 'is measured, and it is opened on pointer-down: see MenuPointerDown'.",
+      "web": "The docs Keyboard section lists 'Enter / Space / ↓ — Opens the trigger and moves focus to the first item', matching Radix's click(pointer-up)/keyboard-activation model rather than pointer-down.",
+      "note": "Flutter opens the menu on pointer-down (mousedown-equivalent) while Radix/web opens on click (pointer-up) or Enter/Space/ArrowDown — a real activation-timing difference between the two trigger models, not documented as an intentional port decision in dropdown_menu.dart, so it is worth flagging even though it reads as a minor platform nuance rather than a functional loss."
+    },
+    "semantics": {
+      "verdict": "platform-difference",
+      "flutter": "menu.dart's row builder wraps each item in `Semantics(button: true, selected: checked, enabled: enabled, label: subtitle == null ? label : '$label $subtitle')` — one generic role (button) for every MenuItem/MenuCheckboxItem/MenuRadioItem kind.",
+      "web": "The docs page states content role is `menu` and items are `role=\"menuitem\"`, `role=\"menuitemcheckbox\"` or `role=\"menuitemradio\"` to match the item kind, with the trigger carrying `aria-haspopup` and `aria-expanded`.",
+      "note": "Web exposes three distinct ARIA roles matching checkbox/radio/plain item kinds via Radix; Flutter's Semantics API collapses all three to `button: true` plus a `selected` flag, which is the coarser but standard Flutter accessibility-tree vocabulary for this — a platform capability difference rather than a web defect, since web preserves at least as much semantic precision."
+    }
+  }
+}

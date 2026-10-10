@@ -1,0 +1,51 @@
+{
+  "name": "media-scrim",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/media_scrim.dart",
+    "lib/src/design_system/foundation/media.dart"
+  ],
+  "webSources": [
+    "styles/tokens.css",
+    "styles/utilities.css"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "MediaScrim(child) is a DecoratedBox(decoration: BoxDecoration(gradient: debugGradient)) wrapping the caller's content — a bottom-up LinearGradient(begin: topCenter, end: bottomCenter) built from MediaScrimTokens.ink at three stops (0, 0.58, 1) with alphas (0, middleAlpha=0.18, bottomAlpha=0.82), meant to be placed over full media bounds via Positioned.fill so overlaid title/action copy stays readable.",
+      "web": "`@utility media-scrim` in styles/utilities.css: a top-to-bottom linear-gradient from transparent, through `--media-ink` at `--media-scrim-mid` (18%) at `--media-scrim-mid-stop` (58%), to `--media-ink` at `--media-scrim-end` (82%), setting `color: var(--media-foreground)`. Black ink and white foreground, theme-independent.",
+      "note": "CLOSED on review: the utility and its four tokens now exist, copied from MediaScrimTokens (stops [0, 0.58, 1], middleAlpha 0.18, bottomAlpha 0.82, ink black, foreground white), and the page at /design-system/components/media-scrim applies it to a real photograph with and without the ramp. Verified by check:refs resolving every reference and docs:validate wiring the pair. ORIGINAL: This is a pre-existing, already-documented gap, not a new finding: docs/architecture/platform-parity.md lines 139-143 states it explicitly — 'Flutter's is a bottom-up gradient over media so overlaid copy stays readable. The web has a --scrim token and a bg-scrim utility, but that is a flat panel dim ... the same word for a different capability. No page; the contract keeps the row so check:parity keeps reporting it.' docs/migrations/flutter-0.0.3-web.md:111 records the identical drift. This audit independently confirms it: no gradient recipe matching MediaScrimTokens' ink/stops/middleAlpha/bottomAlpha exists on the web side at all — a caller needing readable copy over a hero image or video thumbnail on the web has nothing to reach for."
+    },
+    "api": {
+      "verdict": "platform-difference",
+      "flutter": "MediaScrim takes one required `child` and composes the gradient decoration entirely internally from MediaScrimTokens (ink, stops, middleAlpha, bottomAlpha) — no parameters to tune the ramp; MediaScrimTokens also carries a theme-independent `foreground` white for text placed over the scrim.",
+      "web": "One utility class on the element covering the media; the numbers are tokens rather than parameters. Flutter's widget takes a `child`; the web takes a class name and the caller composes the copy inside.",
+      "note": "CLOSED as a gap. What remains is shape, not capability: a `DecoratedBox` wrapping a child on Flutter, a class on an overlay on the web — the same ramp, the same numbers, reached the way each platform reaches a gradient. ORIGINAL: Same underlying gap as anatomy: because no web implementation exists at all, there is no API surface to compare parameters against — the web has nothing here, full stop."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "MediaScrim is a StatelessWidget with a fixed, non-interactive gradient decoration — no rest/hover/focus/pressed/disabled states exist in media_scrim.dart.",
+      "web": "N/A — there is no web implementation to have states.",
+      "note": "A readability gradient is decoration, not a control, on the Flutter side; since the web has no counterpart at all this dimension cannot be evaluated against it either way."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "media_scrim.dart declares no enabled/disabled concept — the gradient is always painted identically over whatever child is given.",
+      "web": "N/A — no web implementation exists to have a disabled path.",
+      "note": "A scrim is passive decoration on the Flutter side and does not apply; the web has nothing to evaluate."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No gesture/keyboard/focus handling anywhere in MediaScrim — it paints a gradient and passes its child through untouched otherwise.",
+      "web": "N/A — no gesture, keyboard, or focus handling to evaluate: the capability itself is unimplemented on the web, so there is no markup or script to read.",
+      "note": "Not applicable on the Flutter side because the widget is purely decorative, and there is nothing on the web to compare against regardless."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "MediaScrim adds no Semantics of its own — it is decoration behind whatever accessible content the child (title/action copy) already carries, and the gradient itself is never announced.",
+      "web": "N/A — no aria/role markup to evaluate, since there is no gradient scrim component or utility implemented anywhere on the web side of this repository.",
+      "note": "A pure visual contrast aid has nothing to announce on either platform in principle; the web comparison is moot since the capability itself is unimplemented there."
+    }
+  }
+}

@@ -1,0 +1,138 @@
+/* ============================================================================
+   AVATAR MOTION — owned by components/agent/avatar, not by the design system
+
+   The fifteen cube signatures from the design handoff, one per state family.
+   They are not `anim-*` utilities: `cube.tsx` assembles
+   `animation: agent-cube-<name> <seconds ÷ speed> var(--ease-move) infinite`
+   per cube from the scene recipe. Durations are the handoff's; easing is
+   always `--ease-move` except spin3d, which is linear.
+
+   This file is imported by `cube-avatar.tsx` and ships with the `agent`
+   registry item. It is NOT part of `source-foundation`: a consumer re-theming
+   the system's motion never has to read it. Timing still comes from the
+   scale in styles/motion.css — nothing here declares a duration or a curve.
+
+   `appear` and `drop` end at opacity 0 on purpose (cubes arrive one by one and
+   hard-cut back, Game Boy logo style); the reduced-motion block at the bottom
+   restores the static layout so no scene freezes to an empty box.
+   ========================================================================= */
+
+@keyframes agent-cube-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes agent-cube-rise {
+  0%, 55%, 100% { transform: translateY(0); }
+  20%, 35% { transform: translateY(-11px); }
+}
+
+@keyframes agent-cube-appear {
+  0% { opacity: 0; transform: translateY(8px); }
+  10% { opacity: 1; transform: translateY(0); }
+  93% { opacity: 1; transform: translateY(0); }
+  95%, 100% { opacity: 0; }
+}
+
+@keyframes agent-cube-drop {
+  0% { opacity: 0; transform: translateY(-24px); }
+  18% { opacity: 1; transform: translateY(0); }
+  93% { opacity: 1; }
+  95%, 100% { opacity: 0; }
+}
+
+@keyframes agent-cube-glide {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(39px, 19.5px); }
+}
+
+@keyframes agent-cube-blinkfade {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.95; }
+}
+
+@keyframes agent-cube-blinkslow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+@keyframes agent-cube-lift {
+  0%, 100% { transform: translateY(0); }
+  45%, 60% { transform: translateY(-6.5px); }
+}
+
+@keyframes agent-cube-lift2 {
+  0%, 100% { transform: translateY(0); }
+  45%, 60% { transform: translateY(-13px); }
+}
+
+@keyframes agent-cube-settle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes agent-cube-pull {
+  0%, 60%, 100% { transform: translateY(0); }
+  25%, 40% { transform: translateY(-20px); }
+}
+
+@keyframes agent-cube-shake {
+  0%, 100% { transform: translateY(0); }
+  20% { transform: translateY(-2.5px); }
+  40% { transform: translateY(2.5px); }
+  60% { transform: translateY(-2px); }
+  80% { transform: translateY(2px); }
+}
+
+@keyframes agent-cube-bounce {
+  0%, 100% { transform: translateY(0); }
+  35% { transform: translateY(-16px); }
+  55% { transform: translateY(0); }
+  70% { transform: translateY(-6px); }
+  82% { transform: translateY(0); }
+}
+
+@keyframes agent-cube-spin3d {
+  0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+  100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+}
+
+/* The avatar cross-fade. Swapping state replaces the whole scene, so the
+   outgoing one is not animated out — it is simply replaced under a fade, which
+   is why this is an entrance only. */
+@keyframes agent-cube-scene-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ── Reduced motion, handled explicitly ──────────────────────────────────────
+   The blanket rule elsewhere in this file collapses every animation to 0.01ms
+   and one iteration. For most things that is a freeze at the final keyframe,
+   which is correct — but `appear` and `drop` END at opacity 0, so the blanket
+   rule would freeze half the scenes to nothing at all. The handoff's
+   instruction is to fall back to the static cube layout, so that is stated here
+   rather than inherited: no animation, everything visible, no transforms.
+
+   `!important` on a class beats the inline `opacity: 0` those two keyframes
+   need as their starting state.
+
+   Only `.agent-cube-anim` is targeted, never the positioning group. In SVG,
+   `transform` is a presentation attribute mapped to the CSS property, so a CSS
+   `transform: none` outranks `transform="translate(x,y)"` — pointing this rule
+   at every <g> would stack all twenty-odd cubes on the origin. The animated
+   groups carry no transform attribute of their own, which is what makes them
+   the safe thing to clear. */
+.agent-cube-scene.agent-cube-frozen .agent-cube-anim,
+.agent-cube-frozen .agent-cube-scene .agent-cube-anim {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-cube-scene .agent-cube-anim {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

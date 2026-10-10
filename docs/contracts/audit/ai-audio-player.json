@@ -1,0 +1,49 @@
+{
+  "name": "ai-audio-player",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/audio-player.tsx",
+    "components/docs/component-docs/ai-audio-player/audio-player-specimen.tsx",
+    "components/docs/component-docs/ai-audio-player/page.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Audio Player — origin: web-only, flutterSources is [].",
+      "web": "audio-player.tsx wraps media-chrome/react: AudioPlayer (MediaController with audio set and a style object of --media-* variables pointing at system tokens), AudioPlayerElement (an audio element in slot media with a src or an AI SDK data object), AudioPlayerControlBar (MediaControlBar around a horizontal ButtonGroup), and the controls: play, seek backward and forward (outline icon-sm Buttons as child), time and duration displays, mute (ButtonGroupText), and the time and volume ranges.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Audio Player — origin: web-only, flutterSources is [].",
+      "web": "AudioPlayer takes MediaController props except audio; AudioPlayerElement takes audio props except src plus either src (string) or data (the AI SDK speech audio object); the seek buttons take seekOffset (default 10); every control takes its media-chrome element's props, plus className on most, with the data-slot attributes audio-player-* set on each.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Audio Player — origin: web-only, flutterSources is [].",
+      "web": "Playback state (paused, playing, muted, time, duration) lives in media-chrome and the audio element, which updates the controls' glyphs and values. This file adds the hover treatment via --media-control-hover-background and the Button hover and focus states on the play and seek buttons.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Audio Player — origin: web-only, flutterSources is [].",
+      "web": "No disabled handling. Nothing in this file sets or forwards a disabled prop, and media-chrome controls are inert when no media element is present.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Audio Player — origin: web-only, flutterSources is [].",
+      "web": "Clicking play, seek or mute drives the audio element through media-chrome's store; the two ranges are dragged or moved with the arrow keys, and seek jumps seekOffset seconds (10 by default). autoPlay and preload are plain audio attributes passed through AudioPlayerElement.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Audio Player — origin: web-only, flutterSources is [].",
+      "web": "Roles and names come from media-chrome (button roles with state-aware labels, slider roles on the ranges). The audio element has no captions track, with the lint exception noting that captions are the consumer's responsibility. The ranges keep a 44px minimum height for hit area.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

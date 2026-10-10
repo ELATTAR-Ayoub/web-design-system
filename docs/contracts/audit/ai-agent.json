@@ -1,0 +1,49 @@
+{
+  "name": "ai-agent",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/agent.tsx",
+    "components/docs/component-docs/ai-agent/page.tsx",
+    "components/docs/component-docs/ai-agent/agent-specimen.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Agent — origin: web-only, flutterSources is [].",
+      "web": "Agent is a bordered div; AgentHeader holds a BotIcon, the name and an optional secondary Badge with the model id; AgentContent spaces the rest; AgentInstructions is a labelled muted panel; AgentTools is a labelled Accordion whose AgentTool items put the description in the trigger and the JSON schema in a CodeBlock; AgentOutput shows a schema string in a CodeBlock as TypeScript.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Agent — origin: web-only, flutterSources is [].",
+      "web": "AgentHeader requires name and takes model; AgentInstructions requires string children; AgentTools forwards Accordion props; AgentTool requires tool (an ai Tool) and value and reads jsonSchema, else inputSchema; AgentOutput requires a schema string; the rest forward div props.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Agent — origin: web-only, flutterSources is [].",
+      "web": "Rest, and tool rows open or closed (anim-expand, hover from the Accordion trigger); a tool without a description reads No description, and a missing model hides the Badge. There is no loading, error or disabled state because the card only displays a configuration.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Agent — origin: web-only, flutterSources is [].",
+      "web": "There is no disabled handling: nothing in the card performs an action, and the only controls are the Accordion triggers, which are never withheld.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Agent — origin: web-only, flutterSources is [].",
+      "web": "Only the tool rows are interactive: pointer, Enter or Space opens a row, Accordion arrow keys move between triggers, and type single or multiple (set by the caller on AgentTools) decides whether several can be open.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Agent — origin: web-only, flutterSources is [].",
+      "web": "Each tool trigger is a button named by the tool description with aria-expanded and aria-controls and a 44px minimum height; the labels Instructions, Tools and Output Schema are spans, not headings; the schema is selectable text.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

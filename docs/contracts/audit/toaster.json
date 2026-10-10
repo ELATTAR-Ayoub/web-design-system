@@ -1,0 +1,48 @@
+{
+  "name": "toaster",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/toaster.dart"
+  ],
+  "webSources": [
+    "components/ui/toaster.tsx",
+    "styles/utilities.css",
+    "components/docs/component-docs/toaster/page.tsx"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "Toaster(controller, position) hosts a ToastController queue and renders _ToastSlot cards inside an Align+Stack, each card built from Surface(shadow-e3-equivalent, border) wrapping a _bloomFor(type)-selected FeedbackSurface, matching the icon+title+description+optional action card shape.",
+      "web": "components/ui/toaster.tsx's Toaster wraps sonner's own <Sonner/> and configures toastOptions.classNames.toast = 'cn-toast bloom-cosmic'; the .cn-toast.cn-toast.cn-toast block in styles/utilities.css (display:flex, gap 3, width 22.25rem, padding 4, border, radius-lg, bg-popover, shadow-e3, overflow hidden) is the same icon-beside-content card the toaster doc page's markup comment describes as [data-icon]/[data-content]/[data-title]/[data-description]/[data-button]."
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "ToastController exposes show(ToastMessage), success/error/info/warning/loading(title, {description, glyph, action}), promise<T>(future, {loading, success, error, ...}) and dismiss(id)/clear(), and Toaster(controller, position: ToastPosition{bottomRight,bottomLeft,topRight,topLeft}) — the doc comment states this mirrors sonner's module-level toast singleton one-to-one.",
+      "web": "toast()/toast.success/.info/.warning/.error/.message/.loading/.promise/.custom/.dismiss are re-exported straight from the sonner package per toaster/page.tsx's API Reference, and <Toaster position=\"bottom-right\" .../> forwards sonner's own ToasterProps (position, duration, expand, gap, visibleToasts, closeButton, hotkey, etc.) unmodified."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "ToastType{success,info,warning,error,loading,normal} each resolve a distinct inkOf(theme) (-Text tokens) and IconGlyph via TOAST_ICONS-equivalent glyph getters, with loading carrying 'no clock' by design (ToastController._tick removes any AnimationController for a loading toast).",
+      "web": "TOAST_ICONS maps success/info/warning/error/loading to CircleCheckIcon/InfoIcon/TriangleAlertIcon/OctagonXIcon/Loader2Icon in components/ui/toaster.tsx, and toaster/page.tsx's States section documents the same five types as meanings rather than interaction states, with loading explicitly called out as having no auto-dismiss clock."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "ToastController/Toaster expose no enabled/disabled concept anywhere in the file — a toast either exists in the queue or does not.",
+      "web": "toaster/page.tsx's own States section states it outright: 'disabled is N/A: a toast is not a control that can be turned off, only dismissed.'",
+      "note": "Both sides agree a toast is a transient notification, not a togglable control, so there is nothing for a disabled dimension to compare."
+    },
+    "interaction": {
+      "verdict": "flutter-behind",
+      "flutter": "The whole card is wrapped in only a GestureDetector(onTap: onDismiss) plus a swipe-gesture path (swipeThreshold, dampen, swipeOutDuration) described in the file's choreography doc — there is no FocusNode, no keyboard listener, and no Alt+T-equivalent hotkey anywhere in toaster.dart, so a keyboard-only user has no way to reach or dismiss a toast that is not also using the pointer/touch path.",
+      "web": "toaster/page.tsx's Keyboard section, read from sonner's own source, documents Alt+T (sonner's default hotkey, configurable via the hotkey prop) to move focus into the toast list, Tab/Shift+Tab to move between toasts and their action/close buttons, Escape to blur the list, and Enter/Space to activate a focused button.",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: sonner ships a real keyboard-accessible toast list (hotkey-to-focus, Tab between toasts, Escape to blur) and the Flutter port has no equivalent: no hotkey, no per-toast focus node, and no keyboard path to dismiss a toast at all — only tap and swipe. This is a genuine accessibility gap for keyboard-only Flutter users, not merely unverified parity."
+    },
+    "semantics": {
+      "verdict": "platform-difference",
+      "flutter": "Each _ToastSlot's card is Semantics(container: true, liveRegion: true, label: message.title, onDismiss: onDismiss) — the file's own comment explains the choice: 'Dismissal is offered to assistive technology as an action on the card rather than as a focusable control... moving focus into one would take the caret out of whatever the reader was doing.'",
+      "web": "toaster/page.tsx's Accessibility section documents sonner's own model: the toast list container carries aria-live=\"polite\" with containerAriaLabel (default \"Notifications\"), and 'Each toast is tabIndex={0}, so it can be reached and dismissed by keyboard once the list has focus.'",
+      "note": "Both are legitimate, considered accessibility designs for the same problem (a toast arrives unbidden and must be dismissable) but they are genuinely different mechanisms: sonner makes every toast a real focusable, tabbable element inside a live region, while Flutter deliberately avoids stealing focus and instead exposes dismissal as a Semantics action, reasoning explicitly in its own doc comment about why focus-stealing would be worse. Recorded as platform-difference rather than match because the two are not the same mechanism, and as platform-difference rather than gap because Flutter's choice is a reasoned, working alternative rather than a missing capability — though it does mean the interaction-dimension gap above (no keyboard path to reach a toast at all) leaves this liveRegion+onDismiss action currently unreachable from a keyboard on the Flutter side."
+    }
+  }
+}

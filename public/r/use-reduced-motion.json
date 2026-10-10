@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-reduced-motion",
+  "title": "Use Reduced Motion",
+  "description": "Hook that reads the user's prefers-reduced-motion setting reactively.",
+  "registryDependencies": [
+    "@elattar/source-foundation"
+  ],
+  "files": [
+    {
+      "path": "hooks/use-reduced-motion.ts",
+      "content": "import * as React from \"react\";\r\n\r\nconst QUERY = \"(prefers-reduced-motion: reduce)\";\r\n\r\nfunction subscribe(onStoreChange: () => void) {\r\n  const mql = window.matchMedia(QUERY);\r\n  mql.addEventListener(\"change\", onStoreChange);\r\n  return () => mql.removeEventListener(\"change\", onStoreChange);\r\n}\r\n\r\n/**\r\n * Whether the reader has asked for reduced motion.\r\n *\r\n * **Most components in this system never need this**, and reaching for it when\r\n * the blanket CSS rule already applies is how a second, divergent motion policy\r\n * starts. `globals.css` collapses every animation and transition to a single\r\n * frame under `prefers-reduced-motion: reduce`, so anything whose movement is a\r\n * keyframe or a transition is already handled and should not ask.\r\n *\r\n * It exists for the one case CSS cannot reach: **motion driven from\r\n * JavaScript** — a value written to `style` on every pointer move, a canvas, a\r\n * physics loop. `globals.css` has no opinion about a `requestAnimationFrame`\r\n * that keeps setting `font-weight`, so the component has to decline to start\r\n * one. `TextPressure` is the case this was written for; `components/ds/chart-motion.ts`\r\n * has its own copy of the same store for recharts, which takes the answer as a\r\n * prop rather than as a class.\r\n *\r\n * `useSyncExternalStore` for the same reason as `hooks/use-mobile.ts`: it is a\r\n * browser subscription, and the React Compiler lint rejects synchronising\r\n * mounted state in an effect body. The server snapshot is `false`, matching the\r\n * CSS default, so nothing can hydrate differently.\r\n */\r\nexport function usePrefersReducedMotion() {\r\n  return React.useSyncExternalStore(\r\n    subscribe,\r\n    () => window.matchMedia(QUERY).matches,\r\n    () => false,\r\n  );\r\n}\r\n",
+      "type": "registry:hook"
+    }
+  ],
+  "type": "registry:hook"
+}

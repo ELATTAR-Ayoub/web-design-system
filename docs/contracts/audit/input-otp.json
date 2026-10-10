@@ -1,0 +1,40 @@
+{
+  "name": "input-otp",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": ["lib/src/components/ui/input_otp.dart"],
+  "webSources": ["components/ui/input-otp.tsx"],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "InputOtp builds a Stack of [IgnorePointer(Row of groups+separators built from InputOtpSlot), Positioned.fill(hidden EditableText)] — the painted boxes receive no events and one real EditableText covers the whole strip, exactly reproducing the package's `pointer-events: none` container plus one absolutely-positioned real <input>.",
+      "web": "OTPInput (from the input-otp package) renders the same shape: a relative container of InputOTPSlot divs plus one real, transparent, absolutely-positioned <input> stretched over the strip via containerClassName/className, as documented in input_otp.dart's own library doc citing input-otp.tsx directly."
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "InputOtp(maxLength=6, groups=[3,3], controller, initialValue, focusNode, onChanged, enabled, invalid, label, disabledReason) with an assert that groups sum to maxLength; InputOtpSlot/InputOtpSeparator are exposed as public specimen widgets for static state grids.",
+      "web": "<OTPInput> takes maxLength plus render-prop slots; the page composes InputOTPGroup > InputOTPSlot(index) > InputOTPSeparator manually per group, reading char/hasFakeCaret/isActive off React.useContext(OTPInputContext) — the same maxLength + manual grouping shape, mirrored 1:1 in the Dart groups: List<int> parameter."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "_isActive(index) transcribes the package's slot reducer verbatim (isFocused && selStart/selEnd logic) per the doc comment's explicit pseudocode block, and _FakeCaret uses KeyframePlayer with a discrete 0.5-cutoff opacity lookup for the 1000ms square-wave caret blink — active/inactive/invalid/disabled states all reproduced.",
+      "web": "InputOTPSlot reads isActive/hasFakeCaret/char straight from OTPInputContext and applies data-[active=true]:z-10 data-[active=true]:border-ring data-[active=true]:ring-3 data-[active=true]:ring-ring/50 plus a `.anim-caret` div — same state matrix, package-driven rather than hand-reduced."
+    },
+    "disabled": {
+      "verdict": "match",
+      "flutter": "InputOtp.enabled (ANDed with scope) drives Disabled(disabled: !enabled, reason: widget.disabledReason ?? scope?.disabledReason, child: field) wrapping the whole strip, matching the web's has-disabled:opacity-50 on the container.",
+      "web": "containerClassName carries `has-disabled:opacity-50` (input-otp.tsx:21) and className carries `disabled:cursor-not-allowed` on the underlying real input — group-level dimming plus a cursor change, both reproduced by Disabled + the enabled-gated MouseRegion cursor in InputOtp.build."
+    },
+    "interaction": {
+      "verdict": "match",
+      "flutter": "GestureDetector(onTap: () => _editableKey.currentState?.requestKeyboard()) over the whole strip plus keyboardType: TextInputType.number, autofillHints: [AutofillHints.oneTimeCode], and LengthLimitingTextInputFormatter(maxLength) reproduce inputMode=\"numeric\"/autoComplete=\"one-time-code\"/maxLength from the package, and _onFocusChanged sets the selection range to mirror the package's onFocus handler so the active box lands correctly.",
+      "web": "The input-otp package wires numeric keyboard mode, one-time-code autofill, length limiting, and the onFocus selection-range logic (setSelectionRange(min(len,max-1), len)) that input_otp.dart's doc comment quotes directly as the source it ported from."
+    },
+    "semantics": {
+      "verdict": "platform-difference",
+      "flutter": "Semantics(textField: true, label:, hint:, enabled:, validationResult: invalid ? invalid : none) is applied once to the whole strip, and InputOtpSeparator wraps its Icon in ExcludeSemantics with a comment explaining a dash announced mid-code is noise (inputs-map §7.2) — the same reasoning the web's role=\"separator\" choice reflects, but not the same mechanism.",
+      "web": "InputOTPSeparator carries an explicit role=\"separator\" on a real DOM node (input-otp.tsx:79) rather than excluding it from the tree outright; a screen reader can still encounter role=\"separator\" as a landmark even though it announces no content, which is a different (if arguably equivalent) accessibility surface than Flutter's ExcludeSemantics removing the node entirely.",
+      "note": "input_otp.dart's own doc comment explains the choice directly: \"role=\\\"separator\\\" has no Flutter counterpart worth inventing, and a dash announced between two halves of a code is noise (inputs-map §7.2)\". Excluding the separator glyph from the accessibility tree entirely is the idiomatic Flutter answer to a decorative role that announces no content on the web either — the practical screen-reader experience converges (nothing useful is ever read for the dash on either platform), so this is recorded as a correct, deliberate platform difference rather than a missing feature."
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "name": "ai-sources",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/sources.tsx",
+    "components/docs/component-docs/ai-sources/page.tsx",
+    "components/docs/component-docs/ai-sources/sources-specimen.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Sources — origin: web-only, flutterSources is [].",
+      "web": "Sources is a Collapsible in text-action-ink; SourcesTrigger is a trigger row with a 'Used N sources' paragraph and a chevron; SourcesContent is the collapsible column; Source is an anchor with a book Icon and a type-nav title.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Sources — origin: web-only, flutterSources is [].",
+      "web": "SourcesTrigger takes a required count and optional children; Source takes href, title and children plus anchor props; Sources and SourcesContent take Collapsible and CollapsibleContent props.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Sources — origin: web-only, flutterSources is [].",
+      "web": "Closed with only the trigger, or open with the list, animated by anim-expand and anim-collapse; the trigger's chevron does not rotate; there is no loading or error state, since the list is data the caller already has.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Sources — origin: web-only, flutterSources is [].",
+      "web": "No disabled state: the list can always be opened, and a Source is a plain link. The trigger forwards a disabled prop to Radix if a caller passes one.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Sources — origin: web-only, flutterSources is [].",
+      "web": "Click, Enter or Space on the trigger toggles the list; each Source opens its href in a new tab with rel noreferrer; the trigger reads \"Used 1 source\" or \"Used N sources\". Sources takes Collapsible props, so open, defaultOpen and onOpenChange are typed.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Sources — origin: web-only, flutterSources is [].",
+      "web": "The trigger is a button with aria-expanded from Radix Collapsible, named 'Used N sources'; each Source is an anchor named by its title, and one built from children needs its own text; an after: pseudo-element gives the trigger a 44px hit area.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

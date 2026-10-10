@@ -1,0 +1,49 @@
+{
+  "name": "background-effect",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/background_effect.dart"
+  ],
+  "webSources": [
+    "styles/tokens.css"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "BackgroundEffect({child}) is a CustomPaint(painter: _BackgroundEffectPainter(background: theme.background, glow: theme.pageGlow)) meant to sit behind a Stack's scroll view: it paints a flat fill plus one wide, off-centre, non-scrolling radial ellipse -- the library doc explicitly quotes it as the port of the `body { background-image: radial-gradient(...) }` rule in globals.css, i.e. the whole-page atmosphere.",
+      "web": "The `body` rule in styles/tokens.css: `background-image: radial-gradient(120% 90% at 62% 34%, var(--page-glow) 0%, transparent 64%)`, `background-attachment: fixed`, `background-repeat: no-repeat` — the same rule background_effect.dart quotes as its source.",
+      "note": "CLOSED on review: the naming collision is resolved in Flutter's favour. `background-effect` now documents the page atmosphere — the thing background_effect.dart actually ports — and the per-surface glows the web page had been showing under this name moved to a new web-only item, `reveal-bloom`. ORIGINAL: This is the exact 'ambient-pattern' trap the audit brief warns about, but in the opposite direction: the capability name 'background-effect' is shared by two unrelated things. Flutter ported the page-wide atmosphere (the bare `body` rule, styles/tokens.css lines 1149-1159, which reads `--page-glow` -- not `--background-effect`, a token name that appears nowhere in the current web codebase; Flutter's own doc comment names a token that does not exist on the web side, though the Dart code itself correctly reads theme.pageGlow). The web's documented 'background-effect' capability is the bloom-action/bloom-value utilities, which the Flutter widget does not implement at all -- there is no Flutter port of a scoped, per-surface reveal bloom mixed from the action/value ramp. Neither side is wrong about what it built; the packet's shared capability name conflates two different design-system concepts, and a reader following 'background-effect' from the ledger to the Flutter source lands on the wrong mechanism."
+    },
+    "api": {
+      "verdict": "platform-difference",
+      "flutter": "BackgroundEffect(child: Widget?) takes only an optional child; geometry (radiusX 1.20, radiusY 0.90, centerX 0.62, centerY 0.34, fadeStop 0.64) and colour (theme.background, theme.pageGlow) are fixed constants with no variant axis at all.",
+      "web": "No class and no props: one rule on `body`, tuned per theme through `--page-glow` (a cool near-white on light, a lifted zinc on dark). Flutter wraps a child in `BackgroundEffect`; the web paints the page.",
+      "note": "CLOSED as a gap: with both sides now naming the same capability, the difference left is shape — a wrapping widget on Flutter, a body rule on the web — which is the right answer on each platform. ORIGINAL: Because the two sides port different mechanisms (see anatomy), their APIs cannot be compared as variants of one thing. The web's bloom-action/bloom-value pair (a 2-way choice of tint) has no Flutter equivalent; conversely Flutter's BackgroundEffect(child) has no web capability under this name to compare against, since the web's actual page-atmosphere rule is an unexposed, undocumented `body` selector in styles/tokens.css rather than any component or utility a page can vary."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "The painter reads theme.background/theme.pageGlow once per build; there is no hover/focus/pressed state -- it is decorative and static, matching the doc comment ('it does not animate').",
+      "web": "Neither the body rule nor bloom-action/bloom-value declare any pseudo-class or data-state; both are static background-image declarations.",
+      "note": "A decorative, static background layer has no interaction state matrix on either platform."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "BackgroundEffect has no enabled/disabled concept -- it is unconditionally painted behind its child.",
+      "web": "No disabled prop exists for a bare CSS background rule or utility class.",
+      "note": "A page-level or surface-level atmospheric effect is not a control and has no disabled path on either side."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "CustomPaint with no gesture or focus wiring; the widget forwards pointer events straight through to `child`.",
+      "web": "A background-image on a positioned div intercepts no pointer events of its own (pointer-events is left to the caller, and the doc page's own usage snippet adds pointer-events-none explicitly).",
+      "note": "No interaction surface exists on either platform for a decorative background."
+    },
+    "semantics": {
+      "verdict": "match",
+      "flutter": "The painter adds no Semantics node; BackgroundEffect is purely decorative paint behind `child`, so nothing here reaches the accessibility tree.",
+      "web": "Both the body rule and bloom-action/bloom-value produce no DOM node of their own beyond the div the caller already marked decorative; the doc page's own Accessibility section states the glow 'must never be the only signal that a surface is selected or active' and must pair with a real foreground state change.",
+      "note": "Both sides agree the effect is decorative and must never carry information alone; this is a genuine, if narrow, point of match despite the anatomy/api mismatch above."
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "name": "form",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/form.dart"
+  ],
+  "webSources": [
+    "components/ui/form.tsx"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "platform-difference",
+      "flutter": "form.dart exports FormFieldBase, FormField<T>, TextFormField, Form (a ChangeNotifier, 'Not a widget'), and FormScope (an InheritedNotifier<Form>) — plain state-holder classes with no id graph, since 'Flutter has no id graph; the reason useId() exists at all ... is satisfied by two independent controller objects.'",
+      "web": "form.tsx exports Form (= FormProvider), FormField (wraps react-hook-form's Controller, minting one `useId()` per instance), useFormField, FormControl (a Radix Slot stamping id/aria-describedby/aria-invalid), FormLabel, FormDescription, FormError, and useFormRecovery — 'this file adds no presentation at all... contributes nothing but id, htmlFor, aria-invalid and aria-describedby.'",
+      "note": "Deliberate, well-documented platform difference: the web binds react-hook-form's id graph onto the presentation-only `field.tsx` family; Flutter has no id graph so it models the same state machine (values, rules, submit count, validity) directly as ChangeNotifier objects and pushes the accessibility wiring into FieldScope (field.dart) instead. Both sides state this explicitly in their own top-of-file docs, so this is the correct mechanism per platform, not a gap."
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "Form({required fields, mode = ValidateMode.onSubmit, reValidateMode = ValidateMode.onChange}); ValidateMode has exactly two members, onSubmit/onChange, because 'Nothing on the page validates on blur ... so ValidateMode has two members and not four.'",
+      "web": "react-hook-form's `mode`/`reValidateMode` options are read by the reference forms; form.dart's own doc table (forms-map §5.2) enumerates the four forms' actual mode usage (submit-then-keystroke, onChange-from-first-keystroke, submit-then-keystroke, submit-then-change) and states 'there is no mode: \"onBlur\" or \"onTouched\" anywhere' in the corpus form.tsx binds.",
+      "note": "n/a"
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "Form.isSubmitting mirrors `formState.isSubmitting` ('what Button.loading reads'); Form.isValid computes `fields.every((f) => !f.invalid)` from stored state, matching formState.isValid's 'computed from what is currently stored rather than re-asked' semantics.",
+      "web": "react-hook-form's formState.isSubmitting/isValid, read through useFormState in useFormField() and consumed by FormError/FormControl for aria-invalid.",
+      "note": "n/a"
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "Form/FormFieldBase/FormField carry no `enabled` concept themselves — disabling a control is the concern of the control the field's value feeds (Input/Checkbox/etc.), not of the state-holder classes in form.dart.",
+      "web": "form.tsx defines no disabled prop or styling anywhere in the file — FormControl only stamps id/aria-describedby/aria-invalid, never `disabled` or `aria-disabled`.",
+      "note": "Neither side's binding/state layer owns a disabled concept; that belongs to the control a field's value is bound to (documented on Input/Checkbox/etc.), so n/a applies identically on both platforms."
+    },
+    "interaction": {
+      "verdict": "platform-difference",
+      "flutter": "Form.focusFirstError() and revealFirstError() walk `fields` in **registration order** ('shouldFocusError: true` ... walks the registered fields in registration order') and focus the first field whose stored FocusNode exists — an explicit, intentional divergence the file calls out: '[Form.focusFirstError] focuses the first invalid field whatever it is. That is a deliberate behavioural fix, flagged for sign-off... The divergence is recorded rather than reproduced.'",
+      "web": "useFormRecovery's revealFirstError() explicitly disables RHF's built-in `shouldFocusError` and instead does `root.querySelector('[aria-invalid=\"true\"]')` — DOM order, not registration order — then `scrollIntoView` + `.focus({preventScroll:true})`, with a long comment explaining why DOM order was chosen over registration/schema order.",
+      "note": "Reclassified on review from `gap`: both platforms made a deliberate, documented choice and neither is missing the capability — they resolve it differently. The worker's original finding is kept verbatim. ORIGINAL: Both sides deliberately walk away from React Hook Form's default registration-order focus, but they pick DIFFERENT replacement orders: Flutter's Form.focusFirstError walks its own `fields` list in REGISTRATION order (same order RHF's default already used, per the Flutter comment's own citation of 'registered fields in registration order'), while form.tsx's useFormRecovery walks the rendered DOM in VISUAL/DOM order via querySelector. A form whose registration order differs from its visual layout (the composed form's plan/payout/terms fields, named in the Flutter file itself) would focus a different field first on Flutter vs. web. File/line: lib/src/components/ui/form.dart:33-52,308-318; components/ui/form.tsx:245-348 (useFormRecovery, 'Why DOM order, not schema order')."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "Form/FormFieldBase carry no Semantics of their own — form.dart is explicitly 'not a widget' (a ChangeNotifier), so it renders nothing and announces nothing; all announcement wiring lives in FieldScope (field.dart), which form's fields feed values into.",
+      "web": "form.tsx's FormControl stamps aria-describedby/aria-invalid, and FormLabel/FormDescription/FormError are thin wrappers around field.tsx's FieldLabel/FieldDescription/FieldError, so the actual accessible semantics live in field.tsx, not in form.tsx's own markup (form.tsx renders no DOM of its own beyond what Slot forwards).",
+      "note": "The semantics work for both `form` capabilities is carried entirely by the `field` capability (FieldScope on Flutter, FieldLabel/FieldDescription/FieldError on web) — form.tsx/form.dart are pure binding/state layers with no rendering of their own, so this dimension is n/a here and is audited under `field` instead."
+    }
+  }
+}

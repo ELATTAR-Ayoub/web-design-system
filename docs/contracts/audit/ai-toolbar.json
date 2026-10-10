@@ -1,0 +1,49 @@
+{
+  "name": "ai-toolbar",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/toolbar.tsx",
+    "components/docs/component-docs/ai-toolbar/toolbar-specimen.tsx",
+    "components/docs/component-docs/ai-toolbar/page.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Toolbar — origin: web-only, flutterSources is [].",
+      "web": "components/ai-elements/toolbar.tsx exports Toolbar: React Flow's NodeToolbar with className flex items-center gap-1 rounded-sm border bg-background p-1.5 and position Position.Bottom set before the caller's props are spread.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Toolbar — origin: web-only, flutterSources is [].",
+      "web": "Toolbar takes the props of React Flow's NodeToolbar: isVisible, position, nodeId, offset, align, className, children and any div attribute; the wrapper defaults position to bottom (React Flow's own default is top) and merges className.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Toolbar — origin: web-only, flutterSources is [].",
+      "web": "Two states: hidden (the default, while the node is not the only one selected) and visible (the node is selected, or isVisible is true). The bar has no hover or pressed treatment; its buttons carry Button's own.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Toolbar — origin: web-only, flutterSources is [].",
+      "web": "No disabled prop on the bar. A node that cannot be edited omits the Toolbar, as the workflow dialog does outside a proposed plan; individual buttons disable themselves.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Toolbar — origin: web-only, flutterSources is [].",
+      "web": "Appears and disappears with node selection, which React Flow drives by pointer or by Tab and Enter on the node wrapper. Its children are ordinary controls; the bar adds no key handling.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Toolbar — origin: web-only, flutterSources is [].",
+      "web": "A div with no role or name; each child button is named by its text or aria-label. Add role=toolbar and an aria-label if the actions need grouping for a screen reader.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

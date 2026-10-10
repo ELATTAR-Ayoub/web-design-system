@@ -1,0 +1,50 @@
+{
+  "name": "empty",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/empty.dart"
+  ],
+  "webSources": [
+    "components/ui/empty.tsx",
+    "components/docs/component-docs/empty/page.tsx"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "flutter-behind",
+      "flutter": "Empty/EmptyHeader/EmptyMedia/EmptyTitle/EmptyDescription/EmptyContent, six StatelessWidgets. Empty.build wraps children in a Padding(EdgeInsets.all(padding)) + Column with a radius field (Radii.xl) that is documented as shaping nothing: 'it shapes nothing at present (drift 8: there is no border to shape and no background to clip)'. No Border/BoxDecoration.border is ever painted by Empty.",
+      "web": "empty.tsx L10: Empty renders `className=\"flex w-full min-w-0 flex-1 flex-col items-center justify-center gap-4 rounded-xl border border-dashed p-6 text-center text-balance\"` — note `border border-dashed`, not just `border-dashed`. Tailwind's `border` utility sets a real 1px border-width, so a visible dashed rim is painted using the ambient `border-color` token; the empty doc page's own API Reference block also says 'The outer dashed-border frame'.",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: The Flutter file's own doc comment ('DRIFT 8 — the dashed border never paints') describes an EARLIER state of empty.tsx that carried only `border-dashed` with no width class, so Preflight zeroed the border and nothing painted; the Flutter widget was ported to match that (no BoxDecoration.border at all, only the radius kept 'for the day a width is added'). The current empty.tsx (read above) already carries a plain `border` class alongside `border-dashed`, so a real 1px dashed rim IS painted on web today. Flutter's Empty paints no border at all. The two are no longer visually equivalent: Flutter is missing the dashed frame the current web renders. File/line: components/ui/empty.tsx:10; lib/src/components/ui/empty.dart:81-87 (Empty.radius doc)."
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "EmptyMedia({required IconGlyph glyph, IconTone tone = IconTone.normal}) with a fixed `variant`-less API; Empty/EmptyHeader/EmptyContent take `children: List<Widget>` (no variant props). EmptyTitle(this.text), EmptyDescription(this.text) are positional-text widgets.",
+      "web": "emptyMediaVariants = cva(..., {variants: {variant: {default: 'bg-transparent', icon: 'flex size-8 ... rounded-lg bg-muted ...'}}, defaultVariants: {variant: 'default'}}); EmptyMedia forwards `variant` as both a class selector and `data-variant`. Empty/EmptyHeader/EmptyContent/EmptyTitle/EmptyDescription are plain React.ComponentProps<'div'|'p'> passthroughs.",
+      "note": "n/a — verdict is match; Flutter only ports the `icon` variant of EmptyMedia (the only one exercised on the doc page) and drops the `default` (transparent, no tile) variant, which is a real but minor prop-surface gap noted for completeness even though overall API shape corresponds 1:1 for what is implemented."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "Empty and its parts are all StatelessWidget with no controller, no gesture handling and no async lifecycle — there is exactly one render shape per instance, decided entirely by the caller's children.",
+      "web": "The doc page's own States section states: 'Empty is not a control and has no async lifecycle of its own... The interaction and async states below are N/A for that reason,' listing rest/empty as the only real state and hover/focus/pressed/disabled/loading/success as N/A.",
+      "note": "Both sides deliberately declare the same non-interactive, single-shape contract; n/a applies identically on both, so there is nothing to diverge on — recorded per the brief's rule that n/a still needs a note saying why."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No `enabled`/`disabled` field or Disabled() wrapper appears anywhere in empty.dart; Empty composes only structural children.",
+      "web": "empty.tsx defines no disabled styling or data-disabled attribute anywhere in the file, and the doc page's Accessibility section frames Empty as static content with 'no role or live region of its own'.",
+      "note": "Empty is not an actionable control on either platform, so a disabled path does not apply to it; any affordance placed inside EmptyContent (e.g. a Button) carries its own disabled state, audited on that component's own page, not here."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No GestureDetector, FocusNode, or MouseRegion anywhere in Empty/EmptyHeader/EmptyMedia/EmptyTitle/EmptyDescription/EmptyContent — the six widgets only lay out Padding/Column/ConstrainedBox/Container.",
+      "web": "empty.tsx attaches no onClick/tabIndex/keyboard handler to any of the six exported functions; every part is a bare styled <div>/<p>.",
+      "note": "Empty holds no focusable element on either platform; the doc page's own Keyboard section is explicitly omitted 'because Empty holds no focusable element and defines no keyboard behaviour', matching Flutter's total absence of gesture/focus wiring."
+    },
+    "semantics": {
+      "verdict": "match",
+      "flutter": "EmptyTitle/EmptyDescription render via StyledText/LineBox with no Semantics wrapper anywhere in empty.dart — no explicit role and no live region; the widgets contribute only their visible text to the accessibility tree by default inheritance.",
+      "web": "Doc page Accessibility section: 'Role: None ... EmptyTitle's text content names the state to a sighted or screen-reader user alike; there is no separate accessible-name mechanism to configure', and 'Empty itself does not announce that a transition happened, only render the resulting static content.'",
+      "note": "n/a"
+    }
+  }
+}

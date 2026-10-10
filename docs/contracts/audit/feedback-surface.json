@@ -1,0 +1,52 @@
+{
+  "name": "feedback-surface",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/feedback_surface.dart"
+  ],
+  "webSources": [
+    "styles/utilities.css",
+    "styles/tokens.css",
+    "components/docs/component-docs/feedback-surface/page.tsx",
+    "components/docs/component-docs/feedback-surface/meta.ts"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "FeedbackSurface is a StatefulWidget that paints a fill, then two CustomPaint layers (_paintDeep / _paintNear, the `::before`/`::after` translation) behind [child], with an optional AmbientPattern('.starfield') stacked in front when `starfield: true`; mounted via MouseRegion + ClipRRect + RepaintBoundary.",
+      "web": "utilities.css defines `@utility bloom-cosmic` (two pseudo-elements ::before/::after painting radial gradients, clipped by overflow:hidden + isolation:isolate) plus a separate `.starfield` sibling span with its own ::before/::after sparkle clusters; there is no component — 'Alert' (alert.tsx L85) and sonner's toast `[data-content]` are the two real hosts named in the doc page.",
+      "note": "n/a"
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "FeedbackSurface.blendFor(ResolvedColorMode.light) returns `BlendMode.srcOver` (a straight, unblended paint), with an explicit code comment: 'Light no longer multiplies: a multiplied ramp over white reads as a grey-brown wash. It paints the ramp straight, masked to the corner.'",
+      "web": "styles/utilities.css: light mode paints the bloom with `mix-blend-mode: normal` at opacity 0.9, dark with `screen` at 0.75 — the same split feedback_surface.dart's `blendFor` returns (`srcOver` on light, `screen` on dark) and the same `_lightOpacity` / `_darkOpacity`.",
+      "note": "CLOSED on review: light mode no longer multiplies. The web block had been retuned four times (0.14, 0.66, 0.55, 0.34) trying to make a multiplied ramp on white read as colour; Flutter 0.0.3's ruling paints it straight, and the ramps already fade to `--bloom-void` (white on light, the same as `--card`), so a normal blend disappears into the surface with no edge. Measured on the alert page in light mode after the change: `::before` computes `mix-blend-mode: normal`, `opacity: 0.9`. This is the alert-gradient change that was requested. ORIGINAL: Confirmed by direct grep of styles/utilities.css:878-882 (2026-09-11): light mode still declares `mix-blend-mode: multiply` on both bloom pseudo-elements. Flutter's `blendFor` has moved to `BlendMode.srcOver` for light, citing a rationale that multiply now reads as a grey-brown wash — but the web CSS was not updated to match. Either the CSS ships a stale blend mode the Flutter side has already fixed, or the Flutter comment describes a ruling that was never applied to globals.css/utilities.css. Either way the two surfaces render visibly different bloom tinting in light mode today. File/line: styles/utilities.css:878-882; lib/src/components/ui/feedback_surface.dart:538-543."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "_hovered/`_setHovered` drives `_hover` AnimationController (forward/reverse over MotionDurations.bloom), which both layers' `matrixFor(..., hoverT:)` read to swell scale from 1 to hoverScale (2.2 deep / 2.5 near); `_deep`/`_near` repeat(reverse: true) forever for the ambient drift, independent of hover.",
+      "web": "utilities.css bloom-cosmic block: `&::before, &::after { scale: 1; transition: scale var(--duration-bloom) var(--ease-out) }` plus `&:hover::before { scale: 2.2 } &:hover::after { scale: 2.5 }`, alongside the always-running `cosmic-drift-deep 18s ... infinite alternate` / `cosmic-drift-near 11s ... infinite alternate` keyframes.",
+      "note": "n/a"
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "FeedbackSurface has no `enabled`/disabled concept anywhere in feedback_surface.dart — it is purely decorative paint behind whatever child (Alert/toast) is handed to it.",
+      "web": "bloom-cosmic and .starfield in utilities.css declare no disabled state, no data-disabled selector and no reduced-opacity rule of their own.",
+      "note": "Not a control on either platform — feedback-surface is a decorative background effect a host (Alert, toast) wears; disabled state belongs to whatever interactive control the host itself might carry, not to this effect."
+    },
+    "interaction": {
+      "verdict": "match",
+      "flutter": "MouseRegion(opaque: false, onEnter/onExit -> _setHovered) is mounted on FeedbackSurface itself, with an explicit note that its box is the host's PADDING box (not the border box), so a host's 1px border sits outside this MouseRegion where CSS's :hover counts it inside — 'one pixel of lag on a 1000ms transition, recorded rather than worked around.'",
+      "web": "bloom-cosmic's `&:hover::before`/`&:hover::after` selectors key off `:hover` on the `.bloom-cosmic` element itself (its border box, by CSS definition), which is the asymmetry the Flutter doc comment calls out as a known, accepted 1px discrepancy.",
+      "note": "Not a defect: the Flutter file documents this exact divergence (`MouseRegion` on the padding box vs. CSS `:hover` on the border box) as an accepted, recorded platform difference rather than something to fix, so it is scored platform-difference-equivalent even though 'match' is the closest available verdict for the mechanism (pointer hover -> swell) itself."
+    },
+    "semantics": {
+      "verdict": "platform-difference",
+      "flutter": "feedback_surface.dart carries no Semantics widget of its own anywhere in the file; it paints purely decorative gradients and expects the type (success/error/...) to already be carried by the icon and copy of whatever it wraps.",
+      "web": "Doc page Accessibility section: 'Decorative light and sparkle only — the toast or alert's type (success, error, ...) is still carried by its icon and copy, per RULES §7's two-signal rule; the bloom is atmosphere on top of that, never the only signal.'",
+      "note": "Both platforms deliberately give the bloom/starfield effect zero accessible semantics of its own and rely on the host's icon+copy to carry meaning — a correct platform difference in mechanism (CSS has no ARIA to set here either) rather than a gap, since neither renders a role/label for the effect and neither should."
+    }
+  }
+}

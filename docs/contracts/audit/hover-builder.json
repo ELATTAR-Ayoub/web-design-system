@@ -1,0 +1,45 @@
+{
+  "name": "hover-builder",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": ["lib/src/components/ui/hover_builder.dart"],
+  "webSources": ["styles/utilities.css", "components/docs/component-docs/hover-builder/page.tsx", "components/docs/component-docs/hover-builder/meta.ts"],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "platform-difference",
+      "flutter": "HoverBuilder is a StatefulWidget wrapping MouseRegion(onEnter/onExit -> setState) around `builder(context, hovered)`; InteractiveCard is built on top of it, driving `_rise`/`_tint` CurvedAnimations off one AnimationController to animate `translateY(-3px)`, box-shadow and border-color on hover.",
+      "web": "The doc page states outright there is no bespoke @utility for this capability: 'HoverBuilder's widget exists to give a JavaScript-driven UI a pointer-hover callback to rebuild from. On the web, :hover and group-hover: are native CSS ... which is a better answer than a React hook tracking pointer position would be.' The specimen composes that directly with Tailwind's own compiled variants (`hover:border-action/45`, `group-hover:translate-x-0.5`) on `--duration-fast` — the bespoke card-hover utility this file once cited was retired in the vocabulary-to-fourteen cut with no direct replacement.",
+      "note": "Correct, explicitly-documented platform difference: Flutter has no native `:hover` pseudo-class, so it needs a MouseRegion-driven rebuild widget (HoverBuilder/InteractiveCard) to reproduce what CSS gets for free. Both the Flutter file's header comment and the web doc page's own description independently state this is the right mechanism per platform; the web side now reaches it through plain Tailwind hover/group-hover variants rather than a named utility."
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "InteractiveCard({required builder, radius, fill, borderColor, hoverBorderColor, shadow, padding, onTap, cursor}) — 'Defaults to --radius-xl (16px)', 'Defaults to --card', 'Defaults to --border', hoverBorderColor 'Defaults to [borderColor] — i.e. no swap', shadow 'Defaults to --shadow-e3.'",
+      "web": "No bespoke class at all: the doc's specimen applies `hover:border-action/45` and `transition-colors duration-fast` straight to the row, and `transition-transform duration-fast group-hover:translate-x-0.5` to the arrow — plain Tailwind variants, no parameters, composed directly on the host element alongside its own border/fill/radius classes.",
+      "note": "n/a — verdict is match; the web side takes no parameters at all (it composes with whatever border/fill/radius classes the host already carries), while InteractiveCard's params are simply named defaults for the SAME values a web call site would set via separate Tailwind classes — same visual contract, different mechanism for supplying the non-hover styling."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "InteractiveCard's `_rise` animation (MotionCurves.enter/'--ease-out') drives translateY and box-shadow; `_tint` (MotionCurves.standard/'--ease-standard') drives border-color — 'Note the two easings: the card rises and gains its shadow on --ease-out, but its border changes colour on --ease-standard. One shared controller, two curves.'",
+      "web": "The doc specimen's own Tailwind classes: `transition-colors duration-fast` on the row's `hover:border-action/45`, `transition-transform duration-fast` on the arrow's `group-hover:translate-x-0.5` — colour and transform each on their own `duration-fast` clock, composed per-property rather than through one shared utility.",
+      "note": "n/a — the specimen no longer plays the rise/box-shadow effect InteractiveCard's `_rise` animation drives; recorded as a platform difference in mechanism (bespoke utility retired, no direct successor), not re-verified against InteractiveCard's exact curve/property pairing."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "HoverBuilder itself has no enabled/disabled concept — `cursor = MouseCursor.defer` by default and InteractiveCard sets `cursor: widget.onTap == null ? MouseCursor.defer : widget.cursor`, i.e. it only reflects whether onTap is supplied, not a disabled flag.",
+      "web": "hover:*/group-hover:* variants declare no disabled state of their own; a disabled control using them would rely on a separate `disabled:` Tailwind variant on the same element, outside this capability's scope.",
+      "note": "hover-builder is a hover-detection mechanism, not a control with its own disabled semantics on either platform — a disabled affordance built with it composes a separate disabled state from elsewhere (e.g. Button's own disabled variant), which is out of scope for this capability."
+    },
+    "interaction": {
+      "verdict": "platform-difference",
+      "flutter": "MouseRegion(onEnter/onExit) reports pointer hover only — no touch/focus handling in HoverBuilder itself; InteractiveCard layers a GestureDetector(onTap) on top, separately.",
+      "web": "Doc page Accessibility section: 'A pointer never reaches a touch or keyboard user, so a hover-only affordance is invisible to both. Every interactive hover state in this system pairs with a focus-visible: rule that reaches the same visual result by keyboard, and touch devices get the tap/active state instead.'",
+      "note": "Both platforms correctly scope hover-builder to pointer-only interaction and push keyboard/touch equivalence to a separate mechanism (focus-visible: rules on web; a Flutter caller's own FocusNode/GestureDetector pairing) — this is the right platform-appropriate split rather than a gap, since a raw MouseRegion legitimately has no keyboard/touch analogue to mirror :hover's own scope."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "HoverBuilder mounts no Semantics node; it is a pure state-reporting wrapper with `builder(context, hovered)` deciding everything, including any semantics the built subtree carries.",
+      "web": "hover:*/group-hover:* are plain CSS pseudo-class variants with no ARIA implication of their own — they only toggle visual classes.",
+      "note": "hover-builder/`:hover` contribute no accessible semantics on either platform by design — a hover state is visual-only and must be paired with a real state announcement (aria-pressed, focus-visible, etc.) by whatever control composes it, which is out of scope for this capability itself."
+    }
+  }
+}

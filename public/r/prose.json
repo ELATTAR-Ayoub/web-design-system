@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "prose",
+  "title": "Prose",
+  "description": "The `prose` base component (shadcn/Radix chassis, restyled through Elattar Design System tokens).",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "registryDependencies": [
+    "@elattar/source-foundation"
+  ],
+  "files": [
+    {
+      "path": "components/ui/prose.tsx",
+      "content": "import * as React from \"react\";\r\nimport { Slot } from \"radix-ui\";\r\n\r\nimport { cn } from \"@/lib/utils\";\r\n\r\nfunction Prose({\r\n  asChild = false,\r\n  className,\r\n  ...props\r\n}: React.ComponentProps<\"div\"> & { asChild?: boolean }) {\r\n  const Comp = asChild ? Slot.Root : \"div\";\r\n  return (\r\n    <Comp data-slot=\"prose\" className={cn(\"prose\", className)} {...props} />\r\n  );\r\n}\r\n\r\nexport { Prose };\r\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,49 @@
+{
+  "name": "ai-suggestion",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/suggestion.tsx",
+    "components/docs/component-docs/ai-suggestion/page.tsx",
+    "components/docs/component-docs/ai-suggestion/suggestion-specimen.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Suggestion — origin: web-only, flutterSources is [].",
+      "web": "Suggestions is a ScrollArea wrapping a flex w-max row with its scrollbar hidden; Suggestion is a Button, variant outline and size sm by default, with px-4 and the pill radius from Button, whose label is children or the suggestion string.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Suggestion — origin: web-only, flutterSources is [].",
+      "web": "Suggestion takes a required suggestion string, an onClick that receives that string, variant, size, children and Button props; Suggestions takes ScrollArea props, with className applied to the inner row.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Suggestion — origin: web-only, flutterSources is [].",
+      "web": "Rest, hover, focus-visible, pressed and disabled all come from Button's outline variant; the chip draws none itself; an empty Suggestions renders an empty row.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Suggestion — origin: web-only, flutterSources is [].",
+      "web": "A Suggestion forwards disabled to its Button. Suggestions has no row-wide disabled prop, so each chip is disabled individually.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Suggestion — origin: web-only, flutterSources is [].",
+      "web": "Clicking a chip calls onClick with the suggestion string, not the event; Tab moves through the chips and Enter or Space presses one; the row scrolls horizontally by touch or wheel because its scrollbar is hidden.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Suggestion — origin: web-only, flutterSources is [].",
+      "web": "Each chip is a button named by its visible text; the row carries no role or label, unlike agent-suggestions; at size sm a chip is 32px high, below the 44px standalone target, unless the caller adds min-h.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

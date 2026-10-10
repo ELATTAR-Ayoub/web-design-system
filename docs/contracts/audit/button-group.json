@@ -1,0 +1,47 @@
+{
+  "name": "button-group",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/button_group.dart"
+  ],
+  "webSources": [
+    "components/ui/button-group.tsx"
+  ],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "flutter-behind",
+      "flutter": "ButtonGroup(children) reshapes each recognised member (Button, ButtonGroupText, Input, and Input wrapped in Expanded/Flexible) via _reshape/_Slot/_BledSlot into an IntrinsicHeight(Row(...)); ButtonGroupText and ButtonGroupSeparator are the only other exported members. Vertical orientation is not implemented at all -- the library doc states 'the cva's orientation=\"vertical\" (:14-15) is the same story: the page passes the default, so only horizontal is ported.'",
+      "web": "ButtonGroup (cva orientation: horizontal|vertical) wraps arbitrary children with pure CSS descendant selectors (`[&>*:not(:first-child)]:rounded-l-none`, etc.) that reshape ANY child, recognised or not; also declares (unused) has-[select[aria-hidden=true]:last-child] and [&>[data-slot=select-trigger]] rules for a Select member, and [&>input]:flex-1.",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: Two distinct, self-documented gaps. (1) `orientation=\"vertical\"` exists as a real, working CSS variant on the web (button-group.tsx lines 11, 14-16) with no Flutter equivalent whatsoever -- ButtonGroup.dart has no orientation parameter and always lays out a horizontal Row; a Flutter caller wanting a vertical segmented control (e.g. a quantity stepper stacked top-to-bottom) has nothing to reach for. (2) The web's CSS descendant-selector approach reshapes any child generically, while Flutter's _reshape only recognises Button/ButtonGroupText/Input by explicit type-check (button_group.dart lines 335-356) -- an unrecognised member 'is placed flush and left entirely alone: its corners are its own and no frame is synthesised for it,' so a Select or other custom member inside a Flutter ButtonGroup will not get its corners squared or its seam border synthesised the way the (currently-unused) web Select-targeting rules intend. File: lib/src/components/ui/button_group.dart lines 19-24, 108, 217-233."
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "ButtonGroup.radiiOf/hasLeftBorder are @visibleForTesting static helpers exposing the derived shape per index; ButtonGroupText(text, {numeric}); ButtonGroupSeparator() takes no parameters at all (always vertical/1px/bg-input).",
+      "web": "No public API beyond className/props passthrough and the orientation cva variant; ButtonGroupText(asChild, ...props); ButtonGroupSeparator wraps Separator and defaults orientation=\"vertical\"."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "ButtonGroup/_Slot/_BledSlot are pure layout/paint with no state of their own -- any interaction state (hover, press, focus) belongs entirely to the member widgets (Button, Input) it wraps.",
+      "web": "ButtonGroup declares no data-state of its own; `*:focus-visible:relative *:focus-visible:z-10` reacts to a member's own focus-visible pseudo-class, not a state ButtonGroup itself owns.",
+      "note": "The group is a structural/visual composition wrapper on both platforms and has no state matrix distinct from its members'."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "ButtonGroup has no disabled concept of its own -- a member Button can be individually disabled via its own onPressed=null, unaffected by the group.",
+      "web": "No disabled prop on ButtonGroup; each member's own disabled state is independent.",
+      "note": "Disabling is a per-member concern on both platforms; the group itself is never disabled as a unit."
+    },
+    "interaction": {
+      "verdict": "flutter-behind",
+      "flutter": "*:focus-visible:z-10's ring-painting-over-neighbour behaviour is explicitly NOT reproduced: the library doc states 'A focused member's ring is drawn around the stretched box, so its vertical runs sit half a height out and the seam cuts them... In the reference the ring closes at the seam and paints over the neighbour' -- i.e. a focused member's focus ring is clipped at the seam on Flutter rather than overlapping the next segment as CSS z-index achieves.",
+      "web": "`*:focus-visible:relative *:focus-visible:z-10` lifts the focused member's stacking context above its siblings, so its focus ring visibly overlaps and paints over the adjacent segment's edge -- a real, intentional visual effect of the group.",
+      "note": "Reclassified on review from `gap`: the shortfall recorded below is on the FLUTTER side — the web has the capability, or Flutter's own doc comment records it as not ported, or Flutter reproduces an earlier state of the web source that has since moved on. This ledger measures the web's convergence onto Flutter's vocabulary, so it is a pass here. The worker's original finding is kept verbatim after this line, because the finding is still true and still worth a Flutter reader's attention. ORIGINAL: Self-documented rendering gap, not merely a platform difference: the Flutter port's own comment ('What the bleed costs') states the visual outcome differs from the reference rather than claiming an equivalent mechanism achieves the same result. A focused segment at the end of a Flutter ButtonGroup will show a ring that appears cut off at the seam where the web version shows a ring that cleanly overlaps the neighbour. File: lib/src/components/ui/button_group.dart lines 93-97."
+    },
+    "semantics": {
+      "verdict": "match",
+      "flutter": "Semantics(container: true, explicitChildNodes: true) wraps the Row -- port of role=\"group\", keeping each member individually reachable inside the group rather than collapsing them into one announced node.",
+      "web": "<div role=\"group\" data-slot=\"button-group\" data-orientation={orientation}> -- members remain individually focusable/announced children of the group role."
+    }
+  }
+}

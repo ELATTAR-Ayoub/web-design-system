@@ -1,0 +1,49 @@
+{
+  "name": "icon",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [
+    "lib/src/components/ui/icon.dart",
+    "lib/src/components/ui/icon_paths.dart",
+    "lib/src/components/ui/icon_paths.g.dart"
+  ],
+  "webSources": ["components/ui/icon.tsx"],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "platform-difference",
+      "flutter": "Icon is a StatelessWidget wrapping a CustomPaint whose `_GlyphPainter` calls `Icon.paintGlyph` — canvas.scale to the 24-unit viewBox, canvas.clipRect to the viewBox (documented as reproducing the browser's default `<svg>` overflow:hidden, citing the upstream 'save-off' glyph that leaves the grid), then two `drawPath` passes for stroke and fill.",
+      "web": "Icon renders lucide-react's actual `<Glyph>` SVG component directly with `width`/`height`/`strokeWidth`/className props — the browser's native SVG renderer does the path painting, viewBox scaling and clipping.",
+      "note": "Correct, explicitly-documented platform difference: 'The web renders lucide's React components, which are <svg> elements. Here the geometry is embedded (see icon_paths.dart) and stroked directly, so there is no icon font and no glyph-hinting to fight.' Flutter has no SVG renderer available for arbitrary glyph paths at this layer, so it re-implements lucide's own stroke/fill/clip contract by hand against extracted path data — the right mechanism per platform."
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "IconSize enum (xs=12, sm=14, md=16, lg=20, xl=24, xl2=32→'2xl', xl3=40→'3xl') and IconTone enum (normal→'default', muted, subtle, action, value, success, warning, info, error, inherit) both carry a `.label` getter documented as existing ONLY because Dart identifiers cannot start with a digit or be named `default` — 'the rename is a language constraint and must not leak into rendered copy.'",
+      "web": "`export const ICON_SIZES = { xs: 12, sm: 14, md: 16, lg: 20, xl: 24, '2xl': 32, '3xl': 40 }` and `export const ICON_TONES = { default: 'text-foreground', muted: ..., subtle: ..., action: 'text-action-ink', value: 'text-value-ink', success: ..., warning: ..., info: ..., error: 'text-destructive-ink', inherit: 'text-current' }`.",
+      "note": "n/a — verdict is match; every rung and tone key maps 1:1 between the two ladders, and Flutter's `.label` getter exists specifically to reproduce the web's exact string keys ('2xl', '3xl', 'default') despite the Dart naming constraints that force the enum members to be spelled `xl2`/`xl3`/`normal` internally."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "Icon is a StatelessWidget with no interaction state of its own — size/tone/glyph are all resolved once per build from the props given.",
+      "web": "Icon.tsx renders a static SVG with no internal state, hover, or focus handling — `focusable=\"false\"` is set explicitly.",
+      "note": "Icon is a pure presentational primitive on both platforms with no interaction state of its own; any hover/pressed/focus behaviour belongs to whatever control (Button, etc.) the icon is composed inside."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No `enabled`/disabled parameter exists on Icon anywhere in icon.dart; IconTone.inherit reads `DefaultTextStyle.of(context).style.color`, so a disabled ancestor's dimmed text colour cascades automatically without Icon knowing about disabled state itself.",
+      "web": "icon.tsx defines no disabled prop; `ICON_TONES.inherit = 'text-current'` inherits whatever colour (including a disabled-dimmed one) the surrounding element sets.",
+      "note": "Icon has no disabled concept of its own on either platform — a disabled control dims its icon by cascading colour/opacity from the parent (tone=\"inherit\"/text-current), not by Icon exposing a disabled flag."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "Icon.build mounts no GestureDetector/MouseRegion/FocusNode — purely a CustomPaint wrapped in ExcludeSemantics or Semantics depending on `label`.",
+      "web": "Icon.tsx sets `focusable=\"false\"` explicitly and attaches no click/keyboard handler of its own, spreading only whatever `...rest` props a caller supplies.",
+      "note": "Icon is not independently focusable or interactive on either platform — it is explicitly excluded from the tab order (focusable=\"false\" on web; ExcludeSemantics by default on Flutter unless a label is given, and even then it carries no focus/gesture handling)."
+    },
+    "semantics": {
+      "verdict": "match",
+      "flutter": "`if (label == null) return ExcludeSemantics(child: painted); return Semantics(label: label, image: true, child: painted);` — an icon either has a label and is announced as an image, or has none and is fully hidden from the semantics tree.",
+      "web": "`aria-hidden={label ? undefined : true} role={label ? 'img' : undefined} aria-label={label} focusable=\"false\"` — identical either/or contract: labelled icons get role=img + aria-label, unlabelled icons get aria-hidden.",
+      "note": "n/a"
+    }
+  }
+}

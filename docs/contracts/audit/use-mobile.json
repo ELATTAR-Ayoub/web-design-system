@@ -1,0 +1,45 @@
+{
+  "name": "use-mobile",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": ["hooks/use-mobile.ts", "components/docs/component-docs/use-mobile/page.tsx"],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "Nothing — origin: web-only, flutterSources is []. Flutter reads the viewport through MediaQuery.of(context).size directly wherever a widget needs it; there is no equivalent standalone hook to port because Dart's own platform primitive already gives the answer.",
+      "web": "export function useIsMobile() is one function with no sub-parts: React.useSyncExternalStore(subscribe, () => window.matchMedia(QUERY).matches, () => false), per hooks/use-mobile.ts lines 20-26.",
+      "note": "A hook has no composition to name on either side — the doc page has no Preview/States/Accessibility sections because none apply (components/docs/component-docs/use-mobile/page.tsx lines 4-5)."
+    },
+    "api": {
+      "verdict": "platform-difference",
+      "flutter": "No Dart file ports this — origin: web-only, flutterSources []. Flutter's own MediaQuery.sizeOf(context) / LayoutBuilder are the idiomatic responsive-breakpoint primitives, read synchronously during build rather than through a subscribed hook, so there is no separate useIsMobile-shaped API to diverge from.",
+      "web": "useIsMobile(): boolean returns true when window.matchMedia(\"(max-width: 767px)\").matches, per hooks/use-mobile.ts lines 3-4 (MOBILE_BREAKPOINT = 768, QUERY = max-width 767px) and 20-26; the SSR/first-render snapshot is hard-coded false so the server always renders the desktop layout.",
+      "note": "This is a browser platform concern (matchMedia, SSR hydration) with a correct native Flutter equivalent (MediaQuery) rather than a missing port — the origin: web-only contract exists precisely because window.matchMedia and SSR-safe hydration have no Flutter analogue to be a gap against."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Flutter source exists for this capability — flutterSources []. There is no interaction/state matrix because the hook renders nothing.",
+      "web": "useIsMobile subscribes to a MediaQueryList's change event and re-renders on resize (hooks/use-mobile.ts lines 6-10, 20-26) but has no rest/hover/focus/etc. states of its own — it is a boolean value, not a rendered surface.",
+      "note": "The doc page states plainly: 'A hook, not a component — no Preview, States, Accessibility or Keyboard section applies' (components/docs/component-docs/use-mobile/page.tsx lines 4-5)."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Flutter source — flutterSources []. Nothing to disable on a hook the Flutter package does not implement.",
+      "web": "useIsMobile has no disabled concept — it always evaluates and returns the current matchMedia result, per hooks/use-mobile.ts lines 20-26.",
+      "note": "A pure boolean-returning hook with no rendered control has no disabled path to audit."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Flutter source — flutterSources []. No keyboard/pointer/touch surface exists because there is no Dart port.",
+      "web": "useIsMobile has no direct interaction surface of its own: it is read by callers (e.g. Toolbar in the usage snippet, components/docs/component-docs/use-mobile/page.tsx lines 30-35) that branch their own rendered controls on the boolean.",
+      "note": "The hook itself has no keyboard, pointer or touch behaviour — any interaction belongs to whatever component reads its boolean."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Flutter source — flutterSources []. No accessible node exists because there is no Dart port to check ARIA/role/target-size against.",
+      "web": "useIsMobile renders no DOM node itself and carries no accessible name, role or announcement; the doc page has no Accessibility section (components/docs/component-docs/use-mobile/page.tsx sections: install, usage, api, why, source).",
+      "note": "No rendered surface on either side means no accessible name, role, announcement or 44x44 target-size floor applies."
+    }
+  }
+}

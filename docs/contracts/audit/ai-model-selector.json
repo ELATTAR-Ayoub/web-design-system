@@ -1,0 +1,49 @@
+{
+  "name": "ai-model-selector",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": [],
+  "webSources": [
+    "components/ai-elements/model-selector.tsx",
+    "components/docs/component-docs/ai-model-selector/page.tsx",
+    "components/docs/component-docs/ai-model-selector/model-selector-specimen.tsx"
+  ],
+  "auditedAt": "2026-10-02",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Model Selector — origin: web-only, flutterSources is [].",
+      "web": "model-selector.tsx maps onto the Dialog and Command: ModelSelector (Dialog), ModelSelectorTrigger (DialogTrigger), ModelSelectorContent (DialogContent with p-0 and an outline, a screen-reader-only DialogTitle, and a Command around the children), ModelSelectorDialog (CommandDialog), Input, List, Empty, Group, Item, Shortcut, Separator, Name, and ModelSelectorLogo with ModelSelectorLogoGroup.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "api": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Model Selector — origin: web-only, flutterSources is [].",
+      "web": "ModelSelector takes the Dialog props (open, defaultOpen, onOpenChange). ModelSelectorContent takes title (default Model Selector) and showCloseButton (default false). Items are Command items with value, onSelect and disabled; ModelSelectorLogo takes provider (any string) and draws a local monogram with no network request, or a 12px img when you pass src for your own logo; ModelSelectorName is a flex-1 truncating span.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Model Selector — origin: web-only, flutterSources is [].",
+      "web": "The dialog is open or closed, and the list is populated or shows ModelSelectorEmpty when the search matches nothing; the highlighted row fills with the accent. Hover, focus and pressed belong to the trigger Button and the Command row. There is no loading, error or success visual: the list is data the caller already holds.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Model Selector — origin: web-only, flutterSources is [].",
+      "web": "The component has no disabled prop of its own: a trigger is disabled through the Button the caller supplies, and a single row is disabled through the Command item disabled prop.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Model Selector — origin: web-only, flutterSources is [].",
+      "web": "The trigger opens the Dialog; typing in ModelSelectorInput filters the rows by their value string; ArrowUp and ArrowDown move the highlight, Enter or a click calls onSelect, and the caller sets the model and closes the dialog. There is no corner close: showCloseButton is false, so Escape and a press outside the dialog close it.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    },
+    "semantics": {
+      "verdict": "n/a",
+      "flutter": "No Dart source exists at the pinned snapshot for AI Model Selector — origin: web-only, flutterSources is [].",
+      "web": "DialogContent is named by the screen-reader-only title (default Model Selector, the workspace passes Choose a model) and has aria-describedby undefined; the input and rows follow the Command combobox and listbox pattern; group headings label their options; ModelSelectorLogo carries alt text of the provider name plus logo.",
+      "note": "Web-only capability: there is no Flutter counterpart to compare, so every dimension is n/a by construction."
+    }
+  }
+}

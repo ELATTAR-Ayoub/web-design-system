@@ -1,0 +1,44 @@
+{
+  "name": "separator",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": ["lib/src/components/ui/separator.dart"],
+  "webSources": ["components/ui/separator.tsx", "components/docs/component-docs/separator/page.tsx"],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "Separator is a single StatelessWidget: SizedBox(width/height set on the short axis only, the long axis left null) wrapping a ColoredBox(color: theme.border) — no sub-widgets, exactly one visual layer.",
+      "web": "Separator renders one SeparatorPrimitive.Root with className 'shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch' — one element, one class list, no children."
+    },
+    "api": {
+      "verdict": "platform-difference",
+      "flutter": "Separator({orientation = SeparatorOrientation.horizontal}) plus a Separator.vertical() convenience constructor; SeparatorOrientation is an enum {horizontal, vertical} and Separator.thickness exposes BorderWidths.hairline.",
+      "web": "Separator({orientation = 'horizontal', decorative = true, className, ...props}) forwarding to Radix SeparatorPrimitive.Root, which also accepts decorative to toggle role='separator' vs aria-hidden.",
+      "note": "The Dart doc comment states explicitly under 'Not ported': decorative (Radix's role/aria-hidden switch) and orientation's aria-orientation, because 'a Semantics divider node carries no information a Flutter reader can use.' This is a reasoned, documented platform decision rather than an oversight — Flutter has no DOM role to switch and the widget has no accessibility surface to withhold in the first place."
+    },
+    "states": {
+      "verdict": "n/a",
+      "flutter": "Separator is a StatelessWidget with no interactive state at all — it paints one ColoredBox and has no onTap, no Focus, no hover handling anywhere in the 79-line source.",
+      "web": "Separator forwards no interaction props of its own; SeparatorPrimitive.Root is a plain, non-interactive <div role=separator|none> with no hover/focus/pressed styling in the class list.",
+      "note": "A hairline rule is presentational on both platforms; there is no rest/hover/focus/pressed/loading matrix to compare because neither side makes it interactive."
+    },
+    "disabled": {
+      "verdict": "n/a",
+      "flutter": "No disabled field, parameter, or branch exists on Separator or SeparatorOrientation.",
+      "web": "No disabled prop or disabled: variant appears in separator.tsx's class list or props.",
+      "note": "A non-interactive rule has nothing to disable on either side, so the dimension does not apply."
+    },
+    "interaction": {
+      "verdict": "n/a",
+      "flutter": "Separator wires no GestureDetector, Focus, or key handler — it cannot be tabbed to or activated.",
+      "web": "The Radix Separator primitive renders no tabIndex, no onClick, and no keyboard handling; it is inert by design.",
+      "note": "Neither implementation is operable, so there is no keyboard/pointer/touch/dismissal behavior to compare."
+    },
+    "semantics": {
+      "verdict": "platform-difference",
+      "flutter": "The Dart doc comment records the decision directly: 'Not ported: decorative ... since a Semantics divider node carries no information a Flutter reader can use', so the widget emits no Semantics node at all.",
+      "web": "SeparatorPrimitive.Root defaults decorative=true, which Radix resolves to aria-hidden='true' (or role='separator' plus aria-orientation when decorative=false), matching WAI-ARIA's separator pattern.",
+      "note": "The web has real DOM semantics to toggle (role=separator vs aria-hidden) that Flutter's accessibility tree has no equivalent expressive slot for, so the port's silence is the documented right answer rather than a gap; target-size does not apply to a 1px non-interactive rule."
+    }
+  }
+}

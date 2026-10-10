@@ -1,0 +1,30 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "design-system-prod",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "scripts/next.mjs",
+        "start",
+        "--port",
+        "3100"
+      ],
+      "port": 3100,
+      "url": "http://localhost:3100"
+    },
+    {
+      "name": "web-original",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "3111"
+      ],
+      "port": 3111,
+      "url": "http://localhost:3111"
+    }
+  ]
+}

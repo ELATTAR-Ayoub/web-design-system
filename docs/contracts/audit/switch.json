@@ -1,0 +1,40 @@
+{
+  "name": "switch",
+  "flutterSnapshot": "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
+  "flutterSources": ["lib/src/components/ui/switch.dart"],
+  "webSources": ["components/ui/switch.tsx"],
+  "auditedAt": "2026-09-11",
+  "dimensions": {
+    "anatomy": {
+      "verdict": "match",
+      "flutter": "Switch builds a SelectionControl (the track: fill/border/shadow/radius) containing a private _Thumb — a TweenAnimationBuilder-driven Positioned Surface — which is exactly the two-slot shape: track + thumb, no more.",
+      "web": "SwitchPrimitive.Root (data-slot=\"switch\", the track: rounded-pill border p-0.5) wrapping SwitchPrimitive.Thumb (data-slot=\"switch-thumb\", rounded-full) — Radix's own two-part anatomy, matching the Dart track/_Thumb split."
+    },
+    "api": {
+      "verdict": "match",
+      "flutter": "Switch(value, onChanged, size: SwitchSize{sm,md}, enabled, disabledReason, invalid, focusNode, label, hint) — value/onChanged map to checked/onCheckedChange, size.label emits 'sm'/'default' the same as the web's data-size.",
+      "web": "Switch({className, size = \"default\"|\"sm\", ...SwitchPrimitive.Root props}) forwarding checked/onCheckedChange/disabled/aria-invalid through Radix, with data-size driving data-[size=default]:h-6 w-11 / data-[size=sm]:h-5 w-9.",
+      "note": "Not a defect — flagged only because the API surfaces differ in shape (Flutter's enabled+disabledReason+invalid+label+hint vs Radix's disabled/aria-invalid/aria-label passthrough) while resolving to the same two sizes and the same checked semantics; recorded platform-difference would also be defensible, but 'match' better reflects that both sides expose exactly {value/checked, onChange, size:sm|default, disabled, invalid}."
+    },
+    "states": {
+      "verdict": "match",
+      "flutter": "SelectionControl paints fill: value ? theme.primary : theme.muted, border: value ? primary : input, shadow: value ? Shadows.controlPrimary : Shadows.inset, and Switch.dart's own doc table records the disabled spelling as data-disabled (drift 14 — noted, not fixed).",
+      "web": "data-[state=unchecked]:bg-muted data-[state=unchecked]:shadow-pressed vs data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:shadow-btn-primary, focus-visible:ring-3 ring-ring/50, aria-invalid:border-destructive ring-destructive/20, data-disabled:cursor-not-allowed data-disabled:opacity-50."
+    },
+    "disabled": {
+      "verdict": "match",
+      "flutter": "Switch.enabled (ANDed with the enclosing FieldScope's) drives SelectionControl's Disabled wrapper, and disabledReason (falling back to the scope's) surfaces as a tooltip explaining why — the doc comment calls out that the switch spells this data-disabled unlike Checkbox/RadioGroupItem/Select's disabled: (forms-map drift 14, recorded not fixed).",
+      "web": "data-disabled:cursor-not-allowed data-disabled:opacity-50 on SwitchPrimitive.Root, driven by Radix's disabled prop; no separate 'why disabled' explanation is rendered by this component itself, that lives in the Field wrapper elsewhere in the system."
+    },
+    "interaction": {
+      "verdict": "match",
+      "flutter": "toggle is wired through scope?.activator?.callback for a sibling <label>-style activation, and null while !isEnabled so a stale toggle cannot outlive its own legality — SelectionControl (not shown here) owns the actual FocusNode/Enter-Space wiring per its own contract.",
+      "web": "Radix SwitchPrimitive.Root is a real <button role=\"switch\">, so it gets native Space/Enter activation, Tab focus and label-for activation for free from the browser and Radix's own primitive."
+    },
+    "semantics": {
+      "verdict": "match",
+      "flutter": "Semantics(container: true, toggled: value, enabled: isEnabled && onChanged != null, label: name, hint: described) — a named, toggled, hinted node exactly mirroring role=switch/aria-checked/aria-label/aria-describedby.",
+      "web": "Radix SwitchPrimitive.Root renders role=\"switch\" aria-checked with aria-label/aria-describedby forwarded through ...props, and the after:-inset-x-3 after:-inset-y-2 pseudo-element expands the 44x24 (default) track's hit area well past the --size-target-min 44px floor."
+    }
+  }
+}

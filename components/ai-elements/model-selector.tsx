@@ -177,7 +177,7 @@ export type ModelSelectorLogoProps = Omit<
     | (string & {});
 };
 
-// Vendored change: no remote logo fetch; monogram unless the caller passes src.
+// Vendored change: no remote logo fetch; a token-styled monogram unless the caller passes src, which is never colour-inverted.
 export const ModelSelectorLogo = ({
   provider,
   src,
@@ -189,18 +189,18 @@ export const ModelSelectorLogo = ({
     <img
       {...(props as ComponentProps<"img">)}
       alt={`${provider} logo`}
-      className={cn("size-3 dark:invert", className)}
+      className={cn("size-5 shrink-0 rounded-full object-contain", className)}
       data-slot="model-selector-logo"
-      height={12}
+      height={20}
       src={src}
-      width={12}
+      width={20}
     />
   ) : (
     <span
       {...props}
       aria-hidden="true"
       className={cn(
-        "type-badge inline-grid size-4 shrink-0 place-items-center rounded-full bg-muted text-muted-foreground",
+        "type-badge inline-grid size-5 shrink-0 place-items-center rounded-full bg-secondary text-foreground inset-ring inset-ring-border",
         className
       )}
       data-provider={provider}
@@ -212,14 +212,14 @@ export const ModelSelectorLogo = ({
 
 export type ModelSelectorLogoGroupProps = ComponentProps<"div">;
 
-// Vendored change: the child selector matches the logo's `data-slot` rather than `img`, because without a `src` the logo is a span (a monogram), not an image.
+// Vendored change: logos are matched by `data-slot` (a monogram is a span, not an img) and separated by a background outline rather than a dark-mode fill.
 export const ModelSelectorLogoGroup = ({
   className,
   ...props
 }: ModelSelectorLogoGroupProps) => (
   <div
     className={cn(
-      "flex shrink-0 items-center -space-x-1 [&>[data-slot=model-selector-logo]]:rounded-full [&>[data-slot=model-selector-logo]]:bg-background [&>[data-slot=model-selector-logo]]:p-px [&>[data-slot=model-selector-logo]]:ring-1 dark:[&>[data-slot=model-selector-logo]]:bg-foreground",
+      "flex shrink-0 items-center -space-x-1.5 [&>[data-slot=model-selector-logo]]:outline-2 [&>[data-slot=model-selector-logo]]:outline-background",
       className
     )}
     {...props}

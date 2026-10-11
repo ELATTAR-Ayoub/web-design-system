@@ -6,6 +6,9 @@ claim deployment: a tag says what the code is, not where it runs.
 
 ## Unreleased
 
+### Changed — model logo badges
+- `ModelSelectorLogo` draws its monogram on the system: `type-badge`, foreground on the secondary surface, a 20px round chip with a border ring (14:1 contrast in dark, 18:1 in light). A caller-supplied `src` logo is 20px and never colour-inverted. `ModelSelectorLogoGroup` separates logos with a background outline instead of a dark-mode fill. The model selector demo now shows a badge on the button (re-entering on `anim-enter` when the provider changes), on every row, and a stacked group of the providers.
+
 ### Changed — the voice orb is a glass sphere again
 - `VoiceOrb` is redrawn as a dark glass sphere: a lit body, two reflections turning against each other, a highlight and a rim light. It has five states (`idle`, `listening`, `thinking`, `speaking`, `asleep`), each with its own pace and motion, from the `voice-orb` utility, the `--orb-*` tokens and three new keyframes (`orb-breathe`, `orb-speak`, `orb-ripple`). Still original code with no canvas, WebGL or network request.
 

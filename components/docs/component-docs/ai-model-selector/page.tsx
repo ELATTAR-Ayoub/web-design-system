@@ -190,8 +190,8 @@ export const spec: ComponentDocSpec = {
           body: (
             <Meta
               items={[
-                { k: "ModelSelectorLogo provider", v: "string — a provider id such as \"anthropic\" or \"openai\". Draws a local monogram (the first letter in a round chip) and makes no network request. Pass src for your own approved logo: it then renders a 12px img (inverted in dark mode) with alt text \"<provider> logo\"." },
-                { k: "ModelSelectorLogoGroup", v: "div that overlaps several logos with a negative space, each in a round chip." },
+                { k: "ModelSelectorLogo provider", v: "string — a provider id such as \"anthropic\" or \"openai\". Draws a local monogram: the first letter in type-badge, foreground on the secondary surface, in a 20px round chip with a border ring, and makes no network request. Pass src for your own approved logo: it then renders a 20px round img, never colour-inverted, with alt text \"<provider> logo\"." },
+                { k: "ModelSelectorLogoGroup", v: "div that overlaps several logos, each separated from the next by a 2px outline in the background colour so the stack reads in both themes." },
               ]}
             />
           ),

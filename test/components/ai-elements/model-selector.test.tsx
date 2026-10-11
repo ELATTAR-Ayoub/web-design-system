@@ -106,6 +106,26 @@ describe("ModelSelector", () => {
     expect(document.querySelector("img")).toBeNull();
   });
 
+  it("styles the monogram from the system's tokens: badge type, foreground on secondary, a border ring", () => {
+    render(<ModelSelectorLogo provider="openai" />);
+    const logo = document.querySelector('[data-slot="model-selector-logo"]')!;
+    expect(logo).toHaveClass("type-badge", "bg-secondary", "text-foreground", "inset-ring-border", "size-5", "rounded-full");
+  });
+
+  it("a logo group separates each logo with a background outline, with no dark-mode fill", () => {
+    const { container } = render(
+      <ModelSelectorLogoGroup>
+        <ModelSelectorLogo provider="anthropic" />
+        <ModelSelectorLogo provider="openai" />
+        <ModelSelectorLogo provider="google" />
+      </ModelSelectorLogoGroup>
+    );
+    const group = container.firstElementChild!;
+    expect(group.querySelectorAll('[data-slot="model-selector-logo"]')).toHaveLength(3);
+    expect(group.className).toContain("outline-background");
+    expect(group.className).not.toContain("dark:");
+  });
+
   it("uses a caller-supplied logo when given one", () => {
     render(<ModelSelectorLogo provider="anthropic" src="/logos/anthropic.svg" />);
     expect(document.querySelector("img")?.getAttribute("src")).toBe("/logos/anthropic.svg");

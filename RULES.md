@@ -933,8 +933,8 @@ distinction that matters is **reversible or not**:
 | A persistent condition worth explaining | **Alert** | It stays on the page. |
 | Nothing is there yet | **Empty** | And it always offers a way forward. |
 
-**Do not reach for `AlertDialog` when a plain `Dialog` will do.** An approval the
-user learns to click through is worse than no approval at all.
+**Irreversible → `AlertDialog`; reversible → `Dialog`.** If the action cannot be
+undone, it needs an `AlertDialog`. If it can be undone, a plain `Dialog` is enough.
 
 **Every irreversible action asks first — no exceptions.** Delete, remove, clear,
 discard, reset, revoke: the control opens an `AlertDialogConfirm` (or a composed

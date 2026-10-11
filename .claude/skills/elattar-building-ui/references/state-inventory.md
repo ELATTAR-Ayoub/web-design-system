@@ -113,5 +113,5 @@ satisfy this pattern makes the API worse. Mark those rows N/A and say why.
 | Nothing is there yet | **Empty** | Always offers a way forward. |
 
 The distinction that matters most: **reversible → Dialog, irreversible →
-AlertDialog.** An approval the user learns to click through is worse than no
-approval at all, so do not reach for AlertDialog when a plain Dialog will do.
+AlertDialog.** If the action cannot be undone, it needs an AlertDialog; if it
+can, a plain Dialog is enough.

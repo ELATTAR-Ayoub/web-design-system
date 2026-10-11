@@ -4,6 +4,8 @@ import { useSyncExternalStore } from "react";
 import { MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 
+import { Button } from "@/components/ui/button";
+import { Icon } from "@/components/ui/icon";
 import {
   ActiveIndicator,
   useActiveIndicator,
@@ -11,9 +13,9 @@ import {
 import { cn } from "@/lib/utils";
 
 const OPTIONS = [
-  { value: "light", label: "Light", Icon: SunIcon },
-  { value: "system", label: "System", Icon: MonitorIcon },
-  { value: "dark", label: "Dark", Icon: MoonIcon },
+  { value: "light", label: "Light", glyph: SunIcon },
+  { value: "system", label: "System", glyph: MonitorIcon },
+  { value: "dark", label: "Dark", glyph: MoonIcon },
 ] as const;
 
 const NEVER_CHANGES = () => () => {};
@@ -40,12 +42,14 @@ export function ThemeToggle({ className }: { className?: string }) {
         arrivalRef={arrivalRef}
         className="block size-full rounded-pill bg-card shadow-e1"
       />
-      {OPTIONS.map(({ value, label, Icon }) => {
+      {OPTIONS.map(({ value, label, glyph }) => {
         const active = mounted && theme === value;
         return (
-          <button
+          <Button
             key={value}
             type="button"
+            variant="ghost"
+            size="icon-xs"
             role="radio"
             data-state={active ? "on" : "off"}
             aria-checked={active}
@@ -53,14 +57,14 @@ export function ThemeToggle({ className }: { className?: string }) {
             title={label}
             onClick={() => setTheme(value)}
             className={cn(
-              "press relative z-10 grid size-7 place-items-center rounded-pill transition-colors duration-fast ease-out",
+              "relative z-10 size-7 bg-transparent transition-colors duration-fast ease-enter hover:bg-transparent active:bg-transparent",
               active
                 ? "text-foreground"
                 : "text-muted-foreground hover:text-foreground",
             )}
           >
-            <Icon className="size-3.5" aria-hidden />
-          </button>
+            <Icon icon={glyph} size="sm" tone="inherit" />
+          </Button>
         );
       })}
     </div>

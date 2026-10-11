@@ -226,7 +226,7 @@ export function SortSelect() {
             <Meta
               items={[
                 { k: "size", v: '"sm" | "default" (default). Sets the min-height rung — see Sizes.' },
-                { k: "disabledReason", v: "Why the select as a whole is disabled, shown via components/ui/disabled.tsx (native mode — Radix's Select.Trigger is a real <button disabled>). Pass `disabled` on the trigger alongside it: Radix's root-level `disabled` reaches the button through context, which the wrapper cannot see, so a reason on a trigger disabled only from the root renders nothing. Falls back to nothing, matching Flutter's Select.disabledReason falling back to the enclosing FieldScope's." },
+                { k: "disabledReason", v: "Why the select as a whole is disabled, shown via components/ui/disabled.tsx (native mode — Radix's Select.Trigger is a real <button disabled>). Pass `disabled` on the trigger alongside it: Radix's root-level `disabled` reaches the button through context, which the wrapper cannot see, so a reason on a trigger disabled only from the root renders nothing. Falls back to nothing." },
                 { k: "...props", v: "Every other attribute Radix's Select.Trigger accepts, forwarded directly." },
               ]}
             />

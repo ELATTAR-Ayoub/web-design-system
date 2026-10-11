@@ -17,7 +17,7 @@ export const spec: ComponentDocSpec = {
       id: "preview",
       title: "Preview",
       description:
-        "Three emphasis levels together: a filled chip, a tinted semantic colour, and an unfilled outline. Every variant is flat — Flutter 0.0.3 ruled the gradient and shadow out of badges, and this follows it. The full eleven-variant set is in Variants below.",
+        "Three emphasis levels together: a filled chip, a tinted semantic colour, and an unfilled outline. Every variant is flat, with no gradient or shadow. The full eleven-variant set is in Variants below.",
       render: (
         <div className="w-full max-w-md divide-y divide-border rounded-lg border border-border bg-card">
           {[
@@ -62,7 +62,7 @@ export function StatusChip() {
       id: "variants",
       title: "Variants",
       description:
-        "Eleven variants, all flat. Filled variants (default, secondary, destructive, action, premium, success, warning, info) carry a solid or tinted fill and nothing else — the gradient and shadow they used to wear were removed to match Flutter 0.0.3, because a label with a machined surface reads as a control that does not press. Unfilled variants (outline, ghost, link) carry no fill at all.",
+        "Eleven variants, all flat. Filled variants (default, secondary, destructive, action, premium, success, warning, info) carry a solid or tinted fill and nothing else — the gradient and shadow they used to wear were removed, because a label with a machined surface reads as a control that does not press. Unfilled variants (outline, ghost, link) carry no fill at all.",
       label: "Variants",
       render: (
         <StateGrid cols={4}>

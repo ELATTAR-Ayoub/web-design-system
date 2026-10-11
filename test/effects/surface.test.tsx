@@ -20,7 +20,7 @@
  * NOT covered here: jsdom has no layout or paint, so the actual offsets, blur
  * radii, and per-theme ink swap (the whole point of the page's Effect
  * section — "only the ink changes per theme") cannot be measured — that
- * visual evidence is covered by `e2e/ledger-evidence.spec.ts`.
+ * visual evidence needs a real-browser e2e spec.
  *
  * @covers surface
  */

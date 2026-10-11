@@ -95,9 +95,9 @@ export const spec: ComponentDocSpec = {
       render: <TaskExamples />,
       source: `<Task>
   <TaskTrigger title="Checked the ledger">
-    <button type="button" className="flex w-full items-center gap-2 text-left type-small text-muted-foreground">
+    <Button variant="ghost" size="sm" className="h-auto w-full justify-start px-0">
       Checked the ledger · 2 of 3 steps
-    </button>
+    </Button>
   </TaskTrigger>
   <TaskContent>
     <TaskItem>Compared 3 totals</TaskItem>

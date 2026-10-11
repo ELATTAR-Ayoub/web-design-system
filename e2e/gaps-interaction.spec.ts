@@ -204,7 +204,7 @@ test.describe("press — keyboard activation", () => {
     await gotoComponent(page, "press");
     // Inside the page body: the docs header's own menu button also carries
     // `.press` and comes first in the DOM, but it is `lg:hidden` on desktop.
-    const button = page.locator("main button.press").first();
+    const button = page.locator("main [data-slot=preview-stage] button.press").first();
     await button.scrollIntoViewIfNeeded();
     await button.focus();
 

@@ -76,7 +76,7 @@ function deliveryFor(entry: ContractEntry): {
     return {
       headline: "Delivered by a package, not by the registry",
       detail:
-        "This capability is not an Elattar component. It is documented here because Flutter models it as a registry item and the web equivalent has to be findable under the same name — but on the web it is behaviour you get from a dependency the project already has, and wrapping it in a React component to make the two catalogues the same length would add a file that does nothing.",
+        "This capability is not an Elattar component. It is documented here so it can be found under its own name — but it is behaviour you get from a dependency the project already has, and wrapping it in a React component would add a file that does nothing.",
     };
   }
 
@@ -92,7 +92,7 @@ function deliveryFor(entry: ContractEntry): {
     return {
       headline: "Already here, as a composition",
       detail:
-        "Nothing to install, and nothing to add. Flutter models this as one capability; on the web it is what you get by composing components this system already ships, and building a second thing under this name would give the system two ways to do what it does once. The components to compose are named below.",
+        "Nothing to install, and nothing to add. It is what you get by composing components this system already ships, and building a second thing under this name would give the system two ways to do what it does once. The components to compose are named below.",
     };
   }
 

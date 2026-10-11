@@ -173,7 +173,7 @@ describe("ai-outputs documentation pages", () => {
     );
     expect(screen.getByText("react-dom")).toBeInTheDocument();
     expect(screen.getByText("18.3.1")).toBeInTheDocument();
-    for (const label of ["major", "minor", "patch", "added", "removed"]) {
+    for (const label of ["Major", "Minor", "Patch", "Added", "Removed"]) {
       expect(screen.getAllByText(label).length).toBeGreaterThan(0);
     }
   });

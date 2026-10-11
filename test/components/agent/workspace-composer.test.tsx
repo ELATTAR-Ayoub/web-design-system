@@ -195,7 +195,9 @@ describe("WorkspaceComposer — attachments", () => {
     await addFiles([new File(["x"], "gone.txt", { type: "text/plain" })]);
     await screen.findByText("gone.txt");
     await user.click(screen.getByRole("button", { name: "Remove" }));
-    expect(screen.queryByText("gone.txt")).not.toBeInTheDocument();
+    const confirm = await screen.findByRole("alertdialog", { name: "Remove this attachment?" });
+    await user.click(within(confirm).getByRole("button", { name: "Remove" }));
+    await waitFor(() => expect(screen.queryByText("gone.txt")).not.toBeInTheDocument());
     await user.click(screen.getByRole("button", { name: "Submit" }));
     await waitFor(() => expect(onSubmit).toHaveBeenCalled());
     expect(onSubmit.mock.calls[0][1].attachments).toBeUndefined();

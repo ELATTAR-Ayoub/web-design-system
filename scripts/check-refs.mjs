@@ -252,8 +252,8 @@ const NON_COLOUR_KEYWORDS = new Set([
   // from-/via-/to- gradient positions
   "0%", "50%", "100%",
   // our own type scale — text-<size> is a font size, not a colour. One key per
-  // role in the seventeen-role contract, plus Tailwind's own steps.
-  "display", "h1", "h2", "h3", "h4", "lead", "body", "small", "nav", "badge",
+  // role in the nineteen-role contract, plus Tailwind's own steps.
+  "display", "h1", "h2", "h3", "h4", "h5", "lead", "body", "small", "nav", "badge", "cta",
   "code", "identifier", "number-sm", "number-base", "number-md", "number-lg",
   "number-xl",
   "xs", "sm", "base", "lg", "xl", "2xl", "3xl", "4xl", "5xl", "6xl",

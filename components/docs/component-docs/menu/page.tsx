@@ -215,10 +215,9 @@ export const spec: ComponentDocSpec = {
           body: (
             <div className="space-y-4">
               <p className="type-body text-muted-foreground">
-                Flutter models <Code>menu</Code> as the shared body of its menu
-                widgets, so the registry has an item for it. The obvious web
-                translation would be to hoist a common module out of the three
-                components here — and the reason not to is measurable rather than
+                It is natural to ask for <Code>menu</Code> as the shared body of
+                the menu components. The obvious move would be to hoist a common
+                module out of the three components here — and the reason not to is measurable rather than
                 a matter of taste.
               </p>
               <p className="type-body text-muted-foreground">

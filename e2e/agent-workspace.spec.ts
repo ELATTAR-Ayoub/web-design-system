@@ -258,7 +258,7 @@ test.describe("the 7 conversations", () => {
     await reply(page, /Reminder set for tomorrow/);
   });
 
-  test("history: open, new chat, archive, delete with undo", async ({ page }) => {
+  test("history: open, new chat, archive, delete with confirm and undo", async ({ page }) => {
     const history = preview(page);
     // On a narrow screen the Sidebar is a Sheet behind the trigger.
     const expand = history.getByRole("button", { name: "Expand sidebar" });
@@ -275,6 +275,9 @@ test.describe("the 7 conversations", () => {
     await expect(row).toHaveAttribute("data-active", "true");
     await page.getByRole("button", { name: "Actions for Sync my calendar" }).click();
     await page.getByRole("menuitem", { name: "Delete" }).click();
+    const confirm = page.getByRole("alertdialog", { name: "Delete this conversation?" });
+    await expect(confirm).toBeVisible();
+    await confirm.getByRole("button", { name: "Delete" }).click();
     await expect(page.getByText("Conversation deleted")).toBeVisible();
     await page.locator("[data-sonner-toast]").getByRole("button", { name: "Undo" }).first().click();
     // A toast is not "outside" the phone Sheet: answering it leaves the Sheet open.

@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button"
+import { Icon } from "@/components/ui/icon"
 import { TOAST_ICONS, type ToastType } from "@/components/ui/toaster"
 
 export function ToastPreview({
@@ -11,13 +13,13 @@ export function ToastPreview({
   description?: string
   action?: string
 }) {
-  const Icon = type === "default" ? null : TOAST_ICONS[type]
+  const glyph = type === "default" ? null : TOAST_ICONS[type]
 
   return (
     <li className="cn-toast bloom-cosmic" data-type={type}>
-      {Icon && (
+      {glyph && (
         <div data-icon="">
-          <Icon className={type === "loading" ? "size-4 anim-spin" : "size-4"} />
+          <Icon icon={glyph} size="md" tone="inherit" className={type === "loading" ? "anim-spin" : undefined} />
         </div>
       )}
       <div data-content="">
@@ -25,9 +27,9 @@ export function ToastPreview({
         {description && <div data-description="">{description}</div>}
       </div>
       {action && (
-        <button type="button" data-button="">
+        <Button type="button" variant="secondary" size="sm" data-button="">
           {action}
-        </button>
+        </Button>
       )}
     </li>
   )

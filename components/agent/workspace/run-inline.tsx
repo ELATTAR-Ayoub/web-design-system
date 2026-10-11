@@ -72,6 +72,7 @@ import {
 } from "@/components/ai-elements/question";
 import { Shimmer } from "@/components/ai-elements/shimmer";
 import { Task, TaskContent, TaskItem, TaskTrigger } from "@/components/ai-elements/task";
+import { AlertDialogConfirm } from "@/components/ui/alert-dialog";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
@@ -387,14 +388,15 @@ function RunTask({ transport, run, className }: RunInlineProps) {
     <Task className={cn("flex flex-col gap-3", className)} defaultOpen>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <TaskTrigger className="min-w-0 flex-1" title={`${run.goal} · ${done} of ${run.plan.length}`}>
-          <button
+          <Button
             type="button"
-            className="relative after:absolute after:inset-x-0 after:-inset-y-3 flex w-full cursor-pointer items-center gap-2 text-left type-small text-muted-foreground transition-colors hover:text-foreground"
+            variant="ghost"
+            className="relative h-auto min-h-0 w-full justify-start gap-2 overflow-visible rounded-none bg-transparent px-0 text-left after:absolute after:inset-x-0 after:-inset-y-3 hover:bg-transparent active:bg-transparent"
           >
             <Icon icon={ListChecksIcon} size="sm" tone="inherit" />
             <span className="min-w-0 truncate">{`${run.goal} · ${done} of ${run.plan.length}`}</span>
             <Icon className="transition-transform group-data-[state=open]:rotate-180" icon={ChevronDownIcon} size="sm" tone="inherit" />
-          </button>
+          </Button>
         </TaskTrigger>
         <div className="flex items-center gap-2">
           {canPause && (
@@ -664,16 +666,19 @@ export function RunQueue({ transport, run, className }: RunInlineProps) {
                           </QueueItemAction>
                         )}
                         {transport.dequeue && (
-                          <QueueItemAction
-                            aria-label="Remove from queue"
-                            className={revealOnTouch}
-                            onClick={() => {
+                          <AlertDialogConfirm
+                            action="Remove"
+                            description="It will not be sent."
+                            onConfirm={() => {
                               transport.dequeue?.(message.id);
                               toast.success("Removed from the queue");
                             }}
+                            title="Remove this message from the queue?"
                           >
-                            <Icon icon={Trash2Icon} size="xs" tone="inherit" />
-                          </QueueItemAction>
+                            <QueueItemAction aria-label="Remove from queue" className={revealOnTouch}>
+                              <Icon icon={Trash2Icon} size="xs" tone="inherit" />
+                            </QueueItemAction>
+                          </AlertDialogConfirm>
                         )}
                       </QueueItemActions>
                     </div>

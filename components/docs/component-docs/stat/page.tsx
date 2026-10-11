@@ -2,6 +2,7 @@ import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Code, Meta, Note, StateCell, StateGrid } from "@/components/ds/kit";
 
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Stat, StatDeltaMark } from "@/components/ui/stat";
@@ -248,8 +249,12 @@ export function RevenueCard() {
         "A Stat is not a control and carries no hover, focus or pressed state of its own — applying one would promise an affordance that is not there. When a figure navigates, the wrapper is the control: it takes the surface change on hover, the global focus ring, and press for the press. The container is still a real Card, so the composition this teaches — a Stat inside a Card — is not repainted by hand.",
       label: "Stat inside a navigating wrapper",
       render: (
-        <button type="button" className="group press rounded-xl text-left">
-          <Card className="group-hover:bg-accent group-hover:ring-action/45 transition-colors duration-fast ease-out">
+        <Button
+          type="button"
+          variant="ghost"
+          className="group h-auto overflow-visible rounded-xl p-0 text-left hover:bg-transparent active:bg-transparent"
+        >
+          <Card className="group-hover:bg-accent group-hover:ring-action/45 transition-colors duration-fast ease-enter">
             <CardContent>
               <Stat
                 label="Revenue"
@@ -259,15 +264,19 @@ export function RevenueCard() {
               />
             </CardContent>
           </Card>
-        </button>
+        </Button>
       ),
-      source: `<button type="button" className="group press rounded-xl text-left">
-  <Card className="group-hover:bg-accent group-hover:ring-action/45 transition-colors duration-fast ease-out">
+      source: `<Button
+  type="button"
+  variant="ghost"
+  className="group h-auto overflow-visible rounded-xl p-0 text-left hover:bg-transparent active:bg-transparent"
+>
+  <Card className="group-hover:bg-accent group-hover:ring-action/45 transition-colors duration-fast ease-enter">
     <CardContent>
       <Stat label="Revenue" value="$12,480" delta={{ value: "8.2%", direction: "up" }} hint="vs last month" />
     </CardContent>
   </Card>
-</button>`,
+</Button>`,
     },
     {
       kind: "disclosure",

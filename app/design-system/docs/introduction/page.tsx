@@ -2,7 +2,6 @@ import {
   DsPageHeader,
   DsSection,
   Meta,
-  Note,
   PageFootNav,
 } from "@/components/ds/kit";
 import { findCategory } from "@/lib/ds/nav";
@@ -64,15 +63,6 @@ export default function IntroductionPage() {
           ]}
         />
       </DsSection>
-
-      <Note tone="action" title="Platform note">
-        This documents the web implementation. A parallel Flutter package
-        shares the same semantic roles and names but is a separate native
-        implementation with no shared build artefact — see{" "}
-        <code className="type-code">docs/contracts/flutter-web-foundation-parity.md</code>{" "}
-        for the exact mapping and the handful of places the two platforms
-        genuinely differ.
-      </Note>
 
       <PageFootNav groupId="docs" slug="introduction" />
     </>

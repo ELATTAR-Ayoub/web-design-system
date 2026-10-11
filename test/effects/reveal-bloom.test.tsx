@@ -1,11 +1,10 @@
 /**
  * `reveal-bloom` — the two static radial-glow utilities meant to sit behind a
  * surface for a reveal stage or an opening moment: `bloom-action` and
- * `bloom-value` in `styles/utilities.css`. Web-only (no Flutter counterpart),
- * and deliberately distinct from `feedback-surface`'s animated
- * `bloom-cosmic` and from the page-atmosphere glow (Flutter's
- * `background-effect`) — the per-capability audit is what separated these
- * three after they were found sharing one slug.
+ * `bloom-value` in `styles/utilities.css`. Deliberately distinct from
+ * `feedback-surface`'s animated `bloom-cosmic` and from the page-atmosphere
+ * glow (`background-effect`) — three separate capabilities that were once
+ * found sharing one slug.
  *
  * What this test protects against: `components/docs/component-docs/reveal-bloom/page.tsx`
  * documents this as decoration that must NEVER be the only signal a surface
@@ -22,8 +21,7 @@
  *
  * NOT covered here: jsdom has no layout or paint, so the actual gradient
  * geometry (`ellipse 70% 60% at 50% 30%`) and the mixed colour stops cannot
- * be measured — that is covered by `e2e/ledger-evidence.spec.ts`, which
- * gathers each capability's rendered evidence from a real browser.
+ * be measured — that needs a real-browser e2e spec.
  *
  * @covers reveal-bloom
  */

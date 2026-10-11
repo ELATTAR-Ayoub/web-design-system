@@ -1,5 +1,6 @@
 "use client";
 
+import { AlertDialogConfirm } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   HoverCard,
@@ -289,15 +290,11 @@ export const AttachmentRemove = ({
   children,
   ...props
 }: AttachmentRemoveProps) => {
-  const { onRemove, variant } = useAttachmentContext();
+  const { data, onRemove, variant } = useAttachmentContext();
 
-  const handleClick = useCallback(
-    (e: React.MouseEvent) => {
-      e.stopPropagation();
-      onRemove?.();
-    },
-    [onRemove]
-  );
+  const handleClick = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+  }, []);
 
   if (!onRemove) {
     return null;
@@ -307,44 +304,52 @@ export const AttachmentRemove = ({
   const isList = variant === "list";
   const iconSize: IconSize = isList ? "md" : "xs";
 
+  // Vendored change: removing asks first, through AlertDialogConfirm.
   return (
-    <Button
-      aria-label={label}
-      className={cn(
-        variant === "grid" && [
-          "absolute top-0 right-0 p-0 hover:bg-transparent",
-          "opacity-0 transition-opacity group-hover:opacity-100",
-        ],
-        variant === "inline" && [
-          "-m-2.5 p-0 hover:bg-transparent",
-          "opacity-0 transition-opacity group-hover:opacity-100",
-        ],
-        isList && "shrink-0",
-        className
-      )}
-      onClick={handleClick}
-      size="icon"
-      type="button"
-      variant="ghost"
-      {...props}
+    <AlertDialogConfirm
+      action="Remove"
+      description={getAttachmentLabel(data)}
+      onConfirm={onRemove}
+      title="Remove this attachment?"
     >
-      {children ??
-        (isList ? (
-          <Icon icon={XIcon} size={iconSize} tone="inherit" />
-        ) : (
-          <span
-            className={cn(
-              "grid place-items-center rounded-pill group-hover/button:bg-secondary",
-              variant === "grid"
-                ? "size-6 bg-background/80 backdrop-blur-sm group-hover/button:bg-background"
-                : "size-5"
-            )}
-          >
+      <Button
+        aria-label={label}
+        className={cn(
+          variant === "grid" && [
+            "absolute top-0 right-0 p-0 hover:bg-transparent",
+            "opacity-0 transition-opacity group-hover:opacity-100",
+          ],
+          variant === "inline" && [
+            "-m-2.5 p-0 hover:bg-transparent",
+            "opacity-0 transition-opacity group-hover:opacity-100",
+          ],
+          isList && "shrink-0",
+          className
+        )}
+        onClick={handleClick}
+        size="icon"
+        type="button"
+        variant="ghost"
+        {...props}
+      >
+        {children ??
+          (isList ? (
             <Icon icon={XIcon} size={iconSize} tone="inherit" />
-          </span>
-        ))}
-      <span className="sr-only">{label}</span>
-    </Button>
+          ) : (
+            <span
+              className={cn(
+                "grid place-items-center rounded-pill group-hover/button:bg-secondary",
+                variant === "grid"
+                  ? "size-6 bg-background/80 backdrop-blur-sm group-hover/button:bg-background"
+                  : "size-5"
+              )}
+            >
+              <Icon icon={XIcon} size={iconSize} tone="inherit" />
+            </span>
+          ))}
+        <span className="sr-only">{label}</span>
+      </Button>
+    </AlertDialogConfirm>
   );
 };
 

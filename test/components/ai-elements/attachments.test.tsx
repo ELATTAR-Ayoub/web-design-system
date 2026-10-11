@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
   Attachment,
@@ -43,7 +43,12 @@ describe("Attachments", () => {
       expect(screen.getByText("d.pdf")).toHaveClass("type-small");
       expect(screen.getByText("application/pdf")).toHaveClass("text-muted-foreground");
     }
-    await userEvent.setup().click(screen.getByRole("button", { name: "Remove" }));
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: "Remove" }));
+    expect(onRemove).not.toHaveBeenCalled();
+    const confirm = await screen.findByRole("alertdialog", { name: "Remove this attachment?" });
+    expect(confirm).toHaveAccessibleDescription("d.pdf");
+    await user.click(within(confirm).getByRole("button", { name: "Remove" }));
     expect(onRemove).toHaveBeenCalled();
   });
   it("remove control sizes: grid/inline keep small visuals with a 40px hit area, list is the icon size", () => {

@@ -8,7 +8,7 @@ export const spec: ComponentDocSpec = {
   name: "validation-rule",
   omitted: {
     preview: "There is no component to render — a Zod schema is data passed to useForm's resolver, not a placeable element with a visual specimen of its own.",
-    api: "Zod's schema API and React Hook Form's resolver contract are documented by their own packages; this page is the mapping between Flutter's ValidationRule and that pattern, not a props table for something this system exports.",
+    api: "Zod's schema API and React Hook Form's resolver contract are documented by their own packages; this page maps validation rules onto that pattern, not a props table for something this system exports.",
     states: "A schema has no interaction state — hover, focus, loading and disabled all belong to the field widget in form, not to the rule that validates it.",
     accessibility: "The schema itself announces nothing; aria-invalid and aria-describedby are wired by FormField and FieldError in form, documented on that page.",
     keyboard: "A schema is never focused or reached by Tab — the field it validates carries whatever keyboard contract that field's own component has.",
@@ -77,8 +77,8 @@ function AccountForm() {
             <Meta
               items={[
                 {
-                  k: "Flutter ValidationRule",
-                  v: "A rule object attached to a field widget, evaluated by the field itself.",
+                  k: "A validation rule",
+                  v: "A constraint on one field, with its own message.",
                 },
                 {
                   k: "Web equivalent",
@@ -141,8 +141,8 @@ function AccountForm() {
               A <Code>ValidationRule</Code> React component would have to either
               re-implement what Zod already does — parsing, coercion, composable
               rules, typed inference via <Code>z.infer&lt;typeof schema&gt;</Code> — or
-              thinly wrap it for no behavioural gain, purely so the web catalogue
-              has an entry shaped like Flutter&rsquo;s. Neither is a component this
+              thinly wrap it for no behavioural gain, purely so a rule had a
+              component of its own. Neither is a component this
               system should ship: the first duplicates a well-tested dependency
               worse, and the second is a file that forwards a schema and does
               nothing else. The honest mapping is documented here instead.

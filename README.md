@@ -53,7 +53,7 @@ The exhaustive component ledger and repeatable browser checks are recorded in [`
 | `/design-system` | Hub — foundations index, component families, the hard rules |
 | `/design-system/docs/*` | Rendered documentation — introduction, installation, theming, typeset, CLI, registry, skills, changelog |
 | `/design-system/colors` | Surfaces, the action and value ramps, text, semantic states, measured contrast ratios in both themes |
-| `/design-system/typography` | The two-face system, all 17 type-role specimens, tabular-numeral proof |
+| `/design-system/typography` | The two-face system, all 19 type-role specimens, tabular-numeral proof |
 | `/design-system/spacing` | 8-point scale, radius ladder, elevation, 12-column grid, breakpoints |
 | `/design-system/shadows` | Ambient depth and machine surfaces, and the ink tokens that make both work on either theme |
 | `/design-system/motion` | Durations, easing curves and named animations — all running live |
@@ -73,10 +73,8 @@ npm run typecheck
 npm run lint
 npm run check:tokens    # literals that should be tokens
 npm run check:refs      # token references that resolve to nothing
-npm run check:parity    # names, ownership and generated output vs Flutter 0.0.3
-npm run check:audit     # the per-capability read, one file per capability
 npm run docs:validate   # nav/link/command integrity, regenerates public/llms.txt
-npm run verify          # tokens → refs → parity → audit → typecheck → lint → build
+npm run verify          # tokens → refs → typecheck → lint → build
 ```
 
 ## Contributing

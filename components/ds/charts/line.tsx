@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/chart";
 import { ICON_SIZES } from "@/components/ui/icon";
 import { ActiveIndicator, useActiveIndicator } from "@/components/ui/active-indicator";
+import { Button } from "@/components/ui/button";
 import { Stat } from "@/components/ui/stat";
 import { cn } from "@/lib/utils";
 
@@ -270,10 +271,10 @@ export function LineLabel() {
           {...motion}
         >
           {/* The registry sets `fontSize={12}` here — a raw SVG number for a
-              value the type scale already owns. `text-xs` (12px, per
+              value the type scale already owns. `type-small` (12px, per
               globals.css's four aliases) reaches the same size through CSS,
               matching the fix `bar.tsx`'s `BarLabel` already made. */}
-          <LabelList position="top" offset={12} className="fill-foreground text-xs" />
+          <LabelList position="top" offset={12} className="fill-foreground type-small" />
         </Line>
       </LineChart>
     </ChartContainer>
@@ -303,7 +304,7 @@ export function LineLabelCustom() {
           <LabelList
             position="top"
             offset={12}
-            className="fill-foreground text-xs"
+            className="fill-foreground type-small"
             dataKey="browser"
             formatter={(value) =>
               String(BROWSER_CONFIG[value as keyof typeof BROWSER_CONFIG]?.label ?? value)
@@ -370,15 +371,16 @@ export function LineInteractiveControls({ children }: { children: React.ReactNod
           )}
         />
         {LINE_INTERACTIVE_SERIES.map((key, i) => (
-          <button
+          <Button
             key={key}
             type="button"
+            variant="ghost"
             data-slot="line-series-option"
             data-state={activeChart === key ? "on" : "off"}
             aria-pressed={activeChart === key}
             onClick={() => setActiveChart(key)}
             className={cn(
-              "press relative z-10 px-4 py-3 text-left",
+              "relative z-10 h-auto min-h-0 flex-col items-stretch justify-start rounded-none bg-transparent px-4 py-3 text-left whitespace-normal hover:bg-transparent active:bg-transparent",
               "data-[state=on]:[&_p]:text-primary-foreground",
               i > 0 && "border-l border-border",
             )}
@@ -397,7 +399,7 @@ export function LineInteractiveControls({ children }: { children: React.ReactNod
               label={String(LINE_INTERACTIVE_CONFIG[key].label)}
               value={totals[key].toLocaleString()}
             />
-          </button>
+          </Button>
         ))}
       </div>
       {children}

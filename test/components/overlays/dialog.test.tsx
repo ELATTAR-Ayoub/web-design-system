@@ -7,6 +7,7 @@ import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
+  AlertDialogConfirm,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -464,5 +465,47 @@ describe("AlertDialog", () => {
     await user.click(screen.getByRole("button", { name: "Sell All Cards" }));
     await screen.findByRole("alertdialog");
     expect(await axe(document.body, OVERLAY_AXE_OPTIONS)).toHaveNoViolations();
+  });
+});
+
+describe("AlertDialogConfirm", () => {
+  const confirm = (onConfirm: () => void) => (
+    <TooltipProvider>
+      <AlertDialogConfirm description="It cannot be undone." onConfirm={onConfirm} title="Delete this file?">
+        <Button>Delete file</Button>
+      </AlertDialogConfirm>
+    </TooltipProvider>
+  );
+
+  it("runs nothing until the action is confirmed", async () => {
+    const user = setup();
+    const onConfirm = vi.fn();
+    render(confirm(onConfirm));
+    await user.click(screen.getByRole("button", { name: "Delete file" }));
+    const dialog = await screen.findByRole("alertdialog", { name: "Delete this file?" });
+    expect(dialog).toHaveAccessibleDescription("It cannot be undone.");
+    expect(onConfirm).not.toHaveBeenCalled();
+    await user.click(screen.getByRole("button", { name: "Delete" }));
+    expect(onConfirm).toHaveBeenCalledTimes(1);
+  });
+
+  it("cancelling closes it without running the action", async () => {
+    const user = setup();
+    const onConfirm = vi.fn();
+    render(confirm(onConfirm));
+    await user.click(screen.getByRole("button", { name: "Delete file" }));
+    await user.click(await screen.findByRole("button", { name: "Cancel" }));
+    await waitFor(() => expect(screen.queryByRole("alertdialog")).toBeNull());
+    expect(onConfirm).not.toHaveBeenCalled();
+  });
+
+  it("opens from state when there is no trigger", async () => {
+    render(
+      <TooltipProvider>
+        <AlertDialogConfirm onConfirm={() => {}} open title="Remove it?" action="Remove" />
+      </TooltipProvider>,
+    );
+    expect(await screen.findByRole("alertdialog", { name: "Remove it?" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Remove" }).getAttribute("class")).toMatch(/destructive/);
   });
 });

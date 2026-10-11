@@ -5,6 +5,7 @@ import { useId, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { DirectionProvider } from "@/components/ui/direction";
 import { Panel, Row } from "@/components/ds/kit";
+import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 
 export function DirectionSwitchShowcase() {
@@ -13,7 +14,7 @@ export function DirectionSwitchShowcase() {
 
   return (
     <div className="w-full max-w-md space-y-4">
-      <label htmlFor={switchId} className="flex items-center justify-between gap-4">
+      <Label htmlFor={switchId} className="justify-between gap-4">
         <span className="type-small text-muted-foreground">
           Right to left ({dir})
         </span>
@@ -22,7 +23,7 @@ export function DirectionSwitchShowcase() {
           checked={dir === "rtl"}
           onCheckedChange={(checked) => setDir(checked ? "rtl" : "ltr")}
         />
-      </label>
+      </Label>
       <div dir={dir}>
         <DirectionProvider direction={dir}>
           <Panel label={`direction="${dir}"`}>

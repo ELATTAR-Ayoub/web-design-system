@@ -353,7 +353,7 @@ The data that drives the documentation site: the full list of pages, the catalog
 | `families.ts` | The four component families (components, effects, agent, charts): display names, page-label text, order, and the landing page for agent and charts. |
 | `icons.ts` | The curated icon set shown on the Icons page, grouped, with a note on what each icon is for (`ICON_GROUPS`, `ICON_COUNT`). |
 | `nav.ts` | The single source of truth for the docs navigation tree: foundations, component families and documentation pages, with helpers to build links and find the previous and next page. |
-| `platform-contract.ts` | The written specification of what the system ships: every component's name, family, how it is delivered and its Flutter counterpart, the renames and removals, and the type scale per screen size. |
+| `platform-contract.ts` | The written specification of what the system ships: every component's name, family and how it is delivered, the renames and removals, and the type scale per screen size. |
 | `registry.ts` | Reads the built registry files (`public/r`) so install commands shown in the docs always come from the real registry. |
 
 ## lib/ds/docs
@@ -482,11 +482,7 @@ Command-line scripts (Node) that build the install registry and guard the codeba
 | File | What it does |
 | --- | --- |
 | `build-audit-inventory.mjs` | Prints a table of every component module and its exports, for the web component audit document. No npm script; run directly with `node`. |
-| `build-docs-ledger.mjs` | Writes the documentation parity ledger, checking each docs page against browser evidence and its own spec. Run as part of `npm run ledger`. |
-| `build-ledger.mjs` | Writes the component convergence ledger comparing web components with the Flutter version, from contract, token scan, browser evidence, tests and audit files. Run as part of `npm run ledger`. |
 | `build-registry.mjs` | Builds the shadcn-compatible install registry into `public/r` and checks for duplicate paths, dependency cycles and broken `@/` imports. Run by `npm run registry:build`. |
-| `check-audit.mjs` | Checks that every component has an audit evidence file with real quoted source extracts, not placeholders. Run by `npm run check:audit`. |
-| `check-platform-parity.mjs` | Fails if the registry, docs catalog, stylesheets or agent exports drift from `lib/ds/platform-contract.ts`. Run by `npm run check:parity`. |
 | `check-refs.mjs` | Fails on any CSS class or `var(--token)` that is used but never defined, which would otherwise fail silently. Run by `npm run check:refs`. |
 | `check-tokens.mjs` | Fails on any hand-written colour, size, spacing, radius or duration outside the four `styles/*.css` files. Run by `npm run check:tokens`. |
 | `generate-registry.mjs` | Writes `registry.json` from the manifest, filling in each item's package and item dependencies by reading its real imports. No npm script; run directly with `node`. |
@@ -496,7 +492,6 @@ Command-line scripts (Node) that build the install registry and guard the codeba
 | `registry-static-server.mjs` | A tiny local web server for `public/r`, used to rehearse registry installs; used by the registry-consumer end-to-end test. |
 | `rename-motion.mjs` | One-off tool that renames old motion names to the new ones across the codebase using `lib/motion-names.ts`; supports `--dry-run`. No npm script. |
 | `validate-docs.mjs` | Checks that every nav route has a page, doc links resolve, install commands match the registry, and regenerates `public/llms.txt`. Run by `npm run docs:validate`. |
-| `verify-flutter-symbols.mjs` | Checks that every Flutter class named in `lib/motion-names.ts` really exists in the Flutter code. No npm script; run directly with `node`. |
 
 ## components/docs/
 
@@ -528,7 +523,8 @@ One folder per documented component: 149 folders, about 395 files, all following
 | File | What it does |
 | --- | --- |
 | `site-header.tsx` | `SiteHeader`: the top bar with logo, main navigation, search and theme toggle. |
-| `docs-header.tsx` | `DocsHeader`: the title block at the top of a docs page. |
+| `docs-shell.tsx` | `DocsShell`: the docs layout — skip link, header, rail and main column — left out on full-screen pages such as the live workspace. |
+| `docs-header.tsx` | `DocsHeader`: the docs top bar — mobile navigation, logo, search and theme toggle. |
 | `docs-rail.tsx` | `DocsRail`: the left-hand navigation tree. |
 | `docs-search.tsx` | `DocsSearch`: the ⌘K search over every page. |
 | `announcement-bar.tsx` | `AnnouncementBar`: a dismissible notice strip that remembers being dismissed. |
@@ -580,7 +576,6 @@ Browser tests (Playwright, `npm run test:e2e`), run in dark, light and reduced-m
 | `typography.spec.ts` | The type scale changes only at the 768px and 1024px breakpoints. |
 | `gaps-disabled.spec.ts` / `gaps-interaction.spec.ts` | Touch-target sizes, disabled reasons and interaction details for specific components. |
 | `batch4.spec.ts` / `batch5.spec.ts` / `helpers-batch4.ts` | Structural and visual checks for groups of components, and their shared helpers. |
-| `ledger-evidence.spec.ts` | Measures every component page in the browser and records the results the ledgers in `docs/contracts/` are built from. |
 | `registry-consumer.spec.ts` | Installs the registry into a fresh Next.js app and builds it, the way a consumer would. |
 
 ## public/
@@ -603,9 +598,6 @@ Browser tests (Playwright, `npm run test:e2e`), run in dark, light and reduced-m
 | `known-issues.md` | Known, accepted issues (the remaining low-severity npm advisories). |
 | `component-certification.md` | The evidence behind the component system's certification: what was audited and how to reproduce it. |
 | `project-structure.md` | This file. |
-| `architecture/platform-parity.md` | How the web system stays in step with the Flutter version. |
-| `migrations/flutter-0.0.3-web.md` | How the web system moved to the shared vocabulary of Flutter 0.0.3 (renamed APIs and where they went). |
 | `references/rules-rationale.md` | The history and reasoning behind the rules, kept out of RULES.md so the rulebook stays short. |
 | `audits/` | Component audits: what was checked, found and fixed. |
-| `contracts/` | Machine-checked records: one audit JSON per component (`contracts/audit/`), the convergence and documentation ledgers, and the web–Flutter foundation parity table. `npm run check:audit` and `check:parity` read them. |
 | `superpowers/` | Internal planning notes (plans and specs). Not shipped to the published repo. |

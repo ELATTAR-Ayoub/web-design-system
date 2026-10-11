@@ -5,6 +5,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { cn } from "@/lib/utils";
 import {
@@ -223,11 +224,13 @@ export const FileTreeFolder = ({
             )}
           >
             <CollapsibleTrigger asChild>
-              <button
+              {/* Vendored change: raw <button> replaced by the system Button (ghost). */}
+              <Button
                 aria-label={`${isExpanded ? "Collapse" : "Expand"} ${name}`}
-                className="press -m-3.5 flex shrink-0 cursor-pointer items-center justify-center border-none bg-transparent p-3.5"
+                className="-m-3.5 h-auto min-h-0 rounded-none bg-transparent p-3.5 hover:bg-transparent active:bg-transparent"
                 tabIndex={-1}
                 type="button"
+                variant="ghost"
               >
                 <Icon
                   className={cn(
@@ -238,13 +241,15 @@ export const FileTreeFolder = ({
                   size="sm"
                   tone="muted"
                 />
-              </button>
+              </Button>
             </CollapsibleTrigger>
-            <button
-              className="press flex min-h-(--size-target-min) min-w-0 flex-1 cursor-pointer items-center gap-1 border-none bg-transparent p-0 text-left"
+            {/* Vendored change: raw <button> replaced by the system Button (ghost). */}
+            <Button
+              className="h-auto min-h-(--size-target-min) min-w-0 flex-1 justify-start gap-1 rounded-none bg-transparent p-0 text-left hover:bg-transparent active:bg-transparent"
               onClick={handleSelect}
               tabIndex={-1}
               type="button"
+              variant="ghost"
             >
               <FileTreeIcon>
                 {isExpanded ? (
@@ -254,7 +259,7 @@ export const FileTreeFolder = ({
                 )}
               </FileTreeIcon>
               <FileTreeName>{name}</FileTreeName>
-            </button>
+            </Button>
           </div>
           <CollapsibleContent>
             <div className="ml-4 border-l pl-2" role="group">

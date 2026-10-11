@@ -57,10 +57,10 @@ function Trend() {
     <>
       {/* Legend: real buttons reading the same ChartConfig the chart does. */}
       {Object.entries(config).map(([key, entry]) => (
-        <button key={key} onClick={() => toggle(key)} aria-pressed={!hidden.has(key)}>
+        <Button key={key} variant="outline" size="sm" onClick={() => toggle(key)} aria-pressed={!hidden.has(key)}>
           <span style={{ backgroundColor: hidden.has(key) ? "var(--color-muted-foreground)" : entry.color }} />
           {entry.label}
-        </button>
+        </Button>
       ))}
       <Select value={range} onValueChange={setRange}>
         <SelectTrigger aria-label="Select a range"><SelectValue /></SelectTrigger>
@@ -323,11 +323,11 @@ function Activity({ children }: { children: React.ReactNode }) {
       <ChartTooltipContent
         hideLabel
         formatter={(value, name) => (
-          <div className="flex min-w-32 items-center text-xs text-muted-foreground">
+          <div className="flex min-w-32 items-center type-small text-muted-foreground">
             {config[name as keyof typeof config]?.label ?? name}
             <div className="type-number-sm ml-auto flex items-baseline gap-0.5 text-foreground">
               {value}
-              <span className="font-normal text-muted-foreground">kcal</span>
+              <span className="type-small text-muted-foreground">kcal</span>
             </div>
           </div>
         )}
@@ -368,14 +368,14 @@ const iconConfig = {
             {config[name as keyof typeof config]?.label ?? name}
             <div className="type-number-sm ml-auto flex items-baseline gap-0.5 text-foreground">
               {value}
-              <span className="font-normal text-muted-foreground">kcal</span>
+              <span className="type-small text-muted-foreground">kcal</span>
             </div>
             {index === 1 && (
-              <div className="mt-1.5 flex basis-full items-center border-t pt-1.5 text-xs font-medium text-foreground">
+              <div className="mt-1.5 flex basis-full items-center border-t pt-1.5 type-nav text-foreground">
                 Total
                 <div className="type-number-sm ml-auto flex items-baseline gap-0.5 text-foreground">
                   {item.payload.running + item.payload.swimming}
-                  <span className="font-normal text-muted-foreground">kcal</span>
+                  <span className="type-small text-muted-foreground">kcal</span>
                 </div>
               </div>
             )}

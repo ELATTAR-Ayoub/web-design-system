@@ -20,8 +20,7 @@
  * NOT covered here: jsdom has no layout or paint, so the gradient ramp, the
  * metal-edge band position, the drift/glint animation timing and the
  * hover-speed change (`--duration-glint-hover`) cannot be measured — that
- * visual/timing evidence is what `e2e/ledger-evidence.spec.ts` gathers from a
- * real browser.
+ * visual/timing evidence belongs to a real-browser e2e spec.
  *
  * @covers premium-surface
  */

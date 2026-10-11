@@ -37,7 +37,7 @@ export function DocsHeader() {
   const isActive = useIsActive();
 
   return (
-    <header className="sticky top-0 z-40 flex h-(--height-site-header) shrink-0 items-center gap-4 border-b border-border bg-background/85 px-6 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 flex h-(--height-site-header) shrink-0 items-center gap-2 border-b border-border bg-background/85 px-4 backdrop-blur-xl sm:gap-4 sm:px-6">
       <Sheet>
         <SheetTrigger asChild>
           {/* `lg:hidden`, the same breakpoint the rail appears at. The two used
@@ -100,7 +100,7 @@ export function DocsHeader() {
         ))}
       </nav>
 
-      <div className="ms-auto flex items-center gap-2">
+      <div className="ms-auto flex shrink-0 items-center gap-2">
         <DocsSearch />
         <ThemeToggle />
       </div>

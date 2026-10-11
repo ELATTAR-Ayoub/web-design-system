@@ -249,7 +249,7 @@ function Sidebar({
       <div
         data-slot="sidebar-gap"
         className={cn(
-          "relative w-(--sidebar-width) bg-transparent transition-[width] duration-normal ease-linear",
+          "relative w-(--sidebar-width) bg-transparent transition-[width] duration-normal ease-move",
           "group-data-[collapsible=offcanvas]:w-0",
           "group-data-[side=right]:rotate-180",
           variant === "floating" || variant === "inset"
@@ -261,7 +261,7 @@ function Sidebar({
         data-slot="sidebar-container"
         data-side={side}
         className={cn(
-          "fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-normal ease-linear data-[side=left]:left-0 data-[side=left]:group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)] data-[side=right]:right-0 data-[side=right]:group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)] md:flex",
+          "fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-normal ease-move data-[side=left]:left-0 data-[side=left]:group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)] data-[side=right]:right-0 data-[side=right]:group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)] md:flex",
           // Adjust the padding for floating and inset variants.
           variant === "floating" || variant === "inset"
             ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]"
@@ -454,7 +454,7 @@ function SidebarGroupLabel({
       data-slot="sidebar-group-label"
       data-sidebar="group-label"
       className={cn(
-        "type-nav flex h-8 shrink-0 items-center px-3 pr-10 text-sidebar-foreground ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-normal ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "type-nav flex h-8 shrink-0 items-center px-3 pr-10 text-sidebar-foreground ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-normal ease-move group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
         className
       )}
       {...props}
@@ -529,7 +529,7 @@ function SidebarCollapsibleGroup({
               )}
             >
               <span
-                className="h-px w-full rounded-pill bg-sidebar-border transition-[height] duration-normal ease-out group-data-[state=closed]/disclosure:h-1"
+                className="h-px w-full rounded-pill bg-sidebar-border transition-[height] duration-normal ease-enter group-data-[state=closed]/disclosure:h-1"
                 aria-hidden
               />
               <span className="sr-only">{toggleLabel}</span>

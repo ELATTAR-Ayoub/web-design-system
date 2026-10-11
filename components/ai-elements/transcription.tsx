@@ -1,6 +1,7 @@
 "use client";
 
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { Experimental_TranscriptionResult as TranscriptionResult } from "ai";
 import type { ComponentProps, ReactNode } from "react";
@@ -99,9 +100,10 @@ export const TranscriptionSegment = ({
   );
 
   return (
-    <button
+    // Vendored change: raw <button> replaced by the system Button (ghost); `[font:inherit]` keeps the body role of the transcript on each word.
+    <Button
       className={cn(
-        "inline text-left",
+        "inline h-auto min-h-0 w-auto justify-start rounded-none bg-transparent p-0 text-left [font:inherit] whitespace-normal hover:bg-transparent active:bg-transparent",
         isActive && "text-action-ink",
         isPast && "text-muted-foreground",
         !(isActive || isPast) && "text-muted-foreground/60",
@@ -114,9 +116,10 @@ export const TranscriptionSegment = ({
       data-slot="transcription-segment"
       onClick={handleClick}
       type="button"
+      variant="ghost"
       {...props}
     >
       {segment.text}
-    </button>
+    </Button>
   );
 };

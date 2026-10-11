@@ -87,9 +87,9 @@ export function DataTableDemo({ loading = false }: { loading?: boolean }) {
         sorted === "asc" ? "ascending" : sorted === "desc" ? "descending" : undefined
       }
     >
-      <button type="button" onClick={header.column.getToggleSortingHandler()}>
+      <Button type="button" variant="ghost" size="xs" onClick={header.column.getToggleSortingHandler()}>
         {flexRender(header.column.columnDef.header, header.getContext())}
-      </button>
+      </Button>
     </TableHead>
   );
 }`;
@@ -128,7 +128,7 @@ const [selected, setSelected] = useState<Set<string>>(new Set());
       <TableHead>Type</TableHead>
       <TableHead>Detail</TableHead>
       <TableHead className="text-right" aria-sort={sortDir === "asc" ? "ascending" : sortDir === "desc" ? "descending" : "none"}>
-        <button type="button" onClick={toggleSort}>Amount</button>
+        <Button type="button" variant="ghost" size="xs" onClick={toggleSort}>Amount</Button>
       </TableHead>
       <TableHead className="text-right">Status</TableHead>
     </TableRow>

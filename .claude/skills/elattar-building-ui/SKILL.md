@@ -140,7 +140,7 @@ duration, or a utility — it is the importer, not the owner.
 | Axis | Owner file | Use |
 |---|---|---|
 | Colour | `styles/tokens.css` | semantic roles such as `bg-action`, `bg-card`, `text-value-ink` |
-| Typography | `styles/typeset.css` | one complete `.type-*` role — the public set is exactly 17: `display`, `h1`, `h2`, `h3`, `h4`, `lead`, `body`, `small`, `nav`, `badge`, `code`, `identifier`, `number-sm`, `number-base`, `number-md`, `number-lg`, `number-xl`. Faces are Inter (`--font-sans`, words) and Geist Mono (`--font-mono`, code/identifiers/figures) only. Breakpoints are 768px and 1024px; introduce no third one. |
+| Typography | `styles/typeset.css` | one complete `.type-*` role — the public set is exactly 19: `display`, `h1`, `h2`, `h3`, `h4`, `h5`, `lead`, `body`, `small`, `nav`, `badge`, `cta`, `code`, `identifier`, `number-sm`, `number-base`, `number-md`, `number-lg`, `number-xl`. Faces are Inter (`--font-sans`, words) and Geist Mono (`--font-mono`, code/identifiers/figures) only. Breakpoints are 768px and 1024px; introduce no third one. |
 | Spacing and radius | `styles/tokens.css` | the repository scale, including `--size-target-min` (44×44px, the interactive-target floor) |
 | Motion | `styles/motion.css` | `duration-*`, `ease-*`, and named `anim-*` utilities |
 | Icons | — | `Icon` or `IconSwap` with an explicit tone and accessible name |
@@ -215,8 +215,8 @@ While iterating, run:
 npm run verify:fast
 ```
 
-(`check:tokens → check:refs → check:parity → check:audit → typecheck → lint
-→ test:unit`.) It is fast
+(`check:tokens → check:rules → check:provenance → check:refs → check:registry →
+typecheck → lint → test:unit`.) It is fast
 enough to run after every meaningful edit, but it cannot prove a browser
 behavior, a registry artifact, or a documentation route resolves.
 

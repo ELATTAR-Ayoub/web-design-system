@@ -1,7 +1,7 @@
 /**
  * @covers voice
  *
- * Named outright because the ledger maps a test to a capability by the module
+ * Named outright because a test is mapped to a capability by the module
  * it imports, and `@/components/agent/parts/voice` reads as `voice`, not as the
  * contract row `voice`.
  */

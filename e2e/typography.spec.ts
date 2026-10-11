@@ -17,10 +17,10 @@ import { expect, test } from "@playwright/test";
  */
 
 const STEPS = {
-  // Flutter 0.0.3's `typography.dart`, which `styles/tokens.css` now matches
-  // step for step: `h1` is 30 / 32 / 36 and `numberXl` is 36 / 42 / 48. The
-  // previous numbers here (36/40/48, 40/48/56) were the pre-convergence
-  // scale, and this test kept them for a whole round after the tokens moved.
+  // `styles/tokens.css` step for step: `h1` is 30 / 32 / 36 and `numberXl` is
+  // 36 / 42 / 48. The previous numbers here (36/40/48, 40/48/56) were an
+  // older scale, and this test kept them for a whole round after the tokens
+  // moved.
   "type-h1": { mobile: "30px", tablet: "32px", desktop: "36px" },
   "type-number-xl": { mobile: "36px", tablet: "42px", desktop: "48px" },
 } as const;

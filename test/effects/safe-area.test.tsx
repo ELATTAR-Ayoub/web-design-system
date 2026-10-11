@@ -1,7 +1,7 @@
 /**
  * `safe-area` — the seven `env(safe-area-inset-*)` padding utilities
  * (`pt-safe`, `pr-safe`, `pb-safe`, `pl-safe`, `px-safe`, `py-safe`,
- * `p-safe`) in `styles/utilities.css`, the web half of Flutter's `SafeArea`.
+ * `p-safe`) in `styles/utilities.css`.
  * Classified `family: "components"` / `ownership: "dependency"` in
  * `lib/ds/platform-contract.ts`, but delivered as CSS with no component of
  * its own — `components/docs/component-docs/safe-area/page.tsx` says so
@@ -9,8 +9,7 @@
  *
  * What this test protects against: the page's own history is the reason this
  * matters — it used to say the capability did not exist at all, because three
- * documents disagreed with the code, and the per-capability audit is what
- * caught it. Nothing else in the unit layer would catch a regression where
+ * documents disagreed with the code. Nothing else in the unit layer would catch a regression where
  * `@utility p-safe` (or its six siblings) is renamed or dropped from
  * `utilities.css`, or where the `, 0px` fallback the page calls
  * "load-bearing" (a bare `env()` that resolves to nothing drops the whole
@@ -26,8 +25,8 @@
  * NOT covered here: jsdom resolves no `env()` value at all (everything reports
  * as if on a device with no inset), so the actual inset numbers, the
  * desktop-vs-notched-device difference, and the RTL/200%-zoom behaviour the
- * page documents under Responsive cannot be measured here — that is covered
- * by `e2e/ledger-evidence.spec.ts`, which gathers real, rendered evidence.
+ * page documents under Responsive cannot be measured here — that needs a
+ * real-browser e2e spec.
  *
  * @covers safe-area
  */

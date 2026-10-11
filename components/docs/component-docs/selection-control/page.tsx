@@ -105,10 +105,10 @@ export const spec: ComponentDocSpec = {
           body: (
             <div className="space-y-4">
               <p className="type-body text-muted-foreground">
-                Flutter&rsquo;s <Code>SelectionControl</Code> exists to stop three
-                controls each inventing their own row: it owns the label, the
+                A selection control needs one owner for the label, the
                 description, the error text, the relationships between them, and
-                the minimum target size.
+                the minimum target size, so three controls do not each invent
+                their own row.
               </p>
               <p className="type-body text-muted-foreground">
                 On the web that owner already exists and is called{" "}

@@ -35,9 +35,9 @@ describe("Transcription", () => {
 
   it("marks active, past and upcoming segments with their own colour", () => {
     render(<Example currentTime={2.5} />);
-    const hello = screen.getByText("Hello");
-    const brave = screen.getByText("brave");
-    const world = screen.getByText("world");
+    const hello = screen.getByRole("button", { name: "Hello" });
+    const brave = screen.getByRole("button", { name: "brave" });
+    const world = screen.getByRole("button", { name: "world" });
     expect(hello.className).toContain("text-muted-foreground");
     expect(hello).toHaveAttribute("data-active", "false");
     expect(brave).toHaveAttribute("data-active", "true");

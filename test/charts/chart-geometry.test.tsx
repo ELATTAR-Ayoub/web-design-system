@@ -2,12 +2,11 @@
  * @covers chart-geometry
  *
  * `lib/ds/platform-contract.ts`'s own entry for this row is explicit that
- * there is no module of ours to point at: Flutter's `chart_geometry.dart` is
- * the shared scale / nice-tick / curve / polar-arc maths under every chart,
- * and on the web that maths is recharts' own — `scale`, `tickCount`,
+ * there is no module of ours to point at: the shared scale / nice-tick / curve
+ * / polar-arc maths under every chart is recharts' own — `scale`, `tickCount`,
  * `domain`, `type="monotone"`, `PolarGrid` — computed inside recharts'
  * `<svg>`, not in a file this repository owns. The contract's comment also
- * records the earlier mistake worth not repeating: the audit found this row
+ * records the earlier mistake worth not repeating: this row was
  * wired to `components/ui/chart.tsx` (the CONTAINER) with two hand-drawn
  * specimens standing in for it, which is a different capability wearing this
  * one's name.

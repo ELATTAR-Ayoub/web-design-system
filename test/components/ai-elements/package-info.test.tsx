@@ -62,7 +62,7 @@ describe("PackageInfo", () => {
       const { unmount } = render(
         <PackageInfo changeType={changeType} name="pkg" />
       );
-      const badge = screen.getByText(changeType);
+      const badge = screen.getByText(changeType.charAt(0).toUpperCase() + changeType.slice(1));
       expect(badge.getAttribute("data-variant")).toBe(variant);
       unmount();
     }
@@ -79,7 +79,7 @@ describe("PackageInfo", () => {
       </PackageInfo>
     );
     expect(screen.getByText("lodash")).toBeInTheDocument();
-    expect(screen.getByText("added")).toBeInTheDocument();
+    expect(screen.getByText("Added")).toBeInTheDocument();
   });
 
   it("renders the implicit 'removed' composition (no children) via the default render path", () => {
@@ -87,7 +87,7 @@ describe("PackageInfo", () => {
       <PackageInfo changeType="removed" currentVersion="2.29.4" name="moment" />
     );
     expect(screen.getByText("moment")).toBeInTheDocument();
-    expect(screen.getByText("removed")).toBeInTheDocument();
+    expect(screen.getByText("Removed")).toBeInTheDocument();
     expect(screen.getByText("2.29.4")).toBeInTheDocument();
   });
 

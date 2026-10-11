@@ -61,7 +61,7 @@ function NavigationMenuItem({
 }
 
 const navigationMenuTriggerStyle = cva(
-  "group/navigation-menu-trigger press inline-flex h-10 w-max items-center justify-center gap-1.5 rounded-pill border border-transparent px-4 text-nav font-medium whitespace-nowrap text-muted-foreground outline-none select-none hover:bg-secondary hover:text-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 data-[state=open]:bg-secondary data-[state=open]:text-foreground"
+  "group/navigation-menu-trigger press inline-flex h-10 w-max items-center justify-center gap-1.5 rounded-pill border border-transparent px-4 type-nav whitespace-nowrap text-muted-foreground outline-none select-none hover:bg-secondary hover:text-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 data-[state=open]:bg-secondary data-[state=open]:text-foreground"
 )
 
 function NavigationMenuTrigger({
@@ -133,7 +133,7 @@ function NavigationMenuLink({
     <NavigationMenuPrimitive.Link
       data-slot="navigation-menu-link"
       className={cn(
-        "press flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground outline-none hover:bg-accent hover:text-accent-foreground focus-visible:ring-3 focus-visible:ring-ring/50 data-active:bg-accent data-active:text-accent-foreground [&_svg:not([class*='size-'])]:size-4",
+        "press flex items-center gap-2 rounded-md px-3 py-2 type-small text-muted-foreground outline-none hover:bg-accent hover:text-accent-foreground focus-visible:ring-3 focus-visible:ring-ring/50 data-active:bg-accent data-active:text-accent-foreground [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       {...props}

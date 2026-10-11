@@ -5,6 +5,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { cn } from "@/lib/utils";
 import { ChevronDownIcon, SearchIcon } from "lucide-react";
@@ -58,10 +59,11 @@ export const TaskTrigger = ({
 }: TaskTriggerProps) => (
   <CollapsibleTrigger asChild className={cn("group", className)} {...props}>
     {children ?? (
-      // Vendored change: the trigger is a button, not a div, so the keyboard can reach it; `after:` restores a 44px target.
-      <button
-        className="relative after:absolute after:inset-x-0 after:-inset-y-3 flex w-full cursor-pointer items-center gap-2 text-left type-small text-muted-foreground transition-colors hover:text-foreground"
+      // Vendored change: the trigger is a button, not a div, so the keyboard can reach it; `after:` restores a 44px target. The button is the system `Button` (ghost), not a raw element.
+      <Button
+        className="relative h-auto min-h-0 w-full justify-start gap-2 overflow-visible rounded-none bg-transparent px-0 text-left after:absolute after:inset-x-0 after:-inset-y-3 hover:bg-transparent active:bg-transparent"
         type="button"
+        variant="ghost"
       >
         <Icon icon={SearchIcon} size="sm" tone="inherit" />
         <span className="type-small">{title}</span>
@@ -71,7 +73,7 @@ export const TaskTrigger = ({
           size="sm"
           tone="inherit"
         />
-      </button>
+      </Button>
     )}
   </CollapsibleTrigger>
 );

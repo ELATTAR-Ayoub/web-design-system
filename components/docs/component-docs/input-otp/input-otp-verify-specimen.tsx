@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { CheckCircle2, XCircle } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import {
   InputOTP,
@@ -73,9 +74,9 @@ export function VerifyCodeSpecimen() {
           <p className="type-small flex items-center justify-center gap-2 text-destructive-ink">
             <Icon icon={XCircle} size="sm" tone="error" />
             That code doesn&rsquo;t match.{" "}
-            <button type="button" onClick={reset} className="underline underline-offset-4">
+            <Button type="button" variant="link" size="xs" onClick={reset}>
               Try again
-            </button>
+            </Button>
           </p>
         )}
       </div>

@@ -84,7 +84,8 @@ Light is not dark inverted — four things genuinely change, all handled in the
 npm run verify
 ```
 
-`check:tokens` → `check:refs` → `typecheck` → `lint` → `build`. All five, every
+`registry:build` → `check:tokens` → `check:rules` → `check:provenance` →
+`check:refs` → `check:registry` → `typecheck` → `lint` → `build`. All of them, every
 time.
 
 **`npx shadcn add` will fail `check:tokens`, and that is deliberate.** Stock

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Disabled } from "@/components/ui/disabled";
+import { Label } from "@/components/ui/label";
 
 export function DisabledShowcase() {
   const [hasPaymentMethod, setHasPaymentMethod] = useState(false);
@@ -17,13 +18,13 @@ export function DisabledShowcase() {
       >
         <Button disabled={!hasPaymentMethod}>Checkout</Button>
       </Disabled>
-      <label className="flex items-center gap-2.5 type-small text-muted-foreground">
+      <Label className="gap-2.5 type-small text-muted-foreground">
         <Checkbox
           checked={hasPaymentMethod}
           onCheckedChange={(checked) => setHasPaymentMethod(checked === true)}
         />
         Add a payment method
-      </label>
+      </Label>
     </div>
   );
 }

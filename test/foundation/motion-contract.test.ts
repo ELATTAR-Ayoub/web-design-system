@@ -1,16 +1,13 @@
 /**
  * The motion contract.
  *
- * Three claims, each of which has failed silently in a browser before:
+ * Two claims, each of which has failed silently in a browser before:
  *
  *  1. Every `--duration-*` / `--ease-*` a component or a stylesheet NAMES is
  *     declared somewhere. CSS drops a whole declaration containing an unresolved
  *     variable, without a word (RULES §9.1), so a typo in a curve name is a
  *     transition that simply stops happening.
- *  2. The scale is written down in the parity document, because the counterpart
- *     platform states the same rhythm as `MotionDurations` / `MotionCurves` and
- *     the two can only be kept honest against a table.
- *  3. Reduced motion resolves to the FINAL frame, and a keyframe that ends at
+ *  2. Reduced motion resolves to the FINAL frame, and a keyframe that ends at
  *     `opacity: 0` freezes to nothing (RULES §9.4). Every one of those must be
  *     accounted for in writing.
  *
@@ -19,7 +16,7 @@
  * what the Playwright reduced-motion project is for.
  */
 
-import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
+import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 import { describe, expect, it } from "vitest";
 
@@ -116,24 +113,6 @@ describe("every motion token a source names is declared", () => {
       "--ease-standard",
     ];
     expect(EXPECTED.filter((k) => !scale.has(k)), "missing from the scale").toEqual([]);
-  });
-});
-
-describe("the parity document names the whole motion scale", () => {
-  const DOC = "docs/contracts/flutter-web-foundation-parity.md";
-  const path = join(ROOT, ...DOC.split("/"));
-
-  it("is written", () => {
-    expect(existsSync(path), DOC).toBe(true);
-  });
-
-  it("maps every duration and easing token declared in the scale", () => {
-    if (!existsSync(path)) return;
-    const doc = readFileSync(path, "utf8");
-    const theme = /@theme\b[^{]*\{([\s\S]*?)\n\}/.exec(MOTION)?.[1] ?? "";
-    const scale = [...theme.matchAll(/(--(?:duration|ease)-[a-z0-9-]+)\s*:/g)].map((m) => m[1]);
-    expect(scale.length).toBeGreaterThan(0);
-    expect(scale.filter((k) => !doc.includes(k)), "scale keys absent from the parity doc").toEqual([]);
   });
 });
 

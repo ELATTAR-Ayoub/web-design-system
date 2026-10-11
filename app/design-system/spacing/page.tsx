@@ -120,7 +120,7 @@ export default function SpacingPage() {
                 <p className="type-number-sm mt-3 text-action-ink">
                   rounded-{r.name}
                 </p>
-                <p className="type-small mt-1 leading-snug text-muted-foreground">{r.use}</p>
+                <p className="type-small mt-1 text-muted-foreground">{r.use}</p>
               </div>
             ))}
           </div>
@@ -142,7 +142,7 @@ export default function SpacingPage() {
                   <span className="type-number-sm text-muted-foreground">{e.cls}</span>
                 </div>
                 <p className="type-number-sm mt-3 text-action-ink">{e.token}</p>
-                <p className="type-small mt-1 leading-snug text-muted-foreground">{e.use}</p>
+                <p className="type-small mt-1 text-muted-foreground">{e.use}</p>
               </div>
             ))}
           </div>

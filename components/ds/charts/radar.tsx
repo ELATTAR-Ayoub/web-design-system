@@ -109,7 +109,7 @@ function RadarLabelCustomTick({ x, y, textAnchor, index }: BaseTickContentProps)
       x={x}
       y={index === 0 ? Number(y) - 10 : y}
       textAnchor={textAnchor}
-      className="fill-foreground text-xs"
+      className="fill-foreground type-small"
     >
       <tspan>{row.desktop}</tspan>
       <tspan className="fill-muted-foreground">/</tspan>

@@ -24,9 +24,8 @@
  *
  * NOT covered here: jsdom does not run `:active` or paint transforms, so the
  * actual rendered scale (0.9) and the reduced-motion collapse to 0.01ms
- * cannot be measured — that behaviour is covered by
- * `e2e/ledger-evidence.spec.ts`, which measures each capability's real,
- * rendered evidence in a browser.
+ * cannot be measured — that behaviour needs a real-browser
+ * e2e spec.
  *
  * @covers press
  */

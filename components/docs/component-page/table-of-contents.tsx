@@ -107,7 +107,7 @@ export function AnchorStrip({
     <nav
       aria-label="On this page"
       className={cn(
-        "-mx-6 mb-10 overflow-x-auto border-b border-border px-6 pb-3 scrollbar-thin",
+        "-mx-4 mb-10 overflow-x-auto border-b border-border px-4 pb-3 scrollbar-thin sm:-mx-6 sm:px-6",
         !persistent && "xl:hidden",
       )}
     >

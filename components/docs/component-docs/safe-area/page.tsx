@@ -89,10 +89,9 @@ export const spec: ComponentDocSpec = {
           body: (
             <div className="space-y-4">
               <p className="type-body text-muted-foreground">
-                Flutter&rsquo;s <Code>SafeArea</Code> reads the window&rsquo;s view
-                padding — the notch, the rounded corner, the home indicator, the
-                on-screen keyboard shelf — and insets its child by it. The browser
-                exposes the same four numbers as{" "}
+                A device&rsquo;s safe area is the notch, the rounded corner, the
+                home indicator and the on-screen keyboard shelf. The browser
+                exposes it as four numbers:{" "}
                 <Code>env(safe-area-inset-top)</Code>,{" "}
                 <Code>env(safe-area-inset-right)</Code>,{" "}
                 <Code>env(safe-area-inset-bottom)</Code> and{" "}
@@ -185,7 +184,7 @@ export const spec: ComponentDocSpec = {
       id: "responsive",
       title: "Responsive",
       description:
-        "This IS the responsive capability — not a component that happens to reflow, but the mechanism `docs/architecture/platform-parity.md` names for adapting to a device's own physical shape.",
+        "This IS the responsive capability — not a component that happens to reflow, but the mechanism for adapting to a device's own physical shape.",
       blocks: [
         {
           body: (

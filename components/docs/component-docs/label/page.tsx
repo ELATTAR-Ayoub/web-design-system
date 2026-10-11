@@ -75,7 +75,7 @@ export function UsernameField() {
           </div>
           <Field orientation="horizontal">
             <Checkbox id="ex-terms" defaultChecked />
-            <FieldLabel htmlFor="ex-terms" className="font-normal">
+            <FieldLabel htmlFor="ex-terms">
               I accept the seller terms
             </FieldLabel>
           </Field>
@@ -86,7 +86,7 @@ export function UsernameField() {
 
 <Field orientation="horizontal">
   <Checkbox id="terms" defaultChecked />
-  <FieldLabel htmlFor="terms" className="font-normal">
+  <FieldLabel htmlFor="terms">
     I accept the seller terms
   </FieldLabel>
 </Field>`,

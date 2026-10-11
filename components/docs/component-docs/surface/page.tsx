@@ -55,13 +55,11 @@ export const spec: ComponentDocSpec = {
       description:
         "shadow-pressed is what an Input, Select or Textarea sits in; shadow-btn is what a raised control (the outline Button, a Slider thumb) reads as. Pick the pair for the control's actual physical read, not for emphasis.",
       language: "tsx",
-      code: `// A sunken text field
-<input className="rounded-pill border border-input bg-card shadow-pressed" />
+      code: `// A sunken text field: Input wears shadow-pressed
+<Input />
 
-// A raised, physically pressable control
-<button className="rounded-pill border-input bg-card shadow-btn active:shadow-btn-down">
-  Action
-</button>`,
+// A raised, physically pressable control: the outline Button wears shadow-btn
+<Button variant="outline">Action</Button>`,
     },
     {
       kind: "disclosure",

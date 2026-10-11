@@ -17,6 +17,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Meta, Row } from "@/components/ds/kit";
 
@@ -61,12 +62,12 @@ export const spec: ComponentDocSpec = {
                   <p className="type-small mb-4 text-muted-foreground">Rarity floor</p>
                   <div className="space-y-3">
                     {["Rare", "Epic", "Legendary", "Mythic"].map((r) => (
-                      <label
+                      <Label
                         key={r}
-                        className="flex items-center gap-3 type-small text-muted-foreground"
+                        className="gap-3 type-small text-muted-foreground"
                       >
                         <Checkbox /> {r}
-                      </label>
+                      </Label>
                     ))}
                   </div>
                 </div>
@@ -155,16 +156,16 @@ export function FilterSheet() {
       label: "side",
       render: (
         <Row>
-          {(["top", "right", "bottom", "left"] as const).map((side) => (
+          {(["top", "right", "bottom", "left"] as const).map((side) => {
+            const name = side.charAt(0).toUpperCase() + side.slice(1);
+            return (
             <Sheet key={side}>
               <SheetTrigger asChild>
-                <Button variant="outline" className="capitalize">
-                  {side}
-                </Button>
+                <Button variant="outline">{name}</Button>
               </SheetTrigger>
               <SheetContent side={side}>
                 <SheetHeader>
-                  <SheetTitle className="capitalize">{side} sheet</SheetTitle>
+                  <SheetTitle>{name} sheet</SheetTitle>
                   <SheetDescription>side=&quot;{side}&quot;</SheetDescription>
                 </SheetHeader>
                 <SheetBody>
@@ -179,7 +180,8 @@ export function FilterSheet() {
                 </SheetFooter>
               </SheetContent>
             </Sheet>
-          ))}
+            );
+          })}
         </Row>
       ),
       source: `<SheetContent side="left">…</SheetContent>

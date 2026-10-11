@@ -118,7 +118,7 @@ export default function DesignSystemHome() {
                 {String(i + 1).padStart(2, "0")}
               </span>
               <p className="type-small text-muted-foreground">
-                <strong className="font-semibold text-foreground">{rule}</strong>{" "}
+                <strong className="text-foreground">{rule}</strong>{" "}
                 {detail}
               </p>
             </li>

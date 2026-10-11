@@ -164,7 +164,7 @@ export function PlanChoice() {
               items={[
                 { k: "value", v: "string, required. The value this item represents within the group." },
                 { k: "disabled", v: "boolean — disables this item only." },
-                { k: "disabledReason", v: "Why this item is disabled, shown as a reason surface via components/ui/disabled.tsx (native mode — Radix's RadioGroupItem is a real <button disabled>). Mirrors Flutter's RadioGroupItem.disabledReason." },
+                { k: "disabledReason", v: "Why this item is disabled, shown as a reason surface via components/ui/disabled.tsx (native mode — Radix's RadioGroupItem is a real <button disabled>)." },
                 {
                   k: "...props",
                   v: "Every other attribute Radix's underlying <button> accepts (id, aria-*, etc.), forwarded directly.",

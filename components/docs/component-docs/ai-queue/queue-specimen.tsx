@@ -22,6 +22,7 @@ import {
   type QueueMessage,
   type QueueTodo,
 } from "@/components/ai-elements/queue";
+import { AlertDialogConfirm } from "@/components/ui/alert-dialog";
 import { Icon } from "@/components/ui/icon";
 import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 
@@ -69,13 +70,16 @@ function MessageRows({ messages, onChange }: { messages: QueueMessage[]; onChang
                 <QueueItemAction aria-label="Send now" className="focus-visible:opacity-100 pointer-coarse:opacity-100">
                   <Icon icon={SendHorizontalIcon} size="xs" tone="inherit" />
                 </QueueItemAction>
-                <QueueItemAction
-                  aria-label="Remove from queue"
-                  className="focus-visible:opacity-100 pointer-coarse:opacity-100"
-                  onClick={() => onChange(messages.filter((m) => m.id !== message.id))}
+                <AlertDialogConfirm
+                  action="Remove"
+                  description="It will not be sent."
+                  onConfirm={() => onChange(messages.filter((m) => m.id !== message.id))}
+                  title="Remove this message from the queue?"
                 >
-                  <Icon icon={Trash2Icon} size="xs" tone="inherit" />
-                </QueueItemAction>
+                  <QueueItemAction aria-label="Remove from queue" className="focus-visible:opacity-100 pointer-coarse:opacity-100">
+                    <Icon icon={Trash2Icon} size="xs" tone="inherit" />
+                  </QueueItemAction>
+                </AlertDialogConfirm>
               </QueueItemActions>
             </div>
             {files.length > 0 && (
@@ -122,7 +126,7 @@ export function QueueShowcase() {
 
 export function QueueStateGrid() {
   return (
-    <StateGrid cols={3}>
+    <StateGrid cols={2}>
       <StateCell label="rest">
         <div className="w-full">
           <Queue>

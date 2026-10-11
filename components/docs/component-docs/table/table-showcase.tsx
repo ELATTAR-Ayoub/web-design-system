@@ -109,10 +109,12 @@ export function TransactionTableShowcase() {
               className="text-right"
               aria-sort={sortDir === "asc" ? "ascending" : sortDir === "desc" ? "descending" : "none"}
             >
-              <button
+              <Button
                 type="button"
+                variant="ghost"
+                size="xs"
                 onClick={toggleSort}
-                className="press -m-1 ml-auto flex items-center gap-1 rounded-md p-1 text-foreground hover:bg-muted"
+                className="text-foreground"
               >
                 Amount
                 <Icon
@@ -120,7 +122,7 @@ export function TransactionTableShowcase() {
                   size="xs"
                   tone={sortDir ? "action" : "subtle"}
                 />
-              </button>
+              </Button>
             </TableHead>
             <TableHead className="text-right">Status</TableHead>
           </TableRow>

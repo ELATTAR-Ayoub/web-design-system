@@ -133,7 +133,7 @@ function PieLabelListArcLabel({ viewBox, value }: { viewBox?: unknown; value?: u
       height={PIE_LABEL_BOX.height}
     >
       <div className="flex size-full items-center justify-center">
-        <span className="rounded-pill bg-card px-2 text-xs text-card-foreground capitalize">
+        <span className="rounded-pill bg-card px-2 type-small text-card-foreground">
           {label}
         </span>
       </div>

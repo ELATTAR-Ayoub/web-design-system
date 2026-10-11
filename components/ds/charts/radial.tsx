@@ -105,8 +105,8 @@ function RadialArcLabel({ viewBox, value }: { viewBox?: unknown; value?: unknown
       height={RADIAL_LABEL_BOX.height}
     >
       <div className="flex size-full items-center justify-center">
-        <span className="rounded-pill bg-card px-2 text-xs text-card-foreground capitalize">
-          {String(value)}
+        <span className="rounded-pill bg-card px-2 type-small text-card-foreground">
+          {String(BROWSER_CONFIG[value as keyof typeof BROWSER_CONFIG]?.label ?? value)}
         </span>
       </div>
     </foreignObject>

@@ -1,14 +1,12 @@
 /**
  * Focused test for the `media-scrim` capability.
  *
- * `media-scrim` in `styles/utilities.css` is the web half of Flutter's
- * `media-scrim` — a bottom-up gradient ramp (transparent through the upper
+ * `media-scrim` in `styles/utilities.css` is a bottom-up gradient ramp (transparent through the upper
  * half, rising to a readable edge) applied to the element that covers a
  * photograph or video so composed copy stays legible without an opaque card
  * under it. `components/docs/component-docs/media-scrim/page.tsx` records
- * that this was, for a time, "the one Flutter item with no web counterpart
- * and no page" — so the risk this test protects against is regression back to
- * that state: the utility being renamed, dropped, or losing the `color`
+ * that this once had no web utility and no page — so the risk this test
+ * protects against is regression back to that state: the utility being renamed, dropped, or losing the `color`
  * declaration that sets `--media-foreground` for the composed title, any one
  * of which would leave a caller's white copy silently unreadable against a
  * bright photograph with nothing in a type system to catch it.
@@ -24,8 +22,8 @@
  * text against the composited image) cannot be asserted here — that is a
  * Playwright/visual claim, and the page's own Responsive section records it
  * was measured manually at four widths and 200% zoom. No e2e spec currently
- * exercises `media-scrim` (checked `e2e/ledger-evidence.spec.ts` and
- * `e2e/batch4.spec.ts`; neither references it), so the composited-contrast
+ * exercises `media-scrim` (checked `e2e/batch4.spec.ts`; it does not
+ * reference it), so the composited-contrast
  * claim is unverified beyond this class/structure check until one is
  * written.
  *

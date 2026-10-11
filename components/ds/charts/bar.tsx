@@ -16,6 +16,7 @@ import {
   ActiveIndicator,
   useActiveIndicator,
 } from "@/components/ui/active-indicator";
+import { Button } from "@/components/ui/button";
 import { Stat } from "@/components/ui/stat";
 import { cn } from "@/lib/utils";
 
@@ -170,10 +171,10 @@ export function BarLabel() {
         <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} {...motion} />
         <Bar dataKey="desktop" fill="var(--color-chart-1)" radius={radius} {...motion}>
           {/* The registry sets `fontSize={12}` here — a raw SVG number for a
-              value the type scale already owns. `text-xs` (12px, per
+              value the type scale already owns. `type-small` (12px, per
               globals.css's four aliases) reaches the same size through CSS,
               which `<text>` honours, so nothing is typed by hand. */}
-          <LabelList position="top" offset={12} className="fill-foreground text-xs" />
+          <LabelList position="top" offset={12} className="fill-foreground type-small" />
         </Bar>
       </BarChart>
     </ChartContainer>
@@ -208,13 +209,13 @@ export function BarLabelCustom() {
             dataKey="month"
             position="insideLeft"
             offset={8}
-            className="fill-background text-xs"
+            className="fill-background type-small"
           />
           <LabelList
             dataKey="desktop"
             position="right"
             offset={8}
-            className="fill-foreground text-xs"
+            className="fill-foreground type-small"
           />
         </Bar>
       </BarChart>
@@ -403,15 +404,16 @@ export function BarInteractiveControls({ children }: { children: React.ReactNode
           )}
         />
         {BAR_INTERACTIVE_SERIES.map((key, i) => (
-          <button
+          <Button
             key={key}
             type="button"
+            variant="ghost"
             data-slot="bar-series-option"
             data-state={activeChart === key ? "on" : "off"}
             aria-pressed={activeChart === key}
             onClick={() => setActiveChart(key)}
             className={cn(
-              "press relative z-10 px-4 py-3 text-left",
+              "relative z-10 h-auto min-h-0 flex-col items-stretch justify-start rounded-none bg-transparent px-4 py-3 text-left whitespace-normal hover:bg-transparent active:bg-transparent",
               "data-[state=on]:[&_p]:text-primary-foreground",
               i > 0 && "border-l border-border",
             )}
@@ -433,7 +435,7 @@ export function BarInteractiveControls({ children }: { children: React.ReactNode
               label={String(BAR_INTERACTIVE_CONFIG[key].label)}
               value={totals[key].toLocaleString()}
             />
-          </button>
+          </Button>
         ))}
       </div>
       {children}

@@ -10,6 +10,15 @@ import {
 } from "@/components/ds/kit";
 import { TypesetCatalog } from "@/components/ds/typeset-catalog";
 import { Prose } from "@/components/ui/prose";
+import { Separator } from "@/components/ui/separator";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { findCategory } from "@/lib/ds/nav";
 
 const { category } = findCategory("foundations", "typography");
@@ -125,28 +134,28 @@ export default function TypographyPage() {
               <code>:where()</code>, so it weighs one element and any real class
               beats it — <code>.prose</code> is a default, not a cage.
             </p>
-            <hr />
-            <table>
-              <thead>
-                <tr>
-                  <th>Request</th>
-                  <th>Window</th>
-                  <th>Refunded to</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Unopened item</td>
-                  <td>14 days</td>
-                  <td>Original payment method</td>
-                </tr>
-                <tr>
-                  <td>Faulty item</td>
-                  <td>30 days</td>
-                  <td>Original payment method</td>
-                </tr>
-              </tbody>
-            </table>
+            <Separator />
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Request</TableHead>
+                  <TableHead>Window</TableHead>
+                  <TableHead>Refunded to</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell>Unopened item</TableCell>
+                  <TableCell>14 days</TableCell>
+                  <TableCell>Original payment method</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Faulty item</TableCell>
+                  <TableCell>30 days</TableCell>
+                  <TableCell>Original payment method</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
           </Prose>
         </Panel>
 

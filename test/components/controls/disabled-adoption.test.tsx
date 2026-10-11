@@ -18,11 +18,10 @@
  * narrowing matters: the thing that must never happen is the CYCLE. `Disabled`
  * imports `Button`, `Icon` and `Popover` for its own reason trigger, so those
  * three can never route themselves through it. Every other control can, and
- * as of the Flutter convergence the item-shaped ones do: `ComboboxItem`,
+ * the item-shaped ones do: `ComboboxItem`,
  * `CommandItem`, the three menus' items, `RadioGroupItem`, `SelectItem`,
  * `SelectTrigger` and the questionnaire choice all take `disabledReason`,
- * because that is Flutter's shared vocabulary (`Disabled.reason` on every
- * item widget) and a caller cannot wrap a Radix menu row from outside without
+ * because that is the shared vocabulary for an item's disabled reason, and a caller cannot wrap a Radix menu row from outside without
  * breaking the row's own keyboard semantics. `scripts/build-registry.mjs`
  * still stands guard: a cycle fails the build, and none of those eight is
  * imported by `disabled.tsx`.

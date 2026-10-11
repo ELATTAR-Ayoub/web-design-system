@@ -69,9 +69,9 @@ function open() {
       title: "Installation",
       notes: (
         <Note tone="action" title="Card is a dependency, not a direct install target">
-          The registry resolves <Code>card</Code>, but Flutter&rsquo;s
-          inventory files it as pulled in by whatever owns it rather than an
-          advertised install target of its own — it arrives already resolved
+          The registry resolves <Code>card</Code>, but it is pulled in
+          by whatever owns it rather than offered as an install target of its
+          own — it arrives already resolved
           with the item that needs it, at the right version.
         </Note>
       ),

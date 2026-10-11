@@ -2,6 +2,7 @@ import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
 import { Code, Meta, Panel } from "@/components/ds/kit";
 
+import { Kbd } from "@/components/ui/kbd";
 import { Separator } from "@/components/ui/separator";
 
 import { meta } from "./meta";
@@ -146,7 +147,7 @@ export function BalanceSplit() {
               N/A. Even with <Code>decorative={"{false}"}</Code>, a{" "}
               <Code>role=&quot;separator&quot;</Code> is not part of the tab
               sequence — it is announced when a screen reader reads past it in
-              document order, not reached by <kbd>Tab</kbd>.
+              document order, not reached by <Kbd>Tab</Kbd>.
             </p>
           ),
         },

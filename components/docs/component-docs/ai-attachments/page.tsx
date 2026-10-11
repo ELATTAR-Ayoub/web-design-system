@@ -207,6 +207,7 @@ export const spec: ComponentDocSpec = {
                 { k: "label?", v: 'string — the accessible name, default "Remove". Name the file: "Remove pack-shot.jpg".' },
                 { k: "children?", v: "Replaces the X glyph." },
                 { k: "…Button props", v: 'Forwarded; the button is variant "ghost", size "icon". Renders nothing without an onRemove on the Attachment. Its click does not bubble to the chip.' },
+                { k: "Confirmation", v: 'Pressing it opens an AlertDialogConfirm naming the attachment; onRemove runs only from its Remove button.' },
               ]}
             />
           ),

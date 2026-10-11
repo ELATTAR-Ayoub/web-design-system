@@ -95,7 +95,7 @@ export function Panel({
           )}
         </div>
       )}
-      <div className={cn("bg-background", flush ? "" : "p-6", bodyClassName)}>
+      <div className={cn("bg-background", flush ? "" : "p-4 sm:p-6", bodyClassName)}>
         {children}
       </div>
     </div>
@@ -144,10 +144,10 @@ export function StateGrid({
         "grid gap-px overflow-hidden rounded-lg border border-border bg-border",
         {
           2: "grid-cols-1 sm:grid-cols-2",
-          3: "grid-cols-2 sm:grid-cols-3",
-          4: "grid-cols-2 sm:grid-cols-4",
-          5: "grid-cols-2 sm:grid-cols-3 lg:grid-cols-5",
-          6: "grid-cols-2 sm:grid-cols-3 lg:grid-cols-6",
+          3: "grid-cols-1 sm:grid-cols-3",
+          4: "grid-cols-1 sm:grid-cols-2 md:grid-cols-4",
+          5: "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5",
+          6: "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6",
         }[cols],
         className,
       )}
@@ -203,8 +203,8 @@ export function Meta({
           key={k}
           className="grid gap-1 px-4 py-3 @sm/meta:grid-cols-[minmax(0,13rem)_1fr] @sm/meta:gap-4"
         >
-          <dt className="type-number-sm text-action-ink">{k}</dt>
-          <dd className="type-small text-muted-foreground">{v}</dd>
+          <dt className="type-number-sm wrap-anywhere text-action-ink">{k}</dt>
+          <dd className="type-small wrap-break-word text-muted-foreground">{v}</dd>
         </div>
       ))}
     </dl>

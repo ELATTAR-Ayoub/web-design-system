@@ -178,11 +178,13 @@ export function DataTableDemo({ loading = false }: { loading?: boolean }) {
                       }
                     >
                       {header.column.getCanSort() ? (
-                        <button
+                        <Button
                           type="button"
+                          variant="ghost"
+                          size="xs"
                           onClick={header.column.getToggleSortingHandler()}
                           disabled={loading}
-                          className="press -mx-2 flex items-center gap-1.5 rounded-sm px-2 py-1 hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+                          className="-mx-2 gap-1.5 rounded-sm px-2 py-1"
                         >
                           {flexRender(
                             header.column.columnDef.header,
@@ -199,7 +201,7 @@ export function DataTableDemo({ loading = false }: { loading?: boolean }) {
                             size="sm"
                             tone={sorted ? "action" : "muted"}
                           />
-                        </button>
+                        </Button>
                       ) : (
                         flexRender(
                           header.column.columnDef.header,

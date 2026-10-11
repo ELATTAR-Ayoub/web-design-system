@@ -2,6 +2,7 @@
 
 import * as React from "react"
 
+import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 
 export function ScrimToggleSpecimen() {
@@ -29,14 +30,14 @@ export function ScrimToggleSpecimen() {
           <p className="type-small opacity-90">12 cards · opens in 2 days</p>
         </figcaption>
       </figure>
-      <label className="flex items-center justify-between gap-3 rounded-lg border border-border bg-card px-4 py-3">
+      <Label className="justify-between gap-3 rounded-lg border border-border bg-card px-4 py-3">
         <span className="type-small text-foreground">Scrim</span>
         <Switch
           checked={scrim}
           onCheckedChange={setScrim}
           aria-label="Toggle the media scrim over the photo"
         />
-      </label>
+      </Label>
     </div>
   )
 }

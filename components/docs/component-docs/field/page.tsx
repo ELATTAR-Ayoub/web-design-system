@@ -91,7 +91,7 @@ export function EmailField() {
           <Panel label="horizontal">
             <Field orientation="horizontal">
               <Checkbox id="var-horizontal" defaultChecked />
-              <FieldLabel htmlFor="var-horizontal" className="font-normal">
+              <FieldLabel htmlFor="var-horizontal">
                 I accept the seller terms
               </FieldLabel>
             </Field>
@@ -105,7 +105,7 @@ export function EmailField() {
 
 <Field orientation="horizontal">
   <Checkbox id="terms" defaultChecked />
-  <FieldLabel htmlFor="terms" className="font-normal">I accept the seller terms</FieldLabel>
+  <FieldLabel htmlFor="terms">I accept the seller terms</FieldLabel>
 </Field>`,
     },
     {
@@ -141,13 +141,13 @@ export function EmailField() {
               <FieldGroup>
                 <Field orientation="horizontal">
                   <Switch id="ex-digest" defaultChecked />
-                  <FieldLabel htmlFor="ex-digest" className="font-normal">
+                  <FieldLabel htmlFor="ex-digest">
                     Weekly digest
                   </FieldLabel>
                 </Field>
                 <Field orientation="horizontal">
                   <Switch id="ex-beta" />
-                  <FieldLabel htmlFor="ex-beta" className="font-normal">
+                  <FieldLabel htmlFor="ex-beta">
                     Beta features
                   </FieldLabel>
                 </Field>
@@ -191,7 +191,7 @@ export function EmailField() {
   <FieldGroup>
     <Field orientation="horizontal">
       <Switch id="digest" defaultChecked />
-      <FieldLabel htmlFor="digest" className="font-normal">Weekly digest</FieldLabel>
+      <FieldLabel htmlFor="digest">Weekly digest</FieldLabel>
     </Field>
   </FieldGroup>
 </FieldSet>

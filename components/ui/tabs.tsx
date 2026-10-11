@@ -85,8 +85,8 @@ function TabsTrigger({
     <TabsPrimitive.Trigger
       data-slot="tabs-trigger"
       className={cn(
-        "relative z-10 inline-flex flex-1 items-center justify-center gap-2 rounded-pill border border-transparent px-4 text-sm font-medium whitespace-nowrap text-muted-foreground outline-none group-data-horizontal/tabs:h-8 group-data-vertical/tabs:w-full group-data-vertical/tabs:justify-start group-data-vertical/tabs:py-2 hover:text-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        "transition-colors duration-normal ease-out",
+        "relative z-10 inline-flex flex-1 items-center justify-center gap-2 rounded-pill border border-transparent px-4 type-nav whitespace-nowrap text-muted-foreground outline-none group-data-horizontal/tabs:h-8 group-data-vertical/tabs:w-full group-data-vertical/tabs:justify-start group-data-vertical/tabs:py-2 hover:text-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "transition-colors duration-normal ease-enter",
         "data-active:bg-transparent group-data-[variant=default]/tabs-list:data-active:text-primary-foreground group-data-[variant=line]/tabs-list:data-active:text-foreground",
         className
       )}
@@ -102,7 +102,7 @@ function TabsContent({
   return (
     <TabsPrimitive.Content
       data-slot="tabs-content"
-      className={cn("flex-1 text-sm outline-none", className)}
+      className={cn("flex-1 type-small outline-none", className)}
       {...props}
     />
   )

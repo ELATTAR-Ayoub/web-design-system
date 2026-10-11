@@ -18,8 +18,8 @@
  *
  * NOT COVERED: the gradient actually painting (jsdom performs no layout or
  * paint at all), and forced-colours removing the gradient while the flat fill
- * remains. `e2e/ledger-evidence.spec.ts` opens the live app in a real browser,
- * where a `body` background can actually be measured.
+ * remains. A real-browser e2e spec is where a `body` background can actually
+ * be measured.
  *
  * @covers background-effect
  */

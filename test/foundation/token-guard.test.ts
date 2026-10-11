@@ -1,28 +1,26 @@
 /**
  * The zero-hardcoding guard, tested on itself.
  *
- * This is the web counterpart of Flutter's `test/token_guard_test.dart`, and it
- * exists for the same reason that file gives: **a guard nobody exercises is a
+ * It exists for this reason: **a guard nobody exercises is a
  * guard nobody knows the state of.** `npm run check:tokens` passing tells you
  * the repository is clean. It does not tell you the guard would still catch
  * anything — a rule whose regex was broken by an innocent edit reports a clean
  * scan forever, and the first symptom is a hex colour shipping.
  *
- * So the shape is Flutter's:
+ * So the shape is:
  *
  *   1. the repository is clean;
  *   2. every declared rule FIRES on a sample that breaks it;
  *   3. the sanctioned spelling of the same thing does NOT fire.
  *
  * Point 3 matters more than point 2. A rule that cries wolf is a rule the next
- * person deletes, and deleting it is invisible until something ships. Flutter's
- * own file makes the same argument about `MotionCurves` versus `Curves.` — the
+ * person deletes, and deleting it is invisible until something ships. The
  * rule has to catch the stock spelling without catching the token that replaces
  * it.
  *
- * ONE DIFFERENCE FROM FLUTTER, DELIBERATE. Flutter's guard keeps an
- * `_exemptDirs` list and argues each entry. The web guard's equivalent is the
- * four `styles/*.css` files, and it has NO per-line escape hatch at all: the
+ * NO EXEMPTION LIST BEYOND THE DEFINITION FILES, DELIBERATE. The guard's only
+ * exemption is the four `styles/*.css` files, and it has NO per-line escape
+ * hatch at all: the
  * `allow-hardcoded` marker was removed along with all four of its uses, each of
  * which turned out to be fixable. The last test here is what stops it coming
  * back.

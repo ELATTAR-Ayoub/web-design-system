@@ -169,10 +169,7 @@ export default function MotionPage() {
                 <span className="type-number-sm text-muted-foreground">
                   {d.name}
                 </span>{" "}
-                — {d.use}{" "}
-                <span className="text-muted-foreground/70">
-                  (Flutter {d.flutter})
-                </span>
+                — {d.use}
               </p>
             ))}
           </div>
@@ -186,7 +183,7 @@ export default function MotionPage() {
       >
         <div className="grid gap-4 sm:grid-cols-2">
           {easings.map((e) => (
-            <Panel key={e.name} label={e.name} note={`Flutter ${e.flutter}`}>
+            <Panel key={e.name} label={e.name}>
               <CurveGraph token={e.name} />
               <div className="mt-4 h-6 rounded-sm bg-muted">
                 <div

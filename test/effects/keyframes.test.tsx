@@ -30,8 +30,7 @@
  * page's Reduced Motion section describes are asserted by
  * `motion-contract.test.ts` elsewhere in this repository, not here. No e2e
  * spec currently exercises `keyframes` by name (checked
- * `e2e/ledger-evidence.spec.ts` and `e2e/batch4.spec.ts`; neither references
- * it), so real playback is unverified beyond this definition-presence check
+ * `e2e/batch4.spec.ts`; it does not reference it), so real playback is unverified beyond this definition-presence check
  * until one is written.
  *
  * @covers keyframes

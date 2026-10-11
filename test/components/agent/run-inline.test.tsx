@@ -412,6 +412,8 @@ describe("RunQueue", () => {
     await userEvent.click(screen.getAllByRole("button", { name: "Move up" })[1]);
     expect(transport.reorderQueue).toHaveBeenLastCalledWith(["q2", "q1"]);
     await userEvent.click(screen.getAllByRole("button", { name: "Remove from queue" })[0]);
+    expect(transport.dequeue).not.toHaveBeenCalled();
+    await userEvent.click(within(await screen.findByRole("alertdialog")).getByRole("button", { name: "Remove" }));
     expect(transport.dequeue).toHaveBeenCalledWith("q1");
     await userEvent.click(screen.getAllByRole("button", { name: "Send now" })[1]);
     expect(transport.sendQueuedNow).toHaveBeenCalledWith("q2");

@@ -61,7 +61,7 @@ export default function IconsPage() {
         description="Lucide is the source set, but it is never imported straight into a screen. Everything goes through one component, which forces a size, a tone and an accessibility decision on every instance."
       >
         <Panel label="Usage">
-          <pre className="type-code scrollbar-thin overflow-x-auto rounded-lg border border-border bg-background p-5 leading-relaxed text-muted-foreground">
+          <pre className="type-code scrollbar-thin overflow-x-auto rounded-lg border border-border bg-background p-5 text-muted-foreground">
             {`import { Icon } from "@/components/ui/icon"
 import { PackageOpen } from "lucide-react"
 
@@ -147,7 +147,7 @@ import { PackageOpen } from "lucide-react"
                   <span className="type-number-sm block text-action-ink">
                     {t}
                   </span>
-                  <span className="type-small block leading-snug text-muted-foreground">
+                  <span className="type-small block text-muted-foreground">
                     {toneUse[t]}
                   </span>
                 </span>
@@ -213,7 +213,7 @@ import { PackageOpen } from "lucide-react"
                       <span className="type-number-sm block truncate text-foreground">
                         {entry.name}
                       </span>
-                      <span className="type-small block leading-snug text-muted-foreground">
+                      <span className="type-small block text-muted-foreground">
                         {entry.use}
                       </span>
                     </span>

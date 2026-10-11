@@ -3,9 +3,8 @@
  *
  * `validation-rule`'s own documentation page
  * (`components/docs/component-docs/validation-rule/page.tsx`) is explicit
- * that this is deliberately NOT a component: Flutter models validation as a
- * registry item, and the web equivalent is Zod 4 composed with React Hook
- * Form's `resolver` — real dependencies, already in real use. The page's own
+ * that this is deliberately NOT a component: validation on the web is Zod 4
+ * composed with React Hook Form's `resolver` — real dependencies, already in real use. The page's own
  * Usage snippet is drawn from
  * `components/docs/component-docs/form/account-form-specimen.tsx`, so this
  * file imports the REAL schema and the REAL form from that specimen rather

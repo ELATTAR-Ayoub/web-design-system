@@ -24,8 +24,8 @@
  * `backdrop-filter` blur, the `color-mix()` fill and the rim `box-shadow` can
  * only be asserted by class presence, never by their rendered pixels — that
  * numeric contract is Playwright/visual territory. No e2e spec currently
- * exercises `glass` (checked `e2e/ledger-evidence.spec.ts` and
- * `e2e/batch4.spec.ts`; neither references it), so the paint-level claim is
+ * exercises `glass` (checked `e2e/batch4.spec.ts`; it does not
+ * reference it), so the paint-level claim is
  * unverified beyond this class-presence check until one is written.
  *
  * @covers glass

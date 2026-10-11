@@ -21,6 +21,7 @@ export const spec: ComponentDocSpec = {
   Queue, QueueItem, QueueItemAction, QueueItemActions, QueueItemContent, QueueItemIndicator,
   QueueSection, QueueSectionContent, QueueSectionLabel, QueueSectionTrigger,
 } from "@/components/ai-elements/queue";
+import { AlertDialogConfirm } from "@/components/ui/alert-dialog";
 
 <Queue>
   <QueueSection>
@@ -35,9 +36,11 @@ export const spec: ComponentDocSpec = {
               <QueueItemIndicator />
               <QueueItemContent>{m.text}</QueueItemContent>
               <QueueItemActions>
-                <QueueItemAction aria-label="Remove from queue" onClick={() => remove(m.id)}>
-                  <Icon icon={Trash2Icon} size="xs" tone="inherit" />
-                </QueueItemAction>
+                <AlertDialogConfirm action="Remove" onConfirm={() => remove(m.id)} title="Remove this message from the queue?">
+                  <QueueItemAction aria-label="Remove from queue">
+                    <Icon icon={Trash2Icon} size="xs" tone="inherit" />
+                  </QueueItemAction>
+                </AlertDialogConfirm>
               </QueueItemActions>
             </div>
           </QueueItem>

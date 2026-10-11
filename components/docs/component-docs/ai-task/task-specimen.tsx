@@ -1,6 +1,7 @@
 "use client";
 
 import { Task, TaskContent, TaskItem, TaskItemFile, TaskTrigger } from "@/components/ai-elements/task";
+import { Button } from "@/components/ui/button";
 import { Panel, StateCell, StateGrid } from "@/components/ds/kit";
 
 function SampleTask({ defaultOpen = true }: { defaultOpen?: boolean }) {
@@ -54,12 +55,14 @@ export function TaskExamples() {
       <div className="mx-auto w-full max-w-md">
         <Task>
           <TaskTrigger title="Checked the ledger">
-            <button
-              className="flex w-full cursor-pointer items-center gap-2 text-left type-small text-muted-foreground transition-colors hover:text-foreground"
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-auto w-full justify-start px-0"
               type="button"
             >
               Checked the ledger · 2 of 3 steps
-            </button>
+            </Button>
           </TaskTrigger>
           <TaskContent>
             <TaskItem>Compared 3 totals</TaskItem>

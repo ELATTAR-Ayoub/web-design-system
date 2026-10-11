@@ -22,10 +22,10 @@
  *
  * NOT COVERED HERE: the beat actually animating on hover/press, the texture's
  * visual diagonal, and the blend-mode split between `.light`/`.dark` — all of
- * that needs real layout and paint. `e2e/ledger-evidence.spec.ts` opens the
- * live `/design-system/components/base/buttons` and
- * `/design-system/components/effects/action-feedback` routes in a real
- * browser and is where that visual behaviour is measured.
+ * that needs real layout and paint. A real-browser e2e spec against the live
+ * `/design-system/components/base/buttons` and
+ * `/design-system/components/effects/action-feedback` routes is where that
+ * visual behaviour is measured.
  *
  * @covers action-feedback
  */

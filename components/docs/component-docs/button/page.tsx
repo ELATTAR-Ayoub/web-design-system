@@ -290,7 +290,7 @@ export function DepositAction() {
                 },
                 {
                   k: "emphasis",
-                  v: "\"none\" · \"caps\". \"caps\" applies uppercase with the cta tracking token, for headline and money CTAs. Default: \"none\".",
+                  v: "\"none\" · \"caps\". \"caps\" sets the type-cta role (semibold) for headline and money CTAs, in place of the size's role. Default: \"none\".",
                 },
                 {
                   k: "loading",

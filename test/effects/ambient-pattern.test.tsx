@@ -21,9 +21,8 @@
  * documents, and the tree is axe-clean. NOT COVERED: the sway animation, the
  * two-cluster sparkle rendering, and the reduced-motion freeze-in-place
  * behaviour — all of those need real layout, paint and timers, none of which
- * jsdom provides. `e2e/ledger-evidence.spec.ts` opens the live Alert and
- * ambient-pattern documentation routes in a real browser and is where that
- * visual behaviour is measured.
+ * jsdom provides. That visual behaviour is measured in a real-browser e2e
+ * spec against the live Alert and ambient-pattern documentation routes.
  *
  * @covers ambient-pattern
  */

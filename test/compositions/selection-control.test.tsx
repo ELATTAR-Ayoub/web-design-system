@@ -5,7 +5,7 @@
  * (`components/docs/component-docs/selection-control/page.tsx`) is authored
  * prose, not a wrapper component: its header and "why" section record that
  * this capability is deliberately Field composed with Checkbox/Radio/Switch,
- * not a fourth control the way Flutter's `SelectionControl` is one widget.
+ * not a fourth control of its own.
  * `spec.sections[0]` (`id: "preview"`) is exactly the two-row specimen the
  * page's Preview section renders — imported and rendered here unmodified.
  *

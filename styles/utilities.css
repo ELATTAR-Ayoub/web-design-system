@@ -14,10 +14,8 @@
    Glow is a restricted resource. Action = interactive/selected.
    Value = rare/premium/reward. Nothing else glows.
 
-   The comments below name the ROLE, not the hue. They used to name the hue and
-   have now been wrong twice — written for purple-and-gold, left standing through
-   blue-and-lime, and wrong again for wine-and-amethyst. A comment that has to be
-   swept on every rebrand is a comment that will be missed on one.
+   The comments below name the ROLE, not the hue. A comment that names a hue
+   has to be swept on every rebrand, and will be missed on one.
    ========================================================================= */
 @utility glow-action {
   box-shadow: var(--shadow-glow-action);
@@ -67,14 +65,13 @@
 @utility glass-panel {
   /* `@apply`, not a hand-written `backdrop-filter`.
      Written by hand as `backdrop-filter: blur(calc(var(--spacing) * 5))` this
-     declaration was DROPPED ENTIRELY from the compiled stylesheet — no error,
+     declaration is DROPPED ENTIRELY from the compiled stylesheet — no error,
      no warning, and both guards green, because `check:tokens` looks for values
      that should have been tokens and `check:refs` looks for names that resolve
-     to nothing. This was neither: a correct, token-derived declaration that the
-     CSS transformer would not carry through a `blur()` it could not statically
-     resolve. Trap 1's family, from a third direction, and the only reason it
-     was caught is that `getComputedStyle(card).backdropFilter` was read in the
-     browser and came back `none`.
+     to nothing. This is neither: a correct, token-derived declaration that the
+     CSS transformer will not carry through a `blur()` it cannot statically
+     resolve. It shows only in the browser, where
+     `getComputedStyle(card).backdropFilter` comes back `none`.
      Going through Tailwind's own utilities means the blur is emitted by the
      machinery that owns `--tw-backdrop-*`, and it stays on the `--blur-*`
      scale rather than on a number written here. */
@@ -121,9 +118,8 @@
 }
 
 /* Radial brand blooms for reveal stages and opening moments. */
-/* Mixed from the tokens rather than written as literals. These two used to hold
-   the brand's hex values inline, which meant they were the one pair of effects a
-   rebrand silently missed — the system moved and these did not. */
+/* Mixed from the tokens rather than written as literals, so a rebrand moves
+   them with everything else. */
 @utility bloom-action {
   background-image: radial-gradient(
     ellipse 70% 60% at 50% 30%,
@@ -183,9 +179,8 @@
      THIS BLOCK HAS TO BE HERE AND NOT AT `:root`. Custom properties are
      substituted on the element the declaration sits on, so `--bloom-core`
      written at `:root` would resolve `--bloom-2` against `:root` — where it does
-     not exist. `--bloom-peak` used to be exactly that: `var(--bloom-2)` declared
-     at `:root`, pointing at nothing. Declared here it computes on the toast,
-     which is where each type sets its own pair. */
+     not exist. Declared here it computes on the toast, which is where each type
+     sets its own pair. */
   --bloom-core: oklch(
     from var(--bloom-2) calc(l * var(--bloom-l)) calc(c * var(--bloom-c)) h
   );
@@ -438,10 +433,8 @@
 
   /* Hover pushes the metal: the glint runs more often and the foil brightens.
      The speed-up is `--duration-glint-hover`, declared in motion.css beside
-     `--duration-glint` it modifies. It was a literal here with a note saying a
-     one-off needed no token; that reasoning does not survive the rule this
-     system actually keeps — motion.css owns every duration, and "used once" is
-     not an exemption, it is just a token with one reader. */
+     `--duration-glint` it modifies — motion.css owns every duration, and "used
+     once" is not an exemption, it is just a token with one reader. */
   &:hover::before {
     animation-duration: var(--duration-glint-hover);
   }
@@ -530,10 +523,9 @@
    Every rule below repeats the class three times on purpose. Sonner's own rules
    are `[data-sonner-toast][data-styled="true"]` — specificity 0,2,0 — and it
    injects them into <head> at runtime, *after* this stylesheet. A doubled class
-   ties at 0,2,0 and then loses on source order, which is exactly what it did:
-   silently nothing. Three classes is 0,3,0, which clears the container rules
-   and, with a descendant, clears sonner's 0,3,0 child rules too. The alternative
-   was `!important` on twenty declarations.
+   ties at 0,2,0 and then loses on source order: silently nothing. Three classes is 0,3,0, which clears the container rules
+   and, with a descendant, clears sonner's 0,3,0 child rules too. The
+   alternative is `!important` on twenty declarations.
 
    The same block styles the live toast and the static previews on the Feedback
    page. The preview renders the identical markup minus `data-sonner-toast`, so
@@ -632,12 +624,10 @@
   --bloom-2: var(--color-value);
 }
 
-/* Each type pairs its hue with its OWN ramp's partner — the shape success
-   already had (emerald + lime) and the one tone that read as its colour on
-   dark. A blue companion under a red or amber core won on near-black and the
-   toast glowed blue whatever it meant; `warning` was worse, still on the value
-   ramp entirely ("worked only by accident", as alert.tsx put it, and the toast
-   never got the fix until now). Same pairs as `components/ui/alert.tsx`. */
+/* Each type pairs its hue with its OWN ramp's partner (emerald + lime for
+   success). A blue companion under a red or amber core wins on near-black and
+   the toast glows blue whatever it means. Same pairs as
+   `components/ui/alert.tsx`. */
 .cn-toast.cn-toast.cn-toast[data-type="warning"] {
   --bloom-1: var(--color-warning);
   --bloom-2: var(--color-warning-deep);
@@ -705,27 +695,20 @@
 /* The one place a toast carries colour, and only on the glyph — the surface
    stays neutral so a stack of toasts does not turn into a traffic light.
 
-   EVERY ONE OF THESE IS AN `-ink` TOKEN, and all five used to be the raw hue.
-   §1 rule 3 binds a `color:` declaration exactly as it binds `text-*`, and a
-   toast sits on `--popover` — `#fff` on light, where every raw state hue is
-   wrong, because all four were chosen against a near-black page. The glyph is the one
-   place a toast says what KIND of thing happened, so a glyph nobody can see on
-   light is the whole signal gone.
+   EVERY ONE OF THESE IS AN `-ink` TOKEN, not the raw hue. §1 rule 3 binds a
+   `color:` declaration exactly as it binds `text-*`, and a toast sits on
+   `--popover` — `#fff` on light, where every raw state hue fails, because they
+   are chosen against a near-black page. The glyph is the one place a toast says
+   what KIND of thing happened, so a glyph nobody can see on light is the whole
+   signal gone.
 
-   Rasterised against the live `.cn-toast` surface on
-   /design-system/components/base/feedback:
+   Contrast of the ink against the live `.cn-toast` surface on
+   /design-system/components/base/feedback, light theme: success 5.48:1,
+   warning 5.02:1, info 5.36:1, loading 10.58:1, error 4.83:1. Dark theme: error
+   6.40:1, the other four unchanged from the raw hue.
 
-     LIGHT      before    after        DARK       before    after
-     success    2.54:1 -> 5.48:1       error      3.67:1 -> 6.40:1
-     warning    1.67:1 -> 5.02:1       other four        unchanged
-     info       1.81:1 -> 5.36:1
-     loading    1.85:1 -> 10.58:1
-     error      4.83:1    unchanged
-
-   The loading glyph was `--color-action-bright`, which §1 rule 3 forbids on text
-   outright and which this file's own comment at the ramp definition names as the
-   thing nothing may write. RULES §5's toast section already documented it as the
-   ink; the prose was right and the CSS was wrong.
+   Loading is `--action-ink`, never `--color-action-bright`, which §1 rule 3
+   forbids on text outright. RULES §5's toast section documents the same.
 
    `check:tokens`' `state-colour-as-text` runs on this file for the declaration
    form specifically, so this cannot come back silently. */
@@ -880,18 +863,14 @@
    surface at full luminance bites every channel out of the paper, and the
    thing on screen was always a stain with a tint in it.
 
-   Flutter 0.0.3's `FeedbackSurface.blendFor` is the ruling this follows: on
-   light the ramp is painted STRAIGHT (`srcOver`, `normal` here), masked to the
-   corner by the surface's own overflow, at 0.9 — the same number the Flutter
-   side carries as `_lightOpacity`. What makes that work is the void: the ramps
+   The rule: on light the ramp is painted STRAIGHT (`normal` blend), masked to
+   the corner by the surface's own overflow, at 0.9. What makes that work is the void: the ramps
    fade to `--bloom-void`, which is `white` on light, and `--card` on light is
    white too, so a normally-blended ramp disappears into the surface with no
    edge. Dark keeps `screen` at 0.75, where the void is black and screen by
    black is the identity.
 
-   The audit (`docs/contracts/audit/feedback-surface.json`) recorded this as the
-   one place the web had fallen behind a Flutter ruling rather than the other
-   way round. Measured after the change on the alert page in light mode: the
+   Measured after the change on the alert page in light mode: the
    corner reads as colour, and the body copy underneath it is no longer sitting
    on a darkened field.
    ========================================================================= */
@@ -1038,19 +1017,17 @@
 }
 
 /* ── Safe area ─────────────────────────────────────────────────────────────
-   The system-bar contract, and the web half of Flutter's `safe-area` item.
+   The system-bar contract.
 
-   Flutter's SafeArea reads the window's view padding — the notch, the rounded
-   corner, the home indicator, the on-screen keyboard shelf — and insets its
-   child by it. The browser exposes the same four numbers as `env()`
-   environment variables, so the capability arrives as CSS with nothing for a
-   component to do, which is why the contract classifies it `css-native`.
+   The window's view padding — the notch, the rounded corner, the home
+   indicator, the on-screen keyboard shelf — insets content. The browser
+   exposes the same four numbers as `env()` environment variables, so the
+   capability arrives as CSS with nothing for a component to do, which is why
+   the contract classifies it `css-native`.
 
-   These were absent for the whole of the 0.0.3 convergence: the contract named
-   the item, `docs/architecture/platform-parity.md` said the utilities existed,
-   the documentation page said honestly that they did not, and the per-capability
-   audit is what made the three disagree in one place. A capability the system
-   names and does not ship is worse than one it never claimed.
+   A capability the system names and does not ship is worse than one it never
+   claimed, so the utilities, the contract and the documentation page must
+   agree.
 
    `env()` is a browser function, not a hardcoded value — there is no token to
    reach for, because the number comes from the device. The `, 0px` fallback is
@@ -1103,10 +1080,9 @@
    readable edge, so a title composed directly on a photograph or a video
    stays legible without an opaque card under it.
 
-   The web half of Flutter's `media-scrim`. It was the last capability in the
-   contract with no implementation — the migration doc recorded it as "the same
-   word for a different capability", because `bg-scrim` is a flat dim behind a
-   drawer, not a ramp over media.
+   It was the last capability in the contract with no implementation — the
+   migration doc recorded it as "the same word for a different capability",
+   because `bg-scrim` is a flat dim behind a drawer, not a ramp over media.
 
    Apply it to the element that covers the media's full bounds (an absolutely
    positioned overlay is the usual shape) and compose the title and actions

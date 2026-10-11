@@ -308,7 +308,7 @@ test.describe("controls", () => {
      * focus inside the item's own keydown, so the `onFocus` that would click
      * the item sees the flag still false. It passed in one of five Playwright
      * projects and failed in four — a race, not a behaviour. Recorded as a
-     * `blocked` interaction row in the audit ledger rather than patched here:
+     * known-blocked interaction rather than patched here:
      * roving focus belongs to the primitive (RULES §5), and re-implementing it
      * in a wrapper is exactly the fork this system forbids.
      */
@@ -930,7 +930,7 @@ test.describe("overlays", () => {
      * geometry decision on the menus specimen — `px-3 py-2` on the 8-point
      * scale, shared by Dropdown, Context Menu, Menubar, Select and Command —
      * and raising it is an owner decision about five components at once, not a
-     * batch-2 patch. The ledger carries the measurement and the reason.
+     * batch-2 patch. The measurement is recorded as an annotation below.
      */
     testInfo.annotations.push({
       type: "measured",
@@ -1096,7 +1096,7 @@ test.describe("overlays", () => {
  * addressed by the panel it produces.
  *
  * The first round of this batch photographed two overlays and wrote
- * "dialog open in each" on eight ledger rows. This table is what makes that
+ * "dialog open in each" for eight components. This table is what makes that
  * claim true: each entry opens exactly one component and hands back the panel,
  * so the screenshot, the console sweep and the reading notes are all about the
  * component the row names.
@@ -1635,7 +1635,7 @@ test.describe("overlays", () => {
      * The regression guard for the `aria-dialog-name` fix. A `PopoverContent`
      * is `role="dialog"`, and one on the selects route — the date picker
      * wrapping a Calendar — was still anonymous after the popover wiring
-     * landed, while the ledger said `accessibility: complete`. Naming the
+     * landed, while the docs said accessibility was complete. Naming the
      * component is not enough; a call site can still forget.
      */
     const cases = [
@@ -1898,10 +1898,10 @@ test.describe("display", () => {
   test("Carousel: the arrow keys move it and the dead arrow is disabled", async ({
     page,
   }) => {
-    /* The `carousel` page, not `data`. The audit ledger listed the `data`
-       route for this row and the specimen has never been there — the first
-       run of this test skipped in all five projects, which is what found it.
-       The ledger row is corrected; the specimen was always fine. */
+    /* The `carousel` page, not `data`. This test once pointed at the `data`
+       route, where the specimen has never been — the first run skipped in
+       all five projects, which is what found it. The specimen was always
+       fine. */
     await page.goto("/design-system/components/carousel");
     await page.waitForLoadState("networkidle");
 
@@ -1964,8 +1964,8 @@ test.describe("display", () => {
       };
     });
     // Sonner's own default is 13px on a system stack. Ours is the `small`
-    // role — which at the tablet step IS 13px since the Flutter type scale
-    // landed, so "not 13px" stopped proving anything. Compare against the
+    // role — which at the tablet step IS 13px since the type scale
+    // changed, so "not 13px" stopped proving anything. Compare against the
     // token resolved from the same document instead.
     const smallSize = await page.evaluate(() => {
       const probe = document.createElement("span");
@@ -2109,8 +2109,8 @@ test.describe("display", () => {
       const s = getComputedStyle(el);
       // The role's own size, resolved from the same document at the same
       // width, so the assertion follows the token instead of pinning a
-      // number the type scale has since moved past (it was 14; Flutter
-      // 0.0.3's `badge` is 10 / 11 / 12 and the tokens now match it).
+      // number the type scale has since moved past (it was 14; the
+      // `badge` role is now 10 / 11 / 12).
       const probe = document.createElement("span");
       probe.className = "type-badge";
       document.body.appendChild(probe);
@@ -2624,7 +2624,7 @@ test.describe("display", () => {
 
 
 /**
- * Defects the per-capability convergence audit found, pinned so they stay fixed.
+ * Defects found by the per-capability audit, pinned so they stay fixed.
  *
  * These are the ones that only a real, focused browser can assert. A unit test
  * can see that a class string contains `has-[[data-slot=command-input]:...]`;

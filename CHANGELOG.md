@@ -6,6 +6,50 @@ claim deployment: a tag says what the code is, not where it runs.
 
 ## Unreleased
 
+### Changed — every component follows the front-end rules
+- Typography comes only from a `.type-*` role. Every stock size, weight, family, tracking, leading and case utility in `components/ui`, `components/agent`, `components/ai-elements`, the docs and the app is replaced by a role (`text-sm`/`text-xs` → `type-small`, a medium label or menu item → `type-nav`, an input → `type-body`, a title → `type-h5`).
+- Motion uses the system curves only: `ease-out` → `ease-enter`, `ease-in` → `ease-exit`, `ease-linear`/`ease-in-out` → `ease-move`.
+- Raw `<button>`, `<label>`, `<table>` and `<hr>` outside `components/ui` are replaced by `Button`, `Label`, `Table` and `Separator`, and the theme toggle and toast preview draw their glyphs through `Icon`.
+
+### Changed — irreversible actions ask first
+- `AlertDialogConfirm` (in `components/ui/alert-dialog.tsx`) is the whole confirmation in one element: a title, an optional description, the action's verb, and `onConfirm`, which runs only from the confirming button. Wrap the trigger, or drive it with `open` / `onOpenChange` from a menu item.
+- Clearing the terminal, removing an attachment, removing a queued message and deleting a conversation from the agent history now ask first. The history keeps its Undo toast after a confirmed delete.
+
+### Changed — layout
+- `Button` wraps plain-text children in `ButtonLabel`, so a label that runs out of room ends in an ellipsis instead of being cut off.
+- The docs header uses tighter padding below 640px, so a 320px screen no longer scrolls sideways.
+- Docs text breaks a long code name rather than spilling out of its column, and `Meta` rows wrap their keys.
+- `SelectValue` truncates with an ellipsis (its `line-clamp` was cancelled by `flex`), and `SelectTrigger` shrinks inside a narrow parent.
+- `AvatarGroupCount` grows into a pill when the number is wider than the circle, so "+248" stays inside it.
+- State grids in the docs show one cell per row on phones and add columns as room allows.
+- The sidebar demo's team and version menus open below on mobile instead of off the left edge.
+- The full-screen live workspace page no longer renders the docs header and rail hidden behind it.
+- The stack trace header wraps its message to its own line when the row is narrow, instead of squeezing it to a few pixels.
+- Docs frames (the page column, the preview stage and `Panel`) use 16px padding below 640px, giving phone specimens 48px more room.
+- `Command` no longer scrolls the page on load. cmdk scrolls its auto-selected first item into view when it mounts, which jumped a page with an inline command below the fold; `Command` puts the page back unless focus is already inside it.
+
+### Added — check:registry
+- `npm run check:registry` (`scripts/check-registry.mjs`, in `verify` and `verify:fast`) restores the non-Flutter checks the parity script used to run: registry renames and removals, namespaced registry dependencies, the generated `public/r` index and install commands against `registry.json`, the docs catalogue against the contract, every type role declared in both the contract and `styles/typeset.css` with three steps each, and the public agent barrel.
+
+### Added — type roles
+- `type-h5` (14/20 · 15/22 · 16/24, semibold): the title of a dialog, sheet, drawer, alert dialog or card.
+- `type-cta` (12/16 · 13/18 · 14/20, semibold, normal tracking, case left to the text): the call-to-action role. `Button emphasis="caps"` now sets `type-cta` in place of the size's role and no longer uppercases. Large and extra-large buttons use `type-h5`; the rest use `type-nav`.
+- There are now nineteen public roles.
+
+### Changed — type-lead
+- `type-lead` is 2px smaller: 16/20 · 17/22 · 18/24.
+
+### Changed — the tests
+- `npm run check:rules` (`scripts/check-rules.mjs`, in `verify` and `verify:fast`) reads every source file's class strings, inline styles and CSS, and fails on hard-coded typography, colour or motion, an unknown `type-*` role, a raw element a DS component replaces, or a Lucide icon rendered directly instead of through `Icon` (a documented `// allow-direct-icon:` line above it is the one exception). `test/rules/{typography,colour,motion,components}.test.ts` run the same scan.
+- `test/rules/component-tests.test.ts` requires every component in `components/ui`, `components/agent` and `components/ai-elements` to have its own test.
+- `e2e/layout.spec.ts` opens every docs page at 320, 375, 768, 1024 and 1440px and fails on sideways scroll, text that spills or is clipped, controls something covers, and popups or dialogs that leave the screen.
+- `e2e/irreversible.spec.ts` presses every destructive action (delete, remove, clear, discard, reset and the like) and fails if it changes the page without an Alert Dialog confirmation first.
+- Removed the role-count tests (`typography-contract`, `typography-ownership`, `color-contract`) and `skill-contract`; the rule scan replaces them.
+
+### Removed — Flutter parity checks
+- The web system is no longer checked against the Flutter design system. Removed `npm run check:parity`, `check:audit` and `ledger` (and their place in `verify`, `verify:fast` and `verify:full`); the scripts `check-platform-parity.mjs`, `check-audit.mjs`, `build-ledger.mjs`, `build-docs-ledger.mjs` and `verify-flutter-symbols.mjs`; `e2e/ledger-evidence.spec.ts` and `test/foundation/audit-guard.test.ts`; and the data they read (`docs/contracts/`, `docs/architecture/platform-parity.md`, `docs/migrations/flutter-0.0.3-web.md`).
+- The `flutter` field is gone from `lib/motion-names.ts` and the docs motion page; `flutterName`, `flutterOwnership`, `origin` and `FLUTTER_SNAPSHOT` are gone from `lib/ds/platform-contract.ts`. The Flutter assertions in the foundation tests are removed.
+
 ### Changed — model logo badges
 - `ModelSelectorLogo` draws its monogram on the system: `type-badge`, foreground on the secondary surface, a 20px round chip with a border ring (14:1 contrast in dark, 18:1 in light). A caller-supplied `src` logo is 20px and never colour-inverted. `ModelSelectorLogoGroup` separates logos with a background outline instead of a dark-mode fill. The model selector demo now shows a badge on the button (re-entering on `anim-enter` when the provider changes), on every row, and a stacked group of the providers.
 

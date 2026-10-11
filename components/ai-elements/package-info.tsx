@@ -87,12 +87,12 @@ export const PackageInfoChangeType = ({
 
   return (
     <Badge
-      className={cn("gap-1 capitalize", className)}
+      className={cn("gap-1", className)}
       variant={changeTypeVariants[changeType]}
       {...props}
     >
       {changeTypeIcons[changeType]}
-      {children ?? changeType}
+      {children ?? changeType.charAt(0).toUpperCase() + changeType.slice(1)}
     </Badge>
   );
 };

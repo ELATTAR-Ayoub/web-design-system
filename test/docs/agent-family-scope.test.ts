@@ -23,7 +23,7 @@ describe("the agent family is the workspace", () => {
     const FORBIDDEN = /agent-console|AgentConsole|PromptBar/;
     const TEXT = /\.(tsx?|mjs|cjs|js|json|css|md|mdx|txt|yml|yaml)$/;
     const SKIP_DIRS = new Set(["node_modules", ".next", ".git", "test-results"]);
-    // Historical records, generated ledgers, and the places that assert the removal.
+    // Historical records, contract documents, and the places that assert the removal.
     const HISTORICAL = [
       "docs/superpowers/",
       "docs/audits/",

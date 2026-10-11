@@ -5,6 +5,7 @@ import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
 import { useChartMotion } from "@/components/ds/chart-motion";
 import { DAILY_VISITS, DESKTOP_MOBILE_CONFIG, PLOT } from "@/components/ds/charts/data";
+import { Button } from "@/components/ui/button";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
@@ -43,15 +44,14 @@ export function ChartShowcase() {
             const entry = DESKTOP_MOBILE_CONFIG[key];
             const off = hidden.has(key);
             return (
-              <button
+              <Button
                 key={key}
                 type="button"
+                variant="outline"
+                size="sm"
                 onClick={() => toggle(key)}
                 aria-pressed={!off}
-                className={cn(
-                  "type-small flex items-center gap-1.5 rounded-full border border-border px-2.5 py-1 transition-colors duration-normal",
-                  off ? "text-muted-foreground" : "text-foreground",
-                )}
+                className={cn(off ? "text-muted-foreground" : "text-foreground")}
               >
                 <span
                   aria-hidden
@@ -59,7 +59,7 @@ export function ChartShowcase() {
                   style={{ backgroundColor: off ? "var(--color-muted-foreground)" : entry.color }}
                 />
                 {entry.label}
-              </button>
+              </Button>
             );
           })}
         </div>

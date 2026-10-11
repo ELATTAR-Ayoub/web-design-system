@@ -7,7 +7,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const progressIndicatorVariants = cva(
-  "h-full w-full flex-1 transition-transform duration-normal ease-out",
+  "h-full w-full flex-1 transition-transform duration-normal ease-enter",
   {
     variants: {
       tone: {

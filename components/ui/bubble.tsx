@@ -76,7 +76,7 @@ function BubbleContent({
     <Comp
       data-slot="bubble-content"
       className={cn(
-        "w-fit max-w-full min-w-0 overflow-hidden rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed wrap-break-word group-data-[align=end]/bubble:self-end [button]:text-left [button,a]:transition-colors [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50",
+        "w-fit max-w-full min-w-0 overflow-hidden rounded-xl border border-transparent px-3 py-2 type-small wrap-break-word group-data-[align=end]/bubble:self-end [button]:text-left [button,a]:transition-colors [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50",
         className
       )}
       {...props}
@@ -85,7 +85,7 @@ function BubbleContent({
 }
 
 const bubbleReactionsVariants = cva(
-  "absolute z-10 flex w-fit shrink-0 items-center justify-center gap-1 rounded-full bg-muted px-1.5 py-0.5 text-sm ring-3 ring-card has-[button]:p-0",
+  "absolute z-10 flex w-fit shrink-0 items-center justify-center gap-1 rounded-full bg-muted px-1.5 py-0.5 type-small ring-3 ring-card has-[button]:p-0",
   {
     variants: {
       side: {
@@ -144,7 +144,7 @@ function BubbleReactions({
               aria-pressed={r.mine ?? false}
               onClick={() => onReact?.(r.label)}
               className={cn(
-                "group/reaction press inline-flex h-7 items-center gap-1 rounded-pill border px-2 text-sm",
+                "group/reaction press inline-flex h-7 items-center gap-1 rounded-pill border px-2 type-small",
                 "outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50",
                 r.mine
                   ? "border-action/40 bg-action/10 text-action-ink"
@@ -159,7 +159,7 @@ function BubbleReactions({
                   showCount === "always"
                     ? "w-4 opacity-100"
                     : cn(
-                        "w-0 opacity-0 transition-[width,opacity] duration-fast ease-out",
+                        "w-0 opacity-0 transition-[width,opacity] duration-fast ease-enter",
                         "group-hover/reaction:w-4 group-hover/reaction:opacity-100",
                         "group-focus-visible/reaction:w-4 group-focus-visible/reaction:opacity-100"
                       )

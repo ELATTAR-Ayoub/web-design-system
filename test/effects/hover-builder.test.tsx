@@ -3,12 +3,12 @@
  *
  * `hover-builder` is the odd one among the effects pages
  * (`components/docs/component-docs/hover-builder/page.tsx` says so directly):
- * there is no bespoke `@utility` for it, because Flutter's `HoverBuilder`
- * widget exists only to give a JavaScript-driven UI a pointer-hover callback,
- * and the web already has `:hover` natively. The capability IS the pattern of
+ * there is no bespoke `@utility` for it, because a
+ * JavaScript pointer-hover callback is unnecessary here: the web already has
+ * `:hover` natively. The capability IS the pattern of
  * pairing Tailwind's own `hover:`, `group`/`group-hover:` and `focus-visible:`
  * variants — `group` on the ancestor that owns the hover, `group-hover:*` on
- * the descendant that reacts to it, and a `focus-visible:` counterpart so the
+ * the descendant that reacts to it, and a `focus-visible:` twin so the
  * same result reaches a keyboard user. What this test protects against is
  * that pairing silently drifting apart: a descendant that reacts to
  * `group-hover:` only makes sense on a page where its ancestor still carries
@@ -28,8 +28,8 @@
  * `@utility` to ground against `styles/utilities.css` here, unlike the other
  * three effects in this wave — the page itself documents that these are
  * Tailwind's own compiled variants, not a system-defined class. No e2e spec
- * currently exercises `hover-builder` (checked `e2e/ledger-evidence.spec.ts`
- * and `e2e/batch4.spec.ts`; neither references it), so the real triggered
+ * currently exercises `hover-builder` (checked `e2e/batch4.spec.ts`; it
+ * does not reference it), so the real triggered
  * hover interaction is unverified beyond this class-pairing check until one
  * is written.
  *

@@ -98,7 +98,7 @@ export default function ShadowsPage() {
                   </span>
                 </div>
                 <p className="type-number-sm mt-3 text-action-ink">{s.token}</p>
-                <p className="type-small mt-1 leading-snug text-muted-foreground">{s.use}</p>
+                <p className="type-small mt-1 text-muted-foreground">{s.use}</p>
               </div>
             ))}
           </div>
@@ -122,7 +122,7 @@ export default function ShadowsPage() {
                   </span>
                 </div>
                 <p className="type-number-sm mt-3 text-action-ink">{s.token}</p>
-                <p className="type-small mt-1 leading-snug text-muted-foreground">{s.use}</p>
+                <p className="type-small mt-1 text-muted-foreground">{s.use}</p>
               </div>
             ))}
           </div>

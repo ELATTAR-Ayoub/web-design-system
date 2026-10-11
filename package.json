@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit",
     "check:tokens": "node scripts/check-tokens.mjs",
     "check:provenance": "vitest run test/licence",
-    "verify": "npm run registry:build && npm run check:tokens && npm run check:provenance && npm run check:refs && npm run check:parity && npm run check:audit && npm run typecheck && npm run lint && npm run build",
+    "verify": "npm run registry:build && npm run check:tokens && npm run check:rules && npm run check:provenance && npm run check:refs && npm run check:registry && npm run typecheck && npm run lint && npm run build",
     "check:refs": "node scripts/check-refs.mjs",
     "test:unit": "vitest run",
     "test:e2e": "playwright test",
@@ -20,11 +20,10 @@
     "registry:validate": "vitest run test/registry",
     "docs:validate": "node scripts/validate-docs.mjs",
     "test:e2e:registry": "playwright test e2e/registry-consumer.spec.ts -c playwright.registry.config.ts",
-    "verify:fast": "npm run check:tokens && npm run check:provenance && npm run check:refs && npm run check:parity && npm run check:audit && npm run typecheck && npm run lint && npm run test:unit",
-    "verify:full": "npm run registry:build && npm run verify:fast && npm run registry:validate && npm run docs:validate && npm run build && npm run test:e2e && npm run ledger && npm run test:e2e:registry",
-    "check:parity": "node scripts/check-platform-parity.mjs",
-    "check:audit": "node scripts/check-audit.mjs",
-    "ledger": "node scripts/build-ledger.mjs && node scripts/build-docs-ledger.mjs"
+    "verify:fast": "npm run check:tokens && npm run check:rules && npm run check:provenance && npm run check:refs && npm run check:registry && npm run typecheck && npm run lint && npm run test:unit",
+    "verify:full": "npm run registry:build && npm run verify:fast && npm run registry:validate && npm run docs:validate && npm run build && npm run test:e2e && npm run test:e2e:registry",
+    "check:rules": "node scripts/check-rules.mjs",
+    "check:registry": "node scripts/check-registry.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

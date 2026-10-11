@@ -31,7 +31,7 @@ export const spec: ComponentDocSpec = {
       id: "preview",
       title: "Effect",
       description:
-        "A near-black-to-glass surface reads this as screened light; a paper surface gets the same ramp painted straight, at 0.9, masked to the corner — light no longer multiplies, following Flutter 0.0.3's ruling that a multiplied ramp over white reads as a grey-brown wash. Both fall out of the same declarations, keyed off .light / .dark. Hover swells the bloom; the host supplies overflow-hidden, isolation and a containing block, all of which bloom-cosmic sets for itself.",
+        "A near-black-to-glass surface reads this as screened light; a paper surface gets the same ramp painted straight, at 0.9, masked to the corner — light no longer multiplies, because a multiplied ramp over white reads as a grey-brown wash. Both fall out of the same declarations, keyed off .light / .dark. Hover swells the bloom; the host supplies overflow-hidden, isolation and a containing block, all of which bloom-cosmic sets for itself.",
       appliedAs: "bloom-cosmic",
       render: <FeedbackSurfaceSpecimen />,
       source: `<div className="bloom-cosmic relative rounded-xl bg-popover p-5 shadow-e3">

@@ -31,19 +31,19 @@ export const spec: ComponentDocSpec = {
         <div className="w-full max-w-sm space-y-4 rounded-lg border border-border bg-card p-4">
           <Field orientation="horizontal">
             <Checkbox id="preview-terms" defaultChecked />
-            <FieldLabel htmlFor="preview-terms" className="font-normal">
+            <FieldLabel htmlFor="preview-terms">
               I accept the seller terms
             </FieldLabel>
           </Field>
           <Field orientation="horizontal">
             <Checkbox id="preview-updates" />
-            <FieldLabel htmlFor="preview-updates" className="font-normal">
+            <FieldLabel htmlFor="preview-updates">
               Email me when a pack I own re-lists
             </FieldLabel>
           </Field>
           <Field orientation="horizontal">
             <Checkbox id="preview-partial" checked="indeterminate" />
-            <FieldLabel htmlFor="preview-partial" className="font-normal">
+            <FieldLabel htmlFor="preview-partial">
               Select all 12 cards
             </FieldLabel>
           </Field>
@@ -51,7 +51,7 @@ export const spec: ComponentDocSpec = {
       ),
       source: `<Field orientation="horizontal">
   <Checkbox id="terms" defaultChecked />
-  <FieldLabel htmlFor="terms" className="font-normal">
+  <FieldLabel htmlFor="terms">
     I accept the seller terms
   </FieldLabel>
 </Field>`,
@@ -75,7 +75,7 @@ export function TermsField() {
   return (
     <Field orientation="horizontal">
       <Checkbox id="terms" />
-      <FieldLabel htmlFor="terms" className="font-normal">
+      <FieldLabel htmlFor="terms">
         I accept the seller terms
       </FieldLabel>
     </Field>
@@ -103,7 +103,7 @@ export function TermsField() {
                 ].map(([label, count, checked]) => (
                   <Field key={label as string} orientation="horizontal">
                     <Checkbox id={`f-${label}`} defaultChecked={checked as boolean} />
-                    <FieldLabel htmlFor={`f-${label}`} className="font-normal">
+                    <FieldLabel htmlFor={`f-${label}`}>
                       {label}
                     </FieldLabel>
                     <span className="type-number-sm ml-auto text-muted-foreground">
@@ -148,7 +148,7 @@ export function TermsField() {
   <FieldGroup>
     <Field orientation="horizontal">
       <Checkbox id="available" defaultChecked />
-      <FieldLabel htmlFor="available" className="font-normal">Available now</FieldLabel>
+      <FieldLabel htmlFor="available">Available now</FieldLabel>
     </Field>
   </FieldGroup>
 </FieldSet>
@@ -259,7 +259,7 @@ export function TermsField() {
               <Field orientation="horizontal" data-invalid="true" className="max-w-lg">
                 <Checkbox id="terms-err" aria-invalid aria-describedby="terms-err-msg" />
                 <FieldContent>
-                  <FieldLabel htmlFor="terms-err" className="font-normal">
+                  <FieldLabel htmlFor="terms-err">
                     I accept the seller terms
                   </FieldLabel>
                   <FieldError id="terms-err-msg">

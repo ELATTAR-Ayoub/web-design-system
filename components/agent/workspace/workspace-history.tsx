@@ -5,6 +5,7 @@ import { ArchiveIcon, MoreHorizontalIcon, PlusIcon, Trash2Icon } from "lucide-re
 import { toast } from "sonner";
 
 import type { ConversationSummary } from "@/components/agent/core/conversations";
+import { AlertDialogConfirm } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -77,6 +78,7 @@ export function WorkspaceHistory({
   // Read once per mount so server and client group identically.
   const [mountedAt] = React.useState(() => Date.now());
   const groups = groupHistory(items, now ?? mountedAt);
+  const [pendingDelete, setPendingDelete] = React.useState<ConversationSummary | null>(null);
 
   const remove = (item: ConversationSummary) => {
     onDelete?.(item.id);
@@ -130,7 +132,7 @@ export function WorkspaceHistory({
                               </DropdownMenuItem>
                             ) : null}
                             {onDelete ? (
-                              <DropdownMenuItem variant="destructive" onSelect={() => remove(item)}>
+                              <DropdownMenuItem variant="destructive" onSelect={() => setPendingDelete(item)}>
                                 <Icon icon={Trash2Icon} size="sm" tone="inherit" aria-hidden />
                                 Delete
                               </DropdownMenuItem>
@@ -146,6 +148,13 @@ export function WorkspaceHistory({
           ))
         )}
       </SidebarContent>
+      <AlertDialogConfirm
+        description={pendingDelete?.title}
+        onConfirm={() => pendingDelete && remove(pendingDelete)}
+        onOpenChange={(open) => !open && setPendingDelete(null)}
+        open={pendingDelete !== null}
+        title="Delete this conversation?"
+      />
     </>
   );
 }

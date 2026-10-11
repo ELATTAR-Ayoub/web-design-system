@@ -58,7 +58,7 @@ function MenubarTrigger({
     <MenubarPrimitive.Trigger
       data-slot="menubar-trigger"
       className={cn(
-        "flex min-h-8 items-center rounded-md px-3 text-sm font-medium outline-hidden select-none hover:bg-muted aria-expanded:bg-muted",
+        "flex min-h-8 items-center rounded-md px-3 type-nav outline-hidden select-none hover:bg-muted aria-expanded:bg-muted",
         className
       )}
       {...props}
@@ -106,7 +106,7 @@ function MenubarItem({
       data-variant={variant}
       disabled={disabled}
       className={cn(
-        "group/menubar-item relative flex cursor-default items-center gap-2 rounded-md px-3 py-2 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground data-inset:pl-9 data-[variant=destructive]:text-destructive-ink data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive-ink dark:data-[variant=destructive]:focus:bg-destructive/20 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-[variant=destructive]:*:[svg]:text-destructive-ink!",
+        "group/menubar-item relative flex cursor-default items-center gap-2 rounded-md px-3 py-2 type-nav outline-hidden select-none focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground data-inset:pl-9 data-[variant=destructive]:text-destructive-ink data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive-ink dark:data-[variant=destructive]:focus:bg-destructive/20 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-[variant=destructive]:*:[svg]:text-destructive-ink!",
         className
       )}
       {...props}
@@ -145,7 +145,7 @@ function MenubarCheckboxItem({
       data-inset={inset}
       disabled={disabled}
       className={cn(
-        "relative flex cursor-default items-center gap-2 rounded-md py-2 pr-3 pl-9 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground data-inset:pl-9 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "relative flex cursor-default items-center gap-2 rounded-md py-2 pr-3 pl-9 type-nav outline-hidden select-none focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground data-inset:pl-9 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className
       )}
       checked={checked}
@@ -192,7 +192,7 @@ function MenubarRadioItem({
       data-inset={inset}
       disabled={disabled}
       className={cn(
-        "relative flex cursor-default items-center gap-2 rounded-md py-2 pr-3 pl-9 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground data-inset:pl-9 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "relative flex cursor-default items-center gap-2 rounded-md py-2 pr-3 pl-9 type-nav outline-hidden select-none focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground data-inset:pl-9 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       {...props}
@@ -233,7 +233,7 @@ function MenubarLabel({
       data-slot="menubar-label"
       data-inset={inset}
       className={cn(
-        "px-3 py-2 text-sm font-medium data-inset:pl-9",
+        "px-3 py-2 type-nav data-inset:pl-9",
         className
       )}
       {...props}
@@ -262,7 +262,7 @@ function MenubarShortcut({
     <span
       data-slot="menubar-shortcut"
       className={cn(
-        "ml-auto text-xs tracking-widest text-muted-foreground group-focus/menubar-item:text-accent-foreground",
+        "ml-auto type-small text-muted-foreground group-focus/menubar-item:text-accent-foreground",
         className
       )}
       {...props}
@@ -289,7 +289,7 @@ function MenubarSubTrigger({
       data-slot="menubar-sub-trigger"
       data-inset={inset}
       className={cn(
-        "flex cursor-default items-center gap-2 rounded-md px-3 py-2 text-sm outline-none select-none focus:bg-accent focus:text-accent-foreground data-inset:pl-9 data-open:bg-accent data-open:text-accent-foreground [&_svg:not([class*='size-'])]:size-4",
+        "flex cursor-default items-center gap-2 rounded-md px-3 py-2 type-nav outline-none select-none focus:bg-accent focus:text-accent-foreground data-inset:pl-9 data-open:bg-accent data-open:text-accent-foreground [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       {...props}

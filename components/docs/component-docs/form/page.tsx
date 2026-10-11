@@ -375,7 +375,7 @@ function ServerErrorForm() {
       id: "form-recovery",
       title: "useFormRecovery",
       description:
-        "The web-idiomatic equivalent of Flutter 0.0.3's Form.revealFirstError() — not a port of the Dart class, which walks a widget tree it owns end to end, but the same intent reached with what the browser already has: a definitive order for “what comes first” (DOM order) and a built-in way to get a reader there (scrollIntoView + .focus()).",
+        "Moves the reader to the first invalid field, using what the browser already has: a definitive order for “what comes first” (DOM order) and a built-in way to get a reader there (scrollIntoView + .focus()).",
       blocks: [
         {
           label: "What it does",

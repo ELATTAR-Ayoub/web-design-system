@@ -1,10 +1,10 @@
 /**
- * The Typeset catalog is the ONE list of the 17 public roles — both
+ * The Typeset catalog is the ONE list of the 19 public roles — both
  * `/design-system/typography` renders it; the old `/design-system/docs/typeset`
  * URL redirects there rather than maintaining a second role list.
  *
  * Contract asserted here: the first thing the catalog renders is a
- * CONTINUOUS preview of all 17 roles, each in its own class, in the exact
+ * CONTINUOUS preview of all 19 roles, each in its own class, in the exact
  * canonical order — and only after that do the grouped Words / Code /
  * Numerics detail sections appear. Exact membership: no role missing, none
  * extra, nothing duplicated.
@@ -21,11 +21,13 @@ const CANONICAL_ORDER = [
   "h2",
   "h3",
   "h4",
+  "h5",
   "lead",
   "body",
   "small",
   "nav",
   "badge",
+  "cta",
   "code",
   "identifier",
   "number-sm",
@@ -36,13 +38,13 @@ const CANONICAL_ORDER = [
 ];
 
 describe("TYPESET_ROLES", () => {
-  it("is exactly the 17 public roles, in canonical order", () => {
+  it("is exactly the 18 public roles, in canonical order", () => {
     expect(TYPESET_ROLES.map((r) => r.cls)).toEqual(CANONICAL_ORDER);
   });
 });
 
 describe("<TypesetCatalog />", () => {
-  it("renders a continuous preview of all 17 roles, in canonical order, before the detail groups", () => {
+  it("renders a continuous preview of all 18 roles, in canonical order, before the detail groups", () => {
     const { container } = render(<TypesetCatalog />);
 
     const preview = container.querySelector('[data-testid="typeset-continuous-preview"]');
@@ -57,7 +59,7 @@ describe("<TypesetCatalog />", () => {
 
     const roleEls = within(preview as HTMLElement).getAllByTestId("typeset-role");
     expect(roleEls.map((el) => el.getAttribute("data-role"))).toEqual(CANONICAL_ORDER);
-    expect(roleEls).toHaveLength(17);
+    expect(roleEls).toHaveLength(19);
   });
 
   it("groups the detail sections into exactly Words, Code, Numerics — after the continuous preview", () => {
@@ -77,7 +79,7 @@ describe("<TypesetCatalog />", () => {
 
     // Exact membership per group, nothing extra.
     expect(within(words).getAllByTestId("typeset-role").map((el) => el.getAttribute("data-role"))).toEqual(
-      ["display", "h1", "h2", "h3", "h4", "lead", "body", "small", "nav", "badge"],
+      ["display", "h1", "h2", "h3", "h4", "h5", "lead", "body", "small", "nav", "badge", "cta"],
     );
     expect(within(code).getAllByTestId("typeset-role").map((el) => el.getAttribute("data-role"))).toEqual(
       ["code", "identifier"],

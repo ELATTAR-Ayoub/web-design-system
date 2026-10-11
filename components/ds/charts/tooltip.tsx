@@ -192,11 +192,11 @@ export function TooltipFormatter() {
             <ChartTooltipContent
               hideLabel
               formatter={(value, name) => (
-                <div className="flex min-w-32 items-center text-xs text-muted-foreground">
+                <div className="flex min-w-32 items-center type-small text-muted-foreground">
                   {SPORT_CONFIG[name as keyof typeof SPORT_CONFIG]?.label ?? name}
                   <div className="type-number-sm ml-auto flex items-baseline gap-0.5 text-foreground">
                     {value}
-                    <span className="font-normal text-muted-foreground">kcal</span>
+                    <span className="type-small text-muted-foreground">kcal</span>
                   </div>
                 </div>
               )}
@@ -261,14 +261,14 @@ export function TooltipAdvanced() {
                   {SPORT_CONFIG[name as keyof typeof SPORT_CONFIG]?.label ?? name}
                   <div className="type-number-sm ml-auto flex items-baseline gap-0.5 text-foreground">
                     {value}
-                    <span className="font-normal text-muted-foreground">kcal</span>
+                    <span className="type-small text-muted-foreground">kcal</span>
                   </div>
                   {index === 1 && (
-                    <div className="mt-1.5 flex basis-full items-center border-t pt-1.5 text-xs font-medium text-foreground">
+                    <div className="mt-1.5 flex basis-full items-center border-t pt-1.5 type-nav text-foreground">
                       Total
                       <div className="type-number-sm ml-auto flex items-baseline gap-0.5 text-foreground">
                         {item.payload.running + item.payload.swimming}
-                        <span className="font-normal text-muted-foreground">kcal</span>
+                        <span className="type-small text-muted-foreground">kcal</span>
                       </div>
                     </div>
                   )}

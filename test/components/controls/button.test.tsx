@@ -122,15 +122,18 @@ describe("Button", () => {
     },
   );
 
-  it("applies no case transformation unless a variant asks for one", () => {
-    // Uppercase was removed from every typography ROLE. It survives in exactly
-    // one place — `emphasis="caps"` — because case is a decision a component
-    // makes about one control, which is what `--tracking-cta` in tokens.css is
-    // documented as existing for. This asserts the default has not drifted
-    // back into carrying it.
-    const { container } = render(<Button variant="premium">Claim Reward</Button>);
-    const button = container.querySelector("button")!;
-    expect(button.className).not.toMatch(/(?<![\w-])uppercase(?![\w-])/);
+  it("never transforms case, caps included; caps takes the CTA role instead of the size role", () => {
+    const { container } = render(
+      <>
+        <Button variant="premium">Claim Reward</Button>
+        <Button variant="premium" emphasis="caps">Claim Reward</Button>
+      </>
+    );
+    const [plain, caps] = [...container.querySelectorAll("button")];
+    for (const button of [plain, caps]) expect(button.className).not.toMatch(/(?<![w-])uppercase(?![w-])/);
+    expect(plain).toHaveClass("type-nav");
+    expect(caps).toHaveClass("type-cta");
+    expect(caps).not.toHaveClass("type-nav");
   });
 
   it("truncates a long label through ButtonLabel without widening", () => {

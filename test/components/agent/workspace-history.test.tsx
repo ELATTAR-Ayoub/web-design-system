@@ -1,6 +1,6 @@
 import * as React from "react";
 import { describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import type { ConversationSummary } from "@/components/agent/core/conversations";
@@ -70,13 +70,27 @@ describe("WorkspaceHistory", () => {
     expect(onArchive).toHaveBeenCalledWith("a");
   });
 
-  it("delete shows a toast whose Undo restores the row", async () => {
+  it("delete asks first, and cancelling keeps the row", async () => {
+    const onDelete = vi.fn();
+    renderHistory({ onDelete });
+    const user = setup();
+    await user.click(screen.getByRole("button", { name: "Actions for Today chat" }));
+    await user.click(await screen.findByRole("menuitem", { name: "Delete" }));
+    const confirm = await screen.findByRole("alertdialog", { name: "Delete this conversation?" });
+    expect(onDelete).not.toHaveBeenCalled();
+    await user.click(within(confirm).getByRole("button", { name: "Cancel" }));
+    expect(onDelete).not.toHaveBeenCalled();
+  });
+
+  it("confirmed delete shows a toast whose Undo restores the row", async () => {
     const onDelete = vi.fn();
     const onRestore = vi.fn();
     renderHistory({ onDelete, onRestore });
     const user = setup();
     await user.click(screen.getByRole("button", { name: "Actions for Today chat" }));
     await user.click(await screen.findByRole("menuitem", { name: "Delete" }));
+    const confirm = await screen.findByRole("alertdialog", { name: "Delete this conversation?" });
+    await user.click(within(confirm).getByRole("button", { name: "Delete" }));
     expect(onDelete).toHaveBeenCalledWith("a");
     await user.click(await screen.findByRole("button", { name: "Undo" }));
     expect(onRestore).toHaveBeenCalledWith(items[0]);

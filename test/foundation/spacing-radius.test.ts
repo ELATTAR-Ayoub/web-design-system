@@ -2,19 +2,12 @@
  * Geometry: the spacing ladder, the corner ladder, the measures, and the floor
  * under every hit target.
  *
- * The counterpart platform states the same geometry in Dart —
- * `flutter-design-system/lib/src/design_system/foundation/spacing.dart` holds
- * `space()`, `Radii`, `LayoutWidths` and `TouchTargets`. Neither side consumes
- * the other; `docs/contracts/flutter-web-foundation-parity.md` is the mapping,
- * and this test asserts the web half of it.
- *
  * The RADIUS values are transcribed here rather than derived, and that is the
- * point of the test: they are the one axis where the two platforms hold the
- * same numbers under the same names, so a silent edit on either side has to
- * show up as a failure somewhere.
+ * point of the test: a silent edit to a rung has to show up as a failure
+ * somewhere.
  */
 
-import { existsSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
@@ -70,8 +63,8 @@ describe("the spacing ladder", () => {
   });
 });
 
-describe("the corner ladder matches the counterpart platform", () => {
-  /** `Radii` in spacing.dart, rung for rung. `xl2/xl3/xl4` are Dart spellings. */
+describe("the corner ladder holds its numbers", () => {
+  /** Every rung of the corner ladder. */
   const RADII: Record<string, number> = {
     "--radius-xs": 2,
     "--radius-sm": 6,
@@ -88,7 +81,7 @@ describe("the corner ladder matches the counterpart platform", () => {
     expect(Object.keys(RADII).filter((k) => value(k) === null)).toEqual([]);
   });
 
-  it("holds the same number on every rung", () => {
+  it("holds the expected number on every rung", () => {
     const wrong = Object.entries(RADII)
       .filter(([k, n]) => px(value(k)) !== n)
       .map(([k, n]) => `${k}: ${value(k)} (expected ${n}px)`);
@@ -97,8 +90,7 @@ describe("the corner ladder matches the counterpart platform", () => {
 
   /**
    * `--radius` is the shadcn base every vendored component computes from, and
-   * both theme blocks set it. It is numerically the `md` rung; the counterpart
-   * platform derives its addon-button corner from that identity, so the two
+   * both theme blocks set it. It is numerically the `md` rung, so the two
    * disagreeing here would break an arithmetic relationship rather than a
    * value.
    */
@@ -112,7 +104,7 @@ describe("the corner ladder matches the counterpart platform", () => {
 });
 
 describe("the measures", () => {
-  /** `LayoutWidths` and `LayoutHeights`, minus Flutter's own `article` rung. */
+  /** The width measures. */
   const WIDTHS = [
     "--width-shell",
     "--width-content",
@@ -141,9 +133,8 @@ describe("the measures", () => {
 
 describe("the minimum interactive target is a token, not a memory", () => {
   /**
-   * The global constraint is 44x44 CSS pixels, and the counterpart platform
-   * states it as `TouchTargets.minimum`. The web had the number in RULES §7 and
-   * in a Flutter file, and nowhere a stylesheet could read it — so a control
+   * The global constraint is 44x44 CSS pixels. The number was in RULES §7 and
+   * nowhere a stylesheet could read it — so a control
    * declaring its own minimum had to write `44px` by hand, which §0 forbids and
    * `check:tokens` would then catch as the symptom of a missing token rather
    * than as the cause.
@@ -154,31 +145,5 @@ describe("the minimum interactive target is a token, not a memory", () => {
 
   it("declares it as 44px", () => {
     expect(px(value("--size-target-min"))).toBe(44);
-  });
-});
-
-describe("the parity document exists and covers geometry", () => {
-  const DOC = "docs/contracts/flutter-web-foundation-parity.md";
-
-  it("is written", () => {
-    expect(existsSync(join(ROOT, ...DOC.split("/"))), DOC).toBe(true);
-  });
-
-  it("maps every radius rung and the target floor", () => {
-    if (!existsSync(join(ROOT, ...DOC.split("/")))) return;
-    const doc = read(DOC);
-    const names = [
-      "--radius-xs",
-      "--radius-sm",
-      "--radius-md",
-      "--radius-lg",
-      "--radius-xl",
-      "--radius-2xl",
-      "--radius-3xl",
-      "--radius-4xl",
-      "--radius-pill",
-      "--size-target-min",
-    ];
-    expect(names.filter((n) => !doc.includes(n)), "geometry tokens absent from the parity doc").toEqual([]);
   });
 });

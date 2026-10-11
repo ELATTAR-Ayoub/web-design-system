@@ -22,52 +22,41 @@ const ROOT = process.cwd();
 /**
  * Directories we scan at all.
  *
- * `styles` joined the list when the system moved out of `app/globals.css`. It
- * is not an exemption — the four files there are scanned like every other, and
+ * `styles` is on the list but is not an exemption — the four files there are scanned like every other, and
  * the declaration-form rules (`checkAnimation`, `checkInkOnText`) run on them
- * exactly as they used to run on `globals.css`. What they get is the literal
- * exemption below, and only that.
+ * exactly as they run everywhere else. What they get is the literal exemption
+ * below, and only that.
  */
 const ROOTS = ["app", "components", "lib", "hooks", "styles"];
 
 /**
  * Nothing is exempt.
  *
- * This list used to hold the vendored shadcn components on the grounds that
- * `npx shadcn add` regenerates them, so policing them would be lost work. That
- * reasoning was wrong once this became a system meant to be reused: the
- * exemption was hiding thirteen real violations — Tailwind durations in
- * `sidebar`, `text-[0.8rem]` in `calendar` and `toggle`, `rounded-[2px]` in
- * `tooltip` and `chart` — in exactly the files a new project inherits first.
+ * The vendored shadcn components are policed like any other file, because they
+ * are the files a new project inherits first.
  *
  * The cost is real and accepted: **re-running `npx shadcn add` on a component
  * will fail this check until the regenerated file is swept back onto the
  * tokens.** That is the point. A failing build is how you find out that stock
  * shadcn's values have been reintroduced, which is otherwise invisible.
  *
- * The two files that used to be named here as genuine exceptions —
- * `components/ui/chart.tsx` for recharts' inline `#ccc`/`#fff`, and
- * `components/agent/voice/orb-vendor.tsx` for the vendored ElevenLabs defaults
- * — turned out not to be exceptions at all. The chart selectors never needed to
- * restate recharts' values (a class outranks an SVG presentation attribute), and
- * the orb's colour default was unreachable dead code. Both are fixed, this set
- * is empty, and there is no marker to put in it. See `isAllowed`.
+ * This set is empty and there is no marker to put in it. Recharts' inline
+ * `#ccc`/`#fff` need no exception, because a class outranks an SVG
+ * presentation attribute. See `isAllowed`.
  */
 const VENDORED_EXEMPT = new Set();
 
 /**
  * Files allowed to hold literal values.
  *
- * Four, and they are the same one file it has always been: `app/globals.css`
- * held the colour, type, radius, spacing and motion systems until they were
- * split into `styles/tokens.css`, `styles/typeset.css`, `styles/motion.css` and
- * `styles/utilities.css`. Literals in those four are the DEFINITION rather than
- * a violation of it, exactly as before.
+ * `styles/tokens.css`, `styles/typeset.css`, `styles/motion.css` and
+ * `styles/utilities.css` hold the colour, type, radius, spacing and motion
+ * systems. Literals in those four are the DEFINITION rather than a violation
+ * of it.
  *
- * `app/globals.css` STAYS on the list, and it was taken off first to find out
- * whether it needed to. It does — not for literals it holds, because after the
- * split it holds none, but because two of the class-shaped rules cannot tell an
- * import specifier or a piece of documentation from a use:
+ * `app/globals.css` is on the list too. It holds no literals, but two of the
+ * class-shaped rules cannot tell an import specifier or a piece of
+ * documentation from a use:
  *
  *   line 26  [foreign-animation]  the `tw-animate-css` import specifier, whose
  *            tail reads as an animation utility
@@ -78,9 +67,8 @@ const VENDORED_EXEMPT = new Set();
  *
  * (Those three are deliberately not spelled out here. `scripts/` is scanned by
  * Tailwind like any other tracked directory, so a comment that names a class
- * EMITS it — which is the same failure the markdown exclusion exists to stop,
- * and it was reintroduced here once already while this comment was being
- * written. Read them in `app/globals.css` instead.)
+ * EMITS it — which is the same failure the markdown exclusion exists to stop.
+ * Read them in `app/globals.css` instead.)
  *
  * Four findings, none of them a value written by hand. The entry is imports and
  * `@source` exclusions; the test that actually keeps it that way is
@@ -88,14 +76,9 @@ const VENDORED_EXEMPT = new Set();
  * `@utility`, `@keyframes` or `.type-*` rule at all — a stronger guarantee than
  * this guard could give it.
  *
- * This list used to hold three more — the shader recipes and rarity ladder,
- * which carried handoff hexes as GPU inputs rather than as design tokens. That
- * was a legitimate exception while the product lived here. The product has
- * since been removed, and the exception went with it. Adding a file back to
- * this set should feel expensive, and it is now the ONLY way to exempt
- * anything: the per-line marker that used to be the cheap alternative is gone,
- * along with all four of its uses. A file either defines the system or consumes
- * it.
+ * Adding a file to this set should feel expensive, and it is the ONLY way to
+ * exempt anything: there is no per-line marker. A file either defines the
+ * system or consumes it.
  */
 const LITERAL_ALLOWED = new Set([
   join("app", "globals.css"),
@@ -147,14 +130,11 @@ const RULES = [
      * A `.type-*` class carries a size, a line-height, a weight and sometimes a
      * transform -- the whole voice, under one name. Pairing it with a loose
      * `font-semibold` or `uppercase` puts an element's real typography half in
-     * `globals.css` and half in a className three files away, and only one of
+     * the stylesheet and half in a className three files away, and only one of
      * those halves moves when the scale does.
      *
-     * This shipped. `type-small font-semibold` appeared in three places because
-     * the system had no sentence-case group heading. The fix was not to write
-     * the weight by hand in all three; it was to add `.type-section` and use
-     * it. That is always the fix -- if no class says what you mean, the class
-     * is the thing that is missing.
+     * The fix is never to write the weight by hand -- if no class says what you
+     * mean, the class is the thing that is missing.
      */
     // The gap may not contain a comma. A className never needs one; a sentence
     // almost always does, and without this the rule flagged its own
@@ -185,7 +165,7 @@ const RULES = [
   {
     // `white` and `black` are literals wearing a utility's clothes. A scrim is a
     // dim of the page, so it is `bg-background/x`; an inner highlight belongs in
-    // a shadow token in globals.css.
+    // a shadow token in styles/tokens.css.
     id: "literal-bw",
     re: /\b(?:bg|text|border|ring|from|via|to|fill|stroke|divide|placeholder)-(?:white|black)(?:\/\d+)?\b/g,
     msg: "literal white/black — use a token (bg-background/15 for a scrim, --shadow-* for highlights)",
@@ -202,26 +182,24 @@ const RULES = [
      * RULES §1 rule 3: only `-ink` may carry text, because `-ink` is the end of
      * the ramp that is legible in the theme you are actually in. `--destructive`
      * is one mid red in both themes and measures below AA as copy on dark;
-     * `--color-warning` and `--color-info` were chosen against zinc 950 and
+     * `--color-warning` and `--color-info` are chosen against zinc 950 and
      * measure 1.67:1 and 1.81:1 on white (trap 12).
      *
      * The swap is free in both directions, which is why no legitimate exception
      * to this rule is known: `--destructive-ink` IS `--destructive` on light and
      * lifts it on dark, and `--success|warning|info-ink` ARE their raw tokens on
      * dark and deepen on light. `text-*-ink` therefore equals `text-*` in the
-     * theme the raw token was chosen for, and improves the other. `allow-
-     * hardcoded` still works, as it does on every rule here; nothing currently
-     * uses it for this one.
+     * theme the raw token was chosen for, and improves the other.
      *
      * Fills, borders, rings and blooms are untouched and correct:
      * `bg-destructive/12`, `ring-destructive/20` and
      * `[--bloom-1:var(--color-success)]` all stay. Only `text-`.
      *
-     * THIS HALF IS THE CLASS SPELLING ONLY, and it is skipped in `globals.css`
-     * along with every other literal rule. The declaration spelling —
-     * `color: var(--color-warning)` — is checked by `checkInkOnText` below,
-     * which runs everywhere including `globals.css`, because that is the one
-     * file where the declaration spelling actually occurs.
+     * THIS HALF IS THE CLASS SPELLING ONLY, and it is skipped in the files that
+     * may hold literals, along with every other literal rule. The declaration
+     * spelling — `color: var(--color-warning)` — is checked by `checkInkOnText`
+     * below, which runs everywhere including those stylesheets, because that is
+     * where the declaration spelling actually occurs.
      */
     // The negative lookahead is load-bearing twice over: `\b` matches before a
     // hyphen, so a bare `\b` fires on `text-destructive-ink` (the fix itself)
@@ -233,28 +211,23 @@ const RULES = [
   {
     // Tailwind's numeric duration scale is not our motion scale.
     //
-    // This used to enumerate Tailwind's default steps — 0, 75, 100, 150, 200,
-    // 300, 500, 700, 1000 — which meant `duration-400` sailed straight through,
-    // and did: `message-scroller` was animating its exit on a framework value
-    // nobody chose. Any bare number is wrong here whether or not Tailwind ships
-    // it, so the rule matches the shape rather than a list.
+    // Any bare number is wrong here whether or not Tailwind ships it, so the
+    // rule matches the shape rather than a list of Tailwind's steps.
     id: "stock-duration",
     re: /\bduration-\d+\b/g,
     msg: "a numeric duration — use duration-tick|fast|normal|slow|overlay-enter|open|reward|bloom",
   },
   {
-    // Easing is the other half of motion, and it was completely unguarded.
-    // Three raw curves were sitting in the vendored components — one of them
-    // `--ease-out`'s value written out by hand, a token duplicated as a
-    // literal, which is precisely the drift this file exists to catch.
+    // Easing is the other half of motion. A raw curve is a token duplicated as
+    // a literal, which is precisely the drift this file exists to catch.
     id: "arbitrary-easing",
     re: /\bease-\[[^\]]*\]/g,
     msg: "arbitrary easing — use ease-emphasized|out|in|in-out|out-flex|settle|standard, or add a key to --ease-*",
   },
   {
     // The focus ring is 3px everywhere in this system and is written `ring-3`.
-    // Four vendored components wrote `ring-[3px]` for the same measurement:
-    // one value, two spellings, and only one of them follows if it ever moves.
+    // `ring-[3px]` is the same measurement: one value, two spellings, and only
+    // one of them follows if it ever moves.
     id: "arbitrary-ring",
     re: /\bring-\[[^\]]*\]/g,
     msg: "arbitrary ring width — use ring-0|1|2|3",
@@ -278,14 +251,12 @@ const RULES = [
     // to for `--spacing(4)` — 16px that moves with the base. But the argument
     // is a free number, and stock shadcn's Questionnaire shipped
     // `translate-y-[--spacing(0.45)]`: 1.8px, which §3 of RULES.md calls not a
-    // decision but a mistake. The helper laundered it straight through the
-    // sweep.
+    // decision but a mistake. The helper would otherwise launder it.
     //
     // Its own rule rather than a widening of `arbitrary-spacing` above, because
-    // it has to fire on ANY utility. The two that shipped were `translate-y-[…]`
-    // — a prefix that list has never carried, so even the bare literal
-    // `translate-y-[1.8px]` would have passed. Matching the helper call itself
-    // is prefix-blind.
+    // it has to fire on ANY utility, including prefixes that list does not
+    // carry, such as `translate-y-[…]`. Matching the helper call itself is
+    // prefix-blind.
     //
     // The floor is `--spacing(0.5)` = 2px; `0.49` and below are hits.
     id: "sub-pixel-spacing",
@@ -311,22 +282,15 @@ const RULES = [
 /**
  * THERE IS NO SUPPRESSION MARKER, AND THERE MUST NOT BE ONE.
  *
- * `allow-hardcoded` used to exist here: a marker an author could write beside a
- * literal, with a reason, to have this guard skip the line. Four files carried
- * one. Every one of the four turned out to be fixable — the recharts selectors
- * did not need to restate recharts' greys (a class outranks a presentation
- * attribute), the vendored orb's colour default was unreachable dead code, the
- * "stand-in photograph" pixels were image content and belong in an asset file
- * under `public/`, and the one-off hover duration was simply a token with one
- * reader. The marker was not protecting genuine exceptions. It was where the
- * unfixed ones went to stop being visible.
+ * A marker an author could write beside a literal to have this guard skip the
+ * line would not protect genuine exceptions. It would be where the unfixed
+ * ones go to stop being visible.
  *
- * The argument for keeping it was that a rule which cannot be escaped is one a
- * future author routes around by deleting the rule. That is a real risk, and
- * the answer to it is not a back door: deleting this guard is a visible diff in
- * a file the parity check reads, and `test/foundation/token-source.test.ts`
- * fails if the four stylesheets stop being the only place literals live.
- * A suppression marker is invisible by design — that is the whole difference.
+ * A rule which cannot be escaped is one a future author may route around by
+ * deleting the rule. The answer to that is not a back door: deleting this guard
+ * is a visible diff, and `test/foundation/token-source.test.ts` fails if the
+ * stylesheets stop being the only place literals live. A suppression marker is
+ * invisible by design — that is the whole difference.
  *
  * If you have found a value that genuinely cannot come from a token, the answer
  * is a token, an asset, or a different implementation. Not a marker.
@@ -360,12 +324,12 @@ function isDerived(hit) {
   // one place `em` means the opposite: `tracking-[0.1em]` is a value somebody
   // chose, and `em` is simply how tracking is spelled.
   //
-  // The result was a hole in exactly the example the documentation uses.
-  // `AGENTS.md` and `RULES.md` §6 both name `tracking-[0.1em]` as the canonical
-  // forbidden value, and the guard silently passed it — the `1em` inside tripped
-  // the relative-unit escape. Found by `test/foundation/token-guard.test.ts`
-  // asserting that every declared rule fires, which is the entire argument for
-  // testing a guard rather than trusting that it is green.
+  // Otherwise the example the documentation uses would pass: `AGENTS.md` and
+  // `RULES.md` §6 both name `tracking-[0.1em]` as the canonical forbidden value,
+  // and the `1em` inside would trip the relative-unit escape.
+  // `test/foundation/token-guard.test.ts` asserts that every declared rule
+  // fires, which is the argument for testing a guard rather than trusting that
+  // it is green.
   if (/^tracking-/.test(hit)) {
     return hit.includes("var(--") || hit.includes("calc(");
   }
@@ -381,8 +345,8 @@ function isDerived(hit) {
     hit.includes("max(") ||
     hit.includes("clamp(") ||
     // No \b after the unit: `%` and `]` are both non-word characters, so a word
-    // boundary never matches at the end of `max-w-[85%]` and every percentage
-    // was being reported. Relative units are derived by definition — a
+    // boundary never matches at the end of `max-w-[85%]`. Relative units are
+    // derived by definition — a
     // proportion of the parent or the viewport tracks whatever it is inside.
     /\d(?:%|vh|vw|dvh|dvw|svh|lvh|fr|ch|ex|em)/.test(hit) ||
     /\[(?:Canvas|CanvasText|ButtonFace|ButtonText|Field|FieldText|inherit|auto|none|full)\]/.test(hit)
@@ -393,10 +357,8 @@ function isDerived(hit) {
 /**
  * A runtime-composed `animation:` string, declared as such.
  *
- * Deliberately a different marker from `allow-hardcoded`, because it is a
- * different claim. `allow-hardcoded` says "this literal is outside the system
- * on purpose". This says "this value is computed, so no static check can see
- * it — here is why it has to be".
+ * This is not a literal exemption. It says "this value is computed, so no
+ * static check can see it — here is why it has to be".
  */
 const DYNAMIC_MOTION = /allow-dynamic-motion/;
 
@@ -432,15 +394,13 @@ const files = ROOTS.flatMap((r) => {
 /**
  * Every `animation:` shorthand in the codebase, wherever it is written.
  *
- * This used to run on `globals.css` alone, which left a real hole: three files
- * assemble the shorthand at runtime in a template literal — the avatar composes
+ * It runs on every file, because some files assemble the shorthand at runtime
+ * in a template literal — the avatar composes
  * `agent-cube-${name} ${duration}s ${easing}` per cube, because twenty scenes
  * with twenty cubes each need a name, a duration and a stagger computed from
- * the recipe, and that combinatorial space cannot be utility classes. Those
- * strings were correct, but nothing checked them, so the next edit could put a
- * raw curve in one and the build would stay green.
+ * the recipe, and that combinatorial space cannot be utility classes.
  *
- * It now runs on every file, and checks three things:
+ * It checks three things:
  *
  *   1. **Easing is a token.** `linear` and `steps()` pass: a constant drift and
  *      a stepped ratchet are intentionally uneased.
@@ -448,9 +408,9 @@ const files = ROOTS.flatMap((r) => {
  *      restated by hand.
  *   3. **Interpolation is declared.** `${...}` cannot be resolved statically —
  *      the value could be anything at runtime. Rather than pretend otherwise,
- *      the line must carry `allow-dynamic-motion` and a reason. That is a
- *      different claim from `allow-hardcoded`: not "this literal is fine", but
- *      "this is computed, and here is why it cannot be a class".
+ *      the line must carry `allow-dynamic-motion` and a reason: not "this
+ *      literal is fine", but "this is computed, and here is why it cannot be a
+ *      class".
  */
 function checkAnimation(rel, lines, findings, { durationsAreDefinitions = false } = {}) {
   // Match the offence directly rather than allow-listing what is acceptable.
@@ -509,19 +469,16 @@ function checkAnimation(rel, lines, findings, { durationsAreDefinitions = false 
 /**
  * §1 rule 3, in the spelling a stylesheet uses — and it runs EVERYWHERE.
  *
- * The class-form rule above lives in `RULES`, so `globals.css` skips it along
- * with every other literal rule. That left the rule unable to fire in the one
- * file that was breaking it: five `.cn-toast [data-icon]` selectors painted the
- * toast glyphs `var(--color-success|warning|info)`, `var(--destructive)` and
- * `var(--color-action-bright)` — the same four hues fixed in `alert.tsx`, plus
- * the brand end §1 rule 3 names as the thing nothing may write. Measured on
- * `--popover` in light: 2.54, 1.67, 1.81 and 1.85 to one.
+ * The class-form rule above lives in `RULES`, so the stylesheets that may hold
+ * literals skip it along with every other literal rule. That would leave the
+ * rule unable to fire in the files that write `color:` declarations — for
+ * example `.cn-toast [data-icon]` painting a toast glyph `var(--color-success)`
+ * measures 2.54:1 on `--popover` in light.
  *
  * So this follows `checkAnimation`'s precedent exactly — a check that has to see
- * `globals.css` runs before the exemption rather than inside it.
+ * the stylesheets runs before the exemption rather than inside it.
  *
- * Scope, stated precisely because the rule's own documentation used to overstate
- * it:
+ * Scope:
  *
  *   - The `color` property ONLY. `background-color`, `border-color`,
  *     `caret-color`, `outline-color` and `text-decoration-color` are fills and
@@ -565,12 +522,12 @@ function checkInkOnText(rel, lines, findings) {
  * shape the mistake actually takes in a real component: a `cva()` whose base
  * string sets `data-active:font-medium` and whose size variants, twelve lines
  * below, set `.type-nav`. Same element, same call, two string literals — and
- * the element's real typography now lives half in `globals.css` and half in
+ * the element's real typography now lives half in the stylesheet and half in
  * the component, where only one of the halves moves when the scale is retuned.
  *
  * So the unit is the enclosing `cn(…)` / `cva(…)` call rather than the line.
  *
- * NOT file-scoped, which was tried and is wrong: it flags a
+ * NOT file-scoped, because that flags a
  * `<strong className="font-semibold">` sitting in a file that uses `.type-*`
  * somewhere else entirely. That element composes nothing — it carries no
  * `.type-*` class at all — and forcing it to invent one would be the guard
@@ -578,7 +535,7 @@ function checkInkOnText(rel, lines, findings) {
  *
  * SIZES ARE DELIBERATELY NOT MATCHED. RULES.md §2.1 is explicit that
  * `text-xs` / `text-sm` / `text-base` / `text-lg` are not violations, because
- * `globals.css` repoints Tailwind's own four steps at ours — which is what
+ * `styles/tokens.css` repoints Tailwind's own four steps at ours — which is what
  * puts the sixty vendored components already on this scale. A guard that
  * outlawed them would contradict the law it exists to enforce. Weight has no
  * such carve-out anywhere in RULES, and a `.type-*` class always carries one.
@@ -687,7 +644,7 @@ function checkDirectLucideJsx(rel, lines, findings) {
 }
 
 /**
- * Retired motion vocabulary — Motion Vocabulary Parity.
+ * Retired motion vocabulary.
  *
  * Duplicated from `lib/motion-names.ts`'s `RETIRED_MOTION_NAMES` /
  * `RETIRED_KEYFRAME_PREFIXES` rather than imported: this guard is plain ESM
@@ -697,11 +654,11 @@ function checkDirectLucideJsx(rel, lines, findings) {
  * be wide enough to catch a call site regressing back to an old name.
  */
 const RETIRED_MOTION_NAMES = [
-  // September 2026 rename (kept so the old guard keeps holding)
+  // First rename
   "anim-jelly-in", "anim-jelly-out", "anim-jelly", "anim-spring-up", "anim-pop-in",
   "anim-ratchet", "anim-sign-on", "anim-pulse-live", "anim-unfold", "anim-fold",
   "--duration-jelly", "--duration-base", "--duration-overlay", "--ease-spring",
-  // Vocabulary → fourteen (this plan). Utilities:
+  // Second rename. Utilities:
   "anim-fade-up", "anim-entrance", "anim-spring-entrance", "anim-reveal", "anim-swap-in",
   "anim-row-in", "anim-row-out", "anim-panel-in", "anim-fade-in", "anim-confirm-in",
   "anim-confirm-out", "anim-blur-in", "anim-blur-out", "anim-state-change",
@@ -714,7 +671,7 @@ const RETIRED_MOTION_NAMES = [
   "ds-confirm-out", "ds-blur-in", "ds-blur-out", "ds-state-change", "ds-collapse",
   "check-draw", "dash-draw", "dot-pop", "ds-loading-shimmer", "ds-live-pulse",
   "ds-discrete-progress", "ds-text-reveal",
-  // Duration tokens nothing reads any more (Task 8):
+  // Duration tokens nothing reads any more:
   "--duration-pop-in", "--duration-spring-up", "--duration-sign-on",
   "--duration-check-draw", "--duration-dash-draw", "--duration-dot-pop",
   "--duration-ratchet", "--duration-press-spring-up", "--duration-reward",
@@ -749,9 +706,9 @@ function checkRetiredMotionName(rel, lines, findings) {
   lines.forEach((line, i) => {
     const t = line.trim();
     // Prose about a retired name is a documentation concern
-    // (`test/foundation/motion-names.test.ts` and the comment-sweep step of
-    // Motion Vocabulary Parity own that), not a live reference — skip
-    // comment-only lines the same way every other rule here does.
+    // (`test/foundation/motion-names.test.ts` owns that), not a live
+    // reference — skip comment-only lines the same way every other rule here
+    // does.
     if (t.startsWith("//") || t.startsWith("*") || t.startsWith("/*")) return;
     if (isAllowed()) return;
 
@@ -774,8 +731,7 @@ function checkRetiredMotionName(rel, lines, findings) {
 /**
  * Scan ONE file's source and return every literal that escaped the system.
  *
- * Pure, and exported, so the guard can be tested on itself — the same shape
- * Flutter's `test/token_guard_test.dart` uses. A guard nobody exercises is a
+ * Pure, and exported, so the guard can be tested on itself. A guard nobody exercises is a
  * guard nobody knows the state of: `test/foundation/token-guard.test.ts` proves
  * every rule below fires on a sample that breaks it, AND that the sanctioned
  * spelling of the same thing does not. The second half matters more than the

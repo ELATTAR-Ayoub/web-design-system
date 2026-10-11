@@ -9,49 +9,41 @@
    Roles own SHAPE ONLY — family, size, line height, weight, tracking. Colour,
    case and product meaning belong to the component that uses the role.
 
-   Cascade layer is unchanged from the file this came out of: both blocks stay
-   inside `@layer components`.
+   Both blocks sit inside `@layer components`.
    ========================================================================= */
 
 /* ============================================================================
-   THE SEVENTEEN ROLES
+   THE NINETEEN ROLES
 
-   Public typography is exactly seventeen names, and this file is where all
-   seventeen are written. Two faces: Inter (`--font-sans`) sets words, Geist
+   Public typography is exactly nineteen names, and this file is where all
+   nineteen are written. Two faces: Inter (`--font-sans`) sets words, Geist
    Mono (`--font-mono`) sets code, identifiers and figures.
 
    A ROLE OWNS SHAPE ONLY — family, size, line height, weight, tracking. It
-   never sets colour, case, opacity or a product meaning, and
-   `test/foundation/typography-ownership.test.ts` fails the build if one does.
-   That rule is why `.type-small` no longer carries `--muted-foreground`: an
-   element that wanted the smaller step was getting a colour it never asked
-   for, and the call sites that wanted the foreground were writing
-   `text-foreground` beside the class to take it back.
+   never sets colour, case, opacity or a product meaning. `scripts/check-rules.mjs`
+   (`test/rules/*.test.ts`) fails the build if one does. That is why
+   `.type-small` carries no `--muted-foreground`: an element that wants the
+   smaller step should not get a colour it never asked for.
 
-   THERE ARE NO LITERAL SIZES IN THIS FILE, and there used to be thirty-six of
-   them. Each role reads `var(--text-<role>)` and `var(--leading-<role>)`, and
-   `styles/tokens.css` redefines those two properties at 768px and 1024px. That
-   is the entire responsive mechanism, and moving it there bought two things
-   this file could not give:
+   THERE ARE NO LITERAL SIZES IN THIS FILE. Each role reads
+   `var(--text-<role>)` and `var(--leading-<role>)`, and `styles/tokens.css`
+   redefines those two properties at 768px and 1024px. That is the entire
+   responsive mechanism, and it gives two things:
 
-     1. ALL SEVENTEEN ROLES SCALE. Nine did before — the display step, the four
-        headings, the lead and the three large numerics — and the other eight
-        held one size at every width. Flutter 0.0.3 makes every role
-        responsive, and this is the file that was in the way.
+     1. ALL NINETEEN ROLES SCALE, each across the three steps.
      2. `text-<role>` SCALES WITH `.type-<role>`. Tailwind compiles both to the
         same `var(--text-<role>)`, so a `cva()` string that needs a size
-        without a whole role, and the sixty vendored shadcn components written
-        in `text-sm`, now walk the same three steps the class does. Writing the
-        steps here as literals moved the class and left the utility behind.
+        without a whole role, and the vendored shadcn components written in
+        `text-sm`, walk the same three steps the class does. Literals written
+        here would move the class and leave the utility behind.
 
    BREAKPOINTS. Two, and only two: `(width >= 768px)` and `(width >= 1024px)`,
-   both now declared in `tokens.css` beside the values they move. No `clamp()`.
-   Fluid type cannot be asserted at a value, only at a viewport, and every one
-   of these roles is asserted at 320, 767, 768, 1023, 1024 and 1440.
+   both declared in `tokens.css` beside the values they move. No `clamp()`.
+   Fluid type cannot be asserted at a value, only at a viewport.
 
-   TRACKING. Nine roles are tracked and eight are `normal`; the contract is in
-   `lib/ds/platform-contract.ts` and the tokens are in `tokens.css`. No role
-   writes an `em` value by hand.
+   TRACKING. Ten roles are tracked (display, h1, h2, h3, identifier and the
+   five numerics) and nine are `normal`. The tokens are in `tokens.css`. No
+   role writes an `em` value by hand.
    ========================================================================= */
 @layer components {
   /* Once per screen. A second display headline is a heading that has not
@@ -73,7 +65,7 @@
      preference: `@apply type-h2` inside `.prose h2` FAILS THE BUILD —
      "Cannot apply unknown utility class `type-h2`" — because `@apply` reaches
      Tailwind utilities and `@utility` registrations, and these live in
-     `@layer components`. Verified by building it. `[&_h2]:type-h2` at the call
+     `@layer components`. `[&_h2]:type-h2` at the call
      site is the same wall from the other side and fails silently instead, which
      is §2.1's rule and the worse of the two failures.
 
@@ -106,12 +98,20 @@
     letter-spacing: var(--tracking-num);
   }
   .type-h4,
-  :where(.prose) h4,
-  :where(.prose) h5,
-  :where(.prose) h6 {
+  :where(.prose) h4 {
     font-family: var(--font-sans);
     font-size: var(--text-h4);
     line-height: var(--leading-h4);
+    font-weight: 600;
+    letter-spacing: normal;
+  }
+  /* The title of a dialog, sheet, drawer or card: body size, heading weight. */
+  .type-h5,
+  :where(.prose) h5,
+  :where(.prose) h6 {
+    font-family: var(--font-sans);
+    font-size: var(--text-h5);
+    line-height: var(--leading-h5);
     font-weight: 600;
     letter-spacing: normal;
   }
@@ -139,14 +139,9 @@
   }
 
   /* The secondary step: 12 on a phone, 14 on a desktop. `figcaption` and `th`
-     join it for size; their muting lives in the prose flow below.
-
-     This role used to be the floor of a system that admitted nothing below
-     14px, and the note here said so. The retired furniture roles that ran 13,
-     11.5, 11, 10.5 and 10 are still retired — each of them existed to carry a
-     colour or a case rather than a size — but 12 is no longer off the table:
-     it is where `small` starts on a phone, and `badge` starts at 10. A phone
-     is read at a shorter distance than a laptop. */
+     join it for size; their muting lives in the prose flow below. A phone is
+     read at a shorter distance than a laptop, so the role grows with the
+     viewport. */
   .type-small,
   :where(.prose) figcaption,
   :where(.prose) th {
@@ -159,7 +154,7 @@
 
   /* Navigation items — sidebar rows, top nav, tab triggers, group labels. One
      role, because a dense nav row and a wide one are the same thing at
-     different paddings, and the size ladder was never what told them apart. */
+     different paddings, and size is not what tells them apart. */
   .type-nav {
     font-family: var(--font-sans);
     font-size: var(--text-nav);
@@ -168,9 +163,17 @@
     letter-spacing: normal;
   }
 
+  /* A headline or money call to action: small and semibold. Case is the text's own. */
+  .type-cta {
+    font-family: var(--font-sans);
+    font-size: var(--text-cta);
+    line-height: var(--leading-cta);
+    font-weight: 600;
+    letter-spacing: normal;
+  }
+
   /* Badges, chips, pills and tags. The CASE IS NOT HERE: an uppercase badge is
-     a decision Badge makes, and the roles the uppercase used to live in
-     (`tag`, `badge`, `label`, `micro`) were four sizes of the same idea.
+     a decision Badge makes, not the type scale.
 
      The smallest role in the system, and the only one that starts below 12.
      It is also the one role whose accessible target never depends on its type
@@ -209,12 +212,10 @@
   /* Numerics — prices, balances, XP, odds, ranks, timestamps, counters.
      Tabular so a column of them aligns and a live figure does not jitter.
 
-     All five are tracked now, which is the one shared decision this block used
-     to state the opposite of: the note here said the contract gave the
-     numerics none. Flutter 0.0.3 gives the four smaller steps -0.01em and
-     `number-xl` -0.02em, on the same reasoning as the headings — the tighter
-     fit is an optical correction that only shows up at size, and mono figures
-     are wide to begin with. */
+     All five are tracked: the four smaller steps -0.01em and `number-xl`
+     -0.02em, on the same reasoning as the headings — the tighter fit is an
+     optical correction that only shows up at size, and mono figures are wide
+     to begin with. */
   .type-number-sm,
   .type-number-base,
   .type-number-md,
@@ -260,15 +261,14 @@
    selector in its own declaration block, so a heading in prose and a
    `.type-h2` are literally the same rule and cannot drift. This file owns the
    rhythm, the marks and the chrome — the things a type role has no opinion
-   about. `@apply type-h2` was tried first and fails the build outright;
-   `[&_h2]:type-h2` at the call site fails silently, which is worse. See the
-   comment on `.type-h1`.
+   about. `@apply type-h2` fails the build outright; `[&_h2]:type-h2` at the
+   call site fails silently, which is worse. See the comment on `.type-h1`.
 
    TWO THINGS `.prose` DELIBERATELY DOES NOT DO:
 
    1. It sets no `max-width`. The measure belongs to the page container, which
       is the one place a width is chosen, and two owners for one number is how
-      the 1320 above spent months as prose.
+      drift starts.
    2. It does not restore the browser's own margins wholesale. Tailwind's
       preflight strips list markers and heading margins, and every rule below
       puts back exactly one thing on the 8-point scale rather than reaching for

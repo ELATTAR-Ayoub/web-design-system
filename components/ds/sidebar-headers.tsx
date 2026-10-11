@@ -25,6 +25,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 
 const TEAMS = [
@@ -44,6 +45,7 @@ function Tile() {
 }
 
 export function TeamSwitcherHeader() {
+  const { isMobile } = useSidebar();
   const [team, setTeam] = useState(TEAMS[0]);
 
   return (
@@ -68,7 +70,7 @@ export function TeamSwitcherHeader() {
             <DropdownMenuContent
               className="w-(--radix-dropdown-menu-trigger-width) min-w-56"
               align="start"
-              side="right"
+              side={isMobile ? "bottom" : "right"}
               sideOffset={4}
             >
               <DropdownMenuLabel>Teams</DropdownMenuLabel>
@@ -99,6 +101,7 @@ export function TeamSwitcherHeader() {
 }
 
 export function VersionSwitcherHeader() {
+  const { isMobile } = useSidebar();
   const [version, setVersion] = useState(VERSIONS[0]);
 
   return (
@@ -123,7 +126,7 @@ export function VersionSwitcherHeader() {
             <DropdownMenuContent
               className="w-(--radix-dropdown-menu-trigger-width) min-w-48"
               align="start"
-              side="right"
+              side={isMobile ? "bottom" : "right"}
               sideOffset={4}
             >
               {VERSIONS.map((v) => (

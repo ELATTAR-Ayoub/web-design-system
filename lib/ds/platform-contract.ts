@@ -1,10 +1,3 @@
-export const FLUTTER_SNAPSHOT = {
-  version: "0.0.3",
-  registryVersion: "0.0.3",
-  commit: "7c17ecdd9eb1db1025aa47de224b67d81844b32c",
-  repository: "elattar_design_system",
-} as const;
-
 export type DocFamily = "components" | "effects" | "agent" | "charts";
 
 export type Ownership = "installable" | "dependency" | "block" | "foundation";
@@ -16,17 +9,12 @@ export type Delivery =
   | "browser-native"
   | "composition";
 
-export type Origin = "shared" | "web-only";
-
 export type ContractEntry = {
   readonly name: string;
   readonly title: string;
   readonly family: DocFamily;
   readonly ownership: Ownership;
   readonly delivery: Delivery;
-  readonly origin: Origin;
-  readonly flutterName: string | null;
-  readonly flutterOwnership: Ownership | null;
 };
 
 export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
@@ -36,9 +24,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "accordion",
-    flutterOwnership: "installable",
   },
   {
     name: "action-feedback",
@@ -46,9 +31,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "effects",
     ownership: "installable",
     delivery: "css-native",
-    origin: "shared",
-    flutterName: "action-feedback",
-    flutterOwnership: "installable",
   },
   {
     name: "active-indicator",
@@ -56,9 +38,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "effects",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "active-indicator",
-    flutterOwnership: "installable",
   },
   {
     name: "agent-avatar",
@@ -66,9 +45,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "shared",
-    flutterName: "agent-avatar",
-    flutterOwnership: "dependency",
   },
   {
     name: "agent-core",
@@ -76,9 +52,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "shared",
-    flutterName: "agent-core",
-    flutterOwnership: "dependency",
   },
   {
     name: "agent-workspace",
@@ -86,9 +59,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "block",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-agent",
@@ -96,9 +66,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-artifact",
@@ -106,9 +73,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-attachments",
@@ -116,9 +80,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-audio-player",
@@ -126,9 +87,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-canvas",
@@ -136,9 +94,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-chain-of-thought",
@@ -146,9 +101,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-checkpoint",
@@ -156,9 +108,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-code-block",
@@ -166,9 +115,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-commit",
@@ -176,9 +122,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-confirmation",
@@ -186,9 +129,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-connection",
@@ -196,9 +136,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-context",
@@ -206,9 +143,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-controls",
@@ -216,9 +150,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-conversation",
@@ -226,9 +157,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-edge",
@@ -236,9 +164,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-environment-variables",
@@ -246,9 +171,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-file-tree",
@@ -256,9 +178,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-image",
@@ -266,9 +185,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-inline-citation",
@@ -276,9 +192,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-jsx-preview",
@@ -286,9 +199,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-message",
@@ -296,9 +206,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-mic-selector",
@@ -306,9 +213,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-model-selector",
@@ -316,9 +220,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-node",
@@ -326,9 +227,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-open-in-chat",
@@ -336,9 +234,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-package-info",
@@ -346,9 +241,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-panel",
@@ -356,9 +248,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-plan",
@@ -366,9 +255,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-prompt-input",
@@ -376,9 +262,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-question",
@@ -386,9 +269,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-queue",
@@ -396,9 +276,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-reasoning",
@@ -406,9 +283,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-sandbox",
@@ -416,9 +290,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-schema-display",
@@ -426,9 +297,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-shimmer",
@@ -436,9 +304,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-snippet",
@@ -446,9 +311,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-sources",
@@ -456,9 +318,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-speech-input",
@@ -466,9 +325,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-stack-trace",
@@ -476,9 +332,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-suggestion",
@@ -486,9 +339,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-task",
@@ -496,9 +346,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-terminal",
@@ -506,9 +353,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-test-results",
@@ -516,9 +360,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-tool",
@@ -526,9 +367,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-toolbar",
@@ -536,9 +374,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-transcription",
@@ -546,9 +381,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-voice-selector",
@@ -556,9 +388,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "ai-web-preview",
@@ -566,9 +395,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "agent-effort-slider",
@@ -576,9 +402,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "agent-spark-field",
@@ -586,9 +409,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "agent-generated-image",
@@ -596,9 +416,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "agent-voice-orb",
@@ -606,9 +423,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "alert",
@@ -616,9 +430,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "alert",
-    flutterOwnership: "installable",
   },
   {
     name: "alert-dialog",
@@ -626,9 +437,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "alert-dialog",
-    flutterOwnership: "installable",
   },
   {
     name: "ambient-pattern",
@@ -636,9 +444,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "effects",
     ownership: "installable",
     delivery: "css-native",
-    origin: "shared",
-    flutterName: "ambient-pattern",
-    flutterOwnership: "installable",
   },
   {
     name: "aspect-ratio",
@@ -646,9 +451,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "aspect-ratio",
-    flutterOwnership: "installable",
   },
   {
     name: "attachment",
@@ -656,9 +458,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "dependency",
     delivery: "react",
-    origin: "shared",
-    flutterName: "attachment",
-    flutterOwnership: "dependency",
   },
   {
     name: "avatar",
@@ -666,9 +465,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "avatar",
-    flutterOwnership: "installable",
   },
   {
     name: "background-effect",
@@ -676,9 +472,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "effects",
     ownership: "installable",
     delivery: "css-native",
-    origin: "shared",
-    flutterName: "background-effect",
-    flutterOwnership: "installable",
   },
   {
     name: "badge",
@@ -686,9 +479,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "badge",
-    flutterOwnership: "installable",
   },
   {
     name: "breadcrumb",
@@ -696,9 +486,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "breadcrumb",
-    flutterOwnership: "installable",
   },
   {
     name: "bubble",
@@ -706,9 +493,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "dependency",
     delivery: "react",
-    origin: "shared",
-    flutterName: "bubble",
-    flutterOwnership: "dependency",
   },
   {
     name: "button",
@@ -716,9 +500,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "button",
-    flutterOwnership: "installable",
   },
   {
     name: "button-group",
@@ -726,9 +507,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "button-group",
-    flutterOwnership: "installable",
   },
   {
     name: "calendar",
@@ -736,9 +514,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "calendar",
-    flutterOwnership: "installable",
   },
   {
     name: "card",
@@ -746,9 +521,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "dependency",
     delivery: "react",
-    origin: "shared",
-    flutterName: "card",
-    flutterOwnership: "dependency",
   },
   {
     name: "carousel",
@@ -756,9 +528,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "carousel",
-    flutterOwnership: "installable",
   },
   {
     name: "chart",
@@ -766,9 +535,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "charts",
     ownership: "dependency",
     delivery: "react",
-    origin: "shared",
-    flutterName: "chart",
-    flutterOwnership: "dependency",
   },
   {
     name: "chart-cartesian",
@@ -776,9 +542,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "charts",
     ownership: "dependency",
     delivery: "react",
-    origin: "shared",
-    flutterName: "chart-cartesian",
-    flutterOwnership: "dependency",
   },
   {
     name: "chart-geometry",
@@ -786,9 +549,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "charts",
     ownership: "dependency",
     delivery: "package-native",
-    origin: "shared",
-    flutterName: "chart-geometry",
-    flutterOwnership: "dependency",
   },
   {
     name: "chart-polar",
@@ -796,9 +556,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "charts",
     ownership: "dependency",
     delivery: "react",
-    origin: "shared",
-    flutterName: "chart-polar",
-    flutterOwnership: "dependency",
   },
   {
     name: "checkbox",
@@ -806,9 +563,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "checkbox",
-    flutterOwnership: "installable",
   },
   {
     name: "collapsible",
@@ -816,9 +570,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "collapsible",
-    flutterOwnership: "installable",
   },
   {
     name: "combobox",
@@ -826,9 +577,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "combobox",
-    flutterOwnership: "installable",
   },
   {
     name: "command",
@@ -836,9 +584,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "command",
-    flutterOwnership: "installable",
   },
   {
     name: "content-change",
@@ -846,9 +591,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "effects",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "content-change",
-    flutterOwnership: "installable",
   },
   {
     name: "context-menu",
@@ -856,9 +598,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "context-menu",
-    flutterOwnership: "installable",
   },
   {
     name: "dialog",
@@ -866,9 +605,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "dependency",
     delivery: "react",
-    origin: "shared",
-    flutterName: "dialog",
-    flutterOwnership: "dependency",
   },
   {
     name: "direction",
@@ -876,9 +612,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "disabled",
@@ -886,9 +619,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "dependency",
     delivery: "react",
-    origin: "shared",
-    flutterName: "disabled",
-    flutterOwnership: "dependency",
   },
   {
     name: "drawer",
@@ -896,9 +626,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "drawer",
-    flutterOwnership: "installable",
   },
   {
     name: "dropdown-menu",
@@ -906,9 +633,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "dropdown-menu",
-    flutterOwnership: "installable",
   },
   {
     name: "empty",
@@ -916,9 +640,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "empty",
-    flutterOwnership: "installable",
   },
   {
     name: "feedback-surface",
@@ -926,9 +647,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "effects",
     ownership: "installable",
     delivery: "css-native",
-    origin: "shared",
-    flutterName: "feedback-surface",
-    flutterOwnership: "installable",
   },
   {
     name: "field",
@@ -936,9 +654,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "field",
-    flutterOwnership: "installable",
   },
   {
     name: "form",
@@ -946,9 +661,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "form",
-    flutterOwnership: "installable",
   },
   {
     name: "glass",
@@ -956,9 +668,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "effects",
     ownership: "installable",
     delivery: "css-native",
-    origin: "shared",
-    flutterName: "glass",
-    flutterOwnership: "installable",
   },
   {
     name: "hover-builder",
@@ -966,9 +675,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "effects",
     ownership: "installable",
     delivery: "css-native",
-    origin: "shared",
-    flutterName: "hover-builder",
-    flutterOwnership: "installable",
   },
   {
     name: "hover-card",
@@ -976,9 +682,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "hover-card",
-    flutterOwnership: "installable",
   },
   {
     name: "icon",
@@ -986,9 +689,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "icon",
-    flutterOwnership: "installable",
   },
   {
     name: "icon-swap",
@@ -996,9 +696,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "effects",
     ownership: "dependency",
     delivery: "react",
-    origin: "shared",
-    flutterName: "icon-swap",
-    flutterOwnership: "dependency",
   },
   {
     name: "input",
@@ -1006,9 +703,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "dependency",
     delivery: "react",
-    origin: "shared",
-    flutterName: "input",
-    flutterOwnership: "dependency",
   },
   {
     name: "input-group",
@@ -1016,9 +710,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "input-group",
-    flutterOwnership: "installable",
   },
   {
     name: "input-otp",
@@ -1026,9 +717,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "input-otp",
-    flutterOwnership: "installable",
   },
   {
     name: "item",
@@ -1036,9 +724,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "item",
-    flutterOwnership: "installable",
   },
   {
     name: "kbd",
@@ -1046,9 +731,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "kbd",
-    flutterOwnership: "installable",
   },
   {
     name: "keyframes",
@@ -1056,9 +738,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "effects",
     ownership: "installable",
     delivery: "css-native",
-    origin: "shared",
-    flutterName: "keyframes",
-    flutterOwnership: "installable",
   },
   {
     name: "label",
@@ -1066,9 +745,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "marker",
@@ -1076,9 +752,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "marker",
-    flutterOwnership: "installable",
   },
   {
     name: "media-scrim",
@@ -1086,9 +759,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "effects",
     ownership: "installable",
     delivery: "css-native",
-    origin: "shared",
-    flutterName: "media-scrim",
-    flutterOwnership: "installable",
   },
   {
     name: "menu",
@@ -1096,9 +766,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "dependency",
     delivery: "composition",
-    origin: "shared",
-    flutterName: "menu",
-    flutterOwnership: "dependency",
   },
   {
     name: "menubar",
@@ -1106,9 +773,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "menubar",
-    flutterOwnership: "installable",
   },
   {
     name: "message",
@@ -1116,9 +780,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "dependency",
     delivery: "react",
-    origin: "shared",
-    flutterName: "message",
-    flutterOwnership: "dependency",
   },
   {
     name: "message-scroller",
@@ -1126,9 +787,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "dependency",
     delivery: "react",
-    origin: "shared",
-    flutterName: "message-scroller",
-    flutterOwnership: "dependency",
   },
   {
     name: "native-select",
@@ -1136,9 +794,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "native-select",
-    flutterOwnership: "installable",
   },
   {
     name: "navigation-menu",
@@ -1146,9 +801,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "navigation-menu",
-    flutterOwnership: "installable",
   },
   {
     name: "pagination",
@@ -1156,9 +808,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "pagination",
-    flutterOwnership: "installable",
   },
   {
     name: "popover",
@@ -1166,9 +815,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "popover",
-    flutterOwnership: "installable",
   },
   {
     name: "premium-surface",
@@ -1176,9 +822,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "effects",
     ownership: "installable",
     delivery: "css-native",
-    origin: "shared",
-    flutterName: "premium-surface",
-    flutterOwnership: "installable",
   },
   {
     name: "press",
@@ -1186,9 +829,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "effects",
     ownership: "installable",
     delivery: "css-native",
-    origin: "shared",
-    flutterName: "press",
-    flutterOwnership: "installable",
   },
   {
     name: "progress",
@@ -1196,9 +836,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "progress",
-    flutterOwnership: "installable",
   },
   {
     name: "prose",
@@ -1206,9 +843,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "questionnaire",
@@ -1216,9 +850,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "dependency",
     delivery: "react",
-    origin: "shared",
-    flutterName: "questionnaire",
-    flutterOwnership: "dependency",
   },
   {
     name: "radio",
@@ -1226,9 +857,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "radio",
-    flutterOwnership: "installable",
   },
   {
     name: "reveal-bloom",
@@ -1236,9 +864,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "effects",
     ownership: "installable",
     delivery: "css-native",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "resizable",
@@ -1246,9 +871,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "resizable",
-    flutterOwnership: "installable",
   },
   {
     name: "safe-area",
@@ -1256,9 +878,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "dependency",
     delivery: "css-native",
-    origin: "shared",
-    flutterName: "safe-area",
-    flutterOwnership: "dependency",
   },
   {
     name: "scroll-area",
@@ -1266,9 +885,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "scroll-area",
-    flutterOwnership: "installable",
   },
   {
     name: "select",
@@ -1276,9 +892,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "dependency",
     delivery: "react",
-    origin: "shared",
-    flutterName: "select",
-    flutterOwnership: "dependency",
   },
   {
     name: "selection-control",
@@ -1286,9 +899,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "composition",
-    origin: "shared",
-    flutterName: "selection-control",
-    flutterOwnership: "installable",
   },
   {
     name: "separator",
@@ -1296,9 +906,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "separator",
-    flutterOwnership: "installable",
   },
   {
     name: "sheet",
@@ -1306,9 +913,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "sheet",
-    flutterOwnership: "installable",
   },
   {
     name: "sidebar",
@@ -1316,9 +920,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "sidebar",
-    flutterOwnership: "installable",
   },
   {
     name: "skeleton",
@@ -1326,9 +927,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "skeleton",
-    flutterOwnership: "installable",
   },
   {
     name: "slider",
@@ -1336,9 +934,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "slider",
-    flutterOwnership: "installable",
   },
   {
     name: "source-foundation",
@@ -1346,9 +941,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "foundation",
     delivery: "react",
-    origin: "shared",
-    flutterName: "source-foundation",
-    flutterOwnership: "foundation",
   },
   {
     name: "spinner",
@@ -1356,9 +948,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "spinner",
-    flutterOwnership: "installable",
   },
   {
     name: "stat",
@@ -1366,9 +955,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "stat",
-    flutterOwnership: "installable",
   },
   {
     name: "surface",
@@ -1376,9 +962,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "effects",
     ownership: "installable",
     delivery: "css-native",
-    origin: "shared",
-    flutterName: "surface",
-    flutterOwnership: "installable",
   },
   {
     name: "switch",
@@ -1386,9 +969,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "switch",
-    flutterOwnership: "installable",
   },
   {
     name: "table",
@@ -1396,9 +976,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "table",
-    flutterOwnership: "installable",
   },
   {
     name: "tabs",
@@ -1406,9 +983,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "tabs",
-    flutterOwnership: "installable",
   },
   {
     name: "textarea",
@@ -1416,9 +990,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "textarea",
-    flutterOwnership: "installable",
   },
   {
     name: "toaster",
@@ -1426,9 +997,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "toaster",
-    flutterOwnership: "installable",
   },
   {
     name: "toggle",
@@ -1436,9 +1004,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "toggle",
-    flutterOwnership: "installable",
   },
   {
     name: "toggle-group",
@@ -1446,9 +1011,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "toggle-group",
-    flutterOwnership: "installable",
   },
   {
     name: "tooltip",
@@ -1456,9 +1018,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "tooltip",
-    flutterOwnership: "installable",
   },
   {
     name: "use-latest",
@@ -1466,9 +1025,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "use-mobile",
@@ -1476,9 +1032,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "use-reduced-motion",
@@ -1486,9 +1039,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "web-only",
-    flutterName: null,
-    flutterOwnership: null,
   },
   {
     name: "user-menu",
@@ -1496,9 +1046,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "react",
-    origin: "shared",
-    flutterName: "user-menu",
-    flutterOwnership: "installable",
   },
   {
     name: "validation-rule",
@@ -1506,9 +1053,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "components",
     ownership: "installable",
     delivery: "package-native",
-    origin: "shared",
-    flutterName: "validation-rule",
-    flutterOwnership: "installable",
   },
   {
     name: "voice",
@@ -1516,9 +1060,6 @@ export const PLATFORM_CONTRACT: readonly ContractEntry[] = [
     family: "agent",
     ownership: "dependency",
     delivery: "browser-native",
-    origin: "shared",
-    flutterName: "voice",
-    flutterOwnership: "dependency",
   },
 ] as const;
 
@@ -1610,10 +1151,20 @@ export const TYPOGRAPHY: readonly TypeRoleContract[] = [
     tabularFigures: false,
   },
   {
+    role: "h5",
+    phone: { sizePx: 14, linePx: 20 },
+    tablet: { sizePx: 15, linePx: 22 },
+    desktop: { sizePx: 16, linePx: 24 },
+    weight: 600,
+    tracking: "normal",
+    face: "sans",
+    tabularFigures: false,
+  },
+  {
     role: "lead",
-    phone: { sizePx: 18, linePx: 28 },
-    tablet: { sizePx: 19, linePx: 28 },
-    desktop: { sizePx: 20, linePx: 28 },
+    phone: { sizePx: 16, linePx: 20 },
+    tablet: { sizePx: 17, linePx: 22 },
+    desktop: { sizePx: 18, linePx: 24 },
     weight: 400,
     tracking: "normal",
     face: "sans",
@@ -1677,6 +1228,16 @@ export const TYPOGRAPHY: readonly TypeRoleContract[] = [
     weight: 400,
     tracking: "-0.01em",
     face: "mono",
+    tabularFigures: false,
+  },
+  {
+    role: "cta",
+    phone: { sizePx: 12, linePx: 16 },
+    tablet: { sizePx: 13, linePx: 18 },
+    desktop: { sizePx: 14, linePx: 20 },
+    weight: 600,
+    tracking: "normal",
+    face: "sans",
     tabularFigures: false,
   },
   {

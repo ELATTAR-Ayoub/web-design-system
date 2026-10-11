@@ -68,7 +68,7 @@ export function PreviewCode({
       <div
         data-slot="preview-stage"
         hidden={view !== "preview"}
-        className={cn("bg-background", flush ? "" : "p-6", stageClassName)}
+        className={cn("bg-background", flush ? "" : "p-4 sm:p-6", stageClassName)}
       >
         {children}
       </div>

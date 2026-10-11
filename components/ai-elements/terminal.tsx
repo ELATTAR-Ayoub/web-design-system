@@ -1,5 +1,6 @@
 "use client";
 
+import { AlertDialogConfirm } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { IconSwap } from "@/components/ui/icon-swap";
@@ -174,17 +175,24 @@ export const TerminalClearButton = ({
     return null;
   }
 
+  // Vendored change: clearing asks first; the output cannot be brought back.
   return (
-    <Button
-      aria-label={ariaLabel ?? "Clear terminal"}
-      className={cn("shrink-0", className)}
-      onClick={onClear}
-      size="icon-sm"
-      variant="ghost"
-      {...props}
+    <AlertDialogConfirm
+      action="Clear"
+      description="The output is removed and cannot be brought back."
+      onConfirm={onClear}
+      title="Clear the terminal?"
     >
-      {children ?? <Icon icon={Trash2Icon} size="sm" tone="inherit" />}
-    </Button>
+      <Button
+        aria-label={ariaLabel ?? "Clear terminal"}
+        className={cn("shrink-0", className)}
+        size="icon-sm"
+        variant="ghost"
+        {...props}
+      >
+        {children ?? <Icon icon={Trash2Icon} size="sm" tone="inherit" />}
+      </Button>
+    </AlertDialogConfirm>
   );
 };
 

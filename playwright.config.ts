@@ -59,16 +59,6 @@ export default defineConfig({
     },
     {
       name: "desktop-light",
-      // The ledger evidence spec sets its own viewports and seeds its own
-      // theme, so running it under a second project measures the same thing
-      // twice — 105 routes × 5 projects, for one project's worth of facts.
-      // BOTH, not just the ledger spec. A project's `testIgnore` REPLACES the
-      // top-level one rather than merging with it, so listing only the ledger
-      // spec here quietly un-ignored `registry-consumer.spec.ts` for this
-      // project — it was being collected and then skipping itself at runtime
-      // for want of its env vars, which reads as a skipped test rather than as
-      // a configuration mistake.
-      testIgnore: ["**/ledger-evidence.spec.ts", "**/registry-consumer.spec.ts"],
       use: {
         ...devices["Desktop Chrome"],
         colorScheme: "light",
@@ -77,13 +67,6 @@ export default defineConfig({
     },
     {
       name: "tablet",
-      // BOTH, not just the ledger spec. A project's `testIgnore` REPLACES the
-      // top-level one rather than merging with it, so listing only the ledger
-      // spec here quietly un-ignored `registry-consumer.spec.ts` for this
-      // project — it was being collected and then skipping itself at runtime
-      // for want of its env vars, which reads as a skipped test rather than as
-      // a configuration mistake.
-      testIgnore: ["**/ledger-evidence.spec.ts", "**/registry-consumer.spec.ts"],
       use: {
         ...devices["Desktop Chrome"],
         colorScheme: "dark",
@@ -92,13 +75,6 @@ export default defineConfig({
     },
     {
       name: "mobile",
-      // BOTH, not just the ledger spec. A project's `testIgnore` REPLACES the
-      // top-level one rather than merging with it, so listing only the ledger
-      // spec here quietly un-ignored `registry-consumer.spec.ts` for this
-      // project — it was being collected and then skipping itself at runtime
-      // for want of its env vars, which reads as a skipped test rather than as
-      // a configuration mistake.
-      testIgnore: ["**/ledger-evidence.spec.ts", "**/registry-consumer.spec.ts"],
       use: {
         // Base on Desktop Chrome rather than spreading a `devices["iPhone
         // 13"]`-style preset: those presets default to WebKit, and this
@@ -115,13 +91,6 @@ export default defineConfig({
     },
     {
       name: "reduced-motion",
-      // BOTH, not just the ledger spec. A project's `testIgnore` REPLACES the
-      // top-level one rather than merging with it, so listing only the ledger
-      // spec here quietly un-ignored `registry-consumer.spec.ts` for this
-      // project — it was being collected and then skipping itself at runtime
-      // for want of its env vars, which reads as a skipped test rather than as
-      // a configuration mistake.
-      testIgnore: ["**/ledger-evidence.spec.ts", "**/registry-consumer.spec.ts"],
       use: {
         ...devices["Desktop Chrome"],
         colorScheme: "dark",

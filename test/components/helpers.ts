@@ -65,8 +65,8 @@ export function expectNoFixedHeight(el: Element) {
  * `<body>`, so it fires for every portalled overlay whatever the component
  * does. Landmarks belong to the specimen routes and are checked there.
  *
- * Both exclusions are recorded in the audit ledger's evidence column, so no
- * ledger row claims a clean axe run it did not have.
+ * Both exclusions are deliberate, so no test here claims a clean axe run it
+ * did not have.
  */
 export const OVERLAY_AXE_OPTIONS = {
   rules: {

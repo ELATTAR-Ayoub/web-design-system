@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { Code, Meta, Note, Row } from "@/components/ds/kit";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
@@ -7,19 +8,10 @@ import { meta } from "./meta";
 function ActionFeedbackSpecimen() {
   return (
     <Row>
-      <button
-        type="button"
-        aria-label="Same host, without sheen-action"
-        className="press relative isolate inline-flex h-12 items-center justify-center overflow-hidden rounded-pill bg-primary px-6 text-sm font-medium text-primary-foreground shadow-btn-primary active:shadow-btn-down"
-      >
+      <Button variant="secondary" aria-label="Same host, without sheen-action">
         Flat fill
-      </button>
-      <button
-        type="button"
-        className="sheen-action press relative isolate inline-flex h-12 items-center justify-center overflow-hidden rounded-pill bg-primary px-6 text-sm font-medium text-primary-foreground shadow-btn-primary active:shadow-btn-down"
-      >
-        Hover or press
-      </button>
+      </Button>
+      <Button className="sheen-action">Hover or press</Button>
     </Row>
   );
 }
@@ -37,15 +29,11 @@ export const spec: ComponentDocSpec = {
       id: "preview",
       title: "Effect",
       description:
-        "The same host, side by side, with and without the class — the left button is bg-primary and shadow-btn-primary alone, and the right adds only sheen-action. The moulded ramp and the static diagonal texture are what the class contributes even at rest; hover or press the right button for the beat. The default Button variant is the real consumer — these are bare buttons wearing the class, not a component.",
+        "The same host, side by side, with and without the class — the left is a secondary Button with a flat fill, and the right is the default Button, which wears sheen-action. The moulded ramp and the static diagonal texture are what the class contributes even at rest; hover or press the right button for the beat. The default Button variant is the real consumer of this class.",
       appliedAs: "sheen-action",
       render: <ActionFeedbackSpecimen />,
-      source: `<button className="bg-primary text-primary-foreground shadow-btn-primary active:shadow-btn-down">
-  Flat fill
-</button>
-<button className="sheen-action bg-primary text-primary-foreground shadow-btn-primary active:shadow-btn-down">
-  Hover or press
-</button>`,
+      source: `<Button variant="secondary">Flat fill</Button>
+<Button className="sheen-action">Hover or press</Button>`,
     },
     {
       kind: "install",
@@ -59,9 +47,7 @@ export const spec: ComponentDocSpec = {
       description:
         "sheen-action sets position: relative and paints its own ::before (the beat) and ::after (the static texture) — the host only needs a background colour to ramp against and overflow-hidden so neither pseudo-element bleeds past a rounded corner.",
       language: "tsx",
-      code: `<button className="sheen-action overflow-hidden rounded-pill bg-primary text-primary-foreground shadow-btn-primary active:shadow-btn-down">
-  Confirm
-</button>`,
+      code: `<Button className="sheen-action">Confirm</Button>`,
     },
     {
       kind: "disclosure",

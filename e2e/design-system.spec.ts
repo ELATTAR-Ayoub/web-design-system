@@ -161,8 +161,8 @@ test.beforeEach(async ({ page }, testInfo) => {
  * This used to enumerate `base/*` and `agent/*` — fourteen and six
  * hand-authored galleries. Those are gone: every capability they grouped has
  * its own catalog-backed route now, and re-pointing this at all 105 of those
- * would duplicate `e2e/ledger-evidence.spec.ts`, which already opens every one
- * and asserts the heading and the 375px reflow.
+ * would duplicate the per-route specs, which already open every one and assert
+ * the heading and the 375px reflow.
  *
  * What is NOT covered there, and is covered here, is the shell: the skip link
  * being the first focusable element, activating it landing focus inside
@@ -221,7 +221,7 @@ for (const { id, slug, href } of componentRoutes()) {
 
       // Reach <main>. One Tab from page load lands either on the skip link
       // (the normal case — activating it jumps focus into <main>, which
-      // carries `tabIndex={-1}` in `app/design-system/layout.tsx` for
+      // carries `tabIndex={-1}` in `components/docs/chrome/docs-shell.tsx` for
       // exactly this) or, for the open-demo pages above, directly inside
       // <main> already.
       await page.keyboard.press("Tab");

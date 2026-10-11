@@ -17,13 +17,13 @@
    ========================================================================= */
 
 /* ── The motion scale ────────────────────────────────────────────────────────
-   Lifted verbatim out of the `@theme static` block that used to hold it, so the
-   durations and curves sit beside the keyframes and utilities that spend them.
+   The durations and curves sit beside the keyframes and utilities that spend
+   them.
 
    A SECOND `@theme static` IS NOT A SECOND THEME. Tailwind v4 merges every
    `@theme` block it is given, wherever they are written, so these keys land in
    the same emitted `:root` as the colour and spacing scale in tokens.css and
-   generate the same `duration-*` / `ease-*` utilities they always did.
+   generate the `duration-*` / `ease-*` utilities.
 
    `static` for the same reason it is on the other block: these are read by
    `var()` from rules Tailwind never scans, and the tree-shake would take them.
@@ -499,10 +499,8 @@
   animation: ds-expand var(--duration-open) var(--ease-emphasized) backwards;
 }
 
-/* Smooth continuous spin — the loading spinner. Previously Tailwind's own
-   `animate-spin`, which was the last animation in the product defined outside
-   this file. `linear` on purpose: a spinner that eases is a spinner that looks
-   like it is struggling. */
+/* Smooth continuous spin — the loading spinner. `linear` on purpose: a spinner
+   that eases is a spinner that looks like it is struggling. */
 @utility anim-spin {
   animation: ds-spin var(--duration-spin) linear infinite;
 }
@@ -534,8 +532,8 @@
   animation: ds-progress-indeterminate 1.4s linear infinite;
 }
 
-/* The OTP caret. Was the vendored `animate-caret-blink` paired with a stock
-   `duration-1000`, so neither its rhythm nor its timing followed the system. */
+/* The OTP caret. Its rhythm and timing follow `--duration-caret`, not a stock
+   framework duration. */
 @utility anim-caret {
   animation: ds-caret var(--duration-caret) steps(1, end) infinite;
 }

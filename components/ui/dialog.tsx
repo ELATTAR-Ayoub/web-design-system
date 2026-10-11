@@ -77,7 +77,7 @@ function DialogContent({
         data-close-button={showCloseButton || undefined}
         data-variant={variant}
         className={cn(
-          "group/dialog-content fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl bg-popover p-4 text-sm text-popover-foreground ring-1 ring-foreground/10 outline-none sm:max-w-sm data-open:anim-open data-closed:anim-close",
+          "group/dialog-content fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl bg-popover p-4 type-small text-popover-foreground ring-1 ring-foreground/10 outline-none sm:max-w-sm data-open:anim-open data-closed:anim-close",
           variant === "media" && "gap-0 overflow-hidden p-0 sm:max-w-md",
           className
         )}
@@ -167,7 +167,7 @@ function DialogTitle({
     <DialogPrimitive.Title
       data-slot="dialog-title"
       className={cn(
-        "font-sans text-base leading-none font-medium",
+        "type-h5",
         className
       )}
       {...props}
@@ -183,7 +183,7 @@ function DialogDescription({
     <DialogPrimitive.Description
       data-slot="dialog-description"
       className={cn(
-        "text-sm text-muted-foreground *:[a]:underline *:[a]:underline-offset-3 *:[a]:hover:text-foreground",
+        "type-small text-muted-foreground *:[a]:underline *:[a]:underline-offset-3 *:[a]:hover:text-foreground",
         className
       )}
       {...props}

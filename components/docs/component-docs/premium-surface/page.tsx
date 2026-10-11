@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { Code, Meta, Note, Row } from "@/components/ds/kit";
 import { SourceMeta } from "@/components/docs/component-page/sections";
 import type { ComponentDocSpec } from "@/components/docs/component-page/types";
@@ -7,24 +8,13 @@ import { meta } from "./meta";
 function PremiumSurfaceSpecimen() {
   return (
     <Row>
-      <button
-        type="button"
-        className="foil-value press relative isolate inline-flex h-14 items-center justify-center overflow-hidden rounded-pill px-8 font-semibold text-value-foreground shadow-btn-value hover:shadow-glow-value active:shadow-btn-down text-number-sm tracking-cta uppercase"
-      >
+      <Button variant="premium" size="xl" emphasis="caps">
         Open pack
-      </button>
-      <button
-        type="button"
-        className="foil-value press relative isolate inline-flex h-12 items-center justify-center overflow-hidden rounded-pill px-6 text-sm font-semibold text-value-foreground shadow-btn-value hover:shadow-glow-value active:shadow-btn-down"
-      >
+      </Button>
+      <Button variant="premium" size="lg">
         Claim reward
-      </button>
-      <button
-        type="button"
-        className="foil-value press relative isolate inline-flex h-10 items-center justify-center overflow-hidden rounded-pill px-4 text-sm font-semibold text-value-foreground shadow-btn-value hover:shadow-glow-value active:shadow-btn-down"
-      >
-        Upgrade to Pro
-      </button>
+      </Button>
+      <Button variant="premium">Upgrade to Pro</Button>
     </Row>
   );
 }
@@ -42,18 +32,12 @@ export const spec: ComponentDocSpec = {
       id: "preview",
       title: "Effect",
       description:
-        "The same foil-value ramp — light–dark–light with a metal-edge band at 52%, a static diagonal foil texture drifting slowly and forever, and a glint that sweeps across on a five-and-a-half-second cycle — across the three real money/reward moments this surface is for: a hero pack-opening CTA (xl, uppercase), a reward claim, and a premium upsell. Same class, three hosts, so the metal reads consistently rather than as a one-off treatment on a single button.",
+        "The same foil-value ramp — light–dark–light with a metal-edge band at 52%, a static diagonal foil texture drifting slowly and forever, and a glint that sweeps across on a five-and-a-half-second cycle — across the three real money/reward moments this surface is for: a hero pack-opening CTA (xl, call-to-action type), a reward claim, and a premium upsell. Same class, three hosts, so the metal reads consistently rather than as a one-off treatment on a single button.",
       appliedAs: "foil-value",
       render: <PremiumSurfaceSpecimen />,
-      source: `<button className="foil-value text-value-foreground shadow-btn-value hover:shadow-glow-value active:shadow-btn-down text-number-sm tracking-cta uppercase">
-  Open pack
-</button>
-<button className="foil-value text-value-foreground shadow-btn-value hover:shadow-glow-value active:shadow-btn-down">
-  Claim reward
-</button>
-<button className="foil-value text-value-foreground shadow-btn-value hover:shadow-glow-value active:shadow-btn-down">
-  Upgrade to Pro
-</button>`,
+      source: `<Button variant="premium" size="xl" emphasis="caps">Open pack</Button>
+<Button variant="premium" size="lg">Claim reward</Button>
+<Button variant="premium">Upgrade to Pro</Button>`,
     },
     {
       kind: "install",
@@ -67,9 +51,7 @@ export const spec: ComponentDocSpec = {
       description:
         "Reserve this for money and reward moments — pack openings, premium upsells, reward CTAs — not for general emphasis. foil-value sets position: relative itself; the host needs overflow-hidden so the foil and glint layers stay inside the shape.",
       language: "tsx",
-      code: `<button className="foil-value overflow-hidden rounded-pill text-value-foreground shadow-btn-value hover:shadow-glow-value">
-  Claim reward
-</button>`,
+      code: `<Button variant="premium">Claim reward</Button>`,
     },
     {
       kind: "disclosure",

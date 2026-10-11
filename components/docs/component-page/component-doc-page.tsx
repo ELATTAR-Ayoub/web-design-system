@@ -26,7 +26,7 @@ export function ComponentDocPage({ spec }: { spec: ComponentDocSpec }) {
       }
     >
       <article className="min-w-0">
-        {/* No breadcrumb here. `app/design-system/layout.tsx` renders one for
+        {/* No breadcrumb here. `components/docs/chrome/docs-shell.tsx` renders one for
             every route in the shell, derived from the same nav data, and a
             second one inside the article would print the trail twice on
             exactly the pages that already have it. The required order —

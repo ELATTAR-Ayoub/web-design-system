@@ -86,7 +86,7 @@ const config = {
       id: "maths",
       title: "The maths, mapped",
       description:
-        "Every function chart_geometry.dart computes by hand, paired with the recharts prop that owns the same job on the web. Prop names read from node_modules/recharts' own type definitions, not invented.",
+        "Each piece of chart maths — scales, ticks, curves, polar arcs — paired with the recharts prop that owns the job. Prop names read from node_modules/recharts' own type definitions, not invented.",
       blocks: [
         {
           body: (
@@ -167,8 +167,8 @@ const config = {
                       prop: <Code>linear</Code>, <Code>natural</Code>,{" "}
                       <Code>monotone</Code>, <Code>step</Code> all exist under
                       that exact spelling in recharts&rsquo; own{" "}
-                      <Code>CurveType</Code> union — the same four{" "}
-                      <Code>chart_geometry.dart</Code> ports from d3-shape.
+                      <Code>CurveType</Code> union — the same four
+                      curve shapes d3-shape provides.
                       Demonstrated above: <Code>LineMultiple</Code>&rsquo;s{" "}
                       <Code>type=&quot;monotone&quot;</Code>.
                     </>
@@ -222,7 +222,7 @@ const config = {
       id: "examples",
       title: "Examples — when the geometry is the component",
       description:
-        "Two documentation specimens from components/ds/charts, kept here because they share this item's registry slot in the Flutter catalogue — not because they are this capability. Neither imports recharts, neither takes a scale, a tickCount or a domain: UnitActivityChart lights up twelve fixed rows by comparing a level constant to the datum, and ConversionFunnelChart sizes flexGrow/flexBasis strip segments directly from a percentage. They draw geometry by hand because no scale function fits a twelve-row activity grid or a proportional funnel strip — the opposite of the recharts maths documented above, and not shipped as chart-geometry's own capability.",
+        "Two documentation specimens from components/ds/charts, kept here beside the chart maths — not because they are this capability. Neither imports recharts, neither takes a scale, a tickCount or a domain: UnitActivityChart lights up twelve fixed rows by comparing a level constant to the datum, and ConversionFunnelChart sizes flexGrow/flexBasis strip segments directly from a percentage. They draw geometry by hand because no scale function fits a twelve-row activity grid or a proportional funnel strip — the opposite of the recharts maths documented above, and not shipped as chart-geometry's own capability.",
       render: (
         <div className="grid gap-4 lg:grid-cols-2">
           <ChartStates title="Unit activity" note="hand-drawn — no scale function" skeleton="bar">
@@ -258,7 +258,7 @@ import { ConversionFunnelChart } from "@/components/ds/charts/conversion-funnel"
       id: "api",
       title: "API Reference",
       description:
-        "The recharts geometry props a caller actually sets, reached through this system's ChartContainer and the family wrappers in components/ds/charts. Not an exhaustive recharts reference — only the props that carry the maths chart_geometry.dart ports on Flutter.",
+        "The recharts geometry props a caller actually sets, reached through this system's ChartContainer and the family wrappers in components/ds/charts. Not an exhaustive recharts reference — only the props that carry the scale, tick, curve and arc maths.",
       blocks: [
         {
           label: "Axis geometry — XAxis, YAxis, PolarAngleAxis, PolarRadiusAxis",

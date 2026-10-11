@@ -78,7 +78,7 @@ function PopoverContent({
           naming?.hasDescription ? naming.descriptionId : undefined
         }
         className={cn(
-          "z-50 flex w-72 origin-(--radix-popover-content-transform-origin) flex-col gap-2.5 rounded-lg bg-popover p-2.5 text-sm text-popover-foreground shadow-md ring-1 ring-foreground/10 outline-hidden data-open:anim-open data-closed:anim-close",
+          "z-50 flex w-72 origin-(--radix-popover-content-transform-origin) flex-col gap-2.5 rounded-lg bg-popover p-2.5 type-small text-popover-foreground shadow-md ring-1 ring-foreground/10 outline-hidden data-open:anim-open data-closed:anim-close",
           className
         )}
         {...props}
@@ -97,7 +97,7 @@ function PopoverHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="popover-header"
-      className={cn("flex flex-col gap-0.5 text-sm", className)}
+      className={cn("flex flex-col gap-0.5 type-small", className)}
       {...props}
     />
   )
@@ -109,7 +109,7 @@ function PopoverTitle({ className, id, ...props }: React.ComponentProps<"h2">) {
     <div
       data-slot="popover-title"
       id={id ?? titleId}
-      className={cn("font-medium", className)}
+      className={cn("type-nav", className)}
       {...props}
     />
   )

@@ -22,7 +22,7 @@ function Switch({
       data-size={size}
       className={cn(
         "peer group/switch relative inline-flex shrink-0 items-center rounded-pill border border-input p-0.5 outline-none",
-        "transition-[background-color,box-shadow,border-color] duration-normal ease-out",
+        "transition-[background-color,box-shadow,border-color] duration-normal ease-enter",
         "after:absolute after:-inset-x-3 after:-inset-y-2",
         "data-[size=default]:h-6 data-[size=default]:w-11 data-[size=sm]:h-5 data-[size=sm]:w-9",
         "focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50",

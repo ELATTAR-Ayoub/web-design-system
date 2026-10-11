@@ -2,14 +2,18 @@
 
 import * as React from "react"
 
+import { Button } from "@/components/ui/button"
+
 export function PressKeyboardDemo() {
   const [pressed, setPressed] = React.useState(false)
 
   const activateKeys = new Set([" ", "Spacebar", "Enter"])
 
   return (
-    <button
+    <Button
       type="button"
+      variant="outline"
+      size="icon"
       aria-label="press, keyboard-driven"
       data-pressed={pressed || undefined}
       onKeyDown={(event) => {
@@ -19,9 +23,9 @@ export function PressKeyboardDemo() {
         if (activateKeys.has(event.key)) setPressed(false)
       }}
       onBlur={() => setPressed(false)}
-      className="press flex size-11 items-center justify-center rounded-full border border-border bg-card outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+      className="size-11"
     >
       <span className="type-badge text-muted-foreground">key</span>
-    </button>
+    </Button>
   )
 }

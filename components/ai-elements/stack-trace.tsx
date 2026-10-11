@@ -239,11 +239,12 @@ export const StackTraceHeader = memo(
 
 export type StackTraceErrorProps = ComponentProps<"div">;
 
+// Vendored change: the row wraps, so a narrow header moves the message to its own line instead of squeezing it.
 export const StackTraceError = memo(
   ({ className, children, ...props }: StackTraceErrorProps) => (
     <div
       className={cn(
-        "flex flex-1 items-center gap-2 overflow-hidden",
+        "flex min-w-0 flex-1 flex-wrap items-center gap-x-2 gap-y-1 overflow-hidden",
         className
       )}
       {...props}
@@ -279,7 +280,7 @@ export const StackTraceErrorMessage = memo(
     const { trace } = useStackTrace();
 
     return (
-      <span className={cn("truncate text-foreground", className)} {...props}>
+      <span className={cn("min-w-24 flex-1 truncate text-foreground", className)} {...props}>
         {children ?? trace.errorMessage}
       </span>
     );
@@ -456,20 +457,22 @@ const FilePathButton = memo(
     }, [frame, onFilePathClick]);
 
     return (
-      <button
+      /* Vendored change: raw <button> replaced by the system Button (ghost); `[font:inherit]` keeps the surrounding identifier role. */
+      <Button
         className={cn(
           /* Vendored change: `text-action-ink` replaces the fill shade `--color-action` as the hover text colour. */
-          "underline decoration-dotted hover:text-action-ink",
+          "inline h-auto min-h-0 rounded-none bg-transparent p-0 text-left [font:inherit] text-inherit underline decoration-dotted whitespace-normal hover:bg-transparent hover:text-action-ink active:bg-transparent",
           onFilePathClick && "cursor-pointer"
         )}
         disabled={!onFilePathClick}
         onClick={handleClick}
         type="button"
+        variant="ghost"
       >
         {frame.filePath}
         {frame.lineNumber !== null && `:${frame.lineNumber}`}
         {frame.columnNumber !== null && `:${frame.columnNumber}`}
-      </button>
+      </Button>
     );
   }
 );

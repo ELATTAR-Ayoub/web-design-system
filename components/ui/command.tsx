@@ -23,8 +23,26 @@ function Command({
   className,
   ...props
 }: React.ComponentProps<typeof CommandPrimitive>) {
+  const ref = React.useRef<HTMLDivElement>(null)
+  // cmdk scrolls its auto-selected first item into view on mount, which scrolls the
+  // whole page when the command sits below the fold. Put the page back unless the
+  // command already has focus.
+  const [scrollAtMount] = React.useState(() =>
+    typeof window === "undefined" ? null : { x: window.scrollX, y: window.scrollY }
+  )
+  React.useEffect(() => {
+    if (!scrollAtMount) return
+    // A frame later: cmdk selects and scrolls only after its items register.
+    const frame = requestAnimationFrame(() => {
+      if (ref.current?.contains(document.activeElement)) return
+      window.scrollTo(scrollAtMount.x, scrollAtMount.y)
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [scrollAtMount])
+
   return (
     <CommandPrimitive
+      ref={ref}
       data-slot="command"
       className={cn(
         "flex size-full flex-col overflow-hidden rounded-xl! bg-popover p-2 text-popover-foreground",
@@ -78,7 +96,7 @@ function CommandInput({
         <CommandPrimitive.Input
           data-slot="command-input"
           className={cn(
-            "w-full text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
+            "w-full type-body outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
             className
           )}
           {...props}
@@ -114,7 +132,7 @@ function CommandEmpty({
   return (
     <CommandPrimitive.Empty
       data-slot="command-empty"
-      className={cn("py-6 text-center text-sm", className)}
+      className={cn("py-6 text-center type-small", className)}
       {...props}
     />
   )
@@ -128,7 +146,7 @@ function CommandGroup({
     <CommandPrimitive.Group
       data-slot="command-group"
       className={cn(
-        "overflow-hidden p-2 text-foreground **:[[cmdk-group-heading]]:px-3 **:[[cmdk-group-heading]]:py-2 **:[[cmdk-group-heading]]:text-xs **:[[cmdk-group-heading]]:font-medium **:[[cmdk-group-heading]]:text-muted-foreground",
+        "overflow-hidden p-2 text-foreground **:[[cmdk-group-heading]]:px-3 **:[[cmdk-group-heading]]:py-2 **:[[cmdk-group-heading]]:type-nav **:[[cmdk-group-heading]]:text-muted-foreground",
         className
       )}
       {...props}
@@ -163,7 +181,7 @@ function CommandItem({
       data-slot="command-item"
       disabled={disabled}
       className={cn(
-        "group/command-item relative flex min-h-(--size-target-min) cursor-default items-center gap-2 rounded-md px-3 py-2 text-sm outline-hidden select-none in-data-[slot=dialog-content]:rounded-lg! data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 data-selected:bg-muted data-selected:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-selected:*:[svg]:text-foreground",
+        "group/command-item relative flex min-h-(--size-target-min) cursor-default items-center gap-2 rounded-md px-3 py-2 type-nav outline-hidden select-none in-data-[slot=dialog-content]:rounded-lg! data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 data-selected:bg-muted data-selected:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-selected:*:[svg]:text-foreground",
         className
       )}
       {...props}
@@ -195,7 +213,7 @@ function CommandShortcut({
     <span
       data-slot="command-shortcut"
       className={cn(
-        "ml-auto text-xs tracking-widest text-muted-foreground group-data-selected/command-item:text-foreground",
+        "ml-auto type-small text-muted-foreground group-data-selected/command-item:text-foreground",
         className
       )}
       {...props}

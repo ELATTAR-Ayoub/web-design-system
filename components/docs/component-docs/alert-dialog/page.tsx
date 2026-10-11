@@ -326,7 +326,18 @@ export function CloseAccount() {
           />
         </div>
       ),
-      source: `// DangerZone (components/ds/danger-zone-demo.tsx) composes AlertDialog
+      source: `// For a plain confirmation, AlertDialogConfirm is the whole thing:
+<AlertDialogConfirm
+  title="Delete this conversation?"
+  description="Its messages and files are removed."
+  onConfirm={() => remove(id)}
+>
+  <Button variant="ghost" size="icon-sm" aria-label="Delete conversation">
+    <Icon icon={Trash2Icon} size="sm" tone="inherit" />
+  </Button>
+</AlertDialogConfirm>
+
+// DangerZone (components/ds/danger-zone-demo.tsx) composes AlertDialog
 // exactly like this for its confirming action:
 <AlertDialog>
   <AlertDialogTrigger asChild>
@@ -476,6 +487,29 @@ export function CloseAccount() {
                   k: "...props",
                   v: "Forwarded to Radix AlertDialogPrimitive.Cancel — this is the button Radix focuses automatically when the dialog opens.",
                 },
+              ]}
+            />
+          ),
+        },
+        {
+          label: "AlertDialogConfirm",
+          body: (
+            <Meta
+              items={[
+                {
+                  k: "Use",
+                  v: "The whole confirmation in one element, for any action that cannot be undone: delete, remove, clear, discard, reset. Wrap the control that starts it; the action runs only from the confirming button.",
+                },
+                { k: "title", v: "ReactNode. Required. The question, naming what goes: \"Delete this conversation?\"." },
+                { k: "description", v: "ReactNode. Optional. What is lost, in a sentence." },
+                { k: "action", v: "ReactNode. The confirming label. Default: \"Delete\". Use the action’s own verb (\"Remove\", \"Clear\")." },
+                { k: "cancel", v: "ReactNode. Default: \"Cancel\"." },
+                { k: "onConfirm", v: "() => void. Required. Runs when the action is confirmed, never on the trigger." },
+                {
+                  k: "children",
+                  v: "The trigger, made the AlertDialogTrigger with asChild. Leave it out and drive open / onOpenChange instead — the way to confirm from a menu item, which closes its menu before the dialog opens.",
+                },
+                { k: "...props", v: "Every AlertDialog root prop: open, defaultOpen, onOpenChange." },
               ]}
             />
           ),

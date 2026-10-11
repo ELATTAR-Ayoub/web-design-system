@@ -38,7 +38,7 @@ export const TYPESET_ROLES: TypesetRole[] = [
   {
     cls: "h2",
     use: "A major section of a page.",
-    sample: "The seventeen roles",
+    sample: "The nineteen roles",
     group: "words",
   },
   {
@@ -51,6 +51,12 @@ export const TYPESET_ROLES: TypesetRole[] = [
     cls: "h4",
     use: "A card title or a row title.",
     sample: "Inter Local",
+    group: "words",
+  },
+  {
+    cls: "h5",
+    use: "The title of a dialog, sheet, drawer or card.",
+    sample: "Delete this file?",
     group: "words",
   },
   {
@@ -82,6 +88,12 @@ export const TYPESET_ROLES: TypesetRole[] = [
     cls: "badge",
     use: "Badges, chips, pills and tags. Case belongs to the component.",
     sample: "Limited edition",
+    group: "words",
+  },
+  {
+    cls: "cta",
+    use: "A headline or money call to action.",
+    sample: "Claim reward",
     group: "words",
   },
   {

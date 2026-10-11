@@ -119,7 +119,7 @@ export function AdminMenubar() {
               items={[
                 { k: "variant", v: '"default" | "destructive". Default: "default".' },
                 { k: "inset", v: "boolean. Adds left padding to align with items that carry an indicator." },
-                { k: "disabledReason", v: "Why a disabled item can't be chosen, surfaced via components/ui/disabled.tsx (aria mode — the row is a Radix role=\"menuitem\" div, not a native-disableable element): an always-on aria-describedby plus a click/tap-reachable popover beside the row. Kept in parity with ContextMenuItem and DropdownMenuItem, since Flutter's menu.dart is one shared module under all three menus." },
+                { k: "disabledReason", v: "Why a disabled item can't be chosen, surfaced via components/ui/disabled.tsx (aria mode — the row is a Radix role=\"menuitem\" div, not a native-disableable element): an always-on aria-describedby plus a click/tap-reachable popover beside the row. Kept in parity with ContextMenuItem and DropdownMenuItem, so all three menus behave alike." },
               ]}
             />
           ),
@@ -205,7 +205,7 @@ export function AdminMenubar() {
               <Code>Menubar</Code> is <Code>flex items-center gap-0.5</Code> with no{" "}
               <Code>flex-wrap</Code> and no built-in horizontal scroll: at the three
               triggers in the Preview above it fits every measured width down to 375px
-              (confirmed in <Code>ledger-evidence.json</Code>, no width overflow, no 200%
+              (measured in a real browser: no width overflow, no 200%
               zoom overflow, no RTL overflow), but a bar with enough top-level triggers to
               exceed its container will overflow rather than wrap or scroll — the caller
               is responsible for wrapping it in its own <Code>overflow-x-auto</Code> track

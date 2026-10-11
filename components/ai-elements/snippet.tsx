@@ -61,7 +61,7 @@ export type SnippetTextProps = ComponentProps<typeof InputGroupText>;
 
 export const SnippetText = ({ className, ...props }: SnippetTextProps) => (
   <InputGroupText
-    className={cn("pl-2 font-normal text-muted-foreground", className)}
+    className={cn("pl-2 text-muted-foreground", className)}
     {...props}
   />
 );

@@ -9,6 +9,7 @@ import { Spinner } from "@/components/ui/spinner"
 import {
   Tooltip,
   TooltipContent,
+  TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 
@@ -148,7 +149,7 @@ function AlertDialogTitle({
     <AlertDialogPrimitive.Title
       data-slot="alert-dialog-title"
       className={cn(
-        "font-sans text-base font-medium sm:group-data-[size=default]/alert-dialog-content:group-has-data-[slot=alert-dialog-media]/alert-dialog-content:col-start-2",
+        "type-h5 sm:group-data-[size=default]/alert-dialog-content:group-has-data-[slot=alert-dialog-media]/alert-dialog-content:col-start-2",
         className
       )}
       {...props}
@@ -164,7 +165,7 @@ function AlertDialogDescription({
     <AlertDialogPrimitive.Description
       data-slot="alert-dialog-description"
       className={cn(
-        "text-sm text-balance text-muted-foreground md:text-pretty *:[a]:underline *:[a]:underline-offset-3 *:[a]:hover:text-foreground",
+        "type-small text-balance text-muted-foreground md:text-pretty *:[a]:underline *:[a]:underline-offset-3 *:[a]:hover:text-foreground",
         className
       )}
       {...props}
@@ -257,10 +258,46 @@ function AlertDialogCancel({
   )
 }
 
+function AlertDialogConfirm({
+  title,
+  description,
+  action = "Delete",
+  cancel = "Cancel",
+  onConfirm,
+  children,
+  ...props
+}: Omit<React.ComponentProps<typeof AlertDialogPrimitive.Root>, "children"> & {
+  title: React.ReactNode
+  description?: React.ReactNode
+  action?: React.ReactNode
+  cancel?: React.ReactNode
+  onConfirm: () => void
+  children?: React.ReactNode
+}) {
+  return (
+    <AlertDialog {...props}>
+      {children ? <AlertDialogTrigger asChild>{children}</AlertDialogTrigger> : null}
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{title}</AlertDialogTitle>
+          {description ? <AlertDialogDescription>{description}</AlertDialogDescription> : null}
+        </AlertDialogHeader>
+        <TooltipProvider>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{cancel}</AlertDialogCancel>
+            <AlertDialogAction onClick={onConfirm}>{action}</AlertDialogAction>
+          </AlertDialogFooter>
+        </TooltipProvider>
+      </AlertDialogContent>
+    </AlertDialog>
+  )
+}
+
 export {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
+  AlertDialogConfirm,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,

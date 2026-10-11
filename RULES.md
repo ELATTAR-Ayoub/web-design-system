@@ -243,12 +243,11 @@ canonical ones. Inter is loaded by the `@font-face` in `styles/tokens.css`
 rather than by `next/font` in a layout: the stylesheet is what a consumer
 installs, so the sans face has to travel with it.
 
-**Public typography is exactly seventeen roles, and every one of them is
+**Public typography is exactly nineteen roles, and every one of them is
 responsive.** Phone (below 768) · tablet (768–1023) · desktop (1024 and up),
 then weight and tracking. Two breakpoints, and there is no third.
 
-This is the shared cross-platform contract, at Flutter `0.0.3`'s values. It
-replaced a larger web-only scale in which nine roles stepped and eight held one
+It replaced a larger earlier scale in which nine roles stepped and eight held one
 size everywhere. The whole table now steps at both boundaries, and it starts
 smaller: a phone is read at a shorter distance than a laptop.
 
@@ -259,11 +258,13 @@ smaller: a phone is read at a shorter distance than a laptop.
 | `.type-h2` | 26/32 · 28/34 · 30/36 | 650 | −0.015em | Inter |
 | `.type-h3` | 20/28 · 22/30 · 24/32 | 600 | −0.01em | Inter |
 | `.type-h4` | 18/24 · 19/26 · 20/28 | 600 | normal | Inter |
-| `.type-lead` | 18/28 · 19/28 · 20/28 | 400 | normal | Inter |
+| `.type-h5` | 14/20 · 15/22 · 16/24 | 600 | normal | Inter |
+| `.type-lead` | 16/20 · 17/22 · 18/24 | 400 | normal | Inter |
 | `.type-body` | 14/20 · 15/22 · 16/24 | 400 | normal | Inter |
 | `.type-small` | 12/16 · 13/18 · 14/20 | 400 | normal | Inter |
 | `.type-nav` | 12/16 · 13/18 · 14/18 | 500 | normal | Inter |
 | `.type-badge` | 10/14 · 11/14 · 12/16 | 600 | normal | Inter |
+| `.type-cta` | 12/16 · 13/18 · 14/20 | 600 | normal | Inter |
 | `.type-code` | 12/18 · 13/18 · 14/20 | 400 | normal | Geist Mono |
 | `.type-identifier` | 12/18 · 13/18 · 14/20 | 400 | −0.01em | Geist Mono |
 | `.type-number-sm` | 12/16 · 13/18 · 14/20 | 600 | −0.01em | Geist Mono |
@@ -297,14 +298,19 @@ disagree. This copy is documentation, and the test is what keeps it honest.
    contains no sizes and no media queries at all. That is deliberate: Tailwind
    compiles `text-small` to `font-size: var(--text-small)`, so the class and
    the utility read the same property and cannot be moved apart. Writing the
-   steps in `typeset.css` instead would scale `.type-small` and leave every
-   `text-sm` in the vendored components frozen at the phone size.
+   steps in `typeset.css` instead would scale `.type-small` and leave the
+   `text-small` utility frozen at the phone size.
 
-   **`text-xs` / `text-sm` / `text-base` / `text-lg` are not violations.**
-   `styles/tokens.css` repoints Tailwind's own four steps at ours, so the sixty
-   vendored shadcn components are already on this scale — and now on its three
-   steps too. `text-xs` and `text-sm` both follow `small` (12 → 14);
-   `text-base` follows `body` (14 → 16); `text-lg` follows `lead` (18 → 20).
+   **Typography comes only from a `.type-*` role.** No Tailwind size step
+   (`text-xs`, `text-sm`, `text-base`, `text-lg` and up), weight
+   (`font-medium`…), family (`font-sans`, `font-mono`), `tracking-*`,
+   `leading-*` or case utility (`uppercase`…) in a component, and no inline
+   `fontSize`/`fontWeight`/`letterSpacing`/`lineHeight`. The role carries
+   size, line height, weight, tracking and face; pick the role, never compose
+   one. `npm run check:rules` (`test/rules/typography.test.ts`) fails the build
+   on any of them. Tailwind's four steps stay aliased to ours in
+   `styles/tokens.css` only so third-party markup (a library's own classes)
+   lands on the scale.
 
    **A `.type-*` class cannot be reached through a variant.** They live in
    `@layer components`, and Tailwind only generates variants of utilities it
@@ -384,8 +390,7 @@ disagree. This copy is documentation, and the test is what keeps it honest.
 
 `styles/utilities.css` ships seven `*-safe` classes — `pt-safe`, `pr-safe`,
 `pb-safe`, `pl-safe`, `px-safe`, `py-safe`, `p-safe` — each writing the matching
-padding longhand from `env(safe-area-inset-*, 0px)`. They are the web half of
-Flutter's `safe-area`, and they carry no token: the number comes from the
+padding longhand from `env(safe-area-inset-*, 0px)`. They carry no token: the number comes from the
 device, not from the system, so `env()` is the value and there is nothing for
 `check:tokens` to object to.
 
@@ -517,8 +522,7 @@ family, from a third direction.
 > react or reward. Machine motion for things you operate. Never mix them: a
 > button that springs feels broken, a reward that clicks feels cheap.
 
-Motion is named for its role and mirrors the Flutter `MotionDurations` /
-`MotionCurves` / motion-class vocabulary; `ease-in` / `ease-out` / `ease-in-out`
+Motion is named for its role; `ease-in` / `ease-out` / `ease-in-out`
 are Tailwind's words, repointed at ours.
 
 - Durations: `tick` **80** · `fast` 150 · `normal` **250** · `slow` **400** ·
@@ -859,8 +863,7 @@ number was wrong: rasterised on the live page in both themes, pure white on
 its own body copy and reads as a traffic light beside the other four Alert
 variants (§5, *Alert: one surface, five meanings*) — but it is a composition
 decision, not a contrast rescue, and stating it as the latter sent readers
-looking for a failure that was never there. Measured during the Flutter/web
-foundation parity pass; the live figures are printed on
+looking for a failure that was never there. The live figures are printed on
 `/design-system/colors`.
 
 #### Overlays have three zones — except the alert dialog, which has two
@@ -932,6 +935,13 @@ distinction that matters is **reversible or not**:
 
 **Do not reach for `AlertDialog` when a plain `Dialog` will do.** An approval the
 user learns to click through is worse than no approval at all.
+
+**Every irreversible action asks first — no exceptions.** Delete, remove, clear,
+discard, reset, revoke: the control opens an `AlertDialogConfirm` (or a composed
+`AlertDialog`), and the action runs only from its confirming button. An undo
+toast after the fact does not replace it. `e2e/irreversible.spec.ts` presses every
+such control on every docs page and fails when the page changes without a
+confirmation, or when Cancel still changes it.
 
 #### Every action needs two signals
 
@@ -1452,8 +1462,8 @@ the safe choice — "Keep my cards", not "Cancel".
 npm run verify
 ```
 
-check:tokens → check:refs → check:parity → check:audit → typecheck → lint →
-build. All seven, every time.
+registry:build → check:tokens → check:rules → check:provenance → check:refs →
+check:registry → typecheck → lint → build. All of them, every time.
 
 **That is the floor, not the ceiling.** The guard is good at what it does — no
 hardcoded colour, type, spacing, radius, shadow, duration or easing, across

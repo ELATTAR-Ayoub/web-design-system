@@ -1,13 +1,12 @@
 /**
- * The motion-vocabulary contract — Motion Vocabulary Parity, Task 1.
+ * The motion-vocabulary contract.
  *
  * `lib/motion-names.ts` is the map; this is what holds `styles/*.css` and
  * every source file to it.
  */
 
-import { readFileSync, readdirSync, existsSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { join, sep } from "node:path";
-import { spawnSync } from "node:child_process";
 import { expect, it } from "vitest";
 import {
   DURATION_TOKENS,
@@ -76,14 +75,6 @@ it("declares no retired --duration-*/--ease-* name outside motion.css's @theme b
   expect(retired, "retired --duration-*/--ease-* declared outside @theme").toEqual([]);
 });
 
-it("names every entry in the parity document with its Flutter symbol", () => {
-  const doc = readFileSync("docs/contracts/flutter-web-foundation-parity.md", "utf8");
-  for (const t of [...DURATION_TOKENS, ...EASE_TOKENS, ...MOTION_UTILITIES]) {
-    expect(doc).toContain(t.name);
-    expect(doc).toContain(t.flutter);
-  }
-});
-
 it("no source file uses a retired name", () => {
   const roots = ["app", "components", "lib", "hooks", "test", "e2e", "scripts", "styles", ".claude/skills"];
   const walk = (d: string): string[] =>
@@ -138,36 +129,4 @@ it("no source file uses a retired name", () => {
     ].map((n) => `${f}: ${n}`);
   });
   expect(hits).toEqual([]);
-});
-
-/**
- * `scripts/verify-flutter-symbols.mjs` is the guard for the final-review
- * Important finding: `lib/motion-names.ts` named 3 Flutter classes that do
- * not exist (`CheckDrawMotion`/`DotPopMotion`/`SwapInMotion` vs. the real
- * `CheckmarkDrawMotion`/`DotSelectionMotion`/`ContentSwapMotion`). It reads
- * every `flutter:` value here and checks it against the Flutter sources,
- * failing only on a symbol that claims to exist and doesn't — it does not
- * fail on the file's own already-disclosed "placeholder naming" block (see
- * the script's header), so this assertion is a real regression guard, not a
- * loosened one.
- *
- * The Flutter repo lives outside this one and is not present on every
- * machine that runs this suite, so its location is read from `FLUTTER_DS_ROOT`
- * (defaulting to `../flutter-design-system`, sibling to this repo) and the
- * check skips itself with a clear message when that path doesn't exist,
- * rather than failing a suite that has no way to do the check.
- */
-it("names no Flutter symbol that doesn't exist in the Flutter sources", () => {
-  const flutterRoot = process.env.FLUTTER_DS_ROOT ?? join("..", "flutter-design-system");
-  if (!existsSync(flutterRoot)) {
-    console.warn(
-      `[motion-names.test] Skipping Flutter-symbol verification: no Flutter design-system repo found at "${flutterRoot}". Set FLUTTER_DS_ROOT to point at a checkout to run this check.`,
-    );
-    return;
-  }
-  const result = spawnSync(process.execPath, [join("scripts", "verify-flutter-symbols.mjs")], {
-    encoding: "utf8",
-    env: { ...process.env, FLUTTER_DS_ROOT: flutterRoot },
-  });
-  expect(result.status, `verify-flutter-symbols failed:\n${result.stdout}\n${result.stderr}`).toBe(0);
 });

@@ -28,6 +28,7 @@ import type { AgentProfile } from "@/components/agent/core/types";
 import type { SpeechVoice } from "@/components/agent/voice/speech";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
+import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio";
 import { Slider } from "@/components/ui/slider";
 import {
@@ -115,7 +116,7 @@ function AutonomySection({
         {AUTONOMY_MODES.map((mode) => {
           const detail = AUTONOMY_DETAIL[mode];
           return (
-            <label
+            <Label
               key={mode}
               htmlFor={`workspace-autonomy-${mode}`}
               className="flex min-h-(--size-target-min) cursor-pointer items-center gap-3 rounded-md px-2 py-2 hover:bg-secondary has-disabled:cursor-not-allowed"
@@ -126,7 +127,7 @@ function AutonomySection({
                 <span className="type-small text-foreground">{AUTONOMY_LABEL[mode]}</span>
                 <span className="type-small text-muted-foreground">{detail.description}</span>
               </span>
-            </label>
+            </Label>
           );
         })}
       </RadioGroup>
@@ -243,9 +244,9 @@ export function WorkspaceSettings({
         <Section id="workspace-response-title" title="Response">
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label htmlFor="workspace-length" className="type-small text-foreground">
+              <Label htmlFor="workspace-length" className="text-foreground">
                 Response length
-              </label>
+              </Label>
               <span className="anim-change type-small text-foreground" key={lengthLabel(length)}>
                 {lengthLabel(length)}
               </span>
@@ -264,9 +265,9 @@ export function WorkspaceSettings({
 
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label htmlFor="workspace-temperature" className="type-small text-foreground">
+              <Label htmlFor="workspace-temperature" className="text-foreground">
                 Temperature
-              </label>
+              </Label>
               <span className="flex items-baseline gap-1.5">
                 <span className="anim-change type-small text-foreground" key={temperatureLabel(temperature)}>
                   {temperatureLabel(temperature)}

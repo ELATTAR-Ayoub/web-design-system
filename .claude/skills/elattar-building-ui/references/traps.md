@@ -26,7 +26,7 @@
 22. [Playwright's `colorScheme` does not flip next-themes](#22-playwrights-colorscheme-does-not-flip-next-themes)
 23. [`scripts/` and `test/` are Tailwind content sources](#23-scripts-and-test-are-tailwind-content-sources)
 24. [Comment prose must be re-derived after a rename](#24-comment-prose-must-be-re-derived-after-a-rename)
-25. [Ledger evidence must name the artefact, not just claim it was read](#25-ledger-evidence-must-name-the-artefact-not-just-claim-it-was-read)
+25. [Audit evidence must name the artefact, not just claim it was read](#25-audit-evidence-must-name-the-artefact-not-just-claim-it-was-read)
 
 Most of these passed `npm run verify` with a green build — that is the point of
 the list: it is a map of what a passing build does not prove. Three are a
@@ -200,7 +200,7 @@ dirty bloom, not a dim one.
 `Button` carries `disabled:opacity-50`, and half of a colour that clears AA does
 not clear AA. It was `opacity-45` when this entry was written, measured at about
 **3.2:1 on light** and **4.4:1 on dark**; the whole system is on `50` now —
-Flutter 0.0.3's shared `DISABLED_OPACITY`, recorded in
+the shared `DISABLED_OPACITY`, recorded in
 `lib/ds/platform-contract.ts` — which is very slightly lighter and changes
 nothing about the reasoning below.
 
@@ -607,7 +607,7 @@ claim — and re-derive the sentence from what the code now actually does,
 rather than trusting the substitution. A replacement count proves nothing
 about whether the replacements were right.
 
-## 25. Ledger evidence must name the artefact, not just claim it was read
+## 25. Audit evidence must name the artefact, not just claim it was read
 
 `docs/audits/web-component-audit.md` rows claimed `shots:
 desktop-dark/light, tablet, mobile (read)` for every row in a batch, while the
@@ -616,7 +616,7 @@ against by test, then filed as "read" by convention. Re-opening them one at a
 time found a real defect (a state grid missing a cell at 768px) that no
 automated assertion had covered.
 
-**The check:** evidence in the ledger's `evidence` column must name the
+**The check:** evidence in the audit's `evidence` column must name the
 specific artefact and viewport it came from (`shots read: desktop-dark 1440,
 desktop-light 1440, tablet 768, mobile 375 — all four opened`), not a generic
 claim that verification happened. If a screenshot was captured but not
@@ -759,9 +759,8 @@ measuring says so (`pointer-events: auto`).
 
 For a modal, give the specimen a **trigger**, and if the component has none of
 its own (`CommandDialog` owns no trigger — the caller owns the open state), put
-one in a companion client file. `e2e/ledger-evidence.spec.ts` now fails any
-route that loads with `pointer-events: none` on `<body>`, so this cannot ship
-again quietly.
+one in a companion client file. A route that loads with
+`pointer-events: none` on `<body>` is this bug; measure for it.
 
 ## 31. Markdown in a string that four things read
 
@@ -797,9 +796,8 @@ The rule: **a component that can be placed in a narrow column asks how wide IT
 is, not how wide the window is.** `@container/<name>` on the element, `@sm/<name>:`
 on the rule. `Card` already did this (`@container/card-header`); `Meta` did not.
 
-`e2e/ledger-evidence.spec.ts` now fails any route with a `dd` or `td` under
-90px holding four or more words, because "the page is the right width" and
-"the text is readable" are different claims.
+A `dd` or `td` under 90px holding four or more words is this bug, because
+"the page is the right width" and "the text is readable" are different claims.
 
 ## 33. A full disk reports a passing run
 
@@ -834,9 +832,8 @@ Two habits come out of this:
 
 `playwright.config.ts` ignored `registry-consumer.spec.ts` at the top level,
 because that spec has its own config and its own required env vars. Four of the
-five projects then declared `testIgnore: ["**/ledger-evidence.spec.ts"]` for
-their own reasons — and that **replaced** the top-level list rather than
-merging with it.
+five projects then declared a `testIgnore` of their own — and that **replaced**
+the top-level list rather than merging with it.
 
 The consumer spec was silently collected again for those four projects, where
 it skipped itself at runtime for want of its env vars. The symptom is a skipped
@@ -864,25 +861,22 @@ Before deleting a route: `grep -rn "<route>" e2e/ test/` and retarget every
 hit, not only the file that derives its routes from data. After: count the
 tests (trap 33).
 
-## 36. The same slug meaning two things on two platforms
+## 36. A slug that names one thing and documents another
 
-`background-effect` on Flutter is the page atmosphere — the `body` radial
-gradient. `background-effect` on the web documented `bloom-action` and
-`bloom-value`, the per-surface reveal glows. `chart-geometry` on Flutter is a
-scale-and-tick maths engine; on the web it was a page showing two hand-drawn
-charts. Both rows were green in the contract, because the contract compares
-names.
+`background-effect` names the page atmosphere — the `body` radial gradient —
+but its page documented `bloom-action` and `bloom-value`, the per-surface reveal
+glows. `chart-geometry` names a scale-and-tick maths engine, but its page showed
+two hand-drawn charts. Both rows were green in the contract, because the
+contract checks names, not what the page documents.
 
-The per-capability audit caught both by comparing what each side's source
-actually *does*. The resolution rule: **Flutter's meaning keeps the name**
-(it is the naming authority), and the web thing that was squatting on it gets
-its own honest name (`reveal-bloom`, web-only) or its honest delivery
-(`chart-geometry` → `package-native`, because recharts owns the maths).
+The fix is to compare what the name promises with what the source actually
+*does*. The thing squatting on a name gets its own honest name (`reveal-bloom`)
+or its honest delivery (`chart-geometry` → `package-native`, because recharts
+owns the maths).
 
 ## 37. An axe pass finds what a green render cannot
 
-Adding one `axe()` call to an existing slash-palette test — only to earn a
-ledger column — failed immediately: `Required ARIA parents role not present:
+Adding one `axe()` call to an existing slash-palette test failed immediately: `Required ARIA parents role not present:
 group, listbox`. Every `option` sat inside plain `<ul>`/`<li>` under the
 `listbox`, so assistive technology saw list items, not options. The render
 tests had passed for weeks.
@@ -894,18 +888,16 @@ and each inner list becomes the `group`, labelled by its own heading.
 The point is the habit: **a focused test renders AND axes.** The render
 proves it mounts; the axe proves it is the thing it claims to be.
 
-## 38. Test coverage the ledger cannot see
+## 38. Test coverage that an import cannot show
 
-`scripts/build-ledger.mjs` credits a test to a capability by the module it
-imports. Two kinds of capability are invisible to that: a CSS utility (there
-is no `@/components/ui/glass` to import) and a component whose file name is
-not its contract name (`@/components/agent/parts/effort-slider` is the row
-`agent-effort-slider`). Thirty-four rows sat at ◐/— in column 12 for that reason
-while several of them had real tests.
+A test names the module it imports, and two kinds of capability are invisible
+to that: a CSS utility (there is no `@/components/ui/glass` to import) and a
+component whose file name is not its contract name
+(`@/components/agent/parts/effort-slider` is the row `agent-effort-slider`).
+Several of them had real tests that nobody could find from the capability.
 
 `@covers <contract-name>` in a test's header comment names the capability
-outright. The name must be a contract row — the ledger fails the build on one
-it does not know, so a typo cannot quietly credit nothing.
+outright. Use the contract row's name exactly.
 
 ## 39. Two measurements of the same thing disagreed — believe the trusted one
 

@@ -48,5 +48,5 @@ typography, radius, spacing and motion all come from tokens. This is enforced:
 `npm run check:tokens` fails the build on any violation.
 
 Before claiming work is done: `npm run verify`
-(check:tokens → check:refs → check:parity → check:audit → typecheck → lint →
-build).
+(registry:build → check:tokens → check:rules → check:provenance → check:refs →
+check:registry → typecheck → lint → build).

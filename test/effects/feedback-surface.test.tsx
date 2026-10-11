@@ -20,8 +20,8 @@
  * as its sibling exactly as documented, and the tree is axe-clean. NOT
  * COVERED: the two gradients actually drifting, the light/dark blend-mode
  * split, and the hover swell — all of that needs real paint, which jsdom does
- * not provide. `e2e/ledger-evidence.spec.ts` opens the live Alert and toast
- * routes in a real browser and is where that visual behaviour is measured.
+ * not provide. That visual behaviour is measured in a real-browser e2e spec
+ * against the live Alert and toast routes.
  *
  * @covers feedback-surface
  */

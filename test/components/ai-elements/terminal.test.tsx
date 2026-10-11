@@ -1,7 +1,7 @@
 /**
  * @covers ai-terminal
  */
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import { Terminal, TerminalContent } from "@/components/ai-elements/terminal";
@@ -33,6 +33,9 @@ describe("Terminal", () => {
     rerender(<Terminal onClear={onClear} output="log" />);
     const clearButton = screen.getByRole("button", { name: "Clear terminal" });
     fireEvent.click(clearButton);
+    expect(onClear).not.toHaveBeenCalled();
+    const confirm = screen.getByRole("alertdialog", { name: "Clear the terminal?" });
+    fireEvent.click(within(confirm).getByRole("button", { name: "Clear" }));
     expect(onClear).toHaveBeenCalled();
   });
 

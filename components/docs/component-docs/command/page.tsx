@@ -157,8 +157,7 @@ export function GlobalPalette() {
           <Panel label="CommandDialog" note="⌘J, or the button">
             {/* Opened by a button, NOT by `defaultOpen`. A modal that opens on
                 mount puts `pointer-events: none` on the body and takes the
-                whole article with it — measured, and now failed by
-                `e2e/ledger-evidence.spec.ts`. The trigger lives in a companion
+                whole article with it — measured in a real browser. The trigger lives in a companion
                 client file because a spec module must stay plain data. */}
             <CommandPaletteSpecimen />
           </Panel>

@@ -8,7 +8,7 @@ import { meta } from "./meta";
 export const spec: ComponentDocSpec = {
   name: "media-scrim",
   omitted: {
-    api: "There is no API: this is one utility class on the element that covers the media, and the ramp's numbers are tokens rather than parameters. Flutter's widget takes a child; the web takes a class name.",
+    api: "There is no API: this is one utility class on the element that covers the media, and the ramp's numbers are tokens rather than parameters.",
     states:
       "A gradient has no interaction or async state of its own — rest is the only state, and hover, focus, loading and disabled all belong to whatever control is composed on top of it.",
     keyboard:
@@ -69,7 +69,7 @@ function ScrimToggleSpecimen() {
       kind: "disclosure",
       id: "classes",
       title: "The ramp",
-      description: "Three stops, and the numbers are Flutter's, copied rather than tuned.",
+      description: "Three stops, and the numbers are fixed tokens rather than tuned per use.",
       blocks: [
         {
           body: (

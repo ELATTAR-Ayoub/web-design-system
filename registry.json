@@ -1453,6 +1453,7 @@
         "@elattar/hover-card",
         "@elattar/input",
         "@elattar/input-group",
+        "@elattar/label",
         "@elattar/popover",
         "@elattar/progress",
         "@elattar/radio",

@@ -19,7 +19,7 @@
  *  - `navigator.mediaDevices` (MicSelector lists the machine's inputs);
  *  - canvas `getContext` returning null, so SparkField's loop never starts.
  */
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -140,7 +140,9 @@ describe("ai-attachments specimens", () => {
     const user = setup();
     render(<AttachmentsSpecimen variant="list" />);
     await user.click(screen.getByRole("button", { name: "Remove campaign-brief.pdf" }));
-    expect(screen.queryByText("campaign-brief.pdf")).not.toBeInTheDocument();
+    const confirm = await screen.findByRole("alertdialog", { name: "Remove this attachment?" });
+    await user.click(within(confirm).getByRole("button", { name: "Remove" }));
+    await waitFor(() => expect(screen.queryByText("campaign-brief.pdf")).not.toBeInTheDocument());
     render(<AttachmentsEmptySpecimen />);
     render(<AttachmentHoverSpecimen />);
     expect(screen.getByText("No attachments")).toBeInTheDocument();

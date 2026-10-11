@@ -1,35 +1,27 @@
 /**
  * The icon size ladder.
  *
- * `components/ui/icon.tsx` is the only way an icon enters a screen on the web;
- * `lib/src/components/ui/icon.dart` is the same on Flutter, and its `IconSize`
- * enum is spelled `xl2` / `xl3` for the `2xl` / `3xl` rungs because a Dart
- * identifier cannot start with a digit. That rename is a language constraint
- * and must not become a divergence, so the ladder is asserted by VALUE here and
- * mapped by name in `docs/contracts/flutter-web-foundation-parity.md`.
+ * `components/ui/icon.tsx` is the only way an icon enters a screen, so the
+ * ladder is asserted by VALUE here.
  *
  * The values are imported from the module rather than parsed out of the file:
  * `ICON_SIZES` is the public export a consumer reads, so the export is what the
  * contract is about.
  */
 
-import { existsSync, readFileSync } from "node:fs";
-import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { ICON_SIZES, ICON_TONES } from "@/components/ui/icon";
 
-const ROOT = process.cwd();
-
-/** Web key → Flutter `IconSize` member, and the px both must hold. */
-const LADDER: { key: keyof typeof ICON_SIZES; flutter: string; px: number }[] = [
-  { key: "xs", flutter: "xs", px: 12 },
-  { key: "sm", flutter: "sm", px: 14 },
-  { key: "md", flutter: "md", px: 16 },
-  { key: "lg", flutter: "lg", px: 20 },
-  { key: "xl", flutter: "xl", px: 24 },
-  { key: "2xl", flutter: "xl2", px: 32 },
-  { key: "3xl", flutter: "xl3", px: 40 },
+/** Each rung and the px it must hold. */
+const LADDER: { key: keyof typeof ICON_SIZES; px: number }[] = [
+  { key: "xs", px: 12 },
+  { key: "sm", px: 14 },
+  { key: "md", px: 16 },
+  { key: "lg", px: 20 },
+  { key: "xl", px: 24 },
+  { key: "2xl", px: 32 },
+  { key: "3xl", px: 40 },
 ];
 
 describe("the icon size ladder", () => {
@@ -37,7 +29,7 @@ describe("the icon size ladder", () => {
     expect(Object.keys(ICON_SIZES)).toEqual(LADDER.map((r) => r.key));
   });
 
-  it("holds the same pixel value on every rung as the counterpart platform", () => {
+  it("holds the expected pixel value on every rung", () => {
     const wrong = LADDER.filter((r) => ICON_SIZES[r.key] !== r.px).map(
       (r) => `${r.key}: ${ICON_SIZES[r.key]} (expected ${r.px})`,
     );
@@ -67,20 +59,5 @@ describe("every icon tone is a token, never a raw colour", () => {
     for (const tone of ["action", "value", "success", "warning", "info", "error"] as const) {
       expect(ICON_TONES[tone], tone).toMatch(/-ink$/);
     }
-  });
-});
-
-describe("the parity document covers the ladder", () => {
-  const DOC = "docs/contracts/flutter-web-foundation-parity.md";
-
-  it("maps every rung to its Flutter member", () => {
-    const path = join(ROOT, ...DOC.split("/"));
-    expect(existsSync(path), DOC).toBe(true);
-    if (!existsSync(path)) return;
-    const doc = readFileSync(path, "utf8");
-    const missing = LADDER.filter((r) => !doc.includes(`IconSize.${r.flutter}`)).map(
-      (r) => `IconSize.${r.flutter}`,
-    );
-    expect(missing, "icon rungs absent from the parity doc").toEqual([]);
   });
 });

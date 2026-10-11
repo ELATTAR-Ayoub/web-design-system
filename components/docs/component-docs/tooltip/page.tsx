@@ -191,7 +191,7 @@ export function FilterButton() {
                 },
                 {
                   k: "Touch equivalence",
-                  v: "Radix's TooltipPrimitive is otherwise pointer/hover-driven only, which left a touch user with no way to reach an icon-only trigger's label at all. TooltipTrigger now toggles the tooltip open on a touch tap (preventing the trigger's own click so the label is read first), and closes it on a second tap or a tap outside — mirroring Flutter's own \"USER-ORDERED MOBILE ADAPTATION\" touch path rather than leaving the web behind it.",
+                  v: "Radix's TooltipPrimitive is otherwise pointer/hover-driven only, which left a touch user with no way to reach an icon-only trigger's label at all. TooltipTrigger now toggles the tooltip open on a touch tap (preventing the trigger's own click so the label is read first), and closes it on a second tap or a tap outside.",
                 },
                 {
                   k: "Never the only source",

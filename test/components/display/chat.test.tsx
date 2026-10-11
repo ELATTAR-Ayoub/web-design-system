@@ -430,7 +430,7 @@ describe("Avatar", () => {
     // Radix only swaps the image in once it loads; jsdom loads nothing, so the
     // fallback is what is on screen — which is the case worth asserting.
     const fallback = screen.getByText("AE");
-    expect(fallback.className).toContain("text-sm");
+    expect(fallback.className).toContain("type-small");
     expect(fallback.className).not.toMatch(/text-\[\d/);
   });
 

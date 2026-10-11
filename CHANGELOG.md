@@ -21,7 +21,8 @@ claim deployment: a tag says what the code is, not where it runs.
 - Docs text breaks a long code name rather than spilling out of its column, and `Meta` rows wrap their keys.
 - `SelectValue` truncates with an ellipsis (its `line-clamp` was cancelled by `flex`), and `SelectTrigger` shrinks inside a narrow parent.
 - `AvatarGroupCount` grows into a pill when the number is wider than the circle, so "+248" stays inside it.
-- State grids in the docs show one cell per row on phones and add columns as room allows.
+- State grids in the docs choose their columns from the width they actually get (container queries), so a cell stays roughly 170px or wider even when the rail and the contents list are both shown; on phones they show one cell per row.
+- The Typeset page, the docs home and the project docs say nineteen roles, not seventeen.
 - The sidebar demo's team and version menus open below on mobile instead of off the left edge.
 - The full-screen live workspace page no longer renders the docs header and rail hidden behind it.
 - The stack trace header wraps its message to its own line when the row is narrow, instead of squeezing it to a few pixels.
@@ -42,7 +43,7 @@ claim deployment: a tag says what the code is, not where it runs.
 ### Changed — the tests
 - `npm run check:rules` (`scripts/check-rules.mjs`, in `verify` and `verify:fast`) reads every source file's class strings, inline styles and CSS, and fails on hard-coded typography, colour or motion, an unknown `type-*` role, a raw element a DS component replaces, or a Lucide icon rendered directly instead of through `Icon` (a documented `// allow-direct-icon:` line above it is the one exception). `test/rules/{typography,colour,motion,components}.test.ts` run the same scan.
 - `test/rules/component-tests.test.ts` requires every component in `components/ui`, `components/agent` and `components/ai-elements` to have its own test.
-- `e2e/layout.spec.ts` opens every docs page at 320, 375, 768, 1024 and 1440px and fails on sideways scroll, text that spills or is clipped, controls something covers, and popups or dialogs that leave the screen.
+- `e2e/layout.spec.ts` opens every docs page at 320, 375, 768, 1024, 1280 and 1440px and fails on sideways scroll, text that spills or is clipped, controls something covers, and popups or dialogs that leave the screen.
 - `e2e/irreversible.spec.ts` presses every destructive action (delete, remove, clear, discard, reset and the like) and fails if it changes the page without an Alert Dialog confirmation first.
 - Removed the role-count tests (`typography-contract`, `typography-ownership`, `color-contract`) and `skill-contract`; the rule scan replaces them.
 

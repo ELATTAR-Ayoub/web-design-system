@@ -209,7 +209,7 @@ export function TypesetCatalog() {
           },
           {
             k: "Tracking",
-            v: "Nine of the seventeen are tracked and eight are normal — the top of the scale, and everything set in mono. Each one names a --tracking-* token; no role writes an em value by hand.",
+            v: "Ten of the nineteen are tracked and nine are normal — tracked are the top of the scale (display to h3), the identifier and the five figures. Each one names a --tracking-* token; no role writes an em value by hand.",
           },
           {
             k: "The floor",

@@ -34,7 +34,7 @@ Every base component reads tokens — `bg-card`, not `bg-zinc-900` — so a rebr
 
 ## Architecture
 
-**Nothing is hardcoded.** No hex, no `rgba()`, no `text-[13px]`, no `duration-[220ms]`, no Tailwind stock palette — anywhere except four files under `styles/`, which is where the system is defined: `styles/tokens.css` (colour, radius, shadow, spacing), `styles/typeset.css` (the 17 type roles), `styles/motion.css` (durations, easing, named animations) and `styles/utilities.css` (the sanctioned effects). `app/globals.css` is the entry `components.json` names — it imports the four in that order and holds nothing else.
+**Nothing is hardcoded.** No hex, no `rgba()`, no `text-[13px]`, no `duration-[220ms]`, no Tailwind stock palette — anywhere except four files under `styles/`, which is where the system is defined: `styles/tokens.css` (colour, radius, shadow, spacing), `styles/typeset.css` (the 19 type roles), `styles/motion.css` (durations, easing, named animations) and `styles/utilities.css` (the sanctioned effects). `app/globals.css` is the entry `components.json` names — it imports the four in that order and holds nothing else.
 
 This is enforced, not aspirational: `npm run check:tokens` fails the build on any hardcoded literal, across every file including the vendored shadcn components. `npm run check:refs` is its mirror — it catches a reference that resolves to **nothing** (an unknown Tailwind class, an undeclared `var()`, a `.type-*` that does not exist), which is otherwise completely silent in a browser.
 

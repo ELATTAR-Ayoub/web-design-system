@@ -138,7 +138,7 @@ The design-system foundation. `app/globals.css` imports these four files in orde
 | File | What it does |
 | --- | --- |
 | `tokens.css` | The single place values are chosen. Owns the Inter and Geist Mono font setup; the dark-mode variant; the brand colour ramps (action and value roles); the neutral grey scale; the light and dark colour themes mapped to shadcn's semantic names (background, foreground, card, primary, border, ring, destructive and so on) plus success, warning and info; chart, sidebar, agent, code-syntax and media-overlay colours; radius, shadow and glow-depth tokens; font families and weights; type sizes, line heights and letter spacing, which step up at the 768px and 1024px breakpoints; layout widths, heights and minimum touch-target size; and the base document styles (focus ring, tabular numbers). |
-| `typeset.css` | The type roles and long-form text styles. Owns the seventeen `.type-*` classes (display, headings h1-h4, lead, body, small, nav, badge, code, identifier, and the five numeric sizes), which set family, size, line height, weight and tracking only, and the `.prose` flow for articles that reuses the same heading styles. |
+| `typeset.css` | The type roles and long-form text styles. Owns the nineteen `.type-*` classes (display, headings h1-h5, lead, body, small, nav, cta, badge, code, identifier, and the five numeric sizes), which set family, size, line height, weight and tracking only, and the `.prose` flow for articles that reuses the same heading styles. |
 | `motion.css` | Everything that involves time. Owns the duration and easing scales; all keyframes (enter, exit, change, shimmer, pulse, spin, caret, expand, collapse, progress, cosmic drift, foil, glint, orb and star effects); the animation utilities (`anim-*`, `press`, `toggle-slide`, `swap-roll`, `width-transition`, `move-transition`, `effort-glide`); and the reduced-motion override that switches animation off for users who ask for it. |
 | `utilities.css` | The sanctioned visual effects and special surfaces. Owns glow (action and value), the ramp chip, glass panel and control surfaces, colour blooms and the cosmic bloom, the value foil, the action sheen, the aurora, the starfield, thin scrollbar rails, toast styling, device safe-area padding, media scrims, code-highlight and terminal colours, theming for xyflow node-and-edge diagrams (`xy-tokens`), Streamdown markdown chrome, and the voice-orb look. |
 
@@ -296,7 +296,7 @@ The building blocks of this documentation site itself: page headers, navigation,
 | `theme-toggle.tsx` | `ThemeToggle` is the three-way Light / System / Dark switch shown in the site header. |
 | `toast-preview.tsx` | `ToastPreview` draws a static copy of a toast notification so docs can show each toast type without firing a real one. |
 | `token-swatch.tsx` | Swatches and readouts that show a design token's live value and measured contrast ratio in the current theme (`TokenSwatch`, `ContrastBadge`, `SpacingStep`). |
-| `typeset-catalog.tsx` | `TypesetCatalog` lists all seventeen text roles with a live sample, what each is for, and its sizes, weight and font. |
+| `typeset-catalog.tsx` | `TypesetCatalog` lists all nineteen text roles with a live sample, what each is for, and its sizes, weight and font. |
 
 ## components/ds/charts
 
@@ -408,7 +408,7 @@ The website routes, built with the Next.js App Router: a folder with a `page.tsx
 
 | File | What it does |
 | --- | --- |
-| `page.tsx` | Serves `/design-system/typography` (titled Typeset): the two typefaces, the seventeen text roles at real size, prose styling and the rules. |
+| `page.tsx` | Serves `/design-system/typography` (titled Typeset): the two typefaces, the nineteen text roles at real size, prose styling and the rules. |
 
 ## app/design-system/spacing
 

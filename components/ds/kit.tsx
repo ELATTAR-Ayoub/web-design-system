@@ -138,21 +138,25 @@ export function StateGrid({
   cols?: 2 | 3 | 4 | 5 | 6;
   className?: string;
 }) {
+  // Columns follow the room the grid actually has (the docs column narrows when
+  // the rail and the contents list are both shown), so a cell never drops below ~170px.
   return (
-    <div
-      className={cn(
-        "grid gap-px overflow-hidden rounded-lg border border-border bg-border",
-        {
-          2: "grid-cols-1 sm:grid-cols-2",
-          3: "grid-cols-1 sm:grid-cols-3",
-          4: "grid-cols-1 sm:grid-cols-2 md:grid-cols-4",
-          5: "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5",
-          6: "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6",
-        }[cols],
-        className,
-      )}
-    >
-      {children}
+    <div className="@container">
+      <div
+        className={cn(
+          "grid gap-px overflow-hidden rounded-lg border border-border bg-border",
+          {
+            2: "grid-cols-1 @sm:grid-cols-2",
+            3: "grid-cols-1 @sm:grid-cols-2 @2xl:grid-cols-3",
+            4: "grid-cols-1 @sm:grid-cols-2 @3xl:grid-cols-4",
+            5: "grid-cols-1 @sm:grid-cols-2 @2xl:grid-cols-3 @4xl:grid-cols-5",
+            6: "grid-cols-1 @sm:grid-cols-2 @2xl:grid-cols-3 @5xl:grid-cols-6",
+          }[cols],
+          className,
+        )}
+      >
+        {children}
+      </div>
     </div>
   );
 }

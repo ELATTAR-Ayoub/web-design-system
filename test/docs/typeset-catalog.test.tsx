@@ -44,7 +44,7 @@ describe("TYPESET_ROLES", () => {
 });
 
 describe("<TypesetCatalog />", () => {
-  it("renders a continuous preview of all 18 roles, in canonical order, before the detail groups", () => {
+  it("renders a continuous preview of all 19 roles, in canonical order, before the detail groups", () => {
     const { container } = render(<TypesetCatalog />);
 
     const preview = container.querySelector('[data-testid="typeset-continuous-preview"]');

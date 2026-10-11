@@ -70,8 +70,8 @@ export default function TypographyPage() {
 
       <DsSection
         id="roles"
-        title="The seventeen roles"
-        description="Public typography is exactly seventeen names, continuous first in canonical order, then grouped into Words, Code and Numerics. This is the one role list in the codebase."
+        title="The nineteen roles"
+        description="Public typography is exactly nineteen names, continuous first in canonical order, then grouped into Words, Code and Numerics. This is the one role list in the codebase."
       >
         <TypesetCatalog />
       </DsSection>
@@ -201,7 +201,7 @@ export default function TypographyPage() {
       <DsSection id="rules" title="Rules">
         <DoDont
           dos={[
-            "Always apply one of the seventeen roles — never a raw pixel size in a utility.",
+            "Always apply one of the nineteen roles — never a raw pixel size in a utility.",
             "Put every figure in a numeric role so comparable values stay tabular and aligned.",
             "Add colour and case on the component, beside the role, where the component is what needs them.",
             "Use .type-display once per screen at most, and only for a hero or a reveal.",

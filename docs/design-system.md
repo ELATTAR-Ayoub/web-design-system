@@ -15,7 +15,7 @@ things are and which three ideas explain the rest.
 
 | Path | What |
 |---|---|
-| `styles/tokens.css`, `styles/typeset.css`, `styles/motion.css`, `styles/utilities.css` | **The system.** Colour, radius, shadow and spacing tokens; the 17 type roles; durations, easing and named animations; the sanctioned effects. The only files allowed literals. |
+| `styles/tokens.css`, `styles/typeset.css`, `styles/motion.css`, `styles/utilities.css` | **The system.** Colour, radius, shadow and spacing tokens; the 19 type roles; durations, easing and named animations; the sanctioned effects. The only files allowed literals. |
 | `app/globals.css` | The entry `components.json` names. Imports the four files above, in that order, and holds nothing else. |
 | `app/design-system/docs/*` | The rendered guides — introduction, installation, CLI, registry, skills, changelog. Theming and Typeset now use the full foundation pages at `/design-system/colors` and `/design-system/typography`; the former primer URLs redirect there. |
 | `components/ui/*` | shadcn primitives on Radix, restyled through tokens only, plus `icon.tsx` and `icon-swap.tsx` |

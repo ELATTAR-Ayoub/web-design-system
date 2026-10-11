@@ -103,7 +103,7 @@ export function SortSelect() {
       render: (
         <div className="flex flex-wrap items-center gap-4">
           <Select defaultValue="a">
-            <SelectTrigger size="sm" className="w-36" aria-label="Small">
+            <SelectTrigger size="sm" className="w-40" aria-label="Small">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -111,7 +111,7 @@ export function SortSelect() {
             </SelectContent>
           </Select>
           <Select defaultValue="a">
-            <SelectTrigger className="w-36" aria-label="Default">
+            <SelectTrigger className="w-40" aria-label="Default">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

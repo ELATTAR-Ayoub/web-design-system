@@ -12,7 +12,7 @@ const ROUTES = [
   ]),
 ];
 
-const WIDTHS = [320, 375, 768, 1024, 1440];
+const WIDTHS = [320, 375, 768, 1024, 1280, 1440];
 const POPUP_WIDTHS = [375, 1440];
 
 type Problem = { kind: string; where: string; detail: string };
@@ -94,6 +94,14 @@ function inspectLayout(): Problem[] {
     if (rect.top < 0 || rect.bottom > vh || rect.left < 0 || rect.right > vw) continue;
     const x = rect.left + rect.width / 2;
     const y = rect.top + rect.height / 2;
+    // Scrolled out of view inside a scrolling or clipping box: not on screen, so nothing covers it.
+    let clipped = false;
+    for (let node = el.parentElement; node && node !== document.body; node = node.parentElement) {
+      if (!/hidden|auto|scroll|clip/.test(getComputedStyle(node).overflowX + getComputedStyle(node).overflowY)) continue;
+      const box = node.getBoundingClientRect();
+      if (x < box.left || x > box.right || y < box.top || y > box.bottom) { clipped = true; break; }
+    }
+    if (clipped) continue;
     const hit = document.elementFromPoint(x, y);
     if (!hit || hit === el || el.contains(hit) || hit.contains(el)) continue;
     if (el.id && hit.closest(`label[for="${el.id}"]`)) continue;

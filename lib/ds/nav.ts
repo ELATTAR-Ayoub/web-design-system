@@ -41,10 +41,10 @@ const foundations: DsCategory[] = [
     slug: "typography",
     title: "Typeset",
     blurb:
-      "Two faces only: Inter for every word, Geist Mono for code, identifiers and figures. Seventeen roles, live at the size they render, plus the prose block that reaches the same scale without a class.",
+      "Two faces only: Inter for every word, Geist Mono for code, identifiers and figures. Nineteen roles, live at the size they render, plus the prose block that reaches the same scale without a class.",
     contents: [
       "Faces",
-      "The seventeen roles",
+      "The nineteen roles",
       "Prose",
       "Rules",
     ],

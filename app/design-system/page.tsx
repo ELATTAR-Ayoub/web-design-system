@@ -102,7 +102,7 @@ export default function DesignSystemHome() {
             ],
             [
               "Two faces only.",
-              "Inter for words. Geist Mono, tabular, for figures, identifiers and code — through the seventeen named type roles.",
+              "Inter for words. Geist Mono, tabular, for figures, identifiers and code — through the nineteen named type roles.",
             ],
             [
               "Rarity is never color alone.",

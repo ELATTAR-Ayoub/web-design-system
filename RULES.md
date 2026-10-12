@@ -1607,8 +1607,9 @@ them is not. Name what you did not check. Never state a contrast ratio you did
 not compute: this system's premise is measured-not-asserted, and a confident
 wrong number does more damage than an admitted gap.
 
-> Agents: the `elattar-building-ui` skill carries this gate plus the ordered
-> workflow that leads up to it. Invoke it before building any UI.
+> Agents: the `elattar-uiux-design` plugin (`plugins/elattar-uiux-design/`)
+> carries this gate plus the ordered workflow that leads up to it. Use it before
+> building any UI.
 
 ---
 

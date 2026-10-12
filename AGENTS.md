@@ -6,12 +6,13 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 # Elattar's Design System
 
-## Building or changing UI? Invoke the `elattar-building-ui` skill first
+## Building or changing UI? Use the `elattar-uiux-design` plugin
 
-It carries the ordered workflow — read, inventory, ask, build, verify, document —
-and the completion gate for what a passing build cannot prove: dead references,
-untested themes, missing states, actions with no feedback. Every trap it
-documents has actually shipped here on a green build.
+The UI/UX skill ships as a Claude plugin in `plugins/elattar-uiux-design/`
+(install: `/plugin marketplace add ELATTAR-Ayoub/web-design-system`, then
+`/plugin install elattar-uiux-design@elattar`). It carries the design rules, the
+ordered workflow and its own checks (`checks/run.mjs`), and flags invalid
+component props and variants after every edit.
 
 **Read `RULES.md` before writing any UI.** Every rule for this codebase is in
 that one file — colour, typography, spacing, motion, components, accessibility

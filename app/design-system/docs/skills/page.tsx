@@ -13,34 +13,30 @@ export default function SkillsPage() {
         contents={category.contents}
       />
 
-      <DsSection id="elattar-building-ui" title="elattar-building-ui">
+      <DsSection id="elattar-uiux-design" title="elattar-uiux-design">
         <p className="type-body text-muted-foreground">
-          <Code>.claude/skills/elattar-building-ui/</Code> is the workflow an
-          AI agent follows to build or change UI in this system: read the
-          governing files, inventory existing components before adding a new
-          one, ask only for decisions that change the result, build on the
-          token layer, draw the complete state model, document before
-          verifying, then run <Code>npm run verify</Code> and complete the
-          checks a green build cannot prove on its own.
+          <Code>plugins/elattar-uiux-design/</Code> is a Claude plugin: the
+          skill an AI agent follows to design and build UI with this system,
+          its own checks, four slash commands and an after-edit hook. Install
+          it with <Code>/plugin marketplace add ELATTAR-Ayoub/web-design-system</Code>{" "}
+          then <Code>/plugin install elattar-uiux-design@elattar</Code>.
         </p>
       </DsSection>
 
       <DsSection id="what-it-checks" title="What it checks">
         <Meta
           items={[
-            { k: "Token layer", v: "No hardcoded colour, size, spacing, radius, duration or shadow outside styles/*.css." },
-            { k: "State model", v: "rest · hover · focus-visible · pressed · loading · success · error · disabled · empty, or an explicit N/A with a reason." },
-            { k: "Documentation", v: "lib/ds/nav.ts updated, every state on a live specimen, DsPageHeader fed from findCategory()." },
-            { k: "Verification", v: "npm run verify, plus both themes, both viewport ends, keyboard, reduced motion and measured contrast — checks scripts cannot perform." },
+            { k: "Design rules", v: "Seven foundations, six secondary rules, content, accessibility and twenty UX rules, each with a check or a screenshot question." },
+            { k: "Token layer", v: "No hardcoded colour, type, spacing, radius, motion or shadow; component-owned values only after asking." },
+            { k: "Components", v: "Only real variants, sizes and props — flagged after every edit; no hand-made or page-wide overridden controls." },
+            { k: "In the browser", v: "Contrast as rendered, keyboard and screen reader, motion continuity, layout shift, navigation reach, runtime errors." },
           ]}
         />
       </DsSection>
 
       <Note tone="action" title="Where to read it">
-        Start at <Code>AGENTS.md</Code>, which routes to the skill. The skill
-        itself routes to <Code>RULES.md</Code> and
-        <Code> .claude/skills/elattar-building-ui/references/</Code> for the
-        component contracts, state inventory and known traps.
+        Start at <Code>plugins/elattar-uiux-design/README.md</Code>; the skill
+        itself is <Code>skills/elattar-uiux-design/SKILL.md</Code> inside it.
       </Note>
 
       <PageFootNav groupId="docs" slug="skills" />

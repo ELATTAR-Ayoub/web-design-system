@@ -1,4 +1,0 @@
-interface:
-  display_name: "Elattar UI Builder"
-  short_description: "Build and verify Elattar design-system UI"
-  default_prompt: "Use $elattar-building-ui to build and verify this interface against the repository's design-system contracts."

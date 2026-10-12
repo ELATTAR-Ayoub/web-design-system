@@ -271,7 +271,7 @@ function scanRegex(rel, src) {
     const confirm = tag === "AlertDialogAction";
     const after = src.slice(m.index + m[0].length, m.index + m[0].length + 300);
     const described = kind === "title" && /^\s*<(?:Alert|AlertDialog|Dialog|Sheet|Drawer|Empty)Description\b[^>]*>\s*[^<{\s]/.test(after);
-    const handler = /on(?:Click|Submit|Select)=\{\s*(?:\(\)\s*=>\s*)?([A-Za-z_$][\w$]*)\s*(?:\(|\})/.exec(m[2])?.[1] ?? null;
+    const handler = /\bon(?:Click|Submit|Select)=\{\s*(?:\(\)\s*=>\s*)?([A-Za-z_$][\w$]*)\s*(?:\(|\})/.exec(m[2])?.[1] ?? null;
     for (const t of textOf(m[3])) if (bare(t)) items.push({ kind, tag, text: t, line, confirm, described, handler });
   }
   // label / aria-label / title props on every opening tag, self-closing or not

@@ -76,7 +76,7 @@ it("declares no retired --duration-*/--ease-* name outside motion.css's @theme b
 });
 
 it("no source file uses a retired name", () => {
-  const roots = ["app", "components", "lib", "hooks", "test", "e2e", "scripts", "styles", ".claude/skills"];
+  const roots = ["app", "components", "lib", "hooks", "test", "e2e", "scripts", "styles"];
   const walk = (d: string): string[] =>
     readdirSync(d, { withFileTypes: true }).flatMap((e) =>
       e.isDirectory()
@@ -97,11 +97,6 @@ it("no source file uses a retired name", () => {
         // import the `.ts` map at guard-run time) — that duplication is the
         // rule's whole point, not a live reference to sweep.
         !f.endsWith(join("scripts", "check-tokens.mjs")) &&
-        // `rename-motion.mjs` duplicates the same retired keyframe names as
-        // plain string literals for the same reason — it is a one-pass CLI
-        // script, not a live reference, and its whole job is to record the
-        // `before` spellings so it can rewrite them everywhere else.
-        !f.endsWith(join("scripts", "rename-motion.mjs")) &&
         // The avatar owns its own cube-keyframe vocabulary (`lift` / `lift2`
         // in `components/agent/avatar/scenes.ts`), which collides in
         // spelling with the retired `lift` utility this test hunts. It is a

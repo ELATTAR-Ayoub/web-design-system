@@ -147,8 +147,8 @@ const docs: DsCategory[] = [
   {
     slug: "skills",
     title: "Skills",
-    blurb: "The AI-facing workflow skill this repository ships, and what it enforces.",
-    contents: ["elattar-building-ui", "What it checks"],
+    blurb: "The AI-facing UI/UX plugin this repository ships, and what it enforces.",
+    contents: ["elattar-uiux-design", "What it checks"],
   },
   {
     slug: "changelog",

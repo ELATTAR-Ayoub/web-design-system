@@ -79,7 +79,7 @@ npm run verify          # tokens → refs → typecheck → lint → build
 
 ## Contributing
 
-**[`docs/design-system.md`](docs/design-system.md)** is the short orientation. **[`docs/project-structure.md`](docs/project-structure.md)** lists every folder and what each file does. **[`RULES.md`](RULES.md)** is the law — read it before writing any UI. If you are an agent, `AGENTS.md` is the entry point and it routes to **`.claude/skills/elattar-building-ui`**, a skill that encodes the required workflow: read the law, inventory before inventing, build on the token layer, draw every state, document, verify, and report what you actually measured rather than what you assume.
+**[`docs/design-system.md`](docs/design-system.md)** is the short orientation. **[`docs/project-structure.md`](docs/project-structure.md)** lists every folder and what each file does. **[`RULES.md`](RULES.md)** is the law — read it before writing any UI. If you are an agent, `AGENTS.md` is the entry point and it routes to the **`elattar-uiux-design`** plugin in `plugins/elattar-uiux-design/` — the UI/UX skill with its rules, workflow and checks.
 
 The hard rules in short:
 

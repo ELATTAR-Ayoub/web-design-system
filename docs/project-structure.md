@@ -41,7 +41,7 @@ Run `npm run dev` and open `/design-system` to see everything live.
 | `playwright.registry.config.ts` | Settings for the one e2e test that installs the registry into a fresh app. |
 | `.gitignore` | Files git never tracks (node_modules, builds, test output, env files). |
 | `.claude/launch.json` | Dev-server presets for the Claude desktop preview. |
-| `.claude/skills/elattar-building-ui/` | The house skill AI assistants load before building UI here: workflow, component contracts, state checklist, known traps and how to verify. |
+| `plugins/elattar-uiux-design/` | The UI/UX Claude plugin: the skill (rules, system knowledge, page patterns, evals), its checks (`checks/run.mjs`), four slash commands and an after-edit hook. Listed by `.claude-plugin/marketplace.json`. |
 
 ## components/ui
 
@@ -470,7 +470,7 @@ The website routes, built with the Next.js App Router: a folder with a `page.tsx
 | `installation/page.tsx` | Serves `/design-system/docs/installation`: requirements and the steps to initialise, install the foundation and add a first component. |
 | `cli/page.tsx` | Serves `/design-system/docs/cli`: how to use the shadcn CLI commands (`init`, `add`, `diff`, `search`) with this system. |
 | `registry/page.tsx` | Serves `/design-system/docs/registry`: the install registry, its namespaces and every install command, read from the built registry files. |
-| `skills/page.tsx` | Serves `/design-system/docs/skills`: the `elattar-building-ui` AI skill, what it checks and where to read it. |
+| `skills/page.tsx` | Serves `/design-system/docs/skills`: the `elattar-uiux-design` plugin, what it checks and how to install it. |
 | `changelog/page.tsx` | Serves `/design-system/docs/changelog`: dated list of notable changes. |
 | `theming/page.tsx` | Redirects `/design-system/docs/theming` permanently to `/design-system/colors`. |
 | `typeset/page.tsx` | Redirects `/design-system/docs/typeset` permanently to `/design-system/typography`. |
@@ -490,7 +490,6 @@ Command-line scripts (Node) that build the install registry and guard the codeba
 | `registry-lib.mjs` | Shared helpers for the registry scripts, such as reading a file's imports and resolving `@/` paths. Not run by itself. |
 | `registry-manifest.mjs` | Declares which files belong to which registry item, the registry name and the base URL (`REGISTRY_URL`). Not run by itself. |
 | `registry-static-server.mjs` | A tiny local web server for `public/r`, used to rehearse registry installs; used by the registry-consumer end-to-end test. |
-| `rename-motion.mjs` | One-off tool that renames old motion names to the new ones across the codebase using `lib/motion-names.ts`; supports `--dry-run`. No npm script. |
 | `validate-docs.mjs` | Checks that every nav route has a page, doc links resolve, install commands match the registry, and regenerates `public/llms.txt`. Run by `npm run docs:validate`. |
 
 ## components/docs/

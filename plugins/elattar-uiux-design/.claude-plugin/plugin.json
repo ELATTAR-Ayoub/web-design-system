@@ -1,0 +1,7 @@
+{
+  "name": "elattar-uiux-design",
+  "version": "0.1.0",
+  "description": "Design and build good UI/UX with Elattar's design system — rules, patterns, checks and evals in one skill.",
+  "author": { "name": "Ayoub Elattar" },
+  "license": "MIT"
+}

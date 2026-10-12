@@ -1,0 +1,11 @@
+{
+  "name": "elattar",
+  "owner": { "name": "Ayoub Elattar" },
+  "plugins": [
+    {
+      "name": "elattar-uiux-design",
+      "source": "./plugins/elattar-uiux-design",
+      "description": "Design and build good UI/UX with Elattar's design system."
+    }
+  ]
+}
